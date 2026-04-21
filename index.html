@@ -11,8 +11,80 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+        
+
+    
+        // === PINCH ZOOM ===
+        (function() {
+            var wrapper = document.getElementById('manga-wrapper');
+            if (!wrapper) return;
+            var scale = 1;
+            var startDist = 0;
+            var startScale = 1;
+            var isZooming = false;
+            function dist(t) { return Math.hypot(t[1].clientX - t[0].clientX, t[1].clientY - t[0].clientY); }
+            wrapper.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    isZooming = true; state.isPinching = true;
+                    startDist = dist(e.touches); startScale = scale;
+                    wrapper.classList.add('zooming'); e.preventDefault();
+                }
+            }, {passive: false});
+            wrapper.addEventListener('touchmove', function(e) {
+                if (isZooming && e.touches.length === 2) {
+                    e.preventDefault();
+                    scale = Math.min(Math.max(startScale * (dist(e.touches) / startDist), 1), 4);
+                    var svg = wrapper.querySelector('svg');
+                    if (svg) svg.style.transform = 'scale(' + scale + ')';
+                }
+            }, {passive: false});
+            wrapper.addEventListener('touchend', function(e) {
+                if (isZooming && e.touches.length < 2) {
+                    isZooming = false; wrapper.classList.remove('zooming');
+                    setTimeout(function() { state.isPinching = false; }, 1000);
+                    if (scale < 1.1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
+                }
+            }, {passive: true});
+            var lastTap = 0;
+            wrapper.addEventListener('touchend', function(e) {
+                if (e.touches.length > 0) return;
+                var now = Date.now();
+                if (now - lastTap < 300) {
+                    if (scale > 1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
+                    else { scale = 2; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(2)'; svg.style.transition = 'transform 0.3s ease'; } }
+                }
+                lastTap = now;
+            });
+        })();
+
+    </script>
     <script>
+
+        // Chapter thumbnail face images
+        const chapterFaces = [
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmEzYSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMyYTFhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzYgUTMwIDM0IDQwIDM2IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMxYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzcgTDMwIDM1IEw0MCAzNyIgc3Ryb2tlPSIjMjIyIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMzYTJhMWEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzYgUTMwIDMzIDQwIDM2IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMwYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzggUTMwIDQwIDQwIDM4IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiM0YTNhMmEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzcgTDQwIDM3IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmEzYSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMyYTFhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzQgUTMwIDMwIDQwIDM0IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMxYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjMgMzggUTMwIDQwIDM3IDM4IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMzYTJhMWEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzQgUTMwIDM1IDQwIDM0IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMwYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzYgUTMwIDM0IDQwIDM2IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiM0YTNhMmEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzcgTDMwIDM1IEw0MCAzNyIgc3Ryb2tlPSIjMjIyIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmEzYSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMyYTFhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzYgUTMwIDM0IDQwIDM2IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMxYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzcgTDMwIDM1IEw0MCAzNyIgc3Ryb2tlPSIjMjIyIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMzYTJhMWEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzYgUTMwIDMzIDQwIDM2IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMwYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzggUTMwIDQwIDQwIDM4IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiM0YTNhMmEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzcgTDQwIDM3IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmEzYSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMyYTFhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzQgUTMwIDMwIDQwIDM0IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMxYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjMgMzggUTMwIDQwIDM3IDM4IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMWEyZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMzYTJhMWEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzQgUTMwIDM1IDQwIDM0IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzFhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjZDRhNTc0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiMwYTBhMGEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzYgUTMwIDM0IDQwIDM2IiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIi8+PC9zdmc+",
+            "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzJhMmExZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjgiIHI9IjE2IiBmaWxsPSIjYzQ5NDY0Ii8+PHBhdGggZD0iTTE0IDI0IFExOCAxMiAzMCAxMCBRNDIgMTIgNDYgMjQiIGZpbGw9IiM0YTNhMmEiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48Y2lyY2xlIGN4PSIzNiIgY3k9IjI2IiByPSIyLjUiIGZpbGw9IiMyMjIiLz48cGF0aCBkPSJNMjAgMzcgTDMwIDM1IEw0MCAzNyIgc3Ryb2tlPSIjMjIyIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==",
+        ];
+
         tailwind.config = {
             theme: {
                 extend: {
@@ -43,6 +115,160 @@
                 }
             }
         }
+    
+        // === PINCH ZOOM FOR MANGA PAGES ===
+        (function() {
+            let scale = 1;
+            let lastScale = 1;
+            let posX = 0, posY = 0;
+            let lastPosX = 0, lastPosY = 0;
+            let isZooming = false;
+            let startDist = 0;
+            let startMid = {x: 0, y: 0};
+
+            function getDistance(t1, t2) {
+                return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+            }
+            function getMidpoint(t1, t2) {
+                return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
+            }
+
+            const container = document.getElementById('manga-wrapper');
+            if (!container) return;
+
+            container.addEventListener('touchstart', function(e) {
+                if (state.view !== 'reader') return;
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    isZooming = true;
+                    state.isPinching = true;
+                    startDist = getDistance(e.touches[0], e.touches[1]);
+                    startMid = getMidpoint(e.touches[0], e.touches[1]);
+                    lastScale = scale;
+                }
+            }, {passive: false});
+
+            container.addEventListener('touchmove', function(e) {
+                if (state.view !== 'reader') return;
+                if (e.touches.length === 2 && isZooming) {
+                    e.preventDefault();
+                    const dist = getDistance(e.touches[0], e.touches[1]);
+                    scale = Math.min(Math.max(lastScale * (dist / startDist), 1), 4);
+
+                    const svg = container.querySelector('.manga-page-svg');
+                    if (svg) {
+                        svg.style.transform = 'scale(' + scale + ') translate(' + posX + 'px, ' + posY + 'px)';
+                        svg.style.transformOrigin = 'center center';
+                        svg.style.transition = 'none';
+                    }
+                } else if (e.touches.length === 1 && scale > 1) {
+                    // Pan when zoomed
+                    e.preventDefault();
+                }
+            }, {passive: false});
+
+            container.addEventListener('touchend', function(e) {
+                if (isZooming && e.touches.length < 2) {
+                    isZooming = false;
+                    // Delay re-enabling swipe
+                    setTimeout(function() {
+                        state.isPinching = false;
+                    }, 600);
+
+                    if (scale <= 1.05) {
+                        // Snap back to normal
+                        scale = 1; posX = 0; posY = 0;
+                        const svg = container.querySelector('.manga-page-svg');
+                        if (svg) {
+                            svg.style.transform = 'scale(1)';
+                            svg.style.transition = 'transform 0.3s ease';
+                        }
+                    }
+                }
+            }, {passive: true});
+
+            // Double tap to reset zoom
+            let lastTap = 0;
+            container.addEventListener('touchend', function(e) {
+                if (e.touches.length > 0) return;
+                const now = Date.now();
+                if (now - lastTap < 300) {
+                    if (scale > 1) {
+                        scale = 1; posX = 0; posY = 0;
+                        const svg = container.querySelector('.manga-page-svg');
+                        if (svg) {
+                            svg.style.transform = 'scale(1)';
+                            svg.style.transition = 'transform 0.3s ease';
+                        }
+                    } else {
+                        scale = 2;
+                        const svg = container.querySelector('.manga-page-svg');
+                        if (svg) {
+                            svg.style.transform = 'scale(2)';
+                            svg.style.transition = 'transform 0.3s ease';
+                        }
+                    }
+                }
+                lastTap = now;
+            });
+
+            // Reset zoom on page change
+            const origNext = window.nextPage;
+            const origPrev = window.prevPage;
+            function resetZoom() {
+                scale = 1; posX = 0; posY = 0;
+                const svg = container.querySelector('.manga-page-svg');
+                if (svg) {
+                    svg.style.transform = 'scale(1)';
+                    svg.style.transition = 'transform 0.3s ease';
+                }
+            }
+        })();
+
+    
+        // === PINCH ZOOM ===
+        (function() {
+            var wrapper = document.getElementById('manga-wrapper');
+            if (!wrapper) return;
+            var scale = 1;
+            var startDist = 0;
+            var startScale = 1;
+            var isZooming = false;
+            function dist(t) { return Math.hypot(t[1].clientX - t[0].clientX, t[1].clientY - t[0].clientY); }
+            wrapper.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    isZooming = true; state.isPinching = true;
+                    startDist = dist(e.touches); startScale = scale;
+                    wrapper.classList.add('zooming'); e.preventDefault();
+                }
+            }, {passive: false});
+            wrapper.addEventListener('touchmove', function(e) {
+                if (isZooming && e.touches.length === 2) {
+                    e.preventDefault();
+                    scale = Math.min(Math.max(startScale * (dist(e.touches) / startDist), 1), 4);
+                    var svg = wrapper.querySelector('svg');
+                    if (svg) svg.style.transform = 'scale(' + scale + ')';
+                }
+            }, {passive: false});
+            wrapper.addEventListener('touchend', function(e) {
+                if (isZooming && e.touches.length < 2) {
+                    isZooming = false; wrapper.classList.remove('zooming');
+                    setTimeout(function() { state.isPinching = false; }, 1000);
+                    if (scale < 1.1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
+                }
+            }, {passive: true});
+            var lastTap = 0;
+            wrapper.addEventListener('touchend', function(e) {
+                if (e.touches.length > 0) return;
+                var now = Date.now();
+                if (now - lastTap < 300) {
+                    if (scale > 1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
+                    else { scale = 2; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(2)'; svg.style.transition = 'transform 0.3s ease'; } }
+                }
+                lastTap = now;
+            });
+        })();
+
     </script>
 
     <style>
@@ -111,28 +337,6 @@
         .reader-idle .reader-chrome.top { transform: translateY(-100%); }
         .reader-idle .reader-chrome.bottom { transform: translateY(150%) translateX(-50%); }
 
-        /* Spatial Pins */
-        @keyframes pinDrop {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            60% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
-        }
-        .spatial-pin {
-            position: absolute;
-            width: 28px; height: 28px; border-radius: 50%;
-            background: #0A0A0A; border: 2px solid #D4AF37;
-            color: #D4AF37; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            transform: translate(-50%, -50%);
-            cursor: pointer; z-index: 20;
-            pointer-events: auto;
-            animation: pinDrop 0.5s var(--transition-curve) forwards;
-            opacity: 0.6; transition: all 0.3s;
-        }
-        .spatial-pin:hover { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-        .spatial-pin.active { opacity: 1; background: #D4AF37; color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.6); }
-        @media (max-width: 768px) { .spatial-pin { width: 24px !important; height: 24px !important; font-size: 9px !important; } }
-
         /* Reader Panels & Animations */
         .glass-panel {
             background: rgba(15, 15, 15, 0.85);
@@ -172,6 +376,22 @@
             transform: scale(0.98);
             pointer-events: none;
         }
+    
+        /* MANGA READER ZOOM */
+        #manga-wrapper {
+            touch-action: pan-x;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #manga-wrapper.zooming {
+            touch-action: none !important;
+        }
+        #svg-container svg {
+            transition: transform 0.3s ease;
+            transform-origin: center center;
+        }
+
     </style>
 </head>
 <body lang="en" dir="ltr" class="relative">
@@ -395,7 +615,7 @@
             <div class="flex-1 w-full h-full flex items-center justify-center overflow-hidden touch-none pt-16 pb-24" id="reader-container">
                 <div id="manga-wrapper" class="relative w-full max-w-[800px] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" style="cursor: crosshair;">
                     <div id="svg-container" class="w-full relative shadow-2xl transition-opacity duration-400 ease-out"></div>
-                    <div id="pins-container" class="absolute inset-0 pointer-events-none" dir="ltr"></div>
+                    
                 </div>
             </div>
 
@@ -410,26 +630,7 @@
                 </button>
             </div>
 
-            <div id="spatial-sidebar" class="slide-panel fixed top-0 end-0 h-dvh w-full sm:w-[400px] glass-panel border-s border-gray-800/50 z-50 transform translate-x-full rtl:translate-x-0 rtl:-translate-x-full flex flex-col shadow-[-25px_0_50px_rgba(0,0,0,0.5)]">
-                <div class="flex items-center justify-between px-6 pb-4 border-b border-gray-800/50 shrink-0 bg-black/20 pt-[calc(1rem+env(safe-area-inset-top))] min-h-[4rem] h-auto">
-                    <div>
-                        <h3 class="font-bold text-accent tracking-widest text-sm" data-i18n="spatial_threads">SPATIAL THREADS</h3>
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest" data-i18n="coord_linked">Coordinate-linked comments</p>
-                    </div>
-                    <button onclick="closeSpatialSidebar(event)" class="w-10 h-10 rounded-full bg-gray-800/80 text-gray-300 hover:text-white hover:bg-gray-700 flex items-center justify-center transition-colors shadow-sm relative z-50 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-                
-                <div class="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar" id="spatial-comments-list">
-                    </div>
-
-                <div class="p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] border-t border-gray-800/50 bg-[#0A0A0A]/95 shrink-0">
-                    <form id="spatial-form" onsubmit="submitSpatialComment(event)" class="relative">
-                        <input type="text" id="spatial-input" class="w-full bg-[#151515] border border-gray-700 rounded-xl py-3.5 px-5 text-sm text-white focus:outline-none focus:border-accent disabled:opacity-50 transition-colors pe-14 rtl:pe-5 rtl:ps-14 shadow-inner" placeholder="Add a comment on this spot...">
-                        <button type="submit" id="spatial-submit" class="absolute end-2 top-1/2 -translate-y-1/2 w-9 h-9 bg-accent text-[#0A0A0A] rounded-lg flex items-center justify-center hover:bg-yellow-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"><i class="fa-solid fa-paper-plane rtl-flip text-sm"></i></button>
-                    </form>
-                    <p id="spatial-guest-msg" class="text-center text-xs text-gray-500 mt-3 font-medium hidden" data-i18n="join_to_comment">Join to comment</p>
-                </div>
-            </div>
+            
         </section>
 
         <section id="view-characters" class="view pt-24 pb-20">
@@ -956,8 +1157,8 @@
                 chHtml += `
                 <div class="flex items-center justify-between p-4 border border-gray-100 rounded-2xl bg-card hover:border-accent hover:shadow-subtle transition-all cursor-pointer group" onclick="readChapter(${i}, '${st}')">
                     <div class="flex items-center gap-4">
-                        <div class="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-gray-100 group-hover:ring-2 group-hover:ring-accent transition-all">
-                            <div class="w-full h-full flex items-center justify-center text-lg font-bold text-gray-400 group-hover:text-accent">${i}</div>
+                        <div class="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 group-hover:ring-2 group-hover:ring-accent transition-all">
+                            <img src="${chapterFaces[(i-1) % chapterFaces.length]}" class="w-full h-full object-cover" alt="Ch ${i}">
                         </div>
                         <div>
                             <h4 class="font-bold text-sm group-hover:text-accent transition-colors">Chapter ${i}${i===1?' : The Awakening':''}</h4>
@@ -1059,12 +1260,23 @@
 
         // --- READER LOGIC ---
         function getSVGPage(p) {
-            const w=800, h=1200;
-            if(p===1) return `<svg viewBox="0 0 ${w} ${h}" class="manga-page-svg"><rect x="20" y="20" width="760" height="1160" fill="none" stroke="#1A1A1A" stroke-width="4"/><rect x="30" y="30" width="740" height="1140" fill="none" stroke="#1A1A1A" stroke-width="2"/><g stroke="#E5E7EB" stroke-width="2"><line x1="400" y1="600" x2="0" y2="0"/><line x1="400" y1="600" x2="800" y2="0"/><line x1="400" y1="600" x2="0" y2="1200"/><line x1="400" y1="600" x2="800" y2="1200"/><line x1="400" y1="600" x2="0" y2="600"/><line x1="400" y1="600" x2="800" y2="600"/></g><path d="M250,1200 Q400,400 550,1200 Z" fill="#1A1A1A"/><text x="400" y="250" text-anchor="middle" font-family="Inter" font-weight="900" font-size="60" fill="#1A1A1A" letter-spacing="4">CHAPTER 1</text><text x="400" y="320" text-anchor="middle" font-family="Inter" font-weight="700" font-size="32" fill="#6B7280" letter-spacing="6">THE AWAKENING</text></svg>`;
-            if(p===2) return `<svg viewBox="0 0 ${w} ${h}" class="manga-page-svg"><rect x="40" y="40" width="720" height="320" fill="#FAFAF8" stroke="#1A1A1A" stroke-width="4"/><path d="M40,280 Q200,180 400,280 T760,250 L760,360 L40,360 Z" fill="#E5E7EB"/><circle cx="600" cy="120" r="40" fill="#1A1A1A" opacity="0.1"/><rect x="60" y="60" width="300" height="80" fill="#FFF" stroke="#1A1A1A" stroke-width="3"/><text x="210" y="105" text-anchor="middle" font-family="Inter" font-size="20">"The heat is relentless..."</text><rect x="40" y="390" width="720" height="420" fill="#FFF" stroke="#1A1A1A" stroke-width="4"/><path d="M350,810 L400,600 L450,810 Z" fill="#1A1A1A"/><rect x="40" y="840" width="720" height="320" fill="#0A0A0A" stroke="#1A1A1A" stroke-width="4"/><polygon points="350,1050 450,950 500,1100 400,1150" fill="#D4AF37" filter="drop-shadow(0 0 20px #D4AF37)"/><rect x="460" y="860" width="280" height="80" fill="#FFF" stroke="#1A1A1A" stroke-width="3"/><text x="600" y="905" text-anchor="middle" font-family="Inter" font-size="20">"What is this light?"</text></svg>`;
-            if(p===3) return `<svg viewBox="0 0 ${w} ${h}" class="manga-page-svg"><rect x="40" y="40" width="340" height="540" fill="#FFF" stroke="#1A1A1A" stroke-width="4"/><ellipse cx="210" cy="150" rx="140" ry="80" fill="#FFF" stroke="#1A1A1A" stroke-width="3"/><path d="M210,230 L150,350 L250,220 Z" fill="#FFF" stroke="#1A1A1A" stroke-width="3"/><text x="210" y="160" text-anchor="middle" font-family="Inter" font-weight="700" font-size="24">"Drop it!"</text><rect x="420" y="40" width="340" height="540" fill="#FFF" stroke="#1A1A1A" stroke-width="4"/><path d="M450,580 L550,200 L760,580 Z" fill="#1A1A1A"/><rect x="40" y="620" width="340" height="540" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="4"/><circle cx="210" cy="890" r="100" fill="#FAFAF8" opacity="0.1"/><rect x="420" y="620" width="340" height="540" fill="#FFF" stroke="#1A1A1A" stroke-width="4"/><ellipse cx="590" cy="750" rx="140" ry="80" fill="#FFF" stroke="#1A1A1A" stroke-width="3"/><path d="M590,830 L550,950 L630,820 Z" fill="#FFF" stroke="#1A1A1A" stroke-width="3"/><text x="590" y="760" text-anchor="middle" font-family="Inter" font-weight="700" font-size="24">"Never!"</text></svg>`;
-            if(p===4) return `<svg viewBox="0 0 1600 1200" class="manga-page-svg manga-spread"><rect x="40" y="40" width="1520" height="1120" fill="#FFF" stroke="#1A1A1A" stroke-width="4"/><g stroke="#1A1A1A" stroke-width="2" opacity="0.3"><line x1="800" y1="600" x2="0" y2="0"/><line x1="800" y1="600" x2="1600" y2="0"/><line x1="800" y1="600" x2="0" y2="1200"/><line x1="800" y1="600" x2="1600" y2="1200"/><line x1="800" y1="600" x2="0" y2="600"/><line x1="800" y1="600" x2="1600" y2="600"/><line x1="800" y1="600" x2="800" y2="0"/><line x1="800" y1="600" x2="800" y2="1200"/></g><path d="M600,400 L1000,200 L1200,600 L1000,1000 L600,800 L400,600 Z" fill="#1A1A1A"/><text x="800" y="660" text-anchor="middle" font-family="Inter" font-weight="900" font-size="180" font-style="italic" fill="#EF4444" stroke="#1A1A1A" stroke-width="8" transform="rotate(-10 800 660)">BOOM</text></svg>`;
-            return `<svg viewBox="0 0 800 1200" class="manga-page-svg !bg-[#0A0A0A]"><rect x="40" y="40" width="720" height="1120" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.1"/><path d="M400,1200 L250,700 L550,700 Z" fill="#1A1A1A"/><text x="400" y="500" text-anchor="middle" font-family="Inter" font-weight="900" font-size="52" fill="#FFFFFF" letter-spacing="2">END OF CHAPTER 1</text><text x="400" y="580" text-anchor="middle" font-family="Inter" font-style="italic" font-weight="400" font-size="28" fill="#D4AF37">To be continued...</text></svg>`;
+            const pages = [
+                // Page 1: Title page
+                `<svg viewBox="0 0 400 600" class="manga-page-svg"><rect width="400" height="600" fill="#faf8f0"/><rect x="20" y="20" width="360" height="560" fill="none" stroke="#1a1a1a" stroke-width="3"/><rect x="30" y="30" width="340" height="540" fill="none" stroke="#1a1a1a" stroke-width="1"/><text x="200" y="120" text-anchor="middle" font-family="serif" font-size="32" font-weight="bold" fill="#1a1a1a">Chapter 1</text><text x="200" y="160" text-anchor="middle" font-family="serif" font-size="24" font-style="italic" fill="#444">The Awakening</text><g stroke="#ccc" stroke-width="0.5" opacity="0.5"><line x1="200" y1="200" x2="50" y2="50"/><line x1="200" y1="200" x2="350" y2="50"/><line x1="200" y1="200" x2="30" y2="180"/><line x1="200" y1="200" x2="370" y2="180"/><line x1="200" y1="200" x2="80" y2="380"/><line x1="200" y1="200" x2="320" y2="380"/></g><ellipse cx="200" cy="350" rx="60" ry="70" fill="#2a2a2a"/><ellipse cx="200" cy="260" rx="35" ry="40" fill="#2a2a2a"/><path d="M140 280 Q100 350 120 450 L160 400 Z" fill="#1a1a1a"/><path d="M260 280 Q300 350 280 450 L240 400 Z" fill="#1a1a1a"/><circle cx="80" cy="450" r="2" fill="#d4af37"/><circle cx="320" cy="420" r="2" fill="#d4af37"/><circle cx="100" cy="500" r="1.5" fill="#d4af37"/><circle cx="300" cy="480" r="1.5" fill="#d4af37"/><text x="200" y="540" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888">MEEM YASER STUDIO</text></svg>`,
+
+                // Page 2: Desert + discovery (3 panels)
+                `<svg viewBox="0 0 400 600" class="manga-page-svg"><rect width="400" height="600" fill="#faf8f0"/><rect x="20" y="20" width="360" height="170" fill="#f0ead6" stroke="#1a1a1a" stroke-width="2"/><path d="M20 160 Q100 120 200 140 Q300 160 380 130 L380 190 L20 190 Z" fill="#d4c5a0"/><path d="M20 170 Q150 140 250 160 Q350 180 380 150 L380 190 L20 190 Z" fill="#c4b590"/><circle cx="320" cy="60" r="25" fill="#e8d5a0" stroke="#1a1a1a" stroke-width="1"/><rect x="40" y="35" width="200" height="50" fill="#fff" stroke="#1a1a1a" stroke-width="1.5" rx="2"/><text x="50" y="55" font-family="sans-serif" font-size="10" fill="#1a1a1a">The dunes stretched</text><text x="50" y="72" font-family="sans-serif" font-size="10" fill="#1a1a1a">endlessly before her.</text><rect x="20" y="200" width="360" height="180" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><ellipse cx="200" cy="320" rx="25" ry="35" fill="#2a2a2a"/><circle cx="200" cy="275" r="18" fill="#d4a574"/><path d="M182 270 Q185 255 200 252 Q215 255 218 270" fill="#2a1a0a"/><circle cx="193" cy="275" r="2" fill="#1a1a1a"/><circle cx="207" cy="275" r="2" fill="#1a1a1a"/><line x1="190" y1="355" x2="185" y2="380" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/><line x1="210" y1="355" x2="218" y2="378" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/><path d="M20 370 Q100 340 200 360 Q300 380 380 350 L380 380 L20 380 Z" fill="#d4c5a0"/><rect x="20" y="390" width="360" height="190" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><rect x="160" y="430" width="80" height="100" rx="4" fill="#f5f0d0" stroke="#d4af37" stroke-width="2"/><rect x="170" y="445" width="60" height="3" fill="#d4af37" opacity="0.6"/><rect x="170" y="455" width="50" height="3" fill="#d4af37" opacity="0.6"/><rect x="170" y="465" width="55" height="3" fill="#d4af37" opacity="0.6"/><rect x="170" y="480" width="40" height="3" fill="#d4af37" opacity="0.6"/><path d="M130 470 Q150 460 165 475" stroke="#d4a574" stroke-width="12" fill="none" stroke-linecap="round"/><text x="280" y="450" font-family="sans-serif" font-size="11" font-style="italic" fill="#666">What is this?</text></svg>`,
+
+                // Page 3: Dialogue (4 panels)
+                `<svg viewBox="0 0 400 600" class="manga-page-svg"><rect width="400" height="600" fill="#faf8f0"/><rect x="20" y="20" width="170" height="270" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><circle cx="105" cy="130" r="40" fill="#d4a574"/><path d="M65 120 Q75 100 105 95 Q135 100 145 120" fill="#2a1a0a"/><circle cx="92" cy="128" r="3" fill="#1a1a1a"/><circle cx="118" cy="128" r="3" fill="#1a1a1a"/><path d="M95 145 Q105 152 115 145" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><rect x="50" y="30" width="110" height="50" rx="20" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><polygon points="90,80 100,95 110,80" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><rect x="90" y="78" width="21" height="4" fill="#fff"/><text x="65" y="55" font-family="sans-serif" font-size="9" fill="#1a1a1a">We should not</text><text x="65" y="68" font-family="sans-serif" font-size="9" fill="#1a1a1a">be here...</text><rect x="210" y="20" width="170" height="270" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><circle cx="295" cy="130" r="40" fill="#c49464"/><rect x="270" y="115" width="50" height="12" rx="2" fill="#1a1a1a" opacity="0.8"/><circle cx="283" cy="128" r="2.5" fill="#d4af37"/><circle cx="307" cy="128" r="2.5" fill="#d4af37"/><line x1="280" y1="148" x2="310" y2="148" stroke="#1a1a1a" stroke-width="1.5"/><rect x="230" y="30" width="120" height="50" rx="20" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><polygon points="320,80 330,95 310,80" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><rect x="310" y="78" width="21" height="4" fill="#fff"/><text x="248" y="55" font-family="sans-serif" font-size="9" fill="#1a1a1a">We are already</text><text x="248" y="68" font-family="sans-serif" font-size="9" fill="#1a1a1a">too deep.</text><rect x="20" y="310" width="360" height="130" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="2"/><circle cx="320" cy="350" r="30" fill="#f0ead6"/><circle cx="325" cy="345" r="28" fill="#1a1a1a"/><g fill="#0a0a0a"><ellipse cx="80" cy="400" rx="15" ry="25"/><circle cx="80" cy="368" r="10"/><ellipse cx="120" cy="405" rx="13" ry="22"/><circle cx="120" cy="376" r="9"/><ellipse cx="155" cy="408" rx="12" ry="20"/><circle cx="155" cy="382" r="8"/></g><rect x="20" y="460" width="360" height="120" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><rect x="40" y="480" width="320" height="80" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4,2"/><text x="200" y="515" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#444">The ancient city</text><text x="200" y="540" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#444">reveals itself at last.</text></svg>`,
+
+                // Page 4: Action spread (BOOM)
+                `<svg viewBox="0 0 400 600" class="manga-page-svg"><rect width="400" height="600" fill="#faf8f0"/><rect x="10" y="10" width="380" height="400" fill="#faf8f0" stroke="#1a1a1a" stroke-width="3"/><circle cx="200" cy="200" r="80" fill="#f5e6c0" stroke="#d4af37" stroke-width="2"/><circle cx="200" cy="200" r="50" fill="#fff" stroke="#d4af37" stroke-width="1.5"/><circle cx="200" cy="200" r="20" fill="#d4af37"/><g stroke="#1a1a1a" stroke-width="1" opacity="0.6"><line x1="200" y1="200" x2="20" y2="20"/><line x1="200" y1="200" x2="380" y2="30"/><line x1="200" y1="200" x2="30" y2="350"/><line x1="200" y1="200" x2="370" y2="380"/><line x1="200" y1="200" x2="200" y2="10"/><line x1="200" y1="200" x2="200" y2="400"/><line x1="200" y1="200" x2="50" y2="200"/><line x1="200" y1="200" x2="350" y2="200"/></g><text x="200" y="210" text-anchor="middle" font-family="Impact, sans-serif" font-size="48" font-weight="bold" fill="#1a1a1a" stroke="#fff" stroke-width="3" paint-order="stroke">BOOM</text><rect x="60" y="100" width="15" height="8" fill="#888" transform="rotate(30 67 104)"/><rect x="310" y="140" width="12" height="6" fill="#999" transform="rotate(-20 316 143)"/><rect x="140" y="350" width="18" height="7" fill="#777" transform="rotate(45 149 353)"/><g transform="translate(280, 300) rotate(-30)"><ellipse cx="0" cy="0" rx="20" ry="30" fill="#2a2a2a"/><circle cx="0" cy="-35" r="15" fill="#d4a574"/><path d="M-10 -40 Q0 -48 10 -40" fill="#2a1a0a"/><circle cx="-5" cy="-36" r="2" fill="#fff"/><circle cx="5" cy="-36" r="2" fill="#fff"/><path d="M-5 -28 Q0 -24 5 -28" stroke="#1a1a1a" stroke-width="1" fill="none"/></g><rect x="10" y="430" width="185" height="150" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><circle cx="102" cy="510" r="35" fill="#d4a574"/><path d="M67 500 Q75 485 102 482 Q129 485 137 500" fill="#2a1a0a"/><ellipse cx="90" cy="508" rx="5" ry="6" fill="#fff" stroke="#1a1a1a" stroke-width="1"/><ellipse cx="114" cy="508" rx="5" ry="6" fill="#fff" stroke="#1a1a1a" stroke-width="1"/><circle cx="90" cy="509" r="2.5" fill="#1a1a1a"/><circle cx="114" cy="509" r="2.5" fill="#1a1a1a"/><ellipse cx="102" cy="530" rx="6" ry="8" fill="#1a1a1a"/><rect x="205" y="430" width="185" height="150" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><text x="297" y="500" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#1a1a1a">The ground shook.</text><text x="297" y="520" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#1a1a1a">Everything changed.</text></svg>`,
+
+                // Page 5: Cliffhanger
+                `<svg viewBox="0 0 400 600" class="manga-page-svg"><rect width="400" height="600" fill="#faf8f0"/><rect x="20" y="20" width="360" height="420" fill="#0a0a0a" stroke="#1a1a1a" stroke-width="3"/><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1a2e"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs><rect x="22" y="22" width="356" height="416" fill="url(#sky)"/><circle cx="300" cy="80" r="35" fill="#f0ead6"/><circle cx="310" cy="75" r="33" fill="#1a1a2e"/><circle cx="100" cy="60" r="1.5" fill="#fff"/><circle cx="150" cy="40" r="1" fill="#fff"/><circle cx="250" cy="50" r="1.5" fill="#fff"/><circle cx="50" cy="100" r="1" fill="#fff"/><circle cx="350" cy="130" r="1.2" fill="#fff"/><g transform="translate(200, 350)"><ellipse cx="0" cy="0" rx="45" ry="70" fill="#1a1a1a"/><circle cx="0" cy="-80" r="30" fill="#1a1a1a"/><path d="M-30 -85 Q-40 -110 -20 -120 Q0 -115 10 -120 Q30 -110 30 -85" fill="#0a0a0a"/><path d="M-45 -20 Q-80 40 -60 120 L-30 80 Z" fill="#0a0a0a"/><path d="M45 -20 Q80 40 60 120 L30 80 Z" fill="#0a0a0a"/><circle cx="-10" cy="-82" r="3" fill="#d4af37"/><circle cx="10" cy="-82" r="3" fill="#d4af37"/><circle cx="-10" cy="-82" r="5" fill="#d4af37" opacity="0.3"/><circle cx="10" cy="-82" r="5" fill="#d4af37" opacity="0.3"/></g><rect x="20" y="410" width="360" height="30" fill="#1a1a1a"/><path d="M20 420 Q100 400 200 415 Q300 430 380 410 L380 440 L20 440 Z" fill="#0a0a0a"/><rect x="20" y="460" width="360" height="120" fill="#faf8f0" stroke="#1a1a1a" stroke-width="2"/><text x="200" y="495" text-anchor="middle" font-family="serif" font-size="12" letter-spacing="4" fill="#888">END OF</text><text x="200" y="525" text-anchor="middle" font-family="serif" font-size="20" font-weight="bold" letter-spacing="6" fill="#1a1a1a">CHAPTER 1</text><line x1="140" y1="540" x2="260" y2="540" stroke="#d4af37" stroke-width="1"/><text x="200" y="560" text-anchor="middle" font-family="sans-serif" font-size="9" font-style="italic" fill="#999">To be continued...</text></svg>`
+            ];
+            return pages[p-1] || pages[0];
         }
 
         function renderReaderPage() {
@@ -1079,8 +1291,6 @@
                 if(state.readerPage === 4) wrap.classList.replace('max-w-[800px]', 'max-w-[1600px]');
                 else wrap.classList.replace('max-w-[1600px]', 'max-w-[800px]');
                 
-                renderPins();
-                
                 requestAnimationFrame(() => { cont.style.opacity = '1'; });
             }, 200);
         }
@@ -1094,7 +1304,7 @@
                 const promise = document.documentElement.requestFullscreen();
                 if (promise) {
                     promise.catch(() => {
-                        showToast(state.lang === 'en' ? 'Fullscreen not supported in preview environment' : 'وضع ملء الشاشة غير مدعوم هنا');
+                        showToast(state.lang === 'en' ? 'Fullscreen not available on this device' : 'وضع ملء الشاشة غير متوفر');
                     });
                 }
             }
@@ -1149,189 +1359,4 @@
         document.getElementById('reader-container').addEventListener('mousemove', resetReaderIdle);
 
         // --- SPATIAL COMMENTS ---
-        function renderPins() {
-            const container = document.getElementById('pins-container');
-            container.innerHTML = '';
-            
-            const pagePins = db.pins.filter(p => p.page === state.readerPage);
-            document.getElementById('reader-comment-count').innerText = pagePins.length;
-
-            pagePins.forEach(p => {
-                const pin = document.createElement('div');
-                pin.className = `spatial-pin ${state.activePinId === p.id ? 'active' : ''}`;
-                
-                let visualX = state.lang === 'ar' ? 100 - p.x : p.x;
-                pin.style.left = `${visualX}%`;
-                pin.style.top = `${p.y}%`;
-                pin.innerText = p.id;
-                
-                pin.onclick = (e) => { e.stopPropagation(); selectPin(p.id); };
-                container.appendChild(pin);
-            });
-
-            if(state.draftPin) {
-                let visualX = state.lang === 'ar' ? 100 - state.draftPin.x : state.draftPin.x;
-                const draft = document.createElement('div');
-                draft.className = 'spatial-pin active';
-                draft.style.left = `${visualX}%`;
-                draft.style.top = `${state.draftPin.y}%`;
-                draft.innerHTML = '+';
-                container.appendChild(draft);
-            }
-
-            renderSidebarComments(pagePins);
-        }
-
-        document.getElementById('manga-wrapper').onclick = (e) => {
-            if(state.role === 'guest') {
-                showToast(t('join_to_comment'));
-                return;
-            }
-            if(e.target.closest('.spatial-pin') || state.isPinching) return;
-
-            const rect = e.currentTarget.getBoundingClientRect();
-            let x = ((e.clientX - rect.left) / rect.width) * 100;
-            let y = ((e.clientY - rect.top) / rect.height) * 100;
-
-            if(state.lang === 'ar') x = 100 - x;
-
-            state.draftPin = { x: x.toFixed(2), y: y.toFixed(2) };
-            state.activePinId = null;
-            openSpatialSidebar();
-            
-            setTimeout(() => document.getElementById('spatial-input').focus(), 300);
-        };
-
-        function toggleSpatialSidebar(e) {
-            if(e) e.stopPropagation();
-            if(state.sidebarOpen) closeSpatialSidebar();
-            else openSpatialSidebar();
-        }
-
-        function openSpatialSidebar() {
-            state.sidebarOpen = true;
-            document.getElementById('view-reader').classList.remove('reader-idle');
-            const sb = document.getElementById('spatial-sidebar');
-            sb.classList.remove('translate-x-full', '-translate-x-full');
-            
-            if(window.innerWidth > 640) {
-                const wrap = document.getElementById('manga-wrapper');
-                wrap.style.transform = `translateX(${state.lang === 'ar' ? 190 : -190}px)`;
-            }
-
-            const inp = document.getElementById('spatial-input');
-            const btn = document.getElementById('spatial-submit');
-            const msg = document.getElementById('spatial-guest-msg');
-            
-            if(state.role === 'guest') {
-                inp.disabled = true; btn.disabled = true;
-                msg.classList.remove('hidden');
-            } else {
-                inp.disabled = false;
-                btn.disabled = !state.draftPin;
-                msg.classList.add('hidden');
-            }
-
-            renderPins();
-        }
-
-        function closeSpatialSidebar(e) {
-            if(e) e.stopPropagation();
-            state.sidebarOpen = false;
-            state.draftPin = null;
-            state.activePinId = null;
-            const sb = document.getElementById('spatial-sidebar');
-            sb.classList.add(state.lang === 'ar' ? '-translate-x-full' : 'translate-x-full');
-            document.getElementById('manga-wrapper').style.transform = 'translateX(0)';
-            renderPins();
-            resetReaderIdle();
-        }
-
-        function selectPin(id) {
-            state.activePinId = id;
-            state.draftPin = null;
-            openSpatialSidebar();
-        }
-
-        function renderSidebarComments(pins) {
-            const list = document.getElementById('spatial-comments-list');
-            if(pins.length === 0 && !state.draftPin) {
-                list.innerHTML = `<div class="text-center text-gray-500 text-sm mt-10 font-bold">No pins on this page. Click to drop one.</div>`;
-                return;
-            }
-
-            list.innerHTML = pins.map(p => `
-                <div id="cmt-${p.id}" class="bg-[#121212] rounded-2xl p-4 border transition-colors cursor-pointer ${state.activePinId === p.id ? 'border-accent shadow-[0_0_15px_rgba(212,175,55,0.15)]' : 'border-gray-800/60 hover:border-gray-600'}" onclick="selectPin(${p.id})">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm ${p.role==='admin'?'bg-accent':'bg-[#222]'}">${p.user.charAt(0)}</div>
-                            <span class="text-xs font-bold text-gray-200">${p.user}</span>
-                            ${p.role==='admin' ? `<span class="bg-accent/10 text-accent border border-accent/20 text-[8px] px-1.5 py-0.5 rounded font-black uppercase tracking-widest">Admin</span>` : ''}
-                        </div>
-                        <div class="flex items-center gap-2 text-[9px] text-gray-500 font-mono font-bold tracking-widest uppercase">
-                            <div class="w-4 h-4 rounded-full bg-gray-800/80 text-gray-400 flex items-center justify-center font-bold">${p.id}</div>
-                            ${p.time}
-                        </div>
-                    </div>
-                    <p class="text-[13px] text-gray-300 leading-relaxed font-medium">${p.text}</p>
-                </div>
-            `).join('');
-
-            if(state.draftPin) {
-                list.innerHTML += `<div class="bg-accent/5 border border-accent/20 rounded-2xl p-4 text-center mt-2 animate-pulse"><p class="text-[10px] font-black text-accent uppercase tracking-widest">Draft pin placed. Type to submit.</p></div>`;
-            }
-
-            if(state.activePinId) {
-                const el = document.getElementById(`cmt-${state.activePinId}`);
-                if(el) el.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-            }
-        }
-
-        function submitSpatialComment(e) {
-            e.preventDefault();
-            const input = document.getElementById('spatial-input');
-            const text = input.value.trim();
-            if(!text || !state.draftPin) return;
-
-            const newId = Math.max(0, ...db.pins.map(p=>p.id)) + 1;
-            db.pins.push({
-                id: newId,
-                page: state.readerPage,
-                x: parseFloat(state.draftPin.x),
-                y: parseFloat(state.draftPin.y),
-                role: state.role,
-                user: state.role === 'admin' ? 'Admin Yaser' : 'Pro Member',
-                text: text,
-                time: state.lang === 'en' ? 'Just now' : 'الآن'
-            });
-
-            input.value = '';
-            state.draftPin = null;
-            state.activePinId = newId;
-            
-            const btn = document.getElementById('spatial-submit');
-            btn.disabled = true;
-
-            renderPins();
-            setTimeout(() => {
-                const list = document.getElementById('spatial-comments-list');
-                list.scrollTop = list.scrollHeight;
-            }, 50);
-        }
-
-        document.getElementById('spatial-input').addEventListener('input', (e) => {
-            const btn = document.getElementById('spatial-submit');
-            if(e.target.value.trim() && state.draftPin) {
-                btn.disabled = false;
-            } else {
-                btn.disabled = true;
-            }
-        });
-
-        // INIT
-        updateTranslations();
-        navigate(state.view); // This triggers the initial screen to display!
-
-    </script>
-</body>
-</html>
+        function renderPins() {}
