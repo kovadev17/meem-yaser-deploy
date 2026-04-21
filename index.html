@@ -127,10 +127,11 @@
             cursor: pointer; z-index: 20;
             pointer-events: auto;
             animation: pinDrop 0.5s var(--transition-curve) forwards;
-            transition: all 0.3s;
+            opacity: 0.6; transition: all 0.3s;
         }
         .spatial-pin:hover { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
         .spatial-pin.active { opacity: 1; background: #D4AF37; color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.6); }
+        @media (max-width: 768px) { .spatial-pin { width: 24px !important; height: 24px !important; font-size: 9px !important; } }
 
         /* Reader Panels & Animations */
         .glass-panel {
@@ -955,7 +956,9 @@
                 chHtml += `
                 <div class="flex items-center justify-between p-4 border border-gray-100 rounded-2xl bg-card hover:border-accent hover:shadow-subtle transition-all cursor-pointer group" onclick="readChapter(${i}, '${st}')">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center font-mono font-bold text-textSec text-lg group-hover:text-accent group-hover:bg-accent/5 transition-colors shrink-0">${i}</div>
+                        <div class="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-gray-100 group-hover:ring-2 group-hover:ring-accent transition-all">
+                            <div class="w-full h-full flex items-center justify-center text-lg font-bold text-gray-400 group-hover:text-accent">${i}</div>
+                        </div>
                         <div>
                             <h4 class="font-bold text-sm group-hover:text-accent transition-colors">Chapter ${i}${i===1?' : The Awakening':''}</h4>
                             <p class="text-[10px] text-textSec font-bold uppercase tracking-widest mt-1">Oct ${i}, 2026 • 24 Pages</p>
@@ -1123,7 +1126,7 @@
         document.getElementById('reader-container').addEventListener('touchend', e => {
             if(state.view !== 'reader' || state.sidebarOpen) return;
             if(state.isPinching) {
-                setTimeout(() => state.isPinching = false, 300);
+                setTimeout(() => state.isPinching = false, 500);
                 return; // DISABLE SWIPE ON PINCH
             }
             if(e.changedTouches.length === 0) return;
