@@ -43,45 +43,6 @@
                 }
             }
         }
-    
-        // Chapter thumbnail faces
-        var chapterFaces = [];
-        (function() {
-            var skins = ['#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#b89060','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574'];
-            var hairs = ['#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a'];
-            var bgs = ['#2a2a3a','#1a1a2e','#2a1a2e','#1a2a1e','#2a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e','#2a3a2a','#1a1a2e','#2a2a1e','#2a1a2e','#1a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e'];
-            var mouths = ['M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 38 Q30 40 40 38','M20 34 Q30 30 40 34','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38'];
-            for (var i = 0; i < 20; i++) {
-                var svg = '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" rx="8" fill="' + bgs[i] + '"/><circle cx="30" cy="28" r="16" fill="' + skins[i] + '"/><path d="M14 24 Q18 12 30 10 Q42 12 46 24" fill="' + hairs[i] + '"/><circle cx="24" cy="26" r="2.5" fill="#222"/><circle cx="36" cy="26" r="2.5" fill="#222"/><path d="' + mouths[i] + '" stroke="#222" stroke-width="1.5" fill="none"/></svg>';
-                chapterFaces.push('data:image/svg+xml;base64,' + btoa(svg));
-            }
-        })();
-
-        // Pinch zoom for reader
-        (function() {
-            var wrapper = document.getElementById('manga-wrapper');
-            if (!wrapper) return;
-            var scale = 1, startDist = 0, startScale = 1, isZooming = false;
-            function dist(t) { return Math.hypot(t[1].clientX - t[0].clientX, t[1].clientY - t[0].clientY); }
-            wrapper.addEventListener('touchstart', function(e) {
-                if (e.touches.length === 2) { isZooming = true; state.isPinching = true; startDist = dist(e.touches); startScale = scale; wrapper.classList.add('zooming'); e.preventDefault(); }
-            }, {passive: false});
-            wrapper.addEventListener('touchmove', function(e) {
-                if (isZooming && e.touches.length === 2) { e.preventDefault(); scale = Math.min(Math.max(startScale * (dist(e.touches) / startDist), 1), 4); var svg = wrapper.querySelector('svg'); if (svg) svg.style.transform = 'scale(' + scale + ')'; }
-            }, {passive: false});
-            wrapper.addEventListener('touchend', function(e) {
-                if (isZooming && e.touches.length < 2) { isZooming = false; wrapper.classList.remove('zooming'); setTimeout(function() { state.isPinching = false; }, 1000); if (scale < 1.1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } } }
-            }, {passive: true});
-            var lastTap = 0;
-            wrapper.addEventListener('touchend', function(e) {
-                if (e.touches.length > 0) return; var now = Date.now();
-                if (now - lastTap < 300) {
-                    if (scale > 1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
-                    else { scale = 2; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(2)'; svg.style.transition = 'transform 0.3s ease'; } }
-                }
-                lastTap = now;
-            });
-        })();
 
     </script>
 
@@ -458,7 +419,7 @@
                 <button onclick="toggleFullscreen()" class="text-gray-300 hover:text-accent text-xl min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors relative z-50 cursor-pointer"><i class="fa-solid fa-expand"></i></button>
             </div>
 
-            <div class="flex-1 w-full h-full flex items-center justify-center overflow-hidden touch-none pt-16 pb-24" id="reader-container">
+            <div class="flex-1 w-full h-full flex items-center justify-center overflow-hidden pt-16 pb-24" id="reader-container">
                 <div id="manga-wrapper" class="relative w-full max-w-[800px] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" style="cursor: crosshair;">
                     <div id="svg-container" class="w-full relative shadow-2xl transition-opacity duration-400 ease-out"></div>
                     <div id="pins-container" class="absolute inset-0 pointer-events-none" dir="ltr"></div>
@@ -1179,8 +1140,7 @@
         document.getElementById('reader-container').addEventListener('touchstart', e => {
             if(state.view !== 'reader') return;
             resetReaderIdle();
-            if(e.touches.length > 1) { state.isPinching = true; return; }
-            touchStartX = e.touches[0].clientX;
+            if(e.touches.length === 1) { touchStartX = e.touches[0].clientX; }
         }, {passive: true});
 
         document.getElementById('reader-container').addEventListener('touchmove', e => {
@@ -1190,7 +1150,7 @@
         document.getElementById('reader-container').addEventListener('touchend', e => {
             if(state.view !== 'reader' || state.sidebarOpen) return;
             if(state.isPinching) {
-                setTimeout(() => state.isPinching = false, 300);
+                state.isPinching = false;
                 return; // DISABLE SWIPE ON PINCH
             }
             if(e.changedTouches.length === 0) return;
@@ -1392,89 +1352,52 @@
             }
         });
 
-        // INIT
+        // INIT — chapterFaces must be ready before any rendering
+        var chapterFaces = [];
+        (function() {
+            var skins = ['#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#b89060','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574'];
+            var hairs = ['#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a'];
+            var bgs = ['#2a2a3a','#1a1a2e','#2a1a2e','#1a2a1e','#2a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e','#2a3a2a','#1a1a2e','#2a2a1e','#2a1a2e','#1a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e'];
+            var mouths = ['M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 38 Q30 40 40 38','M20 34 Q30 30 40 34','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38'];
+            for (var i = 0; i < 20; i++) {
+                var svg = '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" rx="8" fill="' + bgs[i] + '"/><circle cx="30" cy="28" r="16" fill="' + skins[i] + '"/><path d="M14 24 Q18 12 30 10 Q42 12 46 24" fill="' + hairs[i] + '"/><circle cx="24" cy="26" r="2.5" fill="#222"/><circle cx="36" cy="26" r="2.5" fill="#222"/><path d="' + mouths[i] + '" stroke="#222" stroke-width="1.5" fill="none"/></svg>';
+                chapterFaces.push('data:image/svg+xml;base64,' + btoa(svg));
+            }
+        })();
+
+        // Pinch zoom — called when reader opens
+        var zoomInitialized = false;
+        function initZoom() {
+            if (zoomInitialized) return;
+            var wrapper = document.getElementById('manga-wrapper');
+            if (!wrapper) return;
+            zoomInitialized = true;
+            var scale = 1, startDist = 0, startScale = 1, isZooming = false;
+            function dist(t) { return Math.hypot(t[1].clientX - t[0].clientX, t[1].clientY - t[0].clientY); }
+            wrapper.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) { isZooming = true; state.isPinching = true; startDist = dist(e.touches); startScale = scale; wrapper.classList.add('zooming'); e.preventDefault(); }
+            }, {passive: false});
+            wrapper.addEventListener('touchmove', function(e) {
+                if (isZooming && e.touches.length === 2) { e.preventDefault(); scale = Math.min(Math.max(startScale * (dist(e.touches) / startDist), 1), 4); var svg = wrapper.querySelector('svg'); if (svg) svg.style.transform = 'scale(' + scale + ')'; }
+            }, {passive: false});
+            wrapper.addEventListener('touchend', function(e) {
+                if (isZooming && e.touches.length < 2) { isZooming = false; wrapper.classList.remove('zooming'); setTimeout(function() { state.isPinching = false; }, 1000); if (scale < 1.1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } } }
+            }, {passive: true});
+            var lastTap = 0;
+            wrapper.addEventListener('touchend', function(e) {
+                if (e.touches.length > 0) return; var now = Date.now();
+                if (now - lastTap < 300) {
+                    if (scale > 1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
+                    else { scale = 2; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(2)'; svg.style.transition = 'transform 0.3s ease'; } }
+                }
+                lastTap = now;
+            });
+        }
+        initZoom(); // Try now (will succeed if manga-wrapper is in DOM)
+
         updateTranslations();
-        navigate(state.view); // This triggers the initial screen to display!
+        navigate(state.view);
 
-    
-        // Chapter thumbnail faces
-        var chapterFaces = [];
-        (function() {
-            var skins = ['#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#b89060','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574'];
-            var hairs = ['#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a'];
-            var bgs = ['#2a2a3a','#1a1a2e','#2a1a2e','#1a2a1e','#2a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e','#2a3a2a','#1a1a2e','#2a2a1e','#2a1a2e','#1a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e'];
-            var mouths = ['M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 38 Q30 40 40 38','M20 34 Q30 30 40 34','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38'];
-            for (var i = 0; i < 20; i++) {
-                var svg = '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" rx="8" fill="' + bgs[i] + '"/><circle cx="30" cy="28" r="16" fill="' + skins[i] + '"/><path d="M14 24 Q18 12 30 10 Q42 12 46 24" fill="' + hairs[i] + '"/><circle cx="24" cy="26" r="2.5" fill="#222"/><circle cx="36" cy="26" r="2.5" fill="#222"/><path d="' + mouths[i] + '" stroke="#222" stroke-width="1.5" fill="none"/></svg>';
-                chapterFaces.push('data:image/svg+xml;base64,' + btoa(svg));
-            }
-        })();
-
-        // Pinch zoom for reader
-        (function() {
-            var wrapper = document.getElementById('manga-wrapper');
-            if (!wrapper) return;
-            var scale = 1, startDist = 0, startScale = 1, isZooming = false;
-            function dist(t) { return Math.hypot(t[1].clientX - t[0].clientX, t[1].clientY - t[0].clientY); }
-            wrapper.addEventListener('touchstart', function(e) {
-                if (e.touches.length === 2) { isZooming = true; state.isPinching = true; startDist = dist(e.touches); startScale = scale; wrapper.classList.add('zooming'); e.preventDefault(); }
-            }, {passive: false});
-            wrapper.addEventListener('touchmove', function(e) {
-                if (isZooming && e.touches.length === 2) { e.preventDefault(); scale = Math.min(Math.max(startScale * (dist(e.touches) / startDist), 1), 4); var svg = wrapper.querySelector('svg'); if (svg) svg.style.transform = 'scale(' + scale + ')'; }
-            }, {passive: false});
-            wrapper.addEventListener('touchend', function(e) {
-                if (isZooming && e.touches.length < 2) { isZooming = false; wrapper.classList.remove('zooming'); setTimeout(function() { state.isPinching = false; }, 1000); if (scale < 1.1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } } }
-            }, {passive: true});
-            var lastTap = 0;
-            wrapper.addEventListener('touchend', function(e) {
-                if (e.touches.length > 0) return; var now = Date.now();
-                if (now - lastTap < 300) {
-                    if (scale > 1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
-                    else { scale = 2; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(2)'; svg.style.transition = 'transform 0.3s ease'; } }
-                }
-                lastTap = now;
-            });
-        })();
-
-    
-        // Chapter thumbnail faces
-        var chapterFaces = [];
-        (function() {
-            var skins = ['#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#b89060','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574'];
-            var hairs = ['#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a'];
-            var bgs = ['#2a2a3a','#1a1a2e','#2a1a2e','#1a2a1e','#2a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e','#2a3a2a','#1a1a2e','#2a2a1e','#2a1a2e','#1a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e'];
-            var mouths = ['M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 38 Q30 40 40 38','M20 34 Q30 30 40 34','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38'];
-            for (var i = 0; i < 20; i++) {
-                var svg = '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" rx="8" fill="' + bgs[i] + '"/><circle cx="30" cy="28" r="16" fill="' + skins[i] + '"/><path d="M14 24 Q18 12 30 10 Q42 12 46 24" fill="' + hairs[i] + '"/><circle cx="24" cy="26" r="2.5" fill="#222"/><circle cx="36" cy="26" r="2.5" fill="#222"/><path d="' + mouths[i] + '" stroke="#222" stroke-width="1.5" fill="none"/></svg>';
-                chapterFaces.push('data:image/svg+xml;base64,' + btoa(svg));
-            }
-        })();
-
-        // Pinch zoom for reader
-        (function() {
-            var wrapper = document.getElementById('manga-wrapper');
-            if (!wrapper) return;
-            var scale = 1, startDist = 0, startScale = 1, isZooming = false;
-            function dist(t) { return Math.hypot(t[1].clientX - t[0].clientX, t[1].clientY - t[0].clientY); }
-            wrapper.addEventListener('touchstart', function(e) {
-                if (e.touches.length === 2) { isZooming = true; state.isPinching = true; startDist = dist(e.touches); startScale = scale; wrapper.classList.add('zooming'); e.preventDefault(); }
-            }, {passive: false});
-            wrapper.addEventListener('touchmove', function(e) {
-                if (isZooming && e.touches.length === 2) { e.preventDefault(); scale = Math.min(Math.max(startScale * (dist(e.touches) / startDist), 1), 4); var svg = wrapper.querySelector('svg'); if (svg) svg.style.transform = 'scale(' + scale + ')'; }
-            }, {passive: false});
-            wrapper.addEventListener('touchend', function(e) {
-                if (isZooming && e.touches.length < 2) { isZooming = false; wrapper.classList.remove('zooming'); setTimeout(function() { state.isPinching = false; }, 1000); if (scale < 1.1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } } }
-            }, {passive: true});
-            var lastTap = 0;
-            wrapper.addEventListener('touchend', function(e) {
-                if (e.touches.length > 0) return; var now = Date.now();
-                if (now - lastTap < 300) {
-                    if (scale > 1) { scale = 1; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(1)'; svg.style.transition = 'transform 0.3s ease'; } }
-                    else { scale = 2; var svg = wrapper.querySelector('svg'); if (svg) { svg.style.transform = 'scale(2)'; svg.style.transition = 'transform 0.3s ease'; } }
-                }
-                lastTap = now;
-            });
-        })();
 </script>
 </body>
 </html>
