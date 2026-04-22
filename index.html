@@ -11,7 +11,6 @@
   --bg: #FAFAF8; --text: #111; --text-muted: #666;
   --accent: #D4AF37; --border: rgba(0,0,0,0.06);
   --card: #fff;
-  --crimson: #B83232;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
@@ -88,22 +87,22 @@ body {
   color: var(--accent); font-weight: 600; border: 1px solid rgba(212,175,55,0.2);
 }
 
-/* Demo 5 — distinct crimson style */
-.featured-card.crimson {
-  border-color: var(--crimson);
+/* Demo 7 - distinct style */
+.featured-card.alt {
+  border-color: #B83232;
 }
-.featured-card.crimson:hover {
+.featured-card.alt:hover {
   box-shadow: 0 20px 60px rgba(184,50,50,0.15);
 }
-.featured-card.crimson .preview-badge {
-  background: var(--crimson); color: #fff;
+.featured-card.alt .preview-badge {
+  background: #B83232; color: #fff;
 }
-.featured-card.crimson .preview-icon {
-  background: var(--crimson); color: #fff;
+.featured-card.alt .preview-icon {
+  background: #B83232; color: #fff;
 }
-.featured-card.crimson .tag {
+.featured-card.alt .tag {
   background: rgba(184,50,50,0.1);
-  color: var(--crimson); border-color: rgba(184,50,50,0.2);
+  color: #B83232; border-color: rgba(184,50,50,0.2);
 }
 
 /* Regular Demos */
@@ -162,13 +161,6 @@ body {
 }
 .footer-brand { color: #fff; font-weight: 700; margin-bottom: 0.25rem; }
 
-.badge-pill {
-  display: inline-block; padding: 0.35rem 0.9rem; border-radius: 999px;
-  background: rgba(239,68,68,0.1); color: #EF4444;
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
-  border: 1px solid rgba(239,68,68,0.2);
-}
-
 @media (max-width: 768px) {
   .featured-grid { grid-template-columns: 1fr; }
   .demo-grid { grid-template-columns: 1fr; }
@@ -209,19 +201,18 @@ body {
         </div>
       </div>
     </a>
-    <a href="demo5/index.html" class="featured-card crimson">
+    <a href="demo7/index.html" class="featured-card alt">
       <div class="preview" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);">
-        <div class="preview-badge">Editorial Reader Pro</div>
+        <div class="preview-badge">Alternative</div>
         <div class="preview-icon" style="background: #B83232; color: #fff; font-size: 2rem;">R</div>
       </div>
       <div class="card-body">
-        <h3>Restless Worlds Reader</h3>
-        <p>Editorial manga minimal design with Cormorant serif typography and Space Grotesk. Light library, dark reader, pointer-event gestures, chapter drawer, settings sheet, and skeleton loading. Focused purely on the reading experience.</p>
+        <h3>Restless Worlds</h3>
+        <p>React-based immersive experience from Google AI Studio. Fluid animations, modern UI patterns, and bundled for standalone deployment. Fixed back button and improved gestures.</p>
         <div class="meta">
-          <span class="tag">Working</span>
-          <span class="tag">Pointer Gestures</span>
-          <span class="tag">Editorial</span>
-          <span class="tag">Reader Focus</span>
+          <span class="tag">React</span>
+          <span class="tag">Google AI Studio</span>
+          <span class="tag">Fixed</span>
         </div>
       </div>
     </a>
@@ -230,15 +221,15 @@ body {
 
 <section class="section" style="background:#f5f5f3;">
   <div class="section-header">
-    <h2>Previous Prototypes</h2>
-    <p>Earlier design explorations and alternative directions</p>
+    <h2>Alternative Prototypes</h2>
+    <p>Different UX paradigms to explore</p>
   </div>
   <div class="demo-grid">
     <a href="demo1/index.html" class="demo-card">
       <div class="preview"><div class="preview-icon" style="background:#1a1a1a;">1</div></div>
       <div class="card-body">
         <h3>Dropbox Pure</h3>
-        <p>Ultra minimal reader inspired by Dropbox image viewer. Spatial comment pins, tap-to-hide chrome, swipe navigation. Clean and distraction-free.</p>
+        <p>Ultra minimal reader inspired by Dropbox image viewer. Spatial comment pins, tap-to-hide chrome, swipe navigation.</p>
         <div class="meta">
           <span class="tag">Minimal</span>
           <span class="tag">Spatial Pins</span>
@@ -250,7 +241,7 @@ body {
       <div class="preview"><div class="preview-icon" style="background:#2a2a2a;font-family:Georgia,serif;font-style:italic;">2</div></div>
       <div class="card-body">
         <h3>Webtoon Vertical</h3>
-        <p>Korean webtoon-style vertical scrolling reader. Continuous strip format with progress bar, inline comments, and chapter grid. Different reading paradigm entirely.</p>
+        <p>Korean webtoon-style vertical scrolling reader. Continuous strip format with progress bar and inline comments.</p>
         <div class="meta">
           <span class="tag">Vertical</span>
           <span class="tag">Infinite Scroll</span>
@@ -262,7 +253,7 @@ body {
       <div class="preview"><div class="preview-icon" style="background:linear-gradient(135deg,#D4AF37,#b8941f);">3</div></div>
       <div class="card-body">
         <h3>Character Universe</h3>
-        <p>Lore-heavy wiki-style explorer. Bento character cards, story tabs, quotes, and cast bar in reader. For fans who want to dive deep into the world.</p>
+        <p>Lore-heavy wiki-style explorer. Bento character cards, story tabs, quotes, and cast bar in reader.</p>
         <div class="meta">
           <span class="tag">Characters</span>
           <span class="tag">Lore</span>
@@ -274,7 +265,7 @@ body {
       <div class="preview"><div class="preview-icon" style="background:#333;font-weight:300;">4</div></div>
       <div class="card-body">
         <h3>Club Forum</h3>
-        <p>Discord-like reading club with channels, threads, spoilers, reactions, and side-panel comments. Community-first social reading experience.</p>
+        <p>Discord-like reading club with channels, threads, spoilers, reactions, and side-panel comments.</p>
         <div class="meta">
           <span class="tag">Social</span>
           <span class="tag">Threads</span>
@@ -282,15 +273,15 @@ body {
         </div>
       </div>
     </a>
-    <a href="demo7/index.html" class="demo-card">
-      <div class="preview"><div class="preview-icon" style="background:#D4AF37;color:#1a1a1a;">7</div></div>
+    <a href="demo5/index.html" class="demo-card" style="opacity:0.5">
+      <div class="preview"><div class="preview-icon" style="background:var(--accent);color:#1a1a1a;">5</div></div>
       <div class="card-body">
-        <h3>Restless Worlds (React)</h3>
-        <p>React-based immersive experience with fluid animations. Bundled app from Google AI Studio.</p>
+        <h3>Manga Uploader</h3>
+        <p>Your custom uploader demo. Drag-and-drop file upload with ZIP and CBZ support. Waiting for your code.</p>
         <div class="meta">
-          <span class="tag">React</span>
-          <span class="tag">Vite</span>
-          <span class="tag">Bundled</span>
+          <span class="tag">ZIP/CBZ</span>
+          <span class="tag">Your Code</span>
+          <span class="tag">Pending</span>
         </div>
       </div>
     </a>
