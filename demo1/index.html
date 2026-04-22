@@ -578,8 +578,60 @@ body {
   .mobile-nav { display: flex; }
   .section { padding: 4rem 1rem; }
   .browser-header { flex-direction: column; text-align: center; }
-  .reader-nav-btn { display: none; }
   .chapter-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  
+  /* Mobile Reader Critical Fixes */
+  .reader-overlay { padding: 0; }
+  .reader-page { border-radius: 0; width: 100vw; height: 100dvh; }
+  .reader-toolbar { padding: 0.75rem 1rem; }
+  .reader-toolbar .reader-title { font-size: 0.85rem; }
+  .reader-viewport { padding: 0; }
+  .reader-page-img { max-height: 75vh; width: 100%; }
+  .reader-nav-btn { 
+    display: flex; width: 56px; height: 56px; font-size: 1.75rem;
+    background: rgba(255,255,255,0.08); border-radius: 50%;
+    position: fixed; top: 50%; transform: translateY(-50%); z-index: 10;
+  }
+  .reader-nav-btn.prev { left: 0.5rem; }
+  .reader-nav-btn.next { right: 0.5rem; }
+  .reader-bottom-bar { padding: 0.75rem 1rem; }
+  .reader-progress { height: 3px; }
+  .comment-panel { width: 100%; right: -100%; }
+  .comment-panel.open { right: 0; }
+  
+  /* Touch targets minimum 44px */
+  .chapter-item { min-height: 64px; padding: 0.75rem; }
+  .chapter-thumb { width: 60px; height: 60px; }
+  .tier-card { padding: 1.5rem 1rem; }
+  .btn, button, a { min-height: 44px; }
+  
+  /* Better mobile typography */
+  .hero-content h1 { font-size: clamp(1.75rem, 6vw, 2.5rem); }
+  .section-header h2 { font-size: clamp(1.5rem, 5vw, 2rem); }
+  
+  /* Mobile browser page */
+  .browser-page { padding: 5rem 0 5rem; }
+  .browser-content { padding: 1rem; }
+  .chapter-grid { max-height: calc(100dvh - 200px); }
+  
+  /* Bottom mobile nav */
+  .mobile-nav { height: 60px; }
+  .mobile-nav-item { font-size: 0.6rem; }
+  .mobile-nav-item svg { width: 20px; height: 20px; }
+  
+  /* Reduce padding for mobile */
+  .hero { padding: 6rem 1rem 4rem; min-height: auto; }
+  .container { padding: 0 1rem; }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+  .reader-page-img { max-height: 70vh; }
+  .reader-toolbar { padding: 0.5rem 0.75rem; }
+  .reader-toolbar .reader-title { font-size: 0.75rem; }
+  .reader-nav-btn { width: 48px; height: 48px; font-size: 1.5rem; }
+  .bento-card { padding: 1rem; }
+  .hero-content h1 { font-size: 1.5rem; }
 }
 
 /* ===== DARK PAGE OVERRIDES ===== */
