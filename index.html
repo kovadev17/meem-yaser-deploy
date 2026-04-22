@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meem Yaser Studio — Design Showcase</title>
+<title>Meem Yaser Studio — Design Showcase by VoxelStudio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -28,9 +28,10 @@ body {
 }
 .nav-brand { font-weight: 700; font-size: 1rem; letter-spacing: -0.02em; }
 .nav-brand span { color: var(--accent); }
+.nav-studio { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 
 .hero {
-  min-height: 50dvh; display: flex; flex-direction: column;
+  min-height: 45dvh; display: flex; flex-direction: column;
   align-items: center; justify-content: center; text-align: center;
   padding: 6rem 1.5rem 2rem;
 }
@@ -39,6 +40,7 @@ body {
   letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.75rem;
 }
 .hero p { color: var(--text-muted); max-width: 55ch; margin-bottom: 2rem; }
+.hero .byline { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; }
 
 .section { padding: 3rem 1.5rem; }
 .section-header { max-width: 1200px; margin: 0 auto 2rem; text-align: center; }
@@ -87,7 +89,7 @@ body {
   color: var(--accent); font-weight: 600; border: 1px solid rgba(212,175,55,0.2);
 }
 
-/* Demo 7 - distinct style */
+/* Alt featured card (Demo 7) */
 .featured-card.alt {
   border-color: #B83232;
 }
@@ -105,7 +107,7 @@ body {
   color: #B83232; border-color: rgba(184,50,50,0.2);
 }
 
-/* Regular Demos */
+/* Demo Grid */
 .demo-grid {
   max-width: 1200px; margin: 0 auto;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
@@ -172,17 +174,19 @@ body {
 
 <nav class="navbar">
   <div class="nav-brand">Meem Yaser <span>Studio</span></div>
+  <div class="nav-studio">by VoxelStudio</div>
 </nav>
 
 <section class="hero">
+  <div class="byline">VoxelStudio Presents</div>
   <h1>Design Showcase</h1>
-  <p>Interactive prototypes for a private manga reading club. Full reader, library, bilingual support, and admin panel.</p>
+  <p>Interactive prototypes for a private manga reading club. Clean, minimal, reading-focused — built for your vision.</p>
 </section>
 
 <section class="section">
   <div class="section-header">
-    <h2>Featured</h2>
-    <p>Two directions to choose from</p>
+    <h2>Featured Directions</h2>
+    <p>Two primary approaches to choose from</p>
   </div>
   <div class="featured-grid">
     <a href="demo6/index.html" class="featured-card">
@@ -192,27 +196,26 @@ body {
       </div>
       <div class="card-body">
         <h3>Meem Yaser Platform</h3>
-        <p>Mobile-first manga platform with full reader, library, characters, forum, and admin panel. Tailwind CSS with pinch-zoom, double-tap zoom, and tap-zone navigation. This is the version the client selected.</p>
+        <p>Full manga platform with login, library hub, character explorer, forum, and admin panel. Pinch-zoom reader with double-tap navigation, tap zones, and bilingual AR/EN support.</p>
         <div class="meta">
-          <span class="tag">Working</span>
           <span class="tag">Tailwind</span>
           <span class="tag">Mobile-First</span>
-          <span class="tag">Full Features</span>
+          <span class="tag">Full Stack</span>
         </div>
       </div>
     </a>
-    <a href="demo5/index.html" class="featured-card alt">
+    <a href="demo7/index.html" class="featured-card alt">
       <div class="preview" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);">
-        <div class="preview-badge">Editorial Reader</div>
+        <div class="preview-badge">Another Direction</div>
         <div class="preview-icon" style="background: #B83232; color: #fff; font-size: 2rem;">R</div>
       </div>
       <div class="card-body">
-        <h3>Restless Worlds Reader</h3>
-        <p>Cormorant + Space Grotesk editorial design. Pinch-zoom, double-tap reset, tap-zone navigation, chapter drawer, settings sheet, and swipe gestures. Dark immersive reader with restrained luxury aesthetic.</p>
+        <h3>Restless Worlds</h3>
+        <p>Immersive React-based experience with fluid animations, manga library, bilingual interface, and modern UI patterns. Dark-first aesthetic with crimson accents.</p>
         <div class="meta">
-          <span class="tag">Editorial</span>
-          <span class="tag">Pinch-Zoom</span>
-          <span class="tag">Dark Mode</span>
+          <span class="tag">React</span>
+          <span class="tag">Immersive</span>
+          <span class="tag">Bilingual</span>
         </div>
       </div>
     </a>
@@ -222,18 +225,17 @@ body {
 <section class="section" style="background:#f5f5f3;">
   <div class="section-header">
     <h2>Alternative Prototypes</h2>
-    <p>Different UX paradigms to explore</p>
+    <p>More ways to experience the platform</p>
   </div>
   <div class="demo-grid">
     <a href="demo1/index.html" class="demo-card">
       <div class="preview"><div class="preview-icon" style="background:#1a1a1a;">1</div></div>
       <div class="card-body">
         <h3>Dropbox Pure</h3>
-        <p>Ultra minimal reader inspired by Dropbox image viewer. Spatial comment pins, tap-to-hide chrome, swipe navigation.</p>
+        <p>Ultra-minimal reader inspired by Dropbox. Tap-to-hide chrome, spatial comment pins, swipe navigation. Maximum focus on the page.</p>
         <div class="meta">
           <span class="tag">Minimal</span>
-          <span class="tag">Spatial Pins</span>
-          <span class="tag">Working</span>
+          <span class="tag">Clean</span>
         </div>
       </div>
     </a>
@@ -241,11 +243,10 @@ body {
       <div class="preview"><div class="preview-icon" style="background:#2a2a2a;font-family:Georgia,serif;font-style:italic;">2</div></div>
       <div class="card-body">
         <h3>Webtoon Vertical</h3>
-        <p>Korean webtoon-style vertical scrolling reader. Continuous strip format with progress bar and inline comments.</p>
+        <p>Korean webtoon-style continuous vertical scroll. Progress bar, inline comments, and smooth momentum scrolling for long-form reading.</p>
         <div class="meta">
           <span class="tag">Vertical</span>
-          <span class="tag">Infinite Scroll</span>
-          <span class="tag">Working</span>
+          <span class="tag">Scroll</span>
         </div>
       </div>
     </a>
@@ -253,11 +254,10 @@ body {
       <div class="preview"><div class="preview-icon" style="background:linear-gradient(135deg,#D4AF37,#b8941f);">3</div></div>
       <div class="card-body">
         <h3>Character Universe</h3>
-        <p>Lore-heavy wiki-style explorer. Bento character cards, story tabs, quotes, and cast bar in reader.</p>
+        <p>Lore-first wiki explorer. Bento character cards, story tabs, cast quotes, and rich world-building integrated with the reader.</p>
         <div class="meta">
           <span class="tag">Characters</span>
           <span class="tag">Lore</span>
-          <span class="tag">Working</span>
         </div>
       </div>
     </a>
@@ -265,23 +265,21 @@ body {
       <div class="preview"><div class="preview-icon" style="background:#333;font-weight:300;">4</div></div>
       <div class="card-body">
         <h3>Club Forum</h3>
-        <p>Discord-like reading club with channels, threads, spoilers, reactions, and side-panel comments.</p>
+        <p>Community-driven reading club. Channel-based discussions, spoiler tags, reactions, and side-panel comment threads.</p>
         <div class="meta">
           <span class="tag">Social</span>
           <span class="tag">Threads</span>
-          <span class="tag">Working</span>
         </div>
       </div>
     </a>
-    <a href="demo7/index.html" class="demo-card">
-      <div class="preview"><div class="preview-icon" style="background:linear-gradient(135deg,#B83232,#8a1c1c);">7</div></div>
+    <a href="demo5/index.html" class="demo-card">
+      <div class="preview"><div class="preview-icon" style="background:#0a0a0a;color:#D64545;font-family:'Cormorant',serif;font-style:italic;font-size:1.3rem;">R</div></div>
       <div class="card-body">
-        <h3>Restless Worlds React</h3>
-        <p>Google AI Studio React app. Full manga library, bilingual AR/EN, immersive reader with back navigation.</p>
+        <h3>Restless Worlds Reader</h3>
+        <p>Editorial reader with Cormorant + Space Grotesk typography. Pinch-zoom, chapter drawer, settings sheet, tap-zone navigation. Restrained luxury aesthetic.</p>
         <div class="meta">
-          <span class="tag">React</span>
-          <span class="tag">AI Studio</span>
-          <span class="tag">Working</span>
+          <span class="tag">Editorial</span>
+          <span class="tag">Reader</span>
         </div>
       </div>
     </a>
@@ -290,14 +288,14 @@ body {
 
 <section class="section">
   <div class="section-header">
-    <h2>Shared Features</h2>
-    <p>Every prototype includes the following capabilities</p>
+    <h2>Shared Capabilities</h2>
+    <p>Every prototype includes these core features</p>
   </div>
   <div class="features">
     <div class="feature">
       <div class="icon">RD</div>
       <h4>Interactive Reader</h4>
-      <p>Navigate by swipe, arrow keys, or tap. Pinch-to-zoom without gesture conflicts.</p>
+      <p>Swipe, arrow keys, or tap navigation. Pinch-to-zoom without gesture conflicts.</p>
     </div>
     <div class="feature">
       <div class="icon">BI</div>
@@ -307,7 +305,7 @@ body {
     <div class="feature">
       <div class="icon">AC</div>
       <h4>Access Control</h4>
-      <p>Guest, Member, and Admin roles with admin approval required for membership.</p>
+      <p>Guest, Member, and Admin roles with admin approval for membership.</p>
     </div>
     <div class="feature">
       <div class="icon">CM</div>
@@ -318,7 +316,7 @@ body {
 </section>
 
 <footer class="footer">
-  <div class="footer-brand">Meem Yaser Studio</div>
+  <div class="footer-brand">VoxelStudio × Meem Yaser Studio</div>
   <p>Design Showcase — 2026</p>
 </footer>
 
