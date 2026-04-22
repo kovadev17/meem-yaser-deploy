@@ -963,6 +963,10 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
       <h3 id="readerMangaTitle">-</h3>
       <span id="readerPageInfo">-</span>
     </div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" data-action="zoomOut" title="Zoom out">−</button>
+      <button class="zoom-btn" data-action="zoomIn" title="Zoom in">+</button>
+    </div>
     <button data-action="toggleComments" class="comment-toggle" id="commentToggle">تعليقات</button>
   </div>
   <div class="reader-viewport" id="readerViewport">
@@ -1411,6 +1415,8 @@ document.addEventListener('click', e => {
   if(action === 'openManga') { state.currentManga = mangaData.find(m=>m.id===+el.dataset.id); goToPage('browse'); renderBrowser(); }
   if(action === 'closeReader') closeReader();
   if(action === 'toggleComments') { state.commentsEnabled = !state.commentsEnabled; $('#spatialLayer').classList.toggle('active', state.commentsEnabled); el.classList.toggle('active', state.commentsEnabled); }
+  if(action === 'zoomIn') { state.zoom = Math.min(state.zoom + 0.2, 3); $('#readerImg').style.transform = `scale(${state.zoom})`; $('#readerZoomLevel').textContent = Math.round(state.zoom*100) + '%'; }
+  if(action === 'zoomOut') { state.zoom = Math.max(state.zoom - 0.2, 0.5); $('#readerImg').style.transform = `scale(${state.zoom})`; $('#readerZoomLevel').textContent = Math.round(state.zoom*100) + '%'; }
   if(action === 'prevPage') { if(state.currentPage>0){state.currentPage--;renderReader();} }
   if(action === 'nextPage') { if(state.currentPage<(state.currentChapter.pages||5)-1){state.currentPage++;renderReader();} }
 });

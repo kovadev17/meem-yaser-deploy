@@ -898,7 +898,11 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
     <div class="reader-info">
       <h3 id="readerMangaTitle">-</h3>
     </div>
-    <button class="comment-toggle" id="commentToggle" data-action="toggleComments">تعليقات</button>
+    <div class="zoom-controls">
+      <button class="zoom-btn" data-action="zoomOut" title="Zoom out">−</button>
+      <button class="zoom-btn" data-action="zoomIn" title="Zoom in">+</button>
+    </div>
+    <button data-action="toggleComments" class="comment-toggle" id="commentToggle">تعليقات</button>
   </div>
   <div class="reader-viewport" id="readerViewport">
     <button class="reader-nav-btn prev" data-action="prevPage">&#8249;</button>
@@ -1088,7 +1092,7 @@ document.addEventListener('click',e=>{
   if(a==='browse'){goToPage('browse');state.currentManga=mangaData[0];renderBrowser();}
   if(a==='openManga'){state.currentManga=mangaData.find(m=>m.id===+el.dataset.id);goToPage('browse');renderBrowser();}
   if(a==='closeReader')closeReader();
-  if(a==='toggleComments'){state.commentsEnabled=!state.commentsEnabled;$('#spatialLayer').classList.toggle('active',state.commentsEnabled);el.classList.toggle('active',state.commentsEnabled);}
+  if(a==='toggleComments'){state.commentsEnabled=!state.commentsEnabled;$('#spatialLayer').classList.toggle('active',state.commentsEnabled);el.classList.toggle('active',state.commentsEnabled);}if(a==='zoomIn'){state.zoom=Math.min(state.zoom+0.2,3);$('#readerImg').style.transform=`scale(${state.zoom})`;$('#readerZoomLevel').textContent=Math.round(state.zoom*100)+'%';}if(a==='zoomOut'){state.zoom=Math.max(state.zoom-0.2,0.5);$('#readerImg').style.transform=`scale(${state.zoom})`;$('#readerZoomLevel').textContent=Math.round(state.zoom*100)+'%';}
   if(a==='prevPage'){if(state.currentPage>0){state.currentPage--;renderReader();}}
   if(a==='nextPage'){if(state.currentPage<(state.currentChapter.pages||5)-1){state.currentPage++;renderReader();}}
 });
