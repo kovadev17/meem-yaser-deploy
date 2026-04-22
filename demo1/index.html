@@ -1057,7 +1057,7 @@ const i18n = {
     brand: 'Meem Yaser Studio',
     navHome: 'Home', navBrowse: 'Library', navAdmin: 'Admin',
     heroTitle: '<span>Restless</span> Worlds',
-    heroDesc: 'A private reading club for illustrated stories. Join our exclusive community and explore Meem Yaser's worlds.',
+    heroDesc: 'A private reading club for illustrated stories. Join our exclusive community and explore Meem Yaser\'s worlds.',
     heroCta: 'Explore Library',
     featuredTitle: 'Featured Series',
     featuredDesc: 'Choose from our growing collection of original manga',
@@ -1290,7 +1290,7 @@ function showCommentForm(x, y) {
     <textarea placeholder="${state.lang==='ar'?'اكتب تعليقك...':'Write your comment...'}"></textarea>
     <div class="cf-actions">
       <button class="cf-cancel">${state.lang==='ar'?'إلغاء':'Cancel'}</button>
-      <button class="cf-submit">${state.lang==='ar''=>'نشر':'Post'}</button>
+      <button class="cf-submit">${state.lang==='ar'?'نشر':'Post'}</button>
     </div>
   `;
   form.querySelector('.cf-cancel').onclick = () => form.remove();
