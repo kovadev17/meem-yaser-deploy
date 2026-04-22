@@ -1029,12 +1029,12 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
       <button class="zoom-btn" data-action="zoomOut" title="Zoom out">−</button>
       <button class="zoom-btn" data-action="zoomIn" title="Zoom in">+</button>
     </div>
-    <button data-action="toggleComments" class="comment-toggle" id="commentToggle">تعليقات</button>
+    <button data-action="toggleComments" class="comment-toggle" style="display:none !important" id="commentToggle">تعليقات</button>
   </div>
   <div class="reader-viewport" id="readerViewport">
     <button class="reader-nav-btn prev" data-action="prevPage">&#8249;</button>
     <img class="reader-page-img" id="readerImg" src="" alt="Page">
-    <div class="spatial-layer" id="spatialLayer"></div>
+    <div class="spatial-layer" style="display:none !important" id="spatialLayer"></div>
     <button class="reader-nav-btn next" data-action="nextPage">&#8250;</button>
   </div>
   <div class="reader-progress"><div class="reader-progress-bar" id="readerProgress"></div></div>
@@ -1135,7 +1135,7 @@ function renderTiers(){
 
 function renderBrowser(){
   const m=state.currentManga;if(!m)return;
-  $('#browserHeader').innerHTML=`<img src="${m.image}" alt=""><div class="browser-info"><h1>${state.lang==='ar'?m.titleAr:m.titleEn}</h1><p>${state.lang==='ar'?m.descAr:m.descEn}</p><div class="browser-meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span>${m.rating} ★</span><span>${m.status==='ongoing'?(state.lang==='ar'?'مستمر':'Ongoing'):(state.lang==='ar'?'مكتمل':'Completed')}</span></div></div>`;
+  $('#browserHeader').innerHTML=`<img src="${m.image}" alt=""><div class="browser-info"><h1>${state.lang==='ar'?m.titleAr:m.titleEn}</h1><p>${state.lang==='ar'?m.descAr:m.descEn}</p><div class="browser-meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span>${m.status==='ongoing'?(state.lang==='ar'?'مستمر':'Ongoing'):(state.lang==='ar'?'مكتمل':'Completed')}</span></div></div>`;
   renderChapterList();
 }
 
