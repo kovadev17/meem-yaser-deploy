@@ -2,362 +2,289 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#FAFAF8">
-<title>Meem Yaser Studio — Reading Club</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Meem Yaser Studio — Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --font: 'Inter', 'Noto Sans Arabic', system-ui, sans-serif;
-  --bg: #FAFAF8;
-  --sidebar: #f0f0ec;
-  --text: #111;
-  --text-muted: #666;
-  --accent: #D4AF37;
-  --reader-bg: #0A0A0A;
-  --reader-text: #f0f0f0;
-  --thread-bg: #fff;
-  --thread-border: rgba(0,0,0,0.05);
+  --gold: #D4AF37; --gold-soft: rgba(212,175,55,0.12);
+  --bg: #FAFAF8; --bg-warm: #F5F4F0; --text: #1a1a1a;
+  --text-muted: #6b6b6b; --border: rgba(0,0,0,0.06);
+  --reader-bg: #0A0A0A; --reader-surface: #141414;
+  --reader-text: #EDEDED; --reader-muted: #8A8A8A; --reader-border: rgba(255,255,255,0.06);
+  --radius: 16px; --font: 'Geist', system-ui, sans-serif;
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden; }
+img { -webkit-user-drag:none; user-select:none; }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font); overflow: hidden; overscroll-behavior: none; }
+/* Brand */
+.brand-bar { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1.25rem; background:rgba(250,250,248,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+.brand-logo { display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit; }
+.brand-mark { width:36px; height:36px; background:var(--gold); border-radius:10px; display:grid; place-items:center; color:#fff; font-weight:800; font-size:0.85rem; }
+.brand-title { font-weight:700; font-size:0.9rem; }
+.brand-sub { font-size:0.7rem; color:var(--text-muted); }
+.lang-toggle { display:flex; align-items:center; gap:0.3rem; background:transparent; border:1px solid rgba(0,0,0,0.12); padding:0.4rem 0.7rem; border-radius:999px; cursor:pointer; font-family:var(--font); font-size:0.75rem; font-weight:600; }
+.lang-toggle:hover { border-color:var(--gold); background:var(--gold-soft); }
 
-.view { position: fixed; inset: 0; display: none; opacity: 0; transition: opacity 0.3s ease; }
-.view.active { display: flex; opacity: 1; }
+/* Views */
+.view { display:none; min-height:100dvh; padding-top:60px; }
+.view.active { display:block; animation:fadeIn 0.5s ease; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
-/* —— CLUB VIEW: Discord-like layout —— */
-#club-view {
-  flex-direction: row;
-  background: var(--bg);
+/* Companion Hero */
+.comp-hero { padding:2.5rem 1.25rem 1.5rem; max-width:700px; margin:0 auto; }
+.comp-welcome { font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; font-weight:600; margin-bottom:0.5rem; }
+.comp-hero h1 { font-size:clamp(1.75rem, 4vw, 2.5rem); font-weight:800; letter-spacing:-0.02em; margin-bottom:0.5rem; }
+.comp-hero p { color:var(--text-muted); font-size:0.95rem; }
+
+/* Activity Feed */
+.comp-feed { max-width:700px; margin:0 auto; padding:0 1.25rem 4rem; }
+.comp-section-title { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); font-weight:600; margin-bottom:1rem; }
+
+.comp-activity { display:flex; gap:1rem; padding:1rem; background:#fff; border-radius:var(--radius); border:1px solid var(--border); margin-bottom:0.75rem; align-items:flex-start; }
+.comp-activity-avatar { width:40px; height:40px; border-radius:12px; background:var(--gold-soft); display:grid; place-items:center; font-weight:700; font-size:0.85rem; color:var(--gold); flex-shrink:0; }
+.comp-activity-body { flex:1; }
+.comp-activity-text { font-size:0.9rem; margin-bottom:0.25rem; }
+.comp-activity-text strong { font-weight:600; }
+.comp-activity-meta { font-size:0.75rem; color:var(--text-muted); }
+.comp-activity-preview { width:48px; height:64px; border-radius:8px; background:var(--bg-warm); flex-shrink:0; overflow:hidden; }
+.comp-activity-preview img { width:100%; height:100%; object-fit:cover; }
+
+/* Continue Reading */
+.comp-continue { max-width:700px; margin:0 auto 2rem; padding:0 1.25rem; }
+.comp-continue-card { display:flex; gap:1rem; padding:1.25rem; background:#fff; border-radius:var(--radius); border:1px solid var(--border); cursor:pointer; transition:all 0.2s; }
+.comp-continue-card:hover { border-color:var(--gold); box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+.comp-continue-cover { width:80px; height:110px; border-radius:10px; background:var(--bg-warm); flex-shrink:0; overflow:hidden; }
+.comp-continue-cover img { width:100%; height:100%; object-fit:cover; }
+.comp-continue-info { flex:1; display:flex; flex-direction:column; justify-content:center; }
+.comp-continue-title { font-weight:600; font-size:1rem; margin-bottom:0.25rem; }
+.comp-continue-chapter { font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem; }
+.comp-continue-progress { height:4px; background:var(--bg-warm); border-radius:2px; overflow:hidden; margin-bottom:0.5rem; }
+.comp-continue-progress-fill { height:100%; background:var(--gold); border-radius:2px; width:35%; }
+.comp-continue-meta { font-size:0.75rem; color:var(--text-muted); }
+
+/* Chapter List */
+.comp-chapters { max-width:700px; margin:0 auto; padding:0 1.25rem 4rem; }
+.comp-ch-list { display:flex; flex-direction:column; gap:0.5rem; }
+.comp-ch-item { display:flex; align-items:center; gap:1rem; padding:0.875rem 1rem; background:#fff; border-radius:12px; border:1px solid var(--border); cursor:pointer; transition:all 0.2s; }
+.comp-ch-item:hover { border-color:var(--gold); }
+.comp-ch-item.locked { opacity:0.5; cursor:not-allowed; }
+.comp-ch-item.locked:hover { border-color:var(--border); }
+.comp-ch-num { font-size:0.85rem; font-weight:700; color:var(--text-muted); min-width:24px; }
+.comp-ch-title { flex:1; font-size:0.9rem; font-weight:500; }
+.comp-ch-status { font-size:0.7rem; font-weight:600; padding:0.25rem 0.5rem; border-radius:4px; background:var(--gold-soft); color:var(--gold); }
+.comp-ch-status.locked { background:rgba(0,0,0,0.04); color:var(--text-muted); }
+
+/* Reader */
+#readerView { background:var(--reader-bg); padding-top:0; position:fixed; inset:0; z-index:2000; }
+.reader-stage { width:100%; height:100dvh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.reader-stage img { max-width:100%; max-height:100%; object-fit:contain; transition:opacity 0.2s, transform 0.3s; }
+
+.reader-chrome { position:fixed; left:0; right:0; z-index:100; padding:1rem; transition:opacity 0.3s, transform 0.3s; }
+.reader-top { top:0; background:rgba(10,10,10,0.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--reader-border); display:flex; justify-content:space-between; align-items:center; transform:translateY(0); }
+.reader-top.hidden { transform:translateY(-100%); opacity:0; pointer-events:none; }
+.reader-bottom { bottom:0; background:rgba(10,10,10,0.85); backdrop-filter:blur(12px); border-top:1px solid var(--reader-border); transform:translateY(0); }
+.reader-bottom.hidden { transform:translateY(100%); opacity:0; pointer-events:none; }
+.back-btn { width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.06); color:var(--reader-text); display:grid; place-items:center; cursor:pointer; font-size:1.1rem; }
+.reader-title { color:var(--reader-text); font-weight:600; font-size:0.85rem; }
+.reader-page-info { color:var(--reader-muted); font-size:0.8rem; text-align:center; margin-bottom:0.5rem; }
+.reader-progress { height:3px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; }
+.reader-progress-fill { height:100%; background:var(--gold); border-radius:2px; transition:width 0.3s; }
+
+/* Tap zones */
+.tap-left, .tap-right { position:absolute; top:0; bottom:0; width:25%; z-index:50; }
+.tap-left { left:0; }
+.tap-right { right:0; }
+.tap-center { position:absolute; top:0; left:25%; right:25%; bottom:0; z-index:50; }
+
+/* Comments */
+.comments-panel { position:fixed; top:0; right:0; bottom:0; width:340px; max-width:90vw; background:var(--reader-surface); border-left:1px solid var(--reader-border); z-index:300; transform:translateX(100%); transition:transform 0.35s cubic-bezier(0.22,1,0.36,1); display:flex; flex-direction:column; }
+.comments-panel.open { transform:translateX(0); }
+.comments-head { padding:1rem; border-bottom:1px solid var(--reader-border); display:flex; justify-content:space-between; align-items:center; }
+.comments-head h3 { color:var(--reader-text); font-size:0.95rem; }
+.comments-body { flex:1; overflow-y:auto; padding:1rem; }
+.comment-item { margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid var(--reader-border); }
+.comment-author { color:var(--gold); font-size:0.8rem; font-weight:600; }
+.comment-text { color:var(--reader-muted); font-size:0.8rem; line-height:1.5; margin-top:0.25rem; }
+.comment-foot { padding:1rem; border-top:1px solid var(--reader-border); }
+.comment-foot input { width:100%; background:rgba(255,255,255,0.05); border:1px solid var(--reader-border); border-radius:10px; padding:0.6rem; color:var(--reader-text); font-family:var(--font); font-size:0.8rem; }
+
+/* Toast */
+.toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(20px); background:var(--reader-surface); color:var(--reader-text); padding:0.75rem 1.25rem; border-radius:12px; font-size:0.85rem; border:1px solid var(--reader-border); opacity:0; transition:all 0.35s; z-index:700; pointer-events:none; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+@media (max-width: 640px) {
+  .comments-panel { width:100%; }
 }
-
-/* Sidebar — story channels */
-.sidebar {
-  width: 240px; background: var(--sidebar); border-right: 1px solid var(--thread-border);
-  display: flex; flex-direction: column; flex-shrink: 0;
-}
-.sidebar-header {
-  padding: 16px; border-bottom: 1px solid var(--thread-border);
-  font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px;
-}
-.sidebar-header .logo { width: 32px; height: 32px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; font-size: 14px; }
-
-.channel-list { flex: 1; overflow-y: auto; padding: 12px; }
-.channel-group { margin-bottom: 20px; }
-.channel-group-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; padding-left: 8px; }
-.channel {
-  padding: 8px 12px; border-radius: 6px; font-size: 14px; color: var(--text-muted);
-  cursor: pointer; transition: all 0.1s; display: flex; align-items: center; gap: 8px;
-}
-.channel:hover { background: rgba(0,0,0,0.04); color: var(--text); }
-.channel.active { background: rgba(212,175,55,0.1); color: var(--text); font-weight: 500; }
-.channel .hash { font-size: 18px; opacity: 0.5; }
-
-.user-bar {
-  padding: 12px; border-top: 1px solid var(--thread-border);
-  display: flex; align-items: center; gap: 10px;
-}
-.user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ddd, #bbb); overflow: hidden; }
-.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.user-name { font-size: 13px; font-weight: 600; }
-.user-status { font-size: 11px; color: var(--text-muted); }
-
-/* Main content — thread feed */
-.main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-
-.thread-header {
-  padding: 16px 20px; border-bottom: 1px solid var(--thread-border);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.thread-header h2 { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-.thread-header-actions { display: flex; gap: 8px; }
-.header-btn { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; border: 1px solid var(--thread-border); background: #fff; cursor: pointer; }
-.header-btn.primary { background: #111; color: #fff; border-color: #111; }
-
-.thread-feed {
-  flex: 1; overflow-y: auto; padding: 20px;
-}
-
-.thread-card {
-  background: var(--thread-bg); border: 1px solid var(--thread-border); border-radius: 12px;
-  padding: 20px; margin-bottom: 16px; transition: all 0.15s ease;
-}
-.thread-card:hover { border-color: rgba(0,0,0,0.1); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-
-.thread-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.thread-author-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; }
-.thread-author-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.thread-author-info { flex: 1; }
-.thread-author-name { font-size: 14px; font-weight: 600; }
-.thread-time { font-size: 12px; color: var(--text-muted); }
-.thread-tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: rgba(212,175,55,0.1); color: var(--accent); }
-
-.thread-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; line-height: 1.4; }
-.thread-preview { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; }
-
-.thread-actions { display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); }
-.thread-action { cursor: pointer; transition: color 0.1s; }
-.thread-action:hover { color: var(--text); }
-
-.thread-spoiler {
-  background: #f5f5f3; border-radius: 8px; padding: 12px 16px;
-  font-size: 13px; color: var(--text-muted); cursor: pointer;
-  border: 1px dashed var(--thread-border);
-}
-.thread-spoiler.revealed { background: transparent; border-style: solid; color: var(--text); }
-
-/* Reply input */
-.reply-bar {
-  padding: 16px 20px; border-top: 1px solid var(--thread-border);
-  display: flex; gap: 10px; align-items: flex-end;
-}
-.reply-input-wrap { flex: 1; background: #fff; border: 1px solid var(--thread-border); border-radius: 12px; padding: 10px 14px; }
-.reply-input {
-  width: 100%; border: none; outline: none; font-family: var(--font); font-size: 14px; resize: none;
-}
-.reply-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: #000; border: none; font-size: 18px; cursor: pointer; display: grid; place-items: center; flex-shrink: 0; }
-
-/* Mobile: hide sidebar */
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-}
-
-/* —— READER: Split view with comments —— */
-#reader-view { background: var(--reader-bg); color: var(--reader-text); }
-.reader-split { display: flex; flex-direction: row; height: 100%; }
-.reader-page { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.reader-page img { max-width: 100%; max-height: 100%; object-fit: contain; }
-
-.comment-panel {
-  width: 320px; background: #111; border-left: 1px solid rgba(255,255,255,0.04);
-  display: flex; flex-direction: column; flex-shrink: 0;
-}
-.comment-panel-header {
-  padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.04);
-  font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
-}
-.comment-panel-close { background: none; border: none; color: var(--reader-text); font-size: 20px; cursor: pointer; }
-
-.comments-list { flex: 1; overflow-y: auto; padding: 12px; }
-.comment-item { display: flex; gap: 10px; margin-bottom: 14px; }
-.comment-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
-.comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.comment-body { flex: 1; }
-.comment-author { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
-.comment-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.4; }
-.comment-time { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 2px; }
-
-.comment-input-bar {
-  padding: 12px; border-top: 1px solid rgba(255,255,255,0.04);
-  display: flex; gap: 8px;
-}
-.c-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 8px 14px; color: var(--reader-text); font-size: 13px; font-family: var(--font); outline: none; }
-.c-send { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #000; border: none; font-size: 16px; cursor: pointer; display: grid; place-items: center; }
-
-@media (max-width: 768px) {
-  .comment-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 85%; max-width: 360px; transform: translateX(100%); transition: transform 0.3s ease; z-index: 200; }
-  .comment-panel.open { transform: translateX(0); }
-}
-
-.toast {
-  position: fixed; bottom: max(20px, env(safe-area-inset-bottom)); left: 50%;
-  transform: translateX(-50%) translateY(20px); background: rgba(30,30,30,0.95);
-  color: #fff; padding: 10px 20px; border-radius: 10px; font-size: 14px;
-  opacity: 0; transition: all 0.3s ease; z-index: 300; pointer-events: none;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- CLUB VIEW -->
-<div id="club-view" class="view active">
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <div class="logo">M</div>
-      <span>Meem Yaser Club</span>
-    </div>
-    <div class="channel-list">
-      <div class="channel-group">
-        <div class="channel-group-title">Stories</div>
-        <div class="channel active" onclick="switchChannel(this)"><span class="hash">#</span> moons-road</div>
-        <div class="channel" onclick="switchChannel(this)"><span class="hash">#</span> grand-lord</div>
-        <div class="channel" onclick="switchChannel(this)"><span class="hash">#</span> symphony</div>
+<nav class="brand-bar">
+  <a href="/" class="brand-logo">
+    <div class="brand-mark">MY</div>
+    <div><div class="brand-title">Meem Yaser</div><div class="brand-sub">Studio</div></div>
+  </a>
+  <button class="lang-toggle" id="langToggle"><span>EN</span><span style="color:#999;margin:0 0.2rem">/</span><span style="color:#999">العربية</span></button>
+</nav>
+
+<!-- LIBRARY -->
+<div class="view active" id="libraryView">
+  <div class="comp-hero">
+    <div class="comp-welcome">Welcome back, Leila</div>
+    <h1>Your Companion</h1>
+    <p>Track your reading, see what the community is discussing, and pick up where you left off.</p>
+  </div>
+
+  <div class="comp-continue">
+    <div class="comp-section-title">Continue Reading</div>
+    <div class="comp-continue-card" onclick="openReader(0,3)">
+      <div class="comp-continue-cover"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=200&h=280&fit=crop" alt=""></div>
+      <div class="comp-continue-info">
+        <div class="comp-continue-title">Restless Worlds</div>
+        <div class="comp-continue-chapter">The Gate Opens — Page 4 of 10</div>
+        <div class="comp-continue-progress"><div class="comp-continue-progress-fill"></div></div>
+        <div class="comp-continue-meta">Last read 2 hours ago · 12 comments on this chapter</div>
       </div>
-      <div class="channel-group">
-        <div class="channel-group-title">Discussion</div>
-        <div class="channel" onclick="switchChannel(this)"><span class="hash">#</span> general</div>
-        <div class="channel" onclick="switchChannel(this)"><span class="hash">#</span> theories</div>
-        <div class="channel" onclick="switchChannel(this)"><span class="hash">#</span> artwork</div>
-      </div>
-    </div>
-    <div class="user-bar">
-      <div class="user-avatar"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=64&h=64&fit=crop&crop=face" alt="You"></div>
-      <div><div class="user-name">You</div><div class="user-status">Guest</div></div>
     </div>
   </div>
-  
-  <div class="main-content">
-    <div class="thread-header">
-      <h2><span class="hash" style="opacity:0.5">#</span> moons-road</h2>
-      <div class="thread-header-actions">
-        <button class="header-btn" onclick="toggleLang()">EN / AR</button>
-        <button class="header-btn primary" onclick="enterReader()">▶ Read</button>
+
+  <div class="comp-feed">
+    <div class="comp-section-title">Community Activity</div>
+    <div class="comp-activity">
+      <div class="comp-activity-avatar">O</div>
+      <div class="comp-activity-body">
+        <div class="comp-activity-text"><strong>Omar</strong> finished <strong>Moons Road</strong></div>
+        <div class="comp-activity-meta">2 hours ago · Chapter 2 of 6</div>
+      </div>
+      <div class="comp-activity-preview"><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=100&h=140&fit=crop" alt=""></div>
+    </div>
+    <div class="comp-activity">
+      <div class="comp-activity-avatar">N</div>
+      <div class="comp-activity-body">
+        <div class="comp-activity-text"><strong>Noor</strong> commented on <strong>The Gate Opens</strong></div>
+        <div class="comp-activity-meta">5 hours ago · "The atmosphere is incredible"</div>
+      </div>
+      <div class="comp-activity-preview"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=100&h=140&fit=crop" alt=""></div>
+    </div>
+    <div class="comp-activity">
+      <div class="comp-activity-avatar">S</div>
+      <div class="comp-activity-body">
+        <div class="comp-activity-text"><strong>Sarah</strong> joined the club</div>
+        <div class="comp-activity-meta">1 day ago · Welcome!</div>
       </div>
     </div>
-    
-    <div class="thread-feed">
-      <div class="thread-card">
-        <div class="thread-meta">
-          <div class="thread-author-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=72&h=72&fit=crop&crop=face" alt=""></div>
-          <div class="thread-author-info">
-            <div class="thread-author-name">Meem Yaser</div>
-            <div class="thread-time">2 hours ago</div>
-          </div>
-          <div class="thread-tag">Author</div>
-        </div>
-        <div class="thread-title">Chapter 1 is now live!</div>
-        <div class="thread-preview">The journey begins. Khaled finds the moonlit path for the first time. I'd love to hear your thoughts on the opening sequence.</div>
-        <div class="thread-actions">
-          <span class="thread-action">💬 24 replies</span>
-          <span class="thread-action">🔥 156 reactions</span>
-        </div>
+  </div>
+
+  <div class="comp-chapters">
+    <div class="comp-section-title">All Chapters</div>
+    <div class="comp-ch-list">
+      <div class="comp-ch-item" onclick="openReader(0,0)">
+        <span class="comp-ch-num">01</span>
+        <span class="comp-ch-title">The Gate Opens</span>
+        <span class="comp-ch-status">In Progress</span>
       </div>
-      
-      <div class="thread-card">
-        <div class="thread-meta">
-          <div class="thread-author-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=72&h=72&fit=crop&crop=face" alt=""></div>
-          <div class="thread-author-info">
-            <div class="thread-author-name">Sara K.</div>
-            <div class="thread-time">1 hour ago</div>
-          </div>
-        </div>
-        <div class="thread-title">Theory: The path only appears to those who've lost something</div>
-        <div class="thread-preview">I've been re-reading the prologue and I noticed something about Khaled's backstory...</div>
-        <div class="thread-spoiler" onclick="this.classList.toggle('revealed'); this.textContent = this.classList.contains('revealed') ? 'Spoiler: His sister is the key to unlocking the final world.' : 'Click to reveal spoiler'">
-          Click to reveal spoiler
-        </div>
-        <div class="thread-actions" style="margin-top:12px">
-          <span class="thread-action">💬 18 replies</span>
-          <span class="thread-action">🔥 89 reactions</span>
-        </div>
+      <div class="comp-ch-item locked">
+        <span class="comp-ch-num">02</span>
+        <span class="comp-ch-title">Moons Road</span>
+        <span class="comp-ch-status locked">Locked</span>
       </div>
-      
-      <div class="thread-card">
-        <div class="thread-meta">
-          <div class="thread-author-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=72&h=72&fit=crop&crop=face" alt=""></div>
-          <div class="thread-author-info">
-            <div class="thread-author-name">Omar</div>
-            <div class="thread-time">30 min ago</div>
-          </div>
-        </div>
-        <div class="thread-title">Fan art: Khaled under the moonlight</div>
-        <div class="thread-preview">I tried to capture that moment from page 3. Let me know what you think!</div>
-        <div class="thread-actions">
-          <span class="thread-action">💬 42 replies</span>
-          <span class="thread-action">🔥 312 reactions</span>
-        </div>
+      <div class="comp-ch-item locked">
+        <span class="comp-ch-num">03</span>
+        <span class="comp-ch-title">Symphony of Doom</span>
+        <span class="comp-ch-status locked">Locked</span>
       </div>
-    </div>
-    
-    <div class="reply-bar">
-      <div class="reply-input-wrap">
-        <textarea class="reply-input" rows="1" placeholder="Join the discussion..."></textarea>
+      <div class="comp-ch-item locked">
+        <span class="comp-ch-num">04</span>
+        <span class="comp-ch-title">The Grand Lord</span>
+        <span class="comp-ch-status locked">Locked</span>
       </div>
-      <button class="reply-btn" onclick="postReply()">→</button>
+      <div class="comp-ch-item locked">
+        <span class="comp-ch-num">05</span>
+        <span class="comp-ch-title">The Speakers</span>
+        <span class="comp-ch-status locked">Locked</span>
+      </div>
+      <div class="comp-ch-item locked">
+        <span class="comp-ch-num">06</span>
+        <span class="comp-ch-title">The Sleepless Chaplain</span>
+        <span class="comp-ch-status locked">Locked</span>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- READER -->
-<div id="reader-view" class="view">
-  <div style="padding: max(12px, env(safe-area-inset-top)) 16px 12px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.04);">
-    <a href="#" style="color:var(--reader-text); text-decoration:none; font-size:14px; opacity:0.7;" onclick="exitReader(event)">← Back to Club</a>
-    <div style="font-size:14px; font-weight:600; opacity:0.5;">Ch.1 — Page 1</div>
-    <button style="width:36px; height:36px; border-radius:10px; background:rgba(255,255,255,0.05); border:none; color:var(--reader-text); font-size:16px; cursor:pointer;" onclick="togglePanel()">💬</button>
+<div class="view" id="readerView">
+  <div class="reader-stage" id="readerStage">
+    <img id="pageImage" src="" alt="Page" draggable="false">
+    <div class="tap-left" onclick="prevPage()"></div>
+    <div class="tap-center" onclick="toggleChrome()"></div>
+    <div class="tap-right" onclick="nextPage()"></div>
   </div>
-  <div class="reader-split">
-    <div class="reader-page">
-      <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1200&fit=crop" alt="Page">
+
+  <div class="reader-chrome reader-top" id="chromeTop">
+    <button class="back-btn" onclick="closeReader()">←</button>
+    <div class="reader-title" id="readerTitle">The Gate Opens</div>
+    <button class="back-btn" onclick="toggleComments()">☰</button>
+  </div>
+
+  <div class="reader-chrome reader-bottom" id="chromeBottom">
+    <div class="reader-page-info" id="pageInfo">Page 1 of 10</div>
+    <div class="reader-progress"><div class="reader-progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="comments-panel" id="commentsPanel">
+    <div class="comments-head"><h3>Discussion</h3><button class="back-btn" onclick="toggleComments()">✕</button></div>
+    <div class="comments-body">
+      <div class="comment-item"><div class="comment-author">Leila</div><div class="comment-text">Picking up where I left off. The tension builds so well here.</div></div>
+      <div class="comment-item"><div class="comment-author">Omar</div><div class="comment-text">Just finished this chapter. That last panel gave me chills.</div></div>
     </div>
-    <div class="comment-panel" id="comment-panel">
-      <div class="comment-panel-header">
-        <span>Comments — Page 1</span>
-        <button class="comment-panel-close" onclick="togglePanel()">×</button>
-      </div>
-      <div class="comments-list">
-        <div class="comment-item">
-          <div class="comment-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face"></div>
-          <div class="comment-body">
-            <div class="comment-author">Meem Yaser</div>
-            <div class="comment-text">This opening panel sets the tone for everything.</div>
-            <div class="comment-time">2h ago</div>
-          </div>
-        </div>
-        <div class="comment-item">
-          <div class="comment-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop&crop=face"></div>
-          <div class="comment-body">
-            <div class="comment-author">Sara K.</div>
-            <div class="comment-text">The color palette here is so intentional 🔥</div>
-            <div class="comment-time">1h ago</div>
-          </div>
-        </div>
-      </div>
-      <div class="comment-input-bar">
-        <input type="text" class="c-input" placeholder="Add a comment...">
-        <button class="c-send" onclick="postComment()">→</button>
-      </div>
-    </div>
+    <div class="comment-foot"><input type="text" placeholder="Share your thoughts..."></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-function switchChannel(el) {
-  document.querySelectorAll('.channel').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  toast('Switched to ' + el.textContent.trim());
-}
+const MANGA_DATA = { chapters: [{ title: 'The Gate Opens', pages: [
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop'
+]}]};
 
-function enterReader() {
-  document.getElementById('club-view').classList.remove('active');
-  document.getElementById('reader-view').classList.add('active');
-}
+let currentChapter = 0, currentPage = 0, chromeVisible = true, zoomLevel = 1, isPinching = false, startDist = 0, startZoom = 1;
 
-function exitReader(e) {
-  if (e) e.preventDefault();
-  document.getElementById('reader-view').classList.remove('active');
-  document.getElementById('club-view').classList.add('active');
-}
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+function updateProgress() { const ch = MANGA_DATA.chapters[currentChapter]; document.getElementById('progressFill').style.width = ((currentPage + 1) / ch.pages.length * 100) + '%'; document.getElementById('pageInfo').textContent = 'Page ' + (currentPage + 1) + ' of ' + ch.pages.length; }
+function loadPage() { const img = document.getElementById('pageImage'); const ch = MANGA_DATA.chapters[currentChapter]; img.style.opacity = '0'; setTimeout(() => { img.src = ch.pages[currentPage]; img.onload = () => img.style.opacity = '1'; }, 150); updateProgress(); }
+function nextPage() { if (zoomLevel > 1) { showToast('Zoom active — swipe disabled'); return; } const ch = MANGA_DATA.chapters[currentChapter]; if (currentPage < ch.pages.length - 1) { currentPage++; loadPage(); } }
+function prevPage() { if (zoomLevel > 1) { showToast('Zoom active — swipe disabled'); return; } if (currentPage > 0) { currentPage--; loadPage(); } }
+function toggleChrome() { chromeVisible = !chromeVisible; document.getElementById('chromeTop').classList.toggle('hidden', !chromeVisible); document.getElementById('chromeBottom').classList.toggle('hidden', !chromeVisible); }
+function openReader(ch, pg) { currentChapter = ch; currentPage = pg || 0; zoomLevel = 1; document.getElementById('libraryView').classList.remove('active'); document.getElementById('readerView').classList.add('active'); document.getElementById('pageImage').style.transform = 'scale(1)'; loadPage(); }
+function closeReader() { document.getElementById('readerView').classList.remove('active'); document.getElementById('libraryView').classList.add('active'); zoomLevel = 1; }
+function toggleComments() { document.getElementById('commentsPanel').classList.toggle('open'); }
 
-function togglePanel() {
-  document.getElementById('comment-panel').classList.toggle('open');
-}
+let tsX = 0, tsY = 0, tsTime = 0;
+const stage = document.getElementById('readerStage');
+stage.addEventListener('touchstart', e => { if (e.touches.length === 2) { isPinching = true; startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startZoom = zoomLevel; } else { tsX = e.touches[0].clientX; tsY = e.touches[0].clientY; tsTime = Date.now(); } }, { passive: true });
+stage.addEventListener('touchmove', e => { if (isPinching && e.touches.length === 2) { e.preventDefault(); const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); zoomLevel = Math.max(1, Math.min(4, startZoom * (dist / startDist))); document.getElementById('pageImage').style.transform = 'scale(' + zoomLevel + ')'; } }, { passive: false });
+stage.addEventListener('touchend', e => { if (isPinching) { isPinching = false; if (zoomLevel < 1.1) { zoomLevel = 1; document.getElementById('pageImage').style.transform = 'scale(1)'; } return; } const elapsed = Date.now() - tsTime; const dx = e.changedTouches[0].clientX - tsX; const dy = e.changedTouches[0].clientY - tsY; if (elapsed < 300 && Math.abs(dx) < 10 && Math.abs(dy) < 10) { toggleChrome(); } else if (elapsed < 500 && Math.abs(dx) > 50 && Math.abs(dy) < Math.abs(dx)) { if (zoomLevel > 1) return; if (dx < 0) nextPage(); else prevPage(); } });
 
-function postReply() {
-  toast('Reply posted!');
-}
+let lastTap = 0;
+stage.addEventListener('click', e => { const now = Date.now(); if (now - lastTap < 300) { zoomLevel = zoomLevel > 1 ? 1 : 2.5; document.getElementById('pageImage').style.transform = 'scale(' + zoomLevel + ')'; } lastTap = now; });
 
-function postComment() {
-  toast('Comment posted!');
-}
+document.addEventListener('keydown', e => { if (!document.getElementById('readerView').classList.contains('active')) return; if (e.key === 'ArrowRight') nextPage(); else if (e.key === 'ArrowLeft') prevPage(); else if (e.key === 'Escape') { closeReader(); document.getElementById('commentsPanel').classList.remove('open'); } });
 
-function toggleLang() {
-  const isRTL = document.documentElement.dir === 'rtl';
-  document.documentElement.dir = isRTL ? 'ltr' : 'rtl';
-  toast(isRTL ? 'English' : 'Arabic');
-}
-
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
+document.getElementById('langToggle').addEventListener('click', () => { const isAr = document.documentElement.dir === 'rtl'; document.documentElement.dir = isAr ? 'ltr' : 'rtl'; document.getElementById('langToggle').querySelector('span').textContent = isAr ? 'EN' : 'العربية'; });
 </script>
 </body>
 </html>

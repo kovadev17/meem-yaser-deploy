@@ -2,463 +2,323 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-<meta name="theme-color" content="#FAFAF8">
-<title>Meem Yaser Studio — Dropbox Pure Reader</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Meem Yaser Studio — The Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --font: 'Inter', 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
-  --landing-bg: #FAFAF8;
-  --landing-text: #111;
-  --landing-muted: #666;
-  --reader-bg: #050505;
-  --reader-text: #f0f0f0;
-  --reader-muted: #888;
-  --accent: #D4AF37;
-  --pin-color: #D4AF37;
+  --gold: #D4AF37; --gold-soft: rgba(212,175,55,0.12);
+  --bg: #FAFAF8; --bg-warm: #F5F4F0; --text: #1a1a1a;
+  --text-muted: #6b6b6b; --text-subtle: #999; --border: rgba(0,0,0,0.06);
+  --reader-bg: #0A0A0A; --reader-surface: #141414;
+  --reader-text: #EDEDED; --reader-muted: #8A8A8A; --reader-border: rgba(255,255,255,0.06);
+  --radius: 16px; --font: 'Geist', system-ui, sans-serif;
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden; }
+img { -webkit-user-drag:none; user-select:none; }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font); overflow: hidden; overscroll-behavior: none; }
-
-/* —— VIEW SYSTEM —— */
-.view { position: fixed; inset: 0; display: none; opacity: 0; transition: opacity 0.3s ease; }
-.view.active { display: flex; flex-direction: column; opacity: 1; }
-
-/* —— LANDING: Dropbox Paper style —— */
-#landing-view {
-  background: var(--landing-bg);
-  color: var(--landing-text);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+/* Brand */
+.brand-bar {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.75rem 1.25rem; background:rgba(250,250,248,0.92);
+  backdrop-filter:blur(20px); border-bottom:1px solid var(--border);
 }
+.brand-logo { display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit; }
+.brand-mark { width:36px; height:36px; background:var(--gold); border-radius:10px; display:grid; place-items:center; color:#fff; font-weight:800; font-size:0.85rem; }
+.brand-title { font-weight:700; font-size:0.9rem; }
+.brand-sub { font-size:0.7rem; color:var(--text-muted); }
+.lang-toggle { display:flex; align-items:center; gap:0.3rem; background:transparent; border:1px solid rgba(0,0,0,0.12); padding:0.4rem 0.7rem; border-radius:999px; cursor:pointer; font-family:var(--font); font-size:0.75rem; font-weight:600; }
+.lang-toggle:hover { border-color:var(--gold); background:var(--gold-soft); }
 
-.landing-container { max-width: 680px; margin: 0 auto; padding: 80px 24px 60px; }
+/* Views */
+.view { display:none; min-height:100dvh; padding-top:60px; }
+.view.active { display:block; animation:fadeIn 0.5s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
 
-.brand { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--landing-muted); margin-bottom: 8px; }
+/* HERO */
+.vault-hero { text-align:center; padding:4rem 1.5rem 3rem; max-width:600px; margin:0 auto; }
+.vault-hero h1 { font-size:clamp(2.5rem, 6vw, 4rem); font-weight:800; letter-spacing:-0.04em; line-height:1.05; margin-bottom:1rem; }
+.vault-hero h1 span { color:var(--gold); font-weight:300; }
+.vault-hero p { color:var(--text-muted); font-size:1rem; max-width:40ch; margin:0 auto 2rem; }
+.vault-stats { display:flex; justify-content:center; gap:2.5rem; margin-bottom:2.5rem; }
+.vault-stat { text-align:center; }
+.vault-stat-num { font-size:1.75rem; font-weight:700; letter-spacing:-0.02em; }
+.vault-stat-label { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:0.25rem; }
 
-h1 { font-size: clamp(32px, 6vw, 52px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
+/* Chapter list - minimal */
+.vault-list { max-width:680px; margin:0 auto; padding:0 1.25rem 4rem; }
+.vault-list-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
+.vault-list-header h2 { font-size:1.1rem; font-weight:600; }
+.vault-list-header span { font-size:0.8rem; color:var(--text-muted); }
 
-.subtitle { font-size: 18px; color: var(--landing-muted); line-height: 1.5; margin-bottom: 40px; max-width: 480px; }
+.vault-chapter { display:flex; align-items:center; gap:1rem; padding:1rem; border-radius:14px; margin-bottom:0.5rem; cursor:pointer; transition:all 0.2s; border:1px solid transparent; }
+.vault-chapter:hover { background:var(--bg-warm); border-color:var(--border); }
+.vault-chapter.locked { opacity:0.5; cursor:not-allowed; }
+.vault-chapter.locked:hover { background:transparent; border-color:transparent; }
 
-.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px; }
-.btn {
-  padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: 500;
-  font-family: var(--font); cursor: pointer; border: none; transition: all 0.15s ease;
-}
-.btn-primary { background: #111; color: #fff; }
-.btn-primary:hover { background: #333; }
-.btn-secondary { background: transparent; color: #111; border: 1px solid rgba(0,0,0,0.15); }
-.btn-secondary:hover { background: rgba(0,0,0,0.04); }
+.vault-ch-num { width:48px; height:48px; border-radius:12px; background:var(--bg-warm); display:grid; place-items:center; font-weight:700; font-size:0.9rem; flex-shrink:0; border:1px solid var(--border); }
+.vault-ch-info { flex:1; min-width:0; }
+.vault-ch-title { font-weight:600; font-size:0.95rem; margin-bottom:0.15rem; }
+.vault-ch-meta { font-size:0.75rem; color:var(--text-muted); }
+.vault-ch-status { font-size:0.7rem; font-weight:600; padding:0.3rem 0.6rem; border-radius:6px; background:var(--gold-soft); color:var(--gold); }
+.vault-ch-status.locked { background:rgba(0,0,0,0.04); color:var(--text-subtle); }
 
-/* Manga list — ultra clean */
-.section-title { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--landing-muted); margin-bottom: 20px; }
+/* MEMBERSHIP BAR */
+.member-bar { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--border); padding:0.75rem 1.25rem; display:flex; justify-content:space-between; align-items:center; z-index:900; }
+.member-bar p { font-size:0.8rem; color:var(--text-muted); }
+.member-bar button { background:var(--gold); color:#1a1a1a; border:none; padding:0.5rem 1rem; border-radius:10px; font-family:var(--font); font-weight:600; font-size:0.8rem; cursor:pointer; }
 
-.manga-list { display: flex; flex-direction: column; gap: 1px; background: rgba(0,0,0,0.06); border-radius: 12px; overflow: hidden; }
-.manga-item {
-  display: flex; align-items: center; gap: 16px; padding: 16px 20px;
-  background: var(--landing-bg); cursor: pointer; transition: background 0.15s ease;
-}
-.manga-item:hover { background: #f0f0ec; }
-.manga-item:active { background: #e8e8e4; }
+/* READER */
+#readerView { background:var(--reader-bg); padding-top:0; position:fixed; inset:0; z-index:2000; }
+.reader-stage { width:100%; height:100dvh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.reader-stage img { max-width:100%; max-height:100%; object-fit:contain; transition:opacity 0.2s, transform 0.3s; }
 
-.manga-thumb { width: 48px; height: 64px; border-radius: 6px; background: linear-gradient(135deg, #ddd, #bbb); flex-shrink: 0; overflow: hidden; }
-.manga-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-.manga-info { flex: 1; min-width: 0; }
-.manga-name { font-size: 16px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.manga-detail { font-size: 13px; color: var(--landing-muted); margin-top: 2px; }
-
-.manga-arrow { color: var(--landing-muted); font-size: 18px; }
-.lock-badge { font-size: 11px; background: rgba(0,0,0,0.06); padding: 3px 8px; border-radius: 4px; margin-left: 8px; }
-
-/* —— READER: Dropbox image viewer style —— */
-#reader-view { background: var(--reader-bg); color: var(--reader-text); }
-
-/* Chrome — minimal, fades out */
-.reader-chrome {
-  position: absolute; left: 0; right: 0; z-index: 100;
-  padding: 16px 20px;
-  transform: translateY(0); opacity: 1;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  pointer-events: none;
-}
-.reader-chrome.hidden { transform: translateY(-20px); opacity: 0; }
-.reader-chrome > * { pointer-events: auto; }
-
-.chrome-top {
-  top: 0; padding-top: max(16px, env(safe-area-inset-top));
-  display: flex; align-items: center; justify-content: space-between;
-}
-.chrome-bottom {
-  bottom: 0; padding-bottom: max(16px, env(safe-area-inset-bottom));
-}
-
-.back-link {
-  color: var(--reader-text); text-decoration: none; font-size: 15px; font-weight: 500;
-  display: flex; align-items: center; gap: 6px; opacity: 0.7; transition: opacity 0.15s;
-}
-.back-link:hover { opacity: 1; }
-
-.reader-title-center { font-size: 15px; font-weight: 500; text-align: center; flex: 1; opacity: 0.6; }
-
-/* Thin progress bar — like Dropbox */
-.progress-line { height: 2px; background: rgba(255,255,255,0.08); border-radius: 1px; overflow: hidden; }
-.progress-line-fill { height: 100%; background: var(--accent); border-radius: 1px; transition: width 0.3s ease; }
-.page-counter { font-size: 12px; color: var(--reader-muted); text-align: center; margin-top: 8px; letter-spacing: 0.02em; }
-
-/* Page stage */
-.page-container {
-  flex: 1; position: relative; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  touch-action: none; user-select: none; -webkit-user-select: none;
-}
-.page-container img {
-  max-width: 100%; max-height: 100%; object-fit: contain;
-  transition: opacity 0.2s ease; will-change: transform;
-}
-
-/* Spatial comments — Dropbox-style pins */
-.pin-layer { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
-.pin { 
-  position: absolute; width: 28px; height: 28px; border-radius: 50%;
-  background: var(--pin-color); color: #000; font-size: 12px; font-weight: 700;
-  display: grid; place-items: center; cursor: pointer; pointer-events: auto;
-  box-shadow: 0 2px 12px rgba(212,175,55,0.4); transition: transform 0.15s ease;
-  border: 2px solid rgba(255,255,255,0.3);
-}
-.pin:hover { transform: scale(1.15); }
-.pin::after {
-  content: ''; position: absolute; width: 40px; height: 40px;
-  border-radius: 50%; border: 1px solid var(--pin-color);
-  animation: pin-pulse 2s ease-in-out infinite;
-}
-@keyframes pin-pulse {
-  0%, 100% { transform: scale(0.8); opacity: 0.6; }
-  50% { transform: scale(1.2); opacity: 0; }
-}
-
-/* Comment popover */
-.pin-popover {
-  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%) scale(0.9);
-  background: rgba(20,20,20,0.95); backdrop-filter: blur(16px);
-  padding: 12px 16px; border-radius: 12px; width: 220px;
-  opacity: 0; pointer-events: none; transition: all 0.2s ease;
-  border: 1px solid rgba(255,255,255,0.06); z-index: 60;
-}
-.pin.active .pin-popover { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
-.pin-popover::after {
-  content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
-  border-width: 6px 6px 0; border-style: solid; border-color: rgba(20,20,20,0.95) transparent transparent;
-}
-.popover-author { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
-.popover-text { font-size: 13px; color: var(--reader-text); line-height: 1.4; }
-
-/* Add comment button */
-.add-pin-btn {
-  position: fixed; bottom: max(24px, env(safe-area-inset-bottom)); right: 24px;
-  width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: #000;
-  border: none; font-size: 24px; cursor: pointer; z-index: 200;
-  display: grid; place-items: center; box-shadow: 0 4px 16px rgba(212,175,55,0.3);
-  transition: transform 0.15s ease; font-weight: 300;
-}
-.add-pin-btn:active { transform: scale(0.9); }
-.add-pin-btn.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
+/* Invisible chrome */
+.reader-chrome { position:fixed; left:0; right:0; z-index:100; padding:1rem; transition:opacity 0.3s, transform 0.3s; opacity:0; pointer-events:none; }
+.reader-chrome.visible { opacity:1; pointer-events:auto; }
+.reader-top { top:0; background:linear-gradient(180deg,rgba(10,10,10,0.9) 0%,transparent 100%); padding-bottom:3rem; display:flex; justify-content:space-between; align-items:center; }
+.reader-bottom { bottom:0; background:linear-gradient(0deg,rgba(10,10,10,0.9) 0%,transparent 100%); padding-top:3rem; }
+.back-btn { width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.06); color:var(--reader-text); display:grid; place-items:center; cursor:pointer; font-size:1.1rem; }
+.reader-title { color:var(--reader-text); font-weight:600; font-size:0.85rem; }
+.reader-page { color:var(--reader-muted); font-size:0.75rem; text-align:center; }
+.progress-line { height:2px; background:rgba(255,255,255,0.08); border-radius:1px; overflow:hidden; }
+.progress-line-fill { height:100%; background:var(--gold); border-radius:1px; transition:width 0.3s; }
 
 /* Tap zones */
-.tap-zone { position: absolute; top: 0; bottom: 0; width: 33.33%; z-index: 40; }
-.tap-zone-left { left: 0; }
-.tap-zone-center { left: 33.33%; }
-.tap-zone-right { left: 66.66%; }
+.tap-left, .tap-right { position:absolute; top:0; bottom:0; width:30%; z-index:50; }
+.tap-left { left:0; }
+.tap-right { right:0; }
+.tap-center { position:absolute; top:0; left:30%; right:30%; bottom:0; z-index:50; }
 
-/* Loading */
-.skeleton { 
-  width: 60%; aspect-ratio: 2/3; border-radius: 8px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  background-size: 200% 100%; animation: shimmer 1.5s infinite;
-}
-@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+/* Comments */
+.comments-drawer { position:fixed; top:0; right:0; bottom:0; width:340px; max-width:90vw; background:var(--reader-surface); border-left:1px solid var(--reader-border); z-index:300; transform:translateX(100%); transition:transform 0.35s cubic-bezier(0.22,1,0.36,1); display:flex; flex-direction:column; }
+.comments-drawer.open { transform:translateX(0); }
+.comments-head { padding:1rem; border-bottom:1px solid var(--reader-border); display:flex; justify-content:space-between; align-items:center; }
+.comments-head h3 { color:var(--reader-text); font-size:0.95rem; }
+.comments-body { flex:1; overflow-y:auto; padding:1rem; }
+.comment-item { margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid var(--reader-border); }
+.comment-author { color:var(--gold); font-size:0.8rem; font-weight:600; margin-bottom:0.25rem; }
+.comment-text { color:var(--reader-muted); font-size:0.8rem; line-height:1.5; }
+.comments-foot { padding:1rem; border-top:1px solid var(--reader-border); }
+.comments-foot input { width:100%; background:rgba(255,255,255,0.05); border:1px solid var(--reader-border); border-radius:10px; padding:0.6rem; color:var(--reader-text); font-family:var(--font); font-size:0.8rem; }
 
 /* Toast */
-.toast {
-  position: fixed; bottom: max(80px, env(safe-area-inset-bottom) + 60px); left: 50%;
-  transform: translateX(-50%) translateY(20px); background: rgba(30,30,30,0.95);
-  color: #fff; padding: 10px 20px; border-radius: 10px; font-size: 14px;
-  opacity: 0; transition: all 0.3s ease; z-index: 300; pointer-events: none;
-  backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06);
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast { position:fixed; bottom:5rem; left:50%; transform:translateX(-50%) translateY(20px); background:var(--reader-surface); color:var(--reader-text); padding:0.75rem 1.25rem; border-radius:12px; font-size:0.85rem; border:1px solid var(--reader-border); opacity:0; transition:all 0.35s; z-index:700; pointer-events:none; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-/* RTL */
-[dir="rtl"] .add-pin-btn { right: auto; left: 24px; }
+/* Admin */
+.admin-grid { max-width:800px; margin:0 auto; padding:2rem 1.25rem; }
+.admin-grid h2 { font-size:1.25rem; font-weight:700; margin-bottom:1.5rem; }
+.admin-card { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem; margin-bottom:1rem; }
+.admin-card h3 { font-size:0.95rem; font-weight:600; margin-bottom:0.75rem; }
+.user-row { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0; border-bottom:1px solid var(--border); }
+.user-row:last-child { border-bottom:none; }
+.user-name { font-weight:500; font-size:0.85rem; }
+.user-role { font-size:0.75rem; color:var(--text-muted); }
+.approve-btn { background:var(--gold-soft); color:var(--gold); border:none; padding:0.35rem 0.75rem; border-radius:6px; font-family:var(--font); font-weight:600; font-size:0.75rem; cursor:pointer; }
+
+@media (max-width: 640px) {
+  .vault-stats { gap:1.5rem; }
+  .comments-drawer { width:100%; }
+}
 </style>
 </head>
 <body>
 
-<!-- LANDING -->
-<div id="landing-view" class="view active">
-  <div class="landing-container">
-    <div class="brand">Private Reading Club</div>
-    <h1>Restless Worlds</h1>
-    <p class="subtitle">A private space for immersive manga reading. Clean, simple, no distractions — just the artwork and the story.</p>
-    
-    <div class="cta-row">
-      <button class="btn btn-primary" onclick="enterReader()">Enter as Guest</button>
-      <button class="btn btn-secondary" onclick="toggleLang()">EN / AR</button>
+<nav class="brand-bar">
+  <a href="/" class="brand-logo">
+    <div class="brand-mark">MY</div>
+    <div><div class="brand-title">Meem Yaser</div><div class="brand-sub">Studio</div></div>
+  </a>
+  <button class="lang-toggle" id="langToggle"><span>EN</span><span style="color:#999;margin:0 0.2rem">/</span><span style="color:#999">العربية</span></button>
+</nav>
+
+<!-- LIBRARY -->
+<div class="view active" id="libraryView">
+  <div class="vault-hero">
+    <h1>The <span>Vault</span></h1>
+    <p>A private collection of illustrated stories. Membership required beyond the first chapter.</p>
+    <div class="vault-stats">
+      <div class="vault-stat"><div class="vault-stat-num">4</div><div class="vault-stat-label">Stories</div></div>
+      <div class="vault-stat"><div class="vault-stat-num">24</div><div class="vault-stat-label">Chapters</div></div>
+      <div class="vault-stat"><div class="vault-stat-num">187</div><div class="vault-stat-label">Pages</div></div>
     </div>
-    
-    <div class="section-title">Library</div>
-    <div class="manga-list">
-      <div class="manga-item" onclick="enterReader()">
-        <div class="manga-thumb"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100&h=140&fit=crop" alt="Moons Road"></div>
-        <div class="manga-info">
-          <div class="manga-name">Moons Road <span class="lock-badge" style="display:none">✦</span></div>
-          <div class="manga-detail">Chapter 1 · 8 pages</div>
-        </div>
-        <div class="manga-arrow">→</div>
-      </div>
+  </div>
+  
+  <div class="vault-list">
+    <div class="vault-list-header"><h2>Restless Worlds</h2><span>Ch. 1–6</span></div>
+    <div class="vault-chapter" onclick="openReader(0,0)">
+      <div class="vault-ch-num">01</div>
+      <div class="vault-ch-info"><div class="vault-ch-title">The Gate Opens</div><div class="vault-ch-meta">24 pages · 12 comments</div></div>
+      <span class="vault-ch-status">Read</span>
+    </div>
+    <div class="vault-chapter locked">
+      <div class="vault-ch-num">02</div>
+      <div class="vault-ch-info"><div class="vault-ch-title">Moons Road</div><div class="vault-ch-meta">28 pages · 8 comments</div></div>
+      <span class="vault-ch-status locked">Locked</span>
+    </div>
+    <div class="vault-chapter locked">
+      <div class="vault-ch-num">03</div>
+      <div class="vault-ch-info"><div class="vault-ch-title">Symphony of Doom</div><div class="vault-ch-meta">31 pages · 15 comments</div></div>
+      <span class="vault-ch-status locked">Locked</span>
+    </div>
+    <div class="vault-chapter locked">
+      <div class="vault-ch-num">04</div>
+      <div class="vault-ch-info"><div class="vault-ch-title">The Grand Lord</div><div class="vault-ch-meta">26 pages · 6 comments</div></div>
+      <span class="vault-ch-status locked">Locked</span>
+    </div>
+    <div class="vault-chapter locked">
+      <div class="vault-ch-num">05</div>
+      <div class="vault-ch-info"><div class="vault-ch-title">The Speakers</div><div class="vault-ch-meta">22 pages · 9 comments</div></div>
+      <span class="vault-ch-status locked">Locked</span>
+    </div>
+    <div class="vault-chapter locked">
+      <div class="vault-ch-num">06</div>
+      <div class="vault-ch-info"><div class="vault-ch-title">The Sleepless Chaplain</div><div class="vault-ch-meta">30 pages · 11 comments</div></div>
+      <span class="vault-ch-status locked">Locked</span>
     </div>
   </div>
 </div>
 
 <!-- READER -->
-<div id="reader-view" class="view">
-  <div class="reader-chrome" id="chrome-top">
-    <a href="#" class="back-link" onclick="exitReader(event)">← <span data-i18n="back">Back</span></a>
-    <div class="reader-title-center" id="reader-title">Moons Road — Chapter 1</div>
-    <div style="width:60px"></div>
+<div class="view" id="readerView">
+  <div class="reader-stage" id="readerStage">
+    <img id="pageImage" src="" alt="Page" draggable="false">
+    <div class="tap-left" onclick="prevPage()"></div>
+    <div class="tap-center" onclick="toggleChrome()"></div>
+    <div class="tap-right" onclick="nextPage()"></div>
   </div>
   
-  <div class="page-container" id="page-stage">
-    <div class="skeleton" id="skeleton"></div>
-    <img id="page-img" src="" alt="Page" style="display:none">
-    <div class="pin-layer" id="pin-layer"></div>
-    <div class="tap-zone tap-zone-left" onclick="goPrev()"></div>
-    <div class="tap-zone tap-zone-center" onclick="toggleChrome()"></div>
-    <div class="tap-zone tap-zone-right" onclick="goNext()"></div>
+  <div class="reader-chrome reader-top" id="chromeTop">
+    <button class="back-btn" onclick="closeReader()">←</button>
+    <div class="reader-title" id="readerTitle">The Gate Opens</div>
+    <button class="back-btn" onclick="toggleComments()">☰</button>
   </div>
   
-  <div class="reader-chrome" id="chrome-bottom">
-    <div class="progress-line"><div class="progress-line-fill" id="progress-fill"></div></div>
-    <div class="page-counter" id="page-counter">Page 1 / 8</div>
+  <div class="reader-chrome reader-bottom" id="chromeBottom">
+    <div class="progress-line"><div class="progress-line-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="reader-page" id="pageNum">Page 1 of 10</div>
   </div>
   
-  <button class="add-pin-btn" id="add-pin-btn" onclick="startAddingPin()">+</button>
+  <!-- Comments -->
+  <div class="comments-drawer" id="commentsDrawer">
+    <div class="comments-head"><h3>Comments</h3><button class="back-btn" onclick="toggleComments()">✕</button></div>
+    <div class="comments-body">
+      <div class="comment-item"><div class="comment-author">Leila</div><div class="comment-text">The atmosphere in this opening is incredible. You can feel the weight of the gate.</div></div>
+      <div class="comment-item"><div class="comment-author">Omar</div><div class="comment-text">Panel 3 — the shadow work is masterful. Is this ink or digital?</div></div>
+      <div class="comment-item"><div class="comment-author">Noor</div><div class="comment-text">I keep coming back to this chapter. The pacing is perfect.</div></div>
+    </div>
+    <div class="comments-foot"><input type="text" placeholder="Add a comment..."></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="view" id="adminView">
+  <div class="admin-grid">
+    <h2>Admin Panel</h2>
+    <div class="admin-card">
+      <h3>Pending Approvals</h3>
+      <div class="user-row"><div><div class="user-name">Ahmad Khalil</div><div class="user-role">Requested 2h ago</div></div><button class="approve-btn">Approve</button></div>
+      <div class="user-row"><div><div class="user-name">Sarah Al-Rashid</div><div class="user-role">Requested 5h ago</div></div><button class="approve-btn">Approve</button></div>
+    </div>
+    <div class="admin-card">
+      <h3>Members</h3>
+      <div class="user-row"><div><div class="user-name">Leila Hassan</div><div class="user-role">Member since Mar 2026</div></div><span style="font-size:0.75rem;color:var(--text-muted)">Active</span></div>
+      <div class="user-row"><div><div class="user-name">Omar Fayed</div><div class="user-role">Member since Feb 2026</div></div><span style="font-size:0.75rem;color:var(--text-muted)">Active</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="member-bar" id="memberBar">
+  <p>Guest access — 1 chapter available</p>
+  <button onclick="showToast('Request sent for approval')">Request Access</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const PAGES = [
-  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1635805737707-575885ab0820?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1560972550-aba3456b5564?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1607604276583-eef5f0b7fe7a?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1560167016-022b78a0258e?w=800&h=1200&fit=crop',
-];
+const MANGA_DATA = {
+  chapters: [
+    { title: 'The Gate Opens', pages: [
+      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop'
+    ]}
+  ]
+};
 
-const COMMENTS = [
-  { page: 0, x: 35, y: 28, author: 'Meem Yaser', text: 'This panel composition took 3 days to perfect.' },
-  { page: 0, x: 72, y: 55, author: 'Sara K.', text: 'The shading here is incredible 🔥' },
-  { page: 2, x: 45, y: 40, author: 'Admin', text: 'Foreshadowing for Chapter 5' },
-  { page: 4, x: 60, y: 22, author: 'Meem Yaser', text: 'My favorite spread in the entire series.' },
-];
+let currentChapter = 0, currentPage = 0, chromeVisible = false, zoomLevel = 1, isPinching = false, startDist = 0, startZoom = 1;
 
-let currentPage = 0;
-let chromeVisible = true;
-let scale = 1, panX = 0, panY = 0;
-let isPinning = false;
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
 
-function enterReader() {
-  document.getElementById('landing-view').classList.remove('active');
-  document.getElementById('reader-view').classList.add('active');
-  currentPage = 0;
-  loadPage();
-}
-
-function exitReader(e) {
-  if (e) e.preventDefault();
-  document.getElementById('reader-view').classList.remove('active');
-  document.getElementById('landing-view').classList.add('active');
-  resetZoom();
+function updateProgress() {
+  const ch = MANGA_DATA.chapters[currentChapter];
+  document.getElementById('progressFill').style.width = ((currentPage + 1) / ch.pages.length * 100) + '%';
+  document.getElementById('pageNum').textContent = 'Page ' + (currentPage + 1) + ' of ' + ch.pages.length;
 }
 
 function loadPage() {
-  const img = document.getElementById('page-img');
-  const skel = document.getElementById('skeleton');
-  skel.style.display = 'block';
-  img.style.display = 'none';
+  const img = document.getElementById('pageImage');
+  const ch = MANGA_DATA.chapters[currentChapter];
   img.style.opacity = '0';
-  
-  const pre = new Image();
-  pre.onload = () => {
-    img.src = PAGES[currentPage];
-    img.style.display = 'block';
-    setTimeout(() => img.style.opacity = '1', 10);
-    skel.style.display = 'none';
-    resetZoom();
-    renderPins();
-    updateProgress();
-  };
-  pre.onerror = () => {
-    img.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200"><rect fill="%23050505" width="800" height="1200"/><text fill="%23333" x="400" y="580" text-anchor="middle" font-family="sans-serif" font-size="20">Page ${currentPage + 1}</text></svg>`;
-    img.style.display = 'block';
-    img.style.opacity = '1';
-    skel.style.display = 'none';
-  };
-  pre.src = PAGES[currentPage];
+  setTimeout(() => { img.src = ch.pages[currentPage]; img.onload = () => img.style.opacity = '1'; }, 150);
+  updateProgress();
 }
 
-function goNext() {
-  if (currentPage < PAGES.length - 1) { currentPage++; loadPage(); }
-  else toast('End of chapter');
-}
-
-function goPrev() {
-  if (currentPage > 0) { currentPage--; loadPage(); }
-}
-
-function updateProgress() {
-  document.getElementById('progress-fill').style.width = ((currentPage + 1) / PAGES.length * 100) + '%';
-  document.getElementById('page-counter').textContent = `Page ${currentPage + 1} / ${PAGES.length}`;
-}
+function nextPage() { if (zoomLevel > 1) { showToast('Zoom active — swipe disabled'); return; } const ch = MANGA_DATA.chapters[currentChapter]; if (currentPage < ch.pages.length - 1) { currentPage++; loadPage(); } }
+function prevPage() { if (zoomLevel > 1) { showToast('Zoom active — swipe disabled'); return; } if (currentPage > 0) { currentPage--; loadPage(); } }
 
 function toggleChrome() {
   chromeVisible = !chromeVisible;
-  document.getElementById('chrome-top').classList.toggle('hidden', !chromeVisible);
-  document.getElementById('chrome-bottom').classList.toggle('hidden', !chromeVisible);
-  document.getElementById('add-pin-btn').classList.toggle('hidden', !chromeVisible);
+  document.getElementById('chromeTop').classList.toggle('visible', chromeVisible);
+  document.getElementById('chromeBottom').classList.toggle('visible', chromeVisible);
 }
 
-// Zoom/Pan
-const stage = document.getElementById('page-stage');
-let pointers = new Map(), pinching = false, panning = false, startDist = 0, startScale = 1;
+function openReader(ch, pg) { currentChapter = ch; currentPage = pg || 0; zoomLevel = 1; document.getElementById('libraryView').classList.remove('active'); document.getElementById('readerView').classList.add('active'); document.getElementById('pageImage').style.transform = 'scale(1)'; loadPage(); document.getElementById('memberBar').style.display = 'none'; }
+function closeReader() { document.getElementById('readerView').classList.remove('active'); document.getElementById('libraryView').classList.add('active'); document.getElementById('memberBar').style.display = 'flex'; zoomLevel = 1; }
+function toggleComments() { document.getElementById('commentsDrawer').classList.toggle('open'); }
 
-stage.addEventListener('pointerdown', e => {
-  e.preventDefault();
-  pointers.set(e.pointerId, e);
-  if (pointers.size === 2) {
-    pinching = true;
-    const pts = [...pointers.values()];
-    startDist = Math.hypot(pts[1].clientX - pts[0].clientX, pts[1].clientY - pts[0].clientY);
-    startScale = scale;
-  } else if (pointers.size === 1 && scale > 1) {
-    panning = true;
-  }
-}, { passive: false });
-
-stage.addEventListener('pointermove', e => {
-  e.preventDefault();
-  if (!pointers.has(e.pointerId)) return;
-  pointers.set(e.pointerId, e);
-  if (pinching && pointers.size === 2) {
-    const pts = [...pointers.values()];
-    const d = Math.hypot(pts[1].clientX - pts[0].clientX, pts[1].clientY - pts[0].clientY);
-    scale = Math.max(1, Math.min(5, startScale * (d / startDist)));
-    applyTransform();
-  }
-}, { passive: false });
-
-stage.addEventListener('pointerup', e => {
-  pointers.delete(e.pointerId);
-  if (pointers.size < 2) pinching = false;
-  if (pointers.size === 0) panning = false;
-});
-
-function applyTransform() {
-  document.getElementById('page-img').style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-}
-
-function resetZoom() { scale = 1; panX = 0; panY = 0; applyTransform(); }
-
-// Double-tap zoom
-let lastTap = 0;
-stage.addEventListener('click', e => {
-  const now = Date.now();
-  if (now - lastTap < 300) {
-    if (scale > 1) resetZoom();
-    else { scale = 2.5; applyTransform(); }
-  }
-  lastTap = now;
-});
-
-// Pins
-function renderPins() {
-  const layer = document.getElementById('pin-layer');
-  layer.innerHTML = '';
-  COMMENTS.filter(c => c.page === currentPage).forEach((c, i) => {
-    const pin = document.createElement('div');
-    pin.className = 'pin';
-    pin.style.left = c.x + '%';
-    pin.style.top = c.y + '%';
-    pin.innerHTML = (i + 1) + `
-      <div class="pin-popover">
-        <div class="popover-author">${c.author}</div>
-        <div class="popover-text">${c.text}</div>
-      </div>`;
-    pin.onclick = e => { e.stopPropagation(); document.querySelectorAll('.pin').forEach(p => p.classList.remove('active')); pin.classList.toggle('active'); };
-    layer.appendChild(pin);
-  });
-}
-
-function startAddingPin() {
-  isPinning = true;
-  toast('Tap anywhere on the page to add a comment');
-  stage.style.cursor = 'crosshair';
-}
-
-stage.addEventListener('click', e => {
-  if (!isPinning) return;
-  const rect = stage.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width) * 100;
-  const y = ((e.clientY - rect.top) / rect.height) * 100;
-  COMMENTS.push({ page: currentPage, x, y, author: 'You', text: 'New comment' });
-  renderPins();
-  isPinning = false;
-  stage.style.cursor = '';
-  toast('Comment added!');
-});
-
-// Keyboard
-document.addEventListener('keydown', e => {
-  if (!document.getElementById('reader-view').classList.contains('active')) return;
-  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
-  else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
-  else if (e.key === 'Escape') { if (chromeVisible) exitReader(); }
-});
-
-// Swipe
-let touchStartX = 0;
-stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-stage.addEventListener('touchend', e => {
-  if (scale > 1) return;
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 60) { dx < 0 ? goNext() : goPrev(); }
+// Gestures
+let tsX = 0, tsY = 0, tsTime = 0;
+const stage = document.getElementById('readerStage');
+stage.addEventListener('touchstart', e => {
+  if (e.touches.length === 2) { isPinching = true; startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startZoom = zoomLevel; }
+  else { tsX = e.touches[0].clientX; tsY = e.touches[0].clientY; tsTime = Date.now(); }
 }, { passive: true });
 
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
+stage.addEventListener('touchmove', e => {
+  if (isPinching && e.touches.length === 2) { e.preventDefault(); const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); zoomLevel = Math.max(1, Math.min(4, startZoom * (dist / startDist))); document.getElementById('pageImage').style.transform = 'scale(' + zoomLevel + ')'; }
+}, { passive: false });
 
-function toggleLang() {
-  const isRTL = document.documentElement.dir === 'rtl';
-  document.documentElement.dir = isRTL ? 'ltr' : 'rtl';
-  toast(isRTL ? 'English' : 'Arabic');
-}
+stage.addEventListener('touchend', e => {
+  if (isPinching) { isPinching = false; if (zoomLevel < 1.1) { zoomLevel = 1; document.getElementById('pageImage').style.transform = 'scale(1)'; } return; }
+  const elapsed = Date.now() - tsTime; const dx = e.changedTouches[0].clientX - tsX; const dy = e.changedTouches[0].clientY - tsY;
+  if (elapsed < 300 && Math.abs(dx) < 10 && Math.abs(dy) < 10) { toggleChrome(); }
+  else if (elapsed < 500 && Math.abs(dx) > 50 && Math.abs(dy) < Math.abs(dx)) { if (zoomLevel > 1) return; if (dx < 0) nextPage(); else prevPage(); }
+});
 
-// Close pin popovers when tapping elsewhere
-stage.addEventListener('click', e => {
-  if (e.target.closest('.pin')) return;
-  document.querySelectorAll('.pin').forEach(p => p.classList.remove('active'));
+let lastTap = 0;
+stage.addEventListener('click', e => { const now = Date.now(); if (now - lastTap < 300) { zoomLevel = zoomLevel > 1 ? 1 : 2.5; document.getElementById('pageImage').style.transform = 'scale(' + zoomLevel + ')'; } lastTap = now; });
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('readerView').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') nextPage(); else if (e.key === 'ArrowLeft') prevPage(); else if (e.key === 'Escape') { closeReader(); document.getElementById('commentsDrawer').classList.remove('open'); }
+});
+
+document.getElementById('langToggle').addEventListener('click', () => {
+  const isAr = document.documentElement.dir === 'rtl';
+  document.documentElement.dir = isAr ? 'ltr' : 'rtl';
+  document.getElementById('langToggle').querySelector('span').textContent = isAr ? 'EN' : 'العربية';
 });
 </script>
 </body>

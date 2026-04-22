@@ -2,367 +2,252 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0A0A0A">
-<title>Meem Yaser Studio — Webtoon Reader</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Meem Yaser Studio — Serial</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Cormorant:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --font: 'Inter', 'Noto Sans Arabic', system-ui, sans-serif;
-  --landing-bg: #FAFAF8;
-  --landing-text: #111;
-  --landing-muted: #666;
-  --reader-bg: #0A0A0A;
-  --reader-text: #f5f5f5;
-  --reader-muted: #888;
-  --accent: #D4AF37;
-  --comment-bg: rgba(212,175,55,0.08);
+  --gold: #D4AF37; --gold-soft: rgba(212,175,55,0.12);
+  --bg: #FAFAF8; --bg-warm: #F5F4F0; --text: #1a1a1a;
+  --text-muted: #6b6b6b; --border: rgba(0,0,0,0.06);
+  --reader-bg: #0A0A0A; --reader-surface: #141414;
+  --reader-text: #EDEDED; --reader-muted: #8A8A8A; --reader-border: rgba(255,255,255,0.06);
+  --radius: 16px; --font: 'Geist', system-ui, sans-serif;
+  --font-serif: 'Cormorant', Georgia, serif;
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden; }
+img { -webkit-user-drag:none; user-select:none; }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font); overflow: hidden; overscroll-behavior: none; }
+/* Brand */
+.brand-bar { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1.25rem; background:rgba(250,250,248,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+.brand-logo { display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit; }
+.brand-mark { width:36px; height:36px; background:var(--gold); border-radius:10px; display:grid; place-items:center; color:#fff; font-weight:800; font-size:0.85rem; }
+.brand-title { font-weight:700; font-size:0.9rem; }
+.brand-sub { font-size:0.7rem; color:var(--text-muted); }
+.lang-toggle { display:flex; align-items:center; gap:0.3rem; background:transparent; border:1px solid rgba(0,0,0,0.12); padding:0.4rem 0.7rem; border-radius:999px; cursor:pointer; font-family:var(--font); font-size:0.75rem; font-weight:600; }
+.lang-toggle:hover { border-color:var(--gold); background:var(--gold-soft); }
 
-.view { position: fixed; inset: 0; display: none; opacity: 0; transition: opacity 0.3s ease; }
-.view.active { display: flex; flex-direction: column; opacity: 1; }
+/* Views */
+.view { display:none; min-height:100dvh; padding-top:60px; }
+.view.active { display:block; animation:fadeIn 0.5s ease; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
-/* —— LANDING —— */
-#landing-view {
-  background: var(--landing-bg);
-  color: var(--landing-text);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
+/* Editorial Hero */
+.serial-hero { padding:3rem 1.25rem 2rem; max-width:900px; margin:0 auto; }
+.serial-label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--gold); font-weight:700; margin-bottom:1rem; }
+.serial-hero h1 { font-family:var(--font-serif); font-size:clamp(2.5rem, 6vw, 4.5rem); font-weight:700; line-height:1.05; letter-spacing:-0.02em; margin-bottom:1rem; }
+.serial-hero p { color:var(--text-muted); font-size:1.05rem; max-width:50ch; line-height:1.7; }
+.serial-divider { height:1px; background:var(--border); max-width:900px; margin:0 auto; }
 
-.landing-wrap { max-width: 480px; margin: 0 auto; padding: 60px 20px 40px; }
+/* Editorial Grid */
+.serial-grid { max-width:900px; margin:0 auto; padding:2rem 1.25rem 4rem; display:grid; grid-template-columns:repeat(2, 1fr); gap:1.5rem; }
+.serial-issue { display:flex; gap:1rem; padding:1.25rem; border-radius:var(--radius); border:1px solid var(--border); cursor:pointer; transition:all 0.25s; background:#fff; }
+.serial-issue:hover { border-color:var(--gold); box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+.serial-issue.locked { opacity:0.45; cursor:not-allowed; }
+.serial-issue.locked:hover { border-color:var(--border); box-shadow:none; transform:none; }
+.serial-issue-num { font-family:var(--font-serif); font-size:1.5rem; font-weight:700; color:var(--gold); line-height:1; min-width:40px; }
+.serial-issue-body { flex:1; }
+.serial-issue-title { font-weight:600; font-size:0.95rem; margin-bottom:0.3rem; }
+.serial-issue-desc { font-size:0.8rem; color:var(--text-muted); line-height:1.5; margin-bottom:0.5rem; }
+.serial-issue-meta { display:flex; gap:0.75rem; font-size:0.7rem; color:var(--text-subtle); }
+.serial-issue-status { margin-left:auto; font-size:0.7rem; font-weight:600; padding:0.2rem 0.5rem; border-radius:4px; background:var(--gold-soft); color:var(--gold); }
+.serial-issue-status.locked { background:rgba(0,0,0,0.04); color:var(--text-subtle); }
 
-.studio-name { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--landing-muted); margin-bottom: 6px; }
-h1 { font-size: clamp(36px, 8vw, 56px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; margin-bottom: 12px; }
-.tagline { font-size: 17px; color: var(--landing-muted); line-height: 1.5; margin-bottom: 32px; }
+/* Reader */
+#readerView { background:var(--reader-bg); padding-top:0; position:fixed; inset:0; z-index:2000; }
+.reader-stage { width:100%; height:100dvh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.reader-stage img { max-width:100%; max-height:100%; object-fit:contain; transition:opacity 0.2s, transform 0.3s; }
 
-.featured-cover {
-  width: 100%; aspect-ratio: 3/4; border-radius: 16px;
-  background: linear-gradient(135deg, #2a2a2a, #1a1a1a); overflow: hidden;
-  position: relative; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-}
-.featured-cover img { width: 100%; height: 100%; object-fit: cover; }
-.cover-badge {
-  position: absolute; top: 16px; left: 16px;
-  background: var(--accent); color: #000; font-size: 11px; font-weight: 700;
-  padding: 6px 12px; border-radius: 6px; letter-spacing: 0.05em;
-}
+.reader-chrome { position:fixed; left:0; right:0; z-index:100; padding:1rem; transition:opacity 0.3s, transform 0.3s; }
+.reader-top { top:0; background:rgba(10,10,10,0.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--reader-border); display:flex; justify-content:space-between; align-items:center; transform:translateY(0); }
+.reader-top.hidden { transform:translateY(-100%); opacity:0; pointer-events:none; }
+.reader-bottom { bottom:0; background:rgba(10,10,10,0.85); backdrop-filter:blur(12px); border-top:1px solid var(--reader-border); transform:translateY(0); }
+.reader-bottom.hidden { transform:translateY(100%); opacity:0; pointer-events:none; }
+.back-btn { width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.06); color:var(--reader-text); display:grid; place-items:center; cursor:pointer; font-size:1.1rem; }
+.reader-chapter-title { color:var(--reader-text); font-weight:600; font-size:0.9rem; font-family:var(--font-serif); }
+.reader-nav { display:flex; gap:0.5rem; }
+.reader-page-info { text-align:center; color:var(--reader-muted); font-size:0.8rem; margin-bottom:0.5rem; }
+.reader-progress { height:3px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; }
+.reader-progress-fill { height:100%; background:var(--gold); border-radius:2px; transition:width 0.3s; }
 
-.btn-row { display: flex; gap: 10px; margin-bottom: 40px; }
-.btn {
-  flex: 1; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600;
-  font-family: var(--font); border: none; cursor: pointer; text-align: center;
-  transition: all 0.15s ease;
-}
-.btn-primary { background: #111; color: #fff; }
-.btn-secondary { background: #f0f0ec; color: #111; }
+/* Tap zones */
+.tap-left, .tap-right { position:absolute; top:0; bottom:0; width:25%; z-index:50; }
+.tap-left { left:0; }
+.tap-right { right:0; }
+.tap-center { position:absolute; top:0; left:25%; right:25%; bottom:0; z-index:50; }
 
-.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--landing-muted); margin-bottom: 16px; }
-
-.chapter-grid { display: flex; flex-direction: column; gap: 8px; }
-.chapter-row {
-  display: flex; align-items: center; gap: 16px; padding: 16px;
-  background: #fff; border-radius: 12px; cursor: pointer;
-  transition: all 0.15s ease; border: 1px solid rgba(0,0,0,0.04);
-}
-.chapter-row:hover { background: #f8f8f6; transform: translateX(4px); }
-.chapter-row:active { transform: scale(0.98); }
-
-.ch-thumb { width: 56px; height: 56px; border-radius: 10px; background: linear-gradient(135deg, #ddd, #bbb); flex-shrink: 0; overflow: hidden; }
-.ch-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.ch-info { flex: 1; }
-.ch-num { font-size: 14px; font-weight: 600; }
-.ch-date { font-size: 12px; color: var(--landing-muted); margin-top: 2px; }
-.ch-status { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
-.ch-status.free { background: #e8f5e9; color: #2e7d32; }
-.ch-status.locked { background: #fff3e0; color: #ef6c00; }
-
-/* —— READER: Webtoon vertical scroll —— */
-#reader-view { background: var(--reader-bg); color: var(--reader-text); }
-
-.reader-scroll {
-  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth; padding-bottom: max(20px, env(safe-area-inset-bottom));
-}
-
-.webtoon-strip {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 0; max-width: 600px; margin: 0 auto;
-}
-
-.webtoon-page {
-  width: 100%; display: block;
-  opacity: 0; transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.webtoon-page.visible { opacity: 1; transform: translateY(0); }
-.webtoon-page img { width: 100%; display: block; }
-
-/* Comment bubbles on pages — Webtoon style */
-.page-comments { position: relative; }
-.comment-bubble {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  background: var(--comment-bg); border: 1px solid rgba(212,175,55,0.2);
-  padding: 10px 16px; border-radius: 16px; font-size: 13px;
-  max-width: 80%; backdrop-filter: blur(8px);
-  margin-top: -20px; z-index: 10;
-}
-.comment-bubble .author { font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
-
-/* Sticky header */
-.sticky-header {
-  position: sticky; top: 0; z-index: 100;
-  background: linear-gradient(180deg, rgba(10,10,10,0.95) 60%, transparent);
-  padding: max(12px, env(safe-area-inset-top)) 16px 20px;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: opacity 0.3s ease;
-}
-.sticky-header.hidden { opacity: 0; pointer-events: none; }
-
-.back-btn {
-  color: var(--reader-text); text-decoration: none; font-size: 14px; font-weight: 500;
-  display: flex; align-items: center; gap: 4px; opacity: 0.7;
-}
-.header-title { font-size: 14px; font-weight: 600; opacity: 0.6; }
-.header-actions { display: flex; gap: 8px; }
-.icon-btn {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.04);
-  color: var(--reader-text); font-size: 16px; display: grid; place-items: center;
-  cursor: pointer;
-}
-
-/* Progress bar — top of screen, like Webtoon apps */
-.top-progress {
-  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 200;
-  background: rgba(255,255,255,0.05);
-}
-.top-progress-fill {
-  height: 100%; background: var(--accent); width: 0%;
-  transition: width 0.1s linear;
-}
-
-/* Floating comment input */
-.comment-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: rgba(15,15,15,0.95); backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding: 12px 16px max(12px, env(safe-area-inset-bottom));
-  display: flex; gap: 10px; align-items: center; z-index: 150;
-  transform: translateY(0); transition: transform 0.3s ease;
-}
-.comment-bar.hidden { transform: translateY(100%); }
-.comment-input {
-  flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px; padding: 10px 16px; color: var(--reader-text); font-size: 14px;
-  font-family: var(--font); outline: none;
-}
-.comment-input::placeholder { color: var(--reader-muted); }
-.send-btn {
-  width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: #000;
-  border: none; font-size: 18px; cursor: pointer; display: grid; place-items: center;
-}
+/* Comments panel */
+.comments-panel { position:fixed; top:0; right:0; bottom:0; width:340px; max-width:90vw; background:var(--reader-surface); border-left:1px solid var(--reader-border); z-index:300; transform:translateX(100%); transition:transform 0.35s cubic-bezier(0.22,1,0.36,1); display:flex; flex-direction:column; }
+.comments-panel.open { transform:translateX(0); }
+.comments-head { padding:1rem; border-bottom:1px solid var(--reader-border); display:flex; justify-content:space-between; align-items:center; }
+.comments-head h3 { color:var(--reader-text); font-family:var(--font-serif); font-size:1.1rem; }
+.comments-body { flex:1; overflow-y:auto; padding:1rem; }
+.comment-item { margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid var(--reader-border); }
+.comment-author { color:var(--gold); font-size:0.8rem; font-weight:600; }
+.comment-text { color:var(--reader-muted); font-size:0.8rem; line-height:1.5; margin-top:0.25rem; }
+.comment-foot { padding:1rem; border-top:1px solid var(--reader-border); }
+.comment-foot input { width:100%; background:rgba(255,255,255,0.05); border:1px solid var(--reader-border); border-radius:10px; padding:0.6rem; color:var(--reader-text); font-family:var(--font); font-size:0.8rem; }
 
 /* Toast */
-.toast {
-  position: fixed; top: max(20px, env(safe-area-inset-top) + 10px); left: 50%;
-  transform: translateX(-50%) translateY(-20px); background: rgba(30,30,30,0.95);
-  color: #fff; padding: 10px 20px; border-radius: 10px; font-size: 14px;
-  opacity: 0; transition: all 0.3s ease; z-index: 300; pointer-events: none;
-  backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06);
+.toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(20px); background:var(--reader-surface); color:var(--reader-text); padding:0.75rem 1.25rem; border-radius:12px; font-size:0.85rem; border:1px solid var(--reader-border); opacity:0; transition:all 0.35s; z-index:700; pointer-events:none; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+@media (max-width: 640px) {
+  .serial-grid { grid-template-columns:1fr; }
+  .comments-panel { width:100%; }
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- LANDING -->
-<div id="landing-view" class="view active">
-  <div class="landing-wrap">
-    <div class="studio-name">Restless Worlds</div>
-    <h1>Moons Road</h1>
-    <p class="tagline">Scroll through the story. One continuous journey.</p>
-    
-    <div class="featured-cover">
-      <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&h=800&fit=crop" alt="Cover">
-      <div class="cover-badge">NEW CHAPTER</div>
-    </div>
-    
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="startReading()">▶ Read Chapter 1</button>
-      <button class="btn btn-secondary" onclick="toggleLang()">EN / AR</button>
-    </div>
-    
-    <div class="section-label">All Chapters</div>
-    <div class="chapter-grid">
-      <div class="chapter-row" onclick="startReading()">
-        <div class="ch-thumb"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=100&h=100&fit=crop"></div>
-        <div class="ch-info">
-          <div class="ch-num">Chapter 1 — The Beginning</div>
-          <div class="ch-date">Apr 22, 2026 · 8 pages</div>
-        </div>
-        <div class="ch-status free">FREE</div>
+<nav class="brand-bar">
+  <a href="/" class="brand-logo">
+    <div class="brand-mark">MY</div>
+    <div><div class="brand-title">Meem Yaser</div><div class="brand-sub">Studio</div></div>
+  </a>
+  <button class="lang-toggle" id="langToggle"><span>EN</span><span style="color:#999;margin:0 0.2rem">/</span><span style="color:#999">العربية</span></button>
+</nav>
+
+<!-- LIBRARY -->
+<div class="view active" id="libraryView">
+  <div class="serial-hero">
+    <div class="serial-label">Restless Worlds — Vol. 1</div>
+    <h1>Serial</h1>
+    <p>A serialized dark fantasy told through illustrated chapters. New releases unlocked monthly for members.</p>
+  </div>
+  <div class="serial-divider"></div>
+  <div class="serial-grid">
+    <div class="serial-issue" onclick="openReader(0,0)">
+      <div class="serial-issue-num">01</div>
+      <div class="serial-issue-body">
+        <div class="serial-issue-title">The Gate Opens</div>
+        <div class="serial-issue-desc">The threshold between worlds grows thin. A sleepless chaplain discovers the first crack.</div>
+        <div class="serial-issue-meta"><span>24 pages</span><span>Mar 2026</span></div>
       </div>
-      <div class="chapter-row" style="opacity:0.5">
-        <div class="ch-thumb"><img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=100&h=100&fit=crop"></div>
-        <div class="ch-info">
-          <div class="ch-num">Chapter 2 — The Road</div>
-          <div class="ch-date">Coming soon</div>
-        </div>
-        <div class="ch-status locked">LOCKED</div>
+      <span class="serial-issue-status">Free</span>
+    </div>
+    <div class="serial-issue locked">
+      <div class="serial-issue-num">02</div>
+      <div class="serial-issue-body">
+        <div class="serial-issue-title">Moons Road</div>
+        <div class="serial-issue-desc">Three moons align over the dead city. The pilgrimage begins with blood.</div>
+        <div class="serial-issue-meta"><span>28 pages</span><span>Apr 2026</span></div>
       </div>
+      <span class="serial-issue-status locked">Member</span>
+    </div>
+    <div class="serial-issue locked">
+      <div class="serial-issue-num">03</div>
+      <div class="serial-issue-body">
+        <div class="serial-issue-title">Symphony of Doom</div>
+        <div class="serial-issue-desc">The orchestra plays without musicians. Every note unravels reality further.</div>
+        <div class="serial-issue-meta"><span>31 pages</span><span>May 2026</span></div>
+      </div>
+      <span class="serial-issue-status locked">Member</span>
+    </div>
+    <div class="serial-issue locked">
+      <div class="serial-issue-num">04</div>
+      <div class="serial-issue-body">
+        <div class="serial-issue-title">The Grand Lord</div>
+        <div class="serial-issue-desc">He has no face and seven names. To speak one is to summon him.</div>
+        <div class="serial-issue-meta"><span>26 pages</span><span>Jun 2026</span></div>
+      </div>
+      <span class="serial-issue-status locked">Member</span>
+    </div>
+    <div class="serial-issue locked">
+      <div class="serial-issue-num">05</div>
+      <div class="serial-issue-body">
+        <div class="serial-issue-title">The Speakers</div>
+        <div class="serial-issue-desc">They whisper through static. The radio never turns off anymore.</div>
+        <div class="serial-issue-meta"><span>22 pages</span><span>Jul 2026</span></div>
+      </div>
+      <span class="serial-issue-status locked">Member</span>
+    </div>
+    <div class="serial-issue locked">
+      <div class="serial-issue-num">06</div>
+      <div class="serial-issue-body">
+        <div class="serial-issue-title">The Sleepless Chaplain</div>
+        <div class="serial-issue-desc">He has not slept in forty nights. The gates are almost wide enough.</div>
+        <div class="serial-issue-meta"><span>30 pages</span><span>Aug 2026</span></div>
+      </div>
+      <span class="serial-issue-status locked">Member</span>
     </div>
   </div>
 </div>
 
 <!-- READER -->
-<div id="reader-view" class="view">
-  <div class="top-progress"><div class="top-progress-fill" id="progress-bar"></div></div>
+<div class="view" id="readerView">
+  <div class="reader-stage" id="readerStage">
+    <img id="pageImage" src="" alt="Page" draggable="false">
+    <div class="tap-left" onclick="prevPage()"></div>
+    <div class="tap-center" onclick="toggleChrome()"></div>
+    <div class="tap-right" onclick="nextPage()"></div>
+  </div>
   
-  <div class="sticky-header" id="sticky-header">
-    <a href="#" class="back-btn" onclick="exitReader(event)">←</a>
-    <div class="header-title">Ch.1 — The Beginning</div>
-    <div class="header-actions">
-      <button class="icon-btn" onclick="toggleComments()">💬</button>
-      <button class="icon-btn" onclick="toggleSettings()">⚙️</button>
+  <div class="reader-chrome reader-top" id="chromeTop">
+    <button class="back-btn" onclick="closeReader()">←</button>
+    <div class="reader-chapter-title" id="readerTitle">The Gate Opens</div>
+    <div class="reader-nav">
+      <button class="back-btn" onclick="toggleComments()">☰</button>
     </div>
   </div>
   
-  <div class="reader-scroll" id="scroll-container">
-    <div class="webtoon-strip" id="strip"></div>
+  <div class="reader-chrome reader-bottom" id="chromeBottom">
+    <div class="reader-page-info" id="pageInfo">Page 1 of 10</div>
+    <div class="reader-progress"><div class="reader-progress-fill" id="progressFill" style="width:0%"></div></div>
   </div>
   
-  <div class="comment-bar" id="comment-bar">
-    <input type="text" class="comment-input" id="comment-input" placeholder="Add a comment..." onkeypress="if(event.key==='Enter')sendComment()">
-    <button class="send-btn" onclick="sendComment()">→</button>
+  <div class="comments-panel" id="commentsPanel">
+    <div class="comments-head"><h3>Chapter Discussion</h3><button class="back-btn" onclick="toggleComments()">✕</button></div>
+    <div class="comments-body">
+      <div class="comment-item"><div class="comment-author">Leila</div><div class="comment-text">The opening panels set such a heavy tone. Love the restraint.</div></div>
+      <div class="comment-item"><div class="comment-author">Omar</div><div class="comment-text">Is the gate symbolism from Arabic folklore? Feels familiar.</div></div>
+    </div>
+    <div class="comment-foot"><input type="text" placeholder="Join the discussion..."></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const PAGES = [
+const MANGA_DATA = { chapters: [{ title: 'The Gate Opens', pages: [
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1635805737707-575885ab0820?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1560972550-aba3456b5564?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1607604276583-eef5f0b7fe7a?w=800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1560167016-022b78a0258e?w=800&h=1200&fit=crop',
-];
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=1200&fit=crop',
+  'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop'
+]}]};
 
-const PAGE_COMMENTS = {
-  1: [{ author: 'Meem Yaser', text: 'This transition was inspired by classical Arabic manuscripts.' }],
-  3: [{ author: 'Sara K.', text: 'The symbolism here 🔥' }],
-  5: [{ author: 'Admin', text: 'Notice the shadow direction — foreshadowing Chapter 3' }],
-};
+let currentChapter = 0, currentPage = 0, chromeVisible = true, zoomLevel = 1, isPinching = false, startDist = 0, startZoom = 1;
 
-let commentsVisible = true;
-let headerVisible = true;
-let lastScrollY = 0;
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+function updateProgress() { const ch = MANGA_DATA.chapters[currentChapter]; document.getElementById('progressFill').style.width = ((currentPage + 1) / ch.pages.length * 100) + '%'; document.getElementById('pageInfo').textContent = 'Page ' + (currentPage + 1) + ' of ' + ch.pages.length; }
+function loadPage() { const img = document.getElementById('pageImage'); const ch = MANGA_DATA.chapters[currentChapter]; img.style.opacity = '0'; setTimeout(() => { img.src = ch.pages[currentPage]; img.onload = () => img.style.opacity = '1'; }, 150); updateProgress(); }
+function nextPage() { if (zoomLevel > 1) { showToast('Zoom active — swipe disabled'); return; } const ch = MANGA_DATA.chapters[currentChapter]; if (currentPage < ch.pages.length - 1) { currentPage++; loadPage(); } }
+function prevPage() { if (zoomLevel > 1) { showToast('Zoom active — swipe disabled'); return; } if (currentPage > 0) { currentPage--; loadPage(); } }
+function toggleChrome() { chromeVisible = !chromeVisible; document.getElementById('chromeTop').classList.toggle('hidden', !chromeVisible); document.getElementById('chromeBottom').classList.toggle('hidden', !chromeVisible); }
+function openReader(ch, pg) { currentChapter = ch; currentPage = pg || 0; zoomLevel = 1; document.getElementById('libraryView').classList.remove('active'); document.getElementById('readerView').classList.add('active'); document.getElementById('pageImage').style.transform = 'scale(1)'; loadPage(); }
+function closeReader() { document.getElementById('readerView').classList.remove('active'); document.getElementById('libraryView').classList.add('active'); zoomLevel = 1; }
+function toggleComments() { document.getElementById('commentsPanel').classList.toggle('open'); }
 
-function startReading() {
-  document.getElementById('landing-view').classList.remove('active');
-  document.getElementById('reader-view').classList.add('active');
-  renderStrip();
-  setupScroll();
-}
+let tsX = 0, tsY = 0, tsTime = 0;
+const stage = document.getElementById('readerStage');
+stage.addEventListener('touchstart', e => { if (e.touches.length === 2) { isPinching = true; startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startZoom = zoomLevel; } else { tsX = e.touches[0].clientX; tsY = e.touches[0].clientY; tsTime = Date.now(); } }, { passive: true });
+stage.addEventListener('touchmove', e => { if (isPinching && e.touches.length === 2) { e.preventDefault(); const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); zoomLevel = Math.max(1, Math.min(4, startZoom * (dist / startDist))); document.getElementById('pageImage').style.transform = 'scale(' + zoomLevel + ')'; } }, { passive: false });
+stage.addEventListener('touchend', e => { if (isPinching) { isPinching = false; if (zoomLevel < 1.1) { zoomLevel = 1; document.getElementById('pageImage').style.transform = 'scale(1)'; } return; } const elapsed = Date.now() - tsTime; const dx = e.changedTouches[0].clientX - tsX; const dy = e.changedTouches[0].clientY - tsY; if (elapsed < 300 && Math.abs(dx) < 10 && Math.abs(dy) < 10) { toggleChrome(); } else if (elapsed < 500 && Math.abs(dx) > 50 && Math.abs(dy) < Math.abs(dx)) { if (zoomLevel > 1) return; if (dx < 0) nextPage(); else prevPage(); } });
 
-function exitReader(e) {
-  if (e) e.preventDefault();
-  document.getElementById('reader-view').classList.remove('active');
-  document.getElementById('landing-view').classList.add('active');
-}
+let lastTap = 0;
+stage.addEventListener('click', e => { const now = Date.now(); if (now - lastTap < 300) { zoomLevel = zoomLevel > 1 ? 1 : 2.5; document.getElementById('pageImage').style.transform = 'scale(' + zoomLevel + ')'; } lastTap = now; });
 
-function renderStrip() {
-  const strip = document.getElementById('strip');
-  strip.innerHTML = '';
-  PAGES.forEach((src, i) => {
-    const pageEl = document.createElement('div');
-    pageEl.className = 'webtoon-page';
-    pageEl.dataset.index = i;
-    
-    let html = `<img src="${src}" alt="Page ${i+1}" loading="lazy">`;
-    
-    if (PAGE_COMMENTS[i] && commentsVisible) {
-      html += `<div class="page-comments">`;
-      PAGE_COMMENTS[i].forEach(c => {
-        html += `<div class="comment-bubble"><div class="author">${c.author}</div>${c.text}</div>`;
-      });
-      html += `</div>`;
-    }
-    
-    pageEl.innerHTML = html;
-    strip.appendChild(pageEl);
-  });
-  
-  // IntersectionObserver for lazy reveal
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
-    });
-  }, { threshold: 0.1 });
-  
-  document.querySelectorAll('.webtoon-page').forEach(el => obs.observe(el));
-}
+document.addEventListener('keydown', e => { if (!document.getElementById('readerView').classList.contains('active')) return; if (e.key === 'ArrowRight') nextPage(); else if (e.key === 'ArrowLeft') prevPage(); else if (e.key === 'Escape') { closeReader(); document.getElementById('commentsPanel').classList.remove('open'); } });
 
-function setupScroll() {
-  const container = document.getElementById('scroll-container');
-  const progress = document.getElementById('progress-bar');
-  const header = document.getElementById('sticky-header');
-  
-  container.addEventListener('scroll', () => {
-    const y = container.scrollTop;
-    const max = container.scrollHeight - container.clientHeight;
-    progress.style.width = (y / max * 100) + '%';
-    
-    // Hide/show header on scroll direction
-    if (y > lastScrollY && y > 100) {
-      header.classList.add('hidden');
-      document.getElementById('comment-bar').classList.add('hidden');
-    } else {
-      header.classList.remove('hidden');
-      document.getElementById('comment-bar').classList.remove('hidden');
-    }
-    lastScrollY = y;
-  }, { passive: true });
-}
-
-function toggleComments() {
-  commentsVisible = !commentsVisible;
-  renderStrip();
-  toast(commentsVisible ? 'Comments shown' : 'Comments hidden');
-}
-
-function toggleSettings() {
-  toast('Settings: Direction, Fit mode');
-}
-
-function sendComment() {
-  const input = document.getElementById('comment-input');
-  if (!input.value.trim()) return;
-  toast('Comment posted!');
-  input.value = '';
-}
-
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
-
-function toggleLang() {
-  const isRTL = document.documentElement.dir === 'rtl';
-  document.documentElement.dir = isRTL ? 'ltr' : 'rtl';
-  toast(isRTL ? 'English' : 'Arabic');
-}
+document.getElementById('langToggle').addEventListener('click', () => { const isAr = document.documentElement.dir === 'rtl'; document.documentElement.dir = isAr ? 'ltr' : 'rtl'; document.getElementById('langToggle').querySelector('span').textContent = isAr ? 'EN' : 'العربية'; });
 </script>
 </body>
 </html>
