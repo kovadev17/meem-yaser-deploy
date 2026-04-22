@@ -225,7 +225,7 @@ body {
 }
 .browser-controls input:focus, .browser-controls select:focus { outline: none; border-color: #ccc; }
 .chapter-list { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; }
-.chapter-item {
+.chapter-item { min-height: 80px; cursor: pointer; -webkit-tap-highlight-color: rgba(212,175,55,0.1); cursor: pointer; -webkit-tap-highlight-color: transparent;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1rem 0; border-bottom: 1px solid var(--border); cursor: pointer;
   transition: background 0.15s;
@@ -233,7 +233,7 @@ body {
 .chapter-item:first-child { padding-top: 0; }
 .chapter-item:hover { background: rgba(0,0,0,0.01); }
 .chapter-item.locked { opacity: 0.55; }
-.ch-left { display: flex; align-items: center; gap: 1rem; }
+.ch-left { gap: 16px; display: flex; align-items: center; gap: 1rem; }
 .ch-num {
   font-family: 'Newsreader', Georgia, serif; font-size: 1.25rem; font-weight: 300;
   color: var(--text-secondary); width: 32px; text-align: center;
@@ -272,7 +272,7 @@ body {
 .reader-info { text-align: center; }
 .reader-info h3 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }
 .reader-info span { font-size: 0.65rem; opacity: 0.5; }
-.reader-viewport {
+.reader-viewport { touch-action: pan-x pan-y pinch-zoom; -webkit-user-select: none; user-select: none; touch-action: pan-x pan-y;
   flex: 1; display: flex; align-items: center; justify-content: center;
   overflow: hidden; position: relative; touch-action: pan-y pinch-zoom;
 }
@@ -314,32 +314,12 @@ body {
 .comment-toggle.active { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
 
 /* ===== SPATIAL COMMENTS ===== */
-.spatial-layer { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
-.spatial-layer.active { pointer-events: auto; }
-.spatial-pin {
-  position: absolute; width: 24px; height: 24px;
-  background: var(--accent-gold); border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  display: grid; place-items: center; animation: pinDrop 0.35s cubic-bezier(0.16,1,0.3,1);
-}
-@keyframes pinDrop { from { transform: rotate(-45deg) scale(0); } to { transform: rotate(-45deg) scale(1); } }
-.spatial-pin:hover { transform: rotate(-45deg) scale(1.15); }
-.spatial-pin .pin-core { width: 8px; height: 8px; background: #fff; border-radius: 50%; }
-.spatial-pin.u-red { background: #dc4446; }
-.spatial-pin.u-blue { background: #2b7de1; }
-.spatial-pin.u-green { background: #1f9d57; }
-.spatial-tooltip {
-  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
-  background: #1a1a1a; border: 1px solid var(--border-dark); border-radius: 6px;
-  padding: 0.4rem 0.6rem; font-size: 0.7rem; white-space: nowrap; color: #fff;
-  opacity: 0; transition: opacity 0.2s; pointer-events: none;
-}
-.spatial-pin:hover .spatial-tooltip { opacity: 1; }
-.comment-form-overlay {
-  position: absolute; background: #141414; border: 1px solid var(--border-dark);
-  border-radius: 10px; padding: 0.875rem; width: 240px; z-index: 6;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-}
+
+ to { transform: rotate(-45deg) scale(1); } }
+
+
+
+
 .comment-form-overlay textarea {
   width: 100%; background: #0a0a0a; border: 1px solid var(--border-dark); border-radius: 4px;
   padding: 0.4rem; color: #fff; font-family: inherit; font-size: 0.75rem; resize: none; height: 52px; margin-bottom: 0.4rem;
@@ -484,7 +464,7 @@ body {
   .reader-page { border-radius: 0; width: 100vw; height: 100dvh; }
   .reader-toolbar { padding: 0.75rem 1rem; }
   .reader-toolbar .reader-title { font-size: 0.85rem; }
-  .reader-viewport { padding: 0; }
+  .reader-viewport { touch-action: pan-x pan-y pinch-zoom; -webkit-user-select: none; user-select: none; touch-action: pan-x pan-y; padding: 0; }
   .reader-page-img { max-height: 75vh; width: 100%; }
   .reader-nav-btn { 
     display: flex; width: 56px; height: 56px; font-size: 1.75rem;
@@ -499,7 +479,7 @@ body {
   .comment-panel.open { right: 0; }
   
   /* Touch targets minimum 44px */
-  .chapter-item { min-height: 64px; padding: 0.75rem; }
+  .chapter-item { min-height: 80px; cursor: pointer; -webkit-tap-highlight-color: rgba(212,175,55,0.1); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 64px; padding: 0.75rem; }
   .chapter-thumb { width: 60px; height: 60px; }
   .tier-card { padding: 1.5rem 1rem; }
   .btn, button, a { min-height: 44px; }
@@ -800,23 +780,23 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
     <div class="hero-eyebrow reveal"><span class="dot"></span><span id="heroEyebrow">Private Reading Club</span></div>
     <h1 id="heroTitle"><span>Restless</span> Worlds</h1>
     <p id="heroDesc">A private manga reading club. Join our exclusive community and explore the worlds of Meem Yaser.</p>
-    <a href="#" class="hero-cta reveal" id="heroCta" data-action="browse">استكشف المكتبة</a>
+    <a href="#" class="hero-cta reveal" id="heroCta" data-action="browse">Explore the Library</a>
   </section>
 
   <section class="section section-light">
     <div class="section-header reveal">
-      <div class="eyebrow">المكتبة</div>
-      <h2 id="featuredTitle">المسلسلات المميزة</h2>
-      <p id="featuredDesc">اختر من مجموعتنا المتنامية من القصص المصورة الأصلية</p>
+      <div class="eyebrow">Library</div>
+      <h2 id="featuredTitle">Featured Series</h2>
+      <p id="featuredDesc">Choose from our growing collection of original manga stories</p>
     </div>
     <div class="bento-grid" id="mangaGrid"></div>
   </section>
 
   <section class="section">
     <div class="section-header reveal">
-      <div class="eyebrow">العضويات</div>
-      <h2 id="tiersTitle">خطط العضوية</h2>
-      <p id="tiersDesc">اختر الخطة التي تناسبك</p>
+      <div class="eyebrow">Membership</div>
+      <h2 id="tiersTitle">Membership Access</h2>
+      <p id="tiersDesc">Approval-based access to our private reading club</p>
     </div>
     <div class="tiers-wrap">
       <div class="tiers-grid" id="tiersGrid"></div>
@@ -826,13 +806,13 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
   <section class="section section-light">
     <div class="about-grid reveal">
       <div class="about-content">
-        <div class="eyebrow">الاستوديو</div>
-        <h2 id="aboutTitle">عن الاستوديو</h2>
-        <p id="aboutDesc1">ميم ياسر ستوديو هو بيت للسرد البصري في دبي. نخلق عوالم لا تهدأ من خلال فن القصص المصورة والروايات المصورة.</p>
-        <p id="aboutDesc2">منذ تأسيسه، طور الاستوديو أربع سلاسل رئيسية تجمع بين العمق الأدبي العربي والجماليات المرئية للمانغا.</p>
+        <div class="eyebrow">Studio</div>
+        <h2 id="aboutTitle">About the Studio</h2>
+        <p id="aboutDesc1">Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through the art of manga and graphic novels.</p>
+        <p id="aboutDesc2">Since its founding, the studio has developed four major series that blend Arabic literary depth with manga visual aesthetics.</p>
         <div class="about-stats">
           <div><div class="as-num">5</div><div class="as-label">سلاسل</div></div>
-          <div><div class="as-num">47</div><div class="as-label">فصل</div></div>
+          <div><div class="as-num">47</div><div class="as-label">Ch.</div></div>
           <div><div class="as-num">1.2k</div><div class="as-label"></div></div>
         </div>
       </div>
@@ -845,53 +825,53 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
   
   <section class="section">
     <div class="section-header reveal">
-      <div class="eyebrow">الأسئلة الشائعة</div>
-      <h2 id="faqTitle">الأسئلة الشائعة</h2>
+      <div class="eyebrow">Frequently Asked Questions</div>
+      <h2 id="faqTitle">Frequently Asked Questions</h2>
     </div>
     <div class="faq-section reveal" id="faqSection">
       <div class="faq-item">
-        <button class="faq-question">كيف أصبح عضواً؟</button>
-        <div class="faq-answer">يمكنك التسجيل مجاناً والاستمتاع بجميع الفصول المجانية. للوصول الى الفصول المميزة، يمكنك الترقية الى الوصول للأعضاء.</div>
+        <button class="faq-question">How do I become a member?</button>
+        <div class="faq-answer">Register for free to enjoy all open chapters. To access member-only chapters, request membership and wait for admin approval.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">هل يمكنني قراءة المانغا على الهاتف؟</button>
-        <div class="faq-answer">نعم، الموقع مصمم بشكل كامل للجوال. يدعم التنقل بالسحب والتكبير/التصغير باللمس.</div>
+        <button class="faq-question">Can I read manga on my phone?</button>
+        <div class="faq-answer">Yes, the site is fully designed for mobile. It supports swipe navigation and pinch-to-zoom.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">كيف أضيف تعليقات على الصفحات؟</button>
-        <div class="faq-answer">أثناء القراءة، اضغط على زر "التعليقات" في الأعلى، ثم اضغط على أي مكان في الصفحة لإضافة تعليق.</div>
+        <button class="faq-question">How do I add comments on pages?</button>
+        <div class="faq-answer">During reading, open the Comments panel from the top bar. Add your thoughts in the side panel without covering the artwork.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">ما هي طرق الدفع المتوفرة؟</button>
-        <div class="faq-answer">ناخذ بطاقات ائتمانية وتحويلات بنكية. ندعم الدفع بطاقات فيزا وماستركارد وأبل بي.</div>
+        <button class="faq-question">What payment methods are available?</button>
+        <div class="faq-answer">Membership is approval-based, not paid. Submit a request and our team will review your application.</div>
       </div>
     </div>
   </section>
 
   <section class="section" style="background:var(--bg-warm, #F5F4F0);">
     <div class="section-header reveal">
-      <div class="eyebrow">رأي القارئين</div>
-      <h2 id="testimonialsTitle">ما يقوله القارئون</h2>
+      <div class="eyebrow">Reader Thoughts</div>
+      <h2 id="testimonialsTitle">What Readers Say</h2>
     </div>
     <div class="testimonials-grid reveal" id="testimonialsGrid">
       <div class="testimonial-card">
-        <p>"أجمل قصص قرأتها في حياتي. الرسومات رائعة والقصة تجذب من البداية."</p>
+        <p>"The most beautiful stories I have ever read. The art is stunning and the story captivates from the start."</p>
         <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user1/100/100" alt="">
+          <img src="https://picsum.photos/seed/user1/200/300" alt="">
           <div><strong> 1</strong><span> عضو</span></div>
         </div>
       </div>
       <div class="testimonial-card">
-        <p>"تجربة قراءة فريدة على الهاتف. التصميم أنيق والتنقل سهل."</p>
+        <p>"A unique reading experience on mobile. The design is elegant and navigation effortless."</p>
         <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user2/100/100" alt="">
-          <div><strong> 2</strong><span>عضو منذ سنتين</span></div>
+          <img src="https://picsum.photos/seed/user2/200/300" alt="">
+          <div><strong> 2</strong><span>Member since 2023</span></div>
         </div>
       </div>
       <div class="testimonial-card">
-        <p>"أنا أتابع كل فصول جديد للسيد الكبير. الإثارة تحفزني دائماً."</p>
+        <p>"I follow every new chapter of The Great Man. The excitement never fades."</p>
         <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user3/100/100" alt="">
+          <img src="https://picsum.photos/seed/user3/200/300" alt="">
           <div><strong> 3</strong><span> مبدئ</span></div>
         </div>
       </div>
@@ -901,33 +881,33 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
   <section class="section">
     <div class="section-header reveal">
       <div class="eyebrow">الفريق</div>
-      <h2 id="creatorsTitle">من نحن</h2>
-      <p id="creatorsDesc">الفريق المبدع الذي يصنع العوالم</p>
+      <h2 id="creatorsTitle">Our Team</h2>
+      <p id="creatorsDesc">The creative team building these worlds</p>
     </div>
     <div class="creators-grid reveal" id="creatorsGrid">
       <div class="creator-card">
         <img src="https://picsum.photos/seed/creator1/150/150" alt="">
-        <h4>ميم ياسر</h4>
-        <span>المؤسس والرسام</span>
-        <p>رائد الفريق البصري ومخطط العوالم.</p>
+        <h4>Meem Yaser</h4>
+        <span>Founder & Artist</span>
+        <p>Visual team leader and world architect.</p>
       </div>
       <div class="creator-card">
         <img src="https://picsum.photos/seed/creator2/150/150" alt="">
-        <h4>ليلى الهاشمي</h4>
-        <span>رئيسة التحرير</span>
-        <p>تتولى رؤية القصص وتطور الشخصيات.</p>
+        <h4>Layla Al-Hashimi</h4>
+        <span>Editor in Chief</span>
+        <p>Oversees story vision and character development.</p>
       </div>
       <div class="creator-card">
         <img src="https://picsum.photos/seed/creator3/150/150" alt="">
-        <h4>عمر الراشد</h4>
-        <span>مصمم الرسومات</span>
-        <p>يحول الكلمات إلى لوحات بصرية تحكي المشاعر.</p>
+        <h4>Omar Al-Rashid</h4>
+        <span>Art Director</span>
+        <p>Transforms words into visual panels that convey emotion.</p>
       </div>
       <div class="creator-card">
         <img src="https://picsum.photos/seed/creator4/150/150" alt="">
-        <h4>نورا القاسمي</h4>
-        <span>مطورة</span>
-        <p>تضيف العمق الأدبي والحوار الداخلي للشخصيات.</p>
+        <h4>Nora Al-Qasimi</h4>
+        <span>Writer</span>
+        <p>Adds literary depth and internal dialogue to characters.</p>
       </div>
     </div>
   </section>
@@ -935,29 +915,29 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Meem Yaser Studio</div>
-        <p class="footer-desc">عوالم لا تهدأ  قصص مصورة أصلية من دبي إلى العالم.</p>
+        <p class="footer-desc">Restless Worlds. Original manga from Dubai to the world.</p>
       </div>
       <div>
-        <h4>استكشف</h4>
-        <a href="#">المكتبة</a>
-        <a href="#">الأخبار</a>
-        <a href="#">الفعاليات</a>
+        <h4>Explore</h4>
+        <a href="#">Library</a>
+        <a href="#">News</a>
+        <a href="#">Events</a>
       </div>
       <div>
-        <h4>الدعم</h4>
-        <a href="#">مركز المساعدة</a>
-        <a href="#">الشروط</a>
-        <a href="#">الخصوصية</a>
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
       </div>
       <div>
-        <h4>تواصل</h4>
+        <h4>Contact</h4>
         <a href="#">hello@meemyaserstudio.ae</a>
         <a href="#">@meemyaserstudio</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>2026 Meem Yaser Studio. جميع الحقوق محفوظة.</span>
-      <span>صنع بحب في دبي</span>
+      <span>2026 Meem Yaser Studio. All rights reserved.</span>
+      <span>Made with care in Dubai</span>
     </div>
   </footer>
 </div>
@@ -967,13 +947,13 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
   <div class="browser-controls">
     <input type="text" id="chapterSearch" placeholder="ابحث في الفصول...">
     <select id="chapterSort">
-      <option value="newest">الأحدث</option>
-      <option value="oldest">الأقدم</option>
-      <option value="number">رقم الفصل</option>
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="number">Chapter Number</option>
     </select>
     <select id="chapterFilter">
-      <option value="all">الكل</option>
-      <option value="free">مجاني</option>
+      <option value="all">All</option>
+      <option value="free">Free</option>
       <option value="member">Member</option>
     </select>
   </div>
@@ -991,12 +971,12 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
       <button class="zoom-btn" data-action="zoomOut" title="Zoom out">−</button>
       <button class="zoom-btn" data-action="zoomIn" title="Zoom in">+</button>
     </div>
-    <button data-action="toggleComments" class="comment-toggle" style="display:none !important" id="commentToggle">تعليقات</button>
+    
   </div>
   <div class="reader-viewport" id="readerViewport">
     <button class="reader-nav-btn prev" data-action="prevPage">&#8249;</button>
     <img class="reader-page-img" id="readerImg" src="" alt="Page">
-    <div class="spatial-layer" style="display:none !important" style="display:none !important" style="display:none !important" style="display:none !important" id="spatialLayer"></div>
+    
     <button class="reader-nav-btn next" data-action="nextPage">&#8250;</button>
   </div>
   <div class="reader-progress"><div class="reader-progress-bar" id="readerProgress"></div></div>
@@ -1009,20 +989,20 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
 <div class="admin-page" id="adminPage">
   <div class="admin-wrap">
     <div class="admin-header">
-      <h1>لوحة الإدارة</h1>
-      <p>إدارة المستخدمين والفصول والتعليقات</p>
+      <h1>Admin Dashboard</h1>
+      <p>Manage users, chapters, and comments</p>
     </div>
     <div class="admin-stats">
-      <div class="stat-card"><div class="stat-value">1,247</div><div class="stat-label">المستخدمون</div></div>
-      <div class="stat-card"><div class="stat-value">47</div><div class="stat-label">الفصول</div></div>
+      <div class="stat-card"><div class="stat-value">1,247</div><div class="stat-label">Users</div></div>
+      <div class="stat-card"><div class="stat-value">47</div><div class="stat-label">Chapters</div></div>
       <div class="stat-card"><div class="stat-value">3,892</div><div class="stat-label">التعليقات</div></div>
-      <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">بانتظار الموافقة</div></div>
+      <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Pending Approval</div></div>
     </div>
     <div class="admin-tabs">
-      <button class="admin-tab active" data-tab="users">المستخدمون</button>
-      <button class="admin-tab" data-tab="chapters">الفصول</button>
-      <button class="admin-tab" data-tab="comments">التعليقات</button>
-      <button class="admin-tab" data-tab="upload">رفع فصل</button>
+      <button class="admin-tab active" data-tab="users">Users</button>
+      <button class="admin-tab" data-tab="chapters">Chapters</button>
+      
+      <button class="admin-tab" data-tab="upload">Upload Chapter</button>
     </div>
     <div id="adminContent"></div>
   </div>
@@ -1045,7 +1025,7 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
 
 <script>
 const state={lang:'ar',user:{name:'زائر',role:'member',id:'u1'},currentManga:null,currentChapter:null,currentPage:0,zoom:1,isZoomed:false,commentsEnabled:false,adminTab:'users',page:'home'};
-const i18n={ar:{brand:'ميم ياسر ستوديو',navHome:'الرئيسية',navBrowse:'المكتبة',navAdmin:'الإدارة',heroEyebrow:'نادي قراءة خاص',heroTitle:'<em>عوالم</em><br>لا تهدأ',heroDesc:'نادي قراءة خاص للقصص المصورة. انضم إلى مجتمعنا الحصري واستكشف عوالم ميم ياسر.',heroCta:'استكشف المكتبة',featuredTitle:'المسلسلات المميزة',featuredDesc:'اختر من مجموعتنا المتنامية من القصص المصورة الأصلية',tiersTitle:'خطط العضوية',tiersDesc:'اختر الخطة التي تناسبك',aboutTitle:'عن الاستوديو',aboutDesc1:'ميم ياسر ستوديو هو بيت للسرد البصري في دبي. نخلق عوالم لا تهدأ من خلال فن القصص المصورة والروايات المصورة.',aboutDesc2:'منذ تأسيسه، طور الاستوديو أربع سلاسل رئيسية تجمع بين العمق الأدبي العربي والجماليات المرئية للمانغا.',searchPlaceholder:'ابحث في الفصول...',newest:'الأحدث',oldest:'الأقدم',number:'رقم الفصل',all:'الكل',free:'مجاني',member:'حصري',guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير',roles:{guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير'}},en:{brand:'Meem Yaser Studio',navHome:'Home',navBrowse:'Library',navAdmin:'Admin',heroEyebrow:'Private Reading Club',heroTitle:'<em>Restless</em><br>Worlds',heroDesc:'A private reading club for illustrated stories. Join our exclusive community and explore Meem Yaser\'s worlds.',heroCta:'Explore Library',featuredTitle:'Featured Series',featuredDesc:'Choose from our growing collection of original manga',tiersTitle:'Membership Access',tiersDesc:'Approval-based access to our private reading club',aboutTitle:'About the Studio',aboutDesc1:'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through manga and graphic novels.',aboutDesc2:'Since its founding, the studio has developed four main series blending Arabic literary depth with manga visual aesthetics.',searchPlaceholder:'Search chapters...',newest:'Newest',oldest:'Oldest',number:'Chapter Number',all:'All',free:'Free',member:'Member',guest:'Guest',member:'Member',pro:'Admin',admin:'Admin',roles:{guest:'Guest',member:'Member',pro:'Admin',admin:'Admin'}}};
+const i18n={ar:{brand:'ميم ياسر ستوديو',navHome:'الرئيسية',navBrowse:'المكتبة',navAdmin:'الإدارة',heroEyebrow:'نادي قراءة خاص',heroTitle:'<em>Worlds</em><br>لا تهدأ',heroDesc:'نادي قراءة خاص للقصص المصورة. انضم إلى مجتمعنا الحصري واستكشف عوالم ميم ياسر.',heroCta:'استكشف المكتبة',featuredTitle:'المسلسلات المميزة',featuredDesc:'اختر من مجموعتنا المتنامية من القصص المصورة الأصلية',tiersTitle:'Membership Access',tiersDesc:'Approval-based access to our private reading club',aboutTitle:'عن الاستوديو',aboutDesc1:'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through the art of manga and graphic novels.',aboutDesc2:'Since its founding, the studio has developed four major series that blend Arabic literary depth with manga visual aesthetics.',searchPlaceholder:'ابحث في الفصول...',newest:'الأحدث',oldest:'الأقدم',number:'رقم الفصل',all:'الكل',free:'مجاني',member:'حصري',guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير',roles:{guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير'}},en:{brand:'Meem Yaser Studio',navHome:'Home',navBrowse:'Library',navAdmin:'Admin',heroEyebrow:'Private Reading Club',heroTitle:'<em>Restless</em><br>Worlds',heroDesc:'A private reading club for illustrated stories. Join our exclusive community and explore Meem Yaser\'s worlds.',heroCta:'Explore Library',featuredTitle:'Featured Series',featuredDesc:'Choose from our growing collection of original manga',tiersTitle:'Membership Access',tiersDesc:'Approval-based access to our private reading club',aboutTitle:'About the Studio',aboutDesc1:'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through manga and graphic novels.',aboutDesc2:'Since its founding, the studio has developed four main series blending Arabic literary depth with manga visual aesthetics.',searchPlaceholder:'Search chapters...',newest:'Newest',oldest:'Oldest',number:'Chapter Number',all:'All',free:'Free',member:'Member',guest:'Guest',member:'Member',pro:'Admin',admin:'Admin',roles:{guest:'Guest',member:'Member',pro:'Admin',admin:'Admin'}}};
 
 const mangaData=[
   {id:1,titleAr:'طريق الأقمار',titleEn:'Moons Road',descAr:'رحلة عبر الصحراء حيث تلتقي الأحلام بالواقع.',descEn:'A journey across the desert where dreams meet reality.',chapters:12,status:'ongoing',rating:4.8,image:'https://picsum.photos/seed/moonsroad/600/800',chapterList:Array.from({length:12},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}: ${['البداية','اللقاء','الصحراء','القمر','الطريق','العاصفة','الواحة','القرية','السر','العودة','القرار','النهاية'][i]}`,titleEn:`Ch.${i+1}: ${['The Beginning','The Meeting','The Desert','The Moon','The Road','The Storm','The Oasis','The Village','The Secret','The Return','The Decision','The End'][i]}`,date:`2026-0${Math.floor(i/3)+1}-${(i%28)+1}`,type:i<3?'free':i<8?'member':'early'}))},
@@ -1107,7 +1087,7 @@ function renderChapterList(){
   if(sort==='newest')list.reverse();else if(sort==='number')list.sort((a,b)=>a.num-b.num);
   $('#chapterList').innerHTML=list.map(c=>{
     const locked=c.type!=='free'&&state.user.role==='guest';
-    const tagText=c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='member'?(state.lang==='ar'?حصري':'Member'):(state.lang==='ar'?'مبكر':'Early');
+    const tagText=c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='member'?(state.lang==='ar'?'حصري':'Member'):(state.lang==='ar'?'مبكر':'Early');
     return `<div class="chapter-item ${locked?'locked':''}" data-num="${c.num}" data-locked="${locked}"><div class="ch-left"><div class="ch-num">${c.num}</div><div><div class="ch-title">${state.lang==='ar'?c.titleAr:c.titleEn}</div><div class="ch-date">${c.date}</div></div></div><div class="ch-right"><span class="ch-tag tag-${c.type}">${tagText}</span></div></div>`;
   }).join('');
 }
@@ -1121,13 +1101,10 @@ function renderReader(){
   $('#readerProgress').style.width=`${((state.currentPage+1)/(ch.pages||5))*100}%`;
   $('#readerZoomLevel').textContent=`${Math.round(state.zoom*100)}%`;
   $('#readerImg').style.transform=`scale(${state.zoom})`;
-  renderSpatialComments();
+  
 }
 
-function renderSpatialComments(){
-  const layer=$('#spatialLayer'),m=state.currentManga,ch=state.currentChapter;if(!m||!ch)return;
-  const comments=mockComments.filter(c=>c.mangaId===m.id&&c.chapterNum===ch.num&&c.page===state.currentPage);
-  layer.innerHTML=comments.map(c=>`<div class="spatial-pin ${c.color}" style="left:${c.x*100}%;top:${c.y*100}%" data-id="${c.id}"><div class="pin-core"></div><div class="spatial-tooltip">${c.user}: ${c.text}</div></div>`).join('');
+" style="left:${c.x*100}%;top:${c.y*100}%" data-id="${c.id}"><div class="pin-core"></div><div class="spatial-tooltip">${c.user}: ${c.text}</div></div>`).join('');
 }
 
 function showCommentForm(x,y){
@@ -1138,7 +1115,7 @@ function showCommentForm(x,y){
   form.querySelector('.cf-submit').onclick=()=>{
     const text=form.querySelector('textarea').value.trim();if(!text)return;
     mockComments.push({id:Date.now(),mangaId:state.currentManga.id,chapterNum:state.currentChapter.num,page:state.currentPage,x,y,text,user:state.user.name,color:'u-red'});
-    form.remove();renderSpatialComments();toast(state.lang==='ar'?'تم نشر التعليق':'Comment posted');
+    form.remove();toast(state.lang==='ar'?'تم نشر التعليق':'Comment posted');
   };
   layer.appendChild(form);
 }
@@ -1152,7 +1129,7 @@ function renderAdmin(){
   } else if(state.adminTab==='comments'){
     c.innerHTML=`<table class="admin-table"><thead><tr><th>المستخدم</th><th>العمل</th><th>التعليق</th><th>التاريخ</th><th>حالة</th><th>إجراء</th></tr></thead><tbody>${mockCommentsAdmin.map(c=>`<tr><td><strong>${c.user}</strong></td><td>${c.manga}</td><td>${c.text}</td><td>${c.date}</td><td>${c.flagged?'<span style="color:#f87171">مبلغ</span>':'<span style="color:#4ade80">آمن</span>'}</td><td><button class="admin-btn reject">حذف</button></td></tr>`).join('')}</tbody></table>`;
   } else if(state.adminTab==='upload'){
-    c.innerHTML=`<div style="max-width:600px;background:#121212;border:1px solid var(--border-dark);border-radius:8px;padding:2rem;"><h3 style="margin-bottom:1rem;font-weight:600;">رفع فصل جديد</h3><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#666;margin-bottom:0.25rem;">اختر العمل</label><select style="width:100%;padding:0.5rem;background:#0a0a0a;border:1px solid var(--border-dark);border-radius:4px;color:#fff;font-family:inherit;">${mangaData.map(m=>`<option>${m.titleAr}</option>`).join('')}</select></div><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#666;margin-bottom:0.25rem;">رقم الفصل</label><input type="number" style="width:100%;padding:0.5rem;background:#0a0a0a;border:1px solid var(--border-dark);border-radius:4px;color:#fff;font-family:inherit;"></div><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#666;margin-bottom:0.25rem;">الملفات</label><div style="border:2px dashed var(--border-dark);border-radius:6px;padding:2rem;text-align:center;color:#666">اسحب الصور هنا أو انقر للاختيار</div></div><button class="hero-cta" style="border:none;font-family:inherit;font-size:0.875rem;">رفع الفصل</button></div>`;
+    c.innerHTML=`<div style="max-width:600px;background:#121212;border:1px solid var(--border-dark);border-radius:8px;padding:2rem;"><h3 style="margin-bottom:1rem;font-weight:600;">رفع فصل جديد</h3><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#666;margin-bottom:0.25rem;">اختر العمل</label><select style="width:100%;padding:0.5rem;background:#0a0a0a;border:1px solid var(--border-dark);border-radius:4px;color:#fff;font-family:inherit;">${mangaData.map(m=>`<option>${m.titleAr}</option>`).join('')}</select></div><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#666;margin-bottom:0.25rem;">Chapter Number</label><input type="number" style="width:100%;padding:0.5rem;background:#0a0a0a;border:1px solid var(--border-dark);border-radius:4px;color:#fff;font-family:inherit;"></div><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#666;margin-bottom:0.25rem;">الملفات</label><div style="border:2px dashed var(--border-dark);border-radius:6px;padding:2rem;text-align:center;color:#666">اسحب الصور هنا أو انقر للاختيار</div></div><button class="hero-cta" style="border:none;font-family:inherit;font-size:0.875rem;">رفع الفصل</button></div>`;
   }
 }
 
@@ -1250,15 +1227,7 @@ rv.addEventListener('touchmove',e=>{
 let lastTap=0;
 rv.addEventListener('click',e=>{
   const now=Date.now();if(now-lastTap<300)return;lastTap=now;
-  if(e.target.closest('.spatial-pin')||e.target.closest('.comment-form-overlay'))return;
-  if(state.commentsEnabled){
-    const rect=rv.getBoundingClientRect();
-    showCommentForm((e.clientX-rect.left)/rect.width,(e.clientY-rect.top)/rect.height);
-    return;
-  }
-  $('#readerToolbar').classList.toggle('hidden');
-  $('#readerBottomBar').classList.toggle('hidden');
-});
+  if(e.target.closest(');
 
 window.addEventListener('keydown',e=>{
   if(!$('#readerPage').classList.contains('active'))return;
@@ -1328,7 +1297,7 @@ function toggleSetting(key) {
   saveSettings();
   applySettings();
   if (key === 'showComments' && state.currentManga) {
-    renderSpatialComments();
+    
   }
   toast(state.lang === 'ar' ? 'تم حفظ الإعدادات' : 'Settings saved');
 }
@@ -1551,35 +1520,35 @@ restoreLastRead();
 <div class="modal-overlay" id="settingsModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="settingsTitle">الإعدادات</h3>
+      <h3 id="settingsTitle">Settings</h3>
       <button class="modal-close" data-action="closeSettings">&#10005;</button>
     </div>
     <div class="modal-body">
       <div class="setting-row">
         <div>
-          <div class="setting-label" id="rtlLabel">النص من اليمين لليسار</div>
+          <div class="setting-label" id="rtlLabel">Right-to-left text</div>
           <div class="setting-desc">تبديل اتجاه القراءة في ال</div>
         </div>
         <div class="toggle-switch active" id="rtlToggle" data-setting="rtl"></div>
       </div>
       <div class="setting-row">
         <div>
-          <div class="setting-label" id="notificationsLabel">الإشعارات</div>
-          <div class="setting-desc">تلقي إشعارات عند صدور فصل جديد</div>
+          <div class="setting-label" id="notificationsLabel">Notifications</div>
+          <div class="setting-desc">Receive notifications when new chapters release</div>
         </div>
         <div class="toggle-switch active" id="notifToggle" data-setting="notifications"></div>
       </div>
       <div class="setting-row">
         <div>
-          <div class="setting-label" id="autonextLabel">الانتقال التلقائي</div>
-          <div class="setting-desc">انتقل للفصل التالي بعد الانتهاء</div>
+          <div class="setting-label" id="autonextLabel">Auto-advance</div>
+          <div class="setting-desc">Advance to next chapter when finished</div>
         </div>
         <div class="toggle-switch" id="autonextToggle" data-setting="autonext"></div>
       </div>
       <div class="setting-row">
         <div>
-          <div class="setting-label" id="commentsLabel">التعليقات المكتوبة</div>
-          <div class="setting-desc">إظهار التعليقات على الصفحات تلقائياً</div>
+          <div class="setting-label" id="commentsLabel">Written Comments</div>
+          <div class="setting-desc">Show comments on pages automatically</div>
         </div>
         <div class="toggle-switch active" id="commentsToggle" data-setting="showComments"></div>
       </div>
@@ -1590,12 +1559,12 @@ restoreLastRead();
 <!-- ===== KEYBOARD SHORTCUTS ===== -->
 <div class="kb-overlay" id="kbOverlay">
   <div class="kb-panel">
-    <h3 id="kbTitle">اختصارات اللوحة المفاتيح</h3>
+    <h3 id="kbTitle">Keyboard Shortcuts</h3>
     <div class="kb-item"><span id="kbNext">الصفحة التالية</span><div class="kb-key"><kbd>&larr;</kbd></div></div>
     <div class="kb-item"><span id="kbPrev">الصفحة السابقة</span><div class="kb-key"><kbd>&rarr;</kbd></div></div>
     <div class="kb-item"><span id="kbClose">إغلاق ال</span><div class="kb-key"><kbd>ESC</kbd></div></div>
     <div class="kb-item"><span id="kbComments">تبديل التعليقات</span><div class="kb-key"><kbd>C</kbd></div></div>
-    <div class="kb-item"><span id="kbSettings">الإعدادات</span><div class="kb-key"><kbd>S</kbd></div></div>
+    <div class="kb-item"><span id="kbSettings">Settings</span><div class="kb-key"><kbd>S</kbd></div></div>
     <div class="kb-item"><span id="kbZoom">تكبير/تصغير</span><div class="kb-key"><kbd>+</kbd><kbd>-</kbd></div></div>
   </div>
 </div>
