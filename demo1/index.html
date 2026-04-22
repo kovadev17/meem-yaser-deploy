@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#FAFAF8">
+<title>Meem Yaser Studio — عوالم لا تهدأ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{bg:'#FAFAF8',gold:'#D4AF37',dark:'#0A0A0A'},fontFamily:{ar:['Cairo','sans-serif'],en:['Inter','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;height:100dvh;overflow-x:hidden}
+body{background:#FAFAF8;font-family:'Cairo',sans-serif;color:#1a1a1a}
+html[dir="ltr"] body{font-family:'Inter',sans-serif}
+html[dir="rtl"] .rtl-flip{transform:scaleX(-1)}
+.view{display:none;opacity:0;transition:opacity 0.5s cubic-bezier(0.16,1,0.3,1)}
+.view.active{display:block;opacity:1}
+.card-hover{transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s cubic-bezier(0.16,1,0.3,1)}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+.progress-bar{height:4px;background:#e5e5e5;border-radius:2px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#D4AF37,#e8c84a);border-radius:2px;transition:width 0.3s}
+.reader-page{transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),opacity 0.3s}
+.chrome-hidden .reader-topbar,.chrome-hidden .reader-bottombar{opacity:0;pointer-events:none}
+.reader-topbar,.reader-bottombar{transition:opacity 0.3s cubic-bezier(0.16,1,0.3,1)}
+.pin-marker{position:absolute;width:28px;height:28px;border-radius:50%;background:#D4AF37;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;transform:translate(-50%,-50%);z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.pin-marker.active{background:#fff;color:#D4AF37;box-shadow:0 0 0 3px #D4AF37}
+.sidebar-overlay{background:rgba(0,0,0,0.5);opacity:0;pointer-events:none;transition:opacity 0.3s}
+.sidebar-overlay.open{opacity:1;pointer-events:auto}
+.sidebar{transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1)}
+html[dir="rtl"] .sidebar{transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+html[dir="rtl"] .sidebar.open{transform:translateX(0)}
+.badge-free{background:#10b981;color:#fff}
+.badge-premium{background:#D4AF37;color:#fff}
+.badge-locked{background:#6b7280;color:#fff}
+.toast{transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1)}
+.toast.show{transform:translateY(0)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#9ca3af}
+@media(max-width:640px){.mobile-full{width:100%!important;max-width:100%!important}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100" style="height:56px">
+<div class="max-w-6xl mx-auto px-4 h-full flex items-center justify-between">
+<div class="flex items-center gap-3">
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0A0A0A"/><text x="16" y="22" text-anchor="middle" fill="#D4AF37" font-family="Cairo,Inter" font-weight="800" font-size="16">MY</text></svg>
+<span class="font-bold text-sm tracking-tight">Meem Yaser</span>
+</div>
+<div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+<button onclick="navigate('home')" class="hover:text-gold transition-colors" data-i18n="nav_home">الرئيسية</button>
+<button onclick="navigate('characters')" class="hover:text-gold transition-colors" data-i18n="nav_chars">الشخصيات</button>
+<button onclick="navigate('forum')" class="hover:text-gold transition-colors" data-i18n="nav_forum">المنتدى</button>
+<button id="adminNavBtn" onclick="navigate('admin')" class="hidden hover:text-gold transition-colors" data-i18n="nav_admin">الإدارة</button>
+</div>
+<div class="flex items-center gap-2">
+<button id="roleBtn" onclick="cycleRole()" class="text-xs px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors font-medium" title="Switch role">زائر</button>
+<button onclick="toggleLang()" class="text-xs px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors font-medium">EN</button>
+<button id="hamburgerBtn" onclick="toggleMobileNav()" class="md:hidden w-11 h-11 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"><i class="fa-solid fa-bars text-lg"></i></button>
+</div>
+</div>
+</nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div id="mobileNav" class="fixed inset-0 z-[60] bg-white/95 backdrop-blur-lg flex flex-col items-center justify-center gap-8 text-xl font-semibold opacity-0 pointer-events-none transition-opacity 0.3s" style="top:56px">
+<button onclick="navigate('home');toggleMobileNav()" class="hover:text-gold transition-colors" data-i18n="nav_home">الرئيسية</button>
+<button onclick="navigate('characters');toggleMobileNav()" class="hover:text-gold transition-colors" data-i18n="nav_chars">الشخصيات</button>
+<button onclick="navigate('forum');toggleMobileNav()" class="hover:text-gold transition-colors" data-i18n="nav_forum">المنتدى</button>
+<button id="adminMobileNavBtn" onclick="navigate('admin');toggleMobileNav()" class="hidden hover:text-gold transition-colors" data-i18n="nav_admin">الإدارة</button>
+</div>
+
+<!-- LOGIN GATE -->
+<div id="loginGate" class="fixed inset-0 z-[70] bg-bg flex items-center justify-center p-6">
+<div class="max-w-md w-full text-center">
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" class="mx-auto mb-6"><rect width="64" height="64" rx="16" fill="#0A0A0A"/><text x="32" y="42" text-anchor="middle" fill="#D4AF37" font-family="Cairo,Inter" font-weight="800" font-size="28">MY</text></svg>
+<h1 class="text-3xl font-black mb-2" data-i18n="gate_title">عوالم لا تهدأ</h1>
+<p class="text-gray-500 mb-8 text-sm leading-relaxed" data-i18n="gate_subtitle">نادي قراءة خاص — محتوى حصري لأعضائنا المعتمدين</p>
+<div class="space-y-3">
+<button onclick="login('guest')" class="w-full py-3.5 rounded-xl border border-gray-200 hover:border-gold hover:text-gold transition-all font-semibold text-sm" data-i18n="gate_guest">دخول كزائر</button>
+<button onclick="login('member')" class="w-full py-3.5 rounded-xl bg-gold text-white hover:bg-yellow-600 transition-all font-semibold text-sm" data-i18n="gate_member">تسجيل الدخول كعضو</button>
+<button onclick="login('admin')" class="w-full py-3.5 rounded-xl bg-dark text-white hover:bg-gray-800 transition-all font-semibold text-sm" data-i18n="gate_admin">لوحة الإدارة</button>
+</div>
+</div>
+</div>
+
+<!-- HOME VIEW -->
+<section id="view-home" class="view active" style="padding-top:56px">
+<!-- Hero -->
+<div class="max-w-6xl mx-auto px-4 py-16 md:py-24">
+<div class="max-w-2xl">
+<p class="text-gold font-semibold text-sm mb-3 tracking-wider uppercase" data-i18n="hero_label">Meem Yaser Studio</p>
+<h1 class="text-4xl md:text-6xl font-black leading-tight mb-4" data-i18n="hero_title">عوالم لا تهدأ</h1>
+<p class="text-gray-500 text-lg leading-relaxed mb-8" data-i18n="hero_subtitle">نادي قراءة خاص — محتوى حصري لأعضائنا المعتمدين. اكتشف عوالم جديدة في كل فصل.</p>
+<button onclick="navigate('home')" class="px-8 py-3.5 rounded-xl bg-dark text-white hover:bg-gray-800 transition-all font-semibold text-sm" data-i18n="hero_cta">ابدأ القراءة</button>
+</div>
+</div>
+
+<!-- Continue Reading -->
+<div id="continueSection" class="max-w-6xl mx-auto px-4 pb-12 hidden">
+<h2 class="text-xl font-bold mb-4" data-i18n="continue_title">متابعة القراءة</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="continueGrid"></div>
+</div>
+
+<!-- Trending Manga -->
+<div class="max-w-6xl mx-auto px-4 pb-16">
+<h2 class="text-xl font-bold mb-6" data-i18n="trending_title">الأكثر قراءة</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="mangaGrid"></div>
+</div>
+
+<!-- New Chapters -->
+<div class="max-w-6xl mx-auto px-4 pb-16">
+<h2 class="text-xl font-bold mb-6" data-i18n="newch_title">فصول جديدة</h2>
+<div class="space-y-2" id="newChapters"></div>
+</div>
+
+<!-- Footer -->
+<footer class="border-t border-gray-100 py-8">
+<div class="max-w-6xl mx-auto px-4 text-center text-xs text-gray-400">
+<p>© 2026 Meem Yaser Studio. <span data-i18n="footer_rights">جميع الحقوق محفوظة.</span></p>
+</div>
+</footer>
+</section>
+
+<!-- MANGA DETAIL VIEW -->
+<section id="view-manga-detail" class="view" style="padding-top:56px">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button onclick="navigate('home')" class="flex items-center gap-2 text-sm text-gray-500 hover:text-gold transition-colors mb-8 w-11 min-h-[44px]">
+<i class="fa-solid fa-arrow-right rtl-flip"></i>
+<span data-i18n="back">العودة</span>
+</button>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Cover -->
+<div class="md:col-span-1">
+<div id="detailCover" class="aspect-[3/4] rounded-2xl shadow-lg"></div>
+</div>
+<!-- Info -->
+<div class="md:col-span-2">
+<h1 id="detailTitle" class="text-3xl font-black mb-2"></h1>
+<div class="flex items-center gap-3 mb-4">
+<div id="detailRating" class="flex items-center gap-1 text-gold text-sm"></div>
+<span id="detailChCount" class="text-sm text-gray-400"></span>
+</div>
+<p id="detailDesc" class="text-gray-500 leading-relaxed mb-6"></p>
+<div id="detailTags" class="flex flex-wrap gap-2 mb-8"></div>
+<!-- Chapters -->
+<h3 class="font-bold mb-3" data-i18n="chapters">الفصول</h3>
+<div class="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+<div id="chapterList" class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-3" style="min-width:max-content"></div>
+</div>
+</div>
+</div>
+<!-- Characters Section -->
+<div class="mt-16">
+<h3 class="text-xl font-bold mb-6" data-i18n="chars_title">الشخصيات</h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="charGrid"></div>
+</div>
+</div>
+</section>
+
+<!-- READER VIEW -->
+<section id="view-reader" class="view fixed inset-0 z-40 bg-dark" style="padding-top:0">
+<!-- Top Bar -->
+<div class="reader-topbar fixed top-0 left-0 right-0 z-50 bg-dark/80 backdrop-blur-md px-4 py-3 flex items-center justify-between">
+<button onclick="exitReader()" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-white">
+<i class="fa-solid fa-arrow-right rtl-flip"></i>
+</button>
+<span id="readerMangaTitle" class="text-white font-semibold text-sm truncate mx-4"></span>
+<button id="spatialToggle" onclick="toggleSpatial()" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-white">
+<i class="fa-solid fa-location-dot"></i>
+</button>
+</div>
+<!-- Page Container -->
+<div id="readerContainer" class="absolute inset-0 flex items-center justify-center touch-none overflow-hidden" style="top:0">
+<div id="readerPageWrapper" class="relative w-full h-full flex items-center justify-center">
+<svg id="readerSvg" class="reader-page w-full h-full" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid meet"></svg>
+<!-- Pins overlay -->
+<div id="pinsOverlay" class="absolute inset-0 hidden"></div>
+</div>
+</div>
+<!-- Navigation Arrows -->
+<button id="prevPageBtn" onclick="readerPrev()" class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full bg-dark/60 backdrop-blur text-white hover:bg-dark/80 transition-all opacity-0 group-hover:opacity-100">
+<i class="fa-solid fa-chevron-left rtl-flip"></i>
+</button>
+<button id="nextPageBtn" onclick="readerNext()" class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full bg-dark/60 backdrop-blur text-white hover:bg-dark/80 transition-all">
+<i class="fa-solid fa-chevron-right rtl-flip"></i>
+</button>
+<!-- Bottom Bar -->
+<div class="reader-bottombar fixed bottom-0 left-0 right-0 z-50 bg-dark/80 backdrop-blur-md px-4 py-3 flex items-center justify-between">
+<button onclick="openChapterSheet()" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-white">
+<i class="fa-solid fa-list"></i>
+</button>
+<span id="pageCounter" class="text-white/70 text-sm font-mono"></span>
+<button id="resetZoomBtn" onclick="resetZoom()" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-white hidden">
+<i class="fa-solid fa-compress"></i>
+</button>
+</div>
+</section>
+
+<!-- CHAPTER SHEET (Mobile) -->
+<div id="chapterSheet" class="fixed inset-0 z-[55] opacity-0 pointer-events-none transition-opacity 0.3s">
+<div class="absolute inset-0 bg-black/50" onclick="closeChapterSheet()"></div>
+<div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[70vh] overflow-y-auto p-6 transform translate-y-full transition-transform 0.3s cubic-bezier(0.16,1,0.3,1)">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-lg" data-i18n="chapters">الفصول</h3>
+<button onclick="closeChapterSheet()" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-gray-100"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div id="sheetChapterList" class="space-y-2"></div>
+</div>
+</div>
+
+<!-- CHARACTERS VIEW -->
+<section id="view-characters" class="view" style="padding-top:56px">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button onclick="navigate('home')" class="flex items-center gap-2 text-sm text-gray-500 hover:text-gold transition-colors mb-8 w-11 min-h-[44px]">
+<i class="fa-solid fa-arrow-right rtl-flip"></i><span data-i18n="back">العودة</span>
+</button>
+<h1 class="text-3xl font-black mb-8" data-i18n="chars_title">الشخصيات</h1>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="allCharGrid"></div>
+</div>
+</section>
+
+<!-- FORUM VIEW -->
+<section id="view-forum" class="view" style="padding-top:56px">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button onclick="navigate('home')" class="flex items-center gap-2 text-sm text-gray-500 hover:text-gold transition-colors mb-8 w-11 min-h-[44px]">
+<i class="fa-solid fa-arrow-right rtl-flip"></i><span data-i18n="back">العودة</span>
+</button>
+<h1 class="text-3xl font-black mb-8" data-i18n="nav_forum">المنتدى</h1>
+<div class="space-y-3" id="forumList"></div>
+</div>
+</section>
+
+<!-- ADMIN VIEW -->
+<section id="view-admin" class="view fixed inset-0 z-40 bg-dark overflow-y-auto" style="padding-top:56px">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button onclick="navigate('home')" class="flex items-center gap-2 text-sm text-gray-400 hover:text-gold transition-colors mb-8 w-11 min-h-[44px]">
+<i class="fa-solid fa-arrow-right rtl-flip text-gray-400"></i><span class="text-gray-400" data-i18n="back">العودة</span>
+</button>
+<h1 class="text-3xl font-black text-white mb-8" data-i18n="nav_admin">لوحة الإدارة</h1>
+<!-- Stats -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white/5 border border-white/10 rounded-xl p-5"><p class="text-gray-400 text-xs mb-1" data-i18n="stat_users">المستخدمون</p><p class="text-2xl font-black text-white">1,247</p></div>
+<div class="bg-white/5 border border-white/10 rounded-xl p-5"><p class="text-gray-400 text-xs mb-1" data-i18n="stat_pending">قيد المراجعة</p><p class="text-2xl font-black text-gold" id="statPending">3</p></div>
+<div class="bg-white/5 border border-white/10 rounded-xl p-5"><p class="text-gray-400 text-xs mb-1" data-i18n="stat_chapters">الفصول</p><p class="text-2xl font-black text-white">156</p></div>
+<div class="bg-white/5 border border-white/10 rounded-xl p-5"><p class="text-gray-400 text-xs mb-1" data-i18n="stat_comments">التعليقات</p><p class="text-2xl font-black text-white">892</p></div>
+</div>
+<!-- Approvals -->
+<h3 class="text-white font-bold mb-4" data-i18n="approvals">طلبات الانضمام</h3>
+<div class="space-y-3 mb-8" id="approvalList"></div>
+<!-- Upload Zone -->
+<h3 class="text-white font-bold mb-4" data-i18n="upload">رفع محتوى</h3>
+<div class="border-2 border-dashed border-white/20 rounded-xl p-12 text-center hover:border-gold/50 transition-colors cursor-pointer">
+<i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-500 mb-3"></i>
+<p class="text-gray-400 text-sm" data-i18n="upload_hint">اسحب الملفات هنا أو انقر للاختيار</p>
+</div>
+</div>
+</section>
+
+<!-- COMMENTS SIDEBAR -->
+<div id="commentsOverlay" class="sidebar-overlay fixed inset-0 z-[55]" onclick="closeComments()"></div>
+<div id="commentsSidebar" class="sidebar fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-white z-[56] overflow-y-auto">
+<div class="p-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-lg" data-i18n="comments">التعليقات</h3>
+<button onclick="closeComments()" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-gray-100"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div id="commentsList" class="space-y-4 mb-6"></div>
+<div class="border-t border-gray-100 pt-4">
+<textarea id="commentInput" rows="3" class="w-full border border-gray-200 rounded-xl p-3 text-sm resize-none focus:outline-none focus:border-gold" data-i18n-placeholder="comment_placeholder" placeholder="اكتب تعليقاً..."></textarea>
+<button onclick="addComment()" class="w-full mt-3 py-3 rounded-xl bg-gold text-white font-semibold text-sm hover:bg-yellow-600 transition-colors" data-i18n="comment_submit">إرسال</button>
+</div>
+</div>
+</div>
+
+<!-- PWA TOAST -->
+<div id="pwaToast" class="toast fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-80 bg-dark text-white rounded-2xl p-4 z-[80] shadow-2xl">
+<div class="flex items-center gap-3">
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#D4AF37"/><text x="20" y="27" text-anchor="middle" fill="#0A0A0A" font-family="Cairo,Inter" font-weight="800" font-size="16">MY</text></svg>
+<div class="flex-1">
+<p class="font-semibold text-sm" data-i18n="pwa_title">تثبيت التطبيق</p>
+<p class="text-gray-400 text-xs" data-i18n="pwa_desc">أضف إلى شاشتك الرئيسية</p>
+</div>
+<button onclick="dismissPWA()" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-white/10"><i class="fa-solid fa-xmark"></i></button>
+</div>
+</div>
+
+<script>
+// ========== STATE ==========
+const state={
+  lang:'ar',
+  role:'guest',
+  view:'home',
+  mangaId:null,
+  readerPage:1,
+  totalPages:24,
+  sidebarOpen:false,
+  draftPin:null,
+  activePinId:null,
+  isPinching:false,
+  pinchStartDist:0,
+  pinchStartScale:1,
+  currentScale:1,
+  panX:0,panY:0,
+  startPanX:0,startPanY:0,
+  isPanning:false,
+  idleTimer:null,
+  pwaShown:false,
+  swipeStartX:0,
+  swipeStartY:0,
+  isSwiping:false
+};
+
+// ========== i18n ==========
+const i18n={
+  ar:{
+    nav_home:'الرئيسية',nav_chars:'الشخصيات',nav_forum:'المنتدى',nav_admin:'الإدارة',
+    gate_title:'عوالم لا تهدأ',gate_subtitle:'نادي قراءة خاص — محتوى حصري لأعضائنا المعتمدين',
+    gate_guest:'دخول كزائر',gate_member:'تسجيل الدخول كعضو',gate_admin:'لوحة الإدارة',
+    hero_label:'Meem Yaser Studio',hero_title:'عوالم لا تهدأ',hero_subtitle:'نادي قراءة خاص — محتوى حصري لأعضائنا المعتمدين. اكتشف عوالم جديدة في كل فصل.',hero_cta:'ابدأ القراءة',
+    continue_title:'متابعة القراءة',trending_title:'الأكثر قراءة',newch_title:'فصول جديدة',
+    back:'العودة',chapters:'الفصول',chars_title:'الشخصيات',comments:'التعليقات',
+    stat_users:'المستخدمون',stat_pending:'قيد المراجعة',stat_chapters:'الفصول',stat_comments:'التعليقات',
+    approvals:'طلبات الانضمام',upload:'رفع محتوى',upload_hint:'اسحب الملفات هنا أو انقر للاختيار',
+    pwa_title:'تثبيت التطبيق',pwa_desc:'أضف إلى شاشتك الرئيسية',
+    comment_placeholder:'اكتب تعليقاً...',comment_submit:'إرسال',
+    role_guest:'زائر',role_member:'عضو',role_admin:'مدير',
+    free:'مجاني',premium:'مميز',locked:'مقفل',
+    approve:'موافقة',reject:'رفض',
+    chapter:'فصل',page:'صفحة',of:'من',
+    forum_threads:'المواضيع',forum_replies:'ردود',
+    char_desc:'شخصية رئيسية'
+  },
+  en:{
+    nav_home:'Home',nav_chars:'Characters',nav_forum:'Forum',nav_admin:'Admin',
+    gate_title:'Restless Worlds',gate_subtitle:'A private reading club — exclusive content for our verified members.',
+    gate_guest:'Enter as Guest',gate_member:'Login as Member',gate_admin:'Admin Panel',
+    hero_label:'Meem Yaser Studio',hero_title:'Restless Worlds',hero_subtitle:'A private reading club — exclusive content for our verified members. Discover new worlds in every chapter.',hero_cta:'Start Reading',
+    continue_title:'Continue Reading',trending_title:'Trending',newch_title:'New Chapters',
+    back:'Back',chapters:'Chapters',chars_title:'Characters',comments:'Comments',
+    stat_users:'Users',stat_pending:'Pending',stat_chapters:'Chapters',stat_comments:'Comments',
+    approvals:'Join Requests',upload:'Upload Content',upload_hint:'Drag files here or click to browse',
+    pwa_title:'Install App',pwa_desc:'Add to your home screen',
+    comment_placeholder:'Write a comment...',comment_submit:'Submit',
+    role_guest:'Guest',role_member:'Member',role_admin:'Admin',
+    free:'Free',premium:'Premium',locked:'Locked',
+    approve:'Approve',reject:'Reject',
+    chapter:'Ch',page:'Page',of:'of',
+    forum_threads:'Threads',forum_replies:'Replies',
+    char_desc:'Main Character'
+  }
+};
+
+function t(key){return i18n[state.lang][key]||key}
+
+// ========== MOCK DATA ==========
+const db={
+  manga:[
+    {id:'moons',titleAr:'طريق الأقمار',titleEn:'Moons Road',descAr:'رحلة عبر عوالم مظلمة حيث تتلاقى الأقمار مع مصائر البشر.',descEn:'A journey through dark worlds where moons converge with human destinies.',rating:4.8,chapters:8,freeCh:2,color:'linear-gradient(135deg,#667eea,#764ba2)',tagsAr:['خيال','مغامرة','غموض'],tagsEn:['Fantasy','Adventure','Mystery']},
+    {id:'lord',titleAr:'السيد الكبير',titleEn:'The Grand Lord',descAr:'في عالم يحكمه الجبابرة، يصعد بطل من العدم ليتحدى القوانين.',descEn:'In a world ruled by titans, a hero rises from nothing to challenge the laws.',rating:4.6,chapters:8,freeCh:1,color:'linear-gradient(135deg,#f093fb,#f5576c)',tagsAr:['أكشن','دراما','قوة'],tagsEn:['Action','Drama','Power']},
+    {id:'echo',titleAr:'صدى الظلام',titleEn:'Echo of Darkness',descAr:'أصوات من الماضي تنادي في أعماق المدينة المنسية.',descEn:'Voices from the past call out from the depths of the forgotten city.',rating:4.9,chapters:12,freeCh:3,color:'linear-gradient(135deg,#4facfe,#00f2fe)',tagsAr:['رعب','نفسي','إثارة'],tagsEn:['Horror','Psychological','Thriller']},
+    {id:'garden',titleAr:'حديقة الأسرار',titleEn:'Garden of Secrets',descAr:'في حديقة قديمة، كل زهرة تخفي قصة لم تُروَ بعد.',descEn:'In an ancient garden, every flower hides a story yet untold.',rating:4.5,chapters:6,freeCh:2,color:'linear-gradient(135deg,#43e97b,#38f9d7)',tagsAr:['رومانسي','غموض','طبيعة'],tagsEn:['Romance','Mystery','Nature']}
+  ],
+  chars:[
+    {id:'c1',mangaId:'moons',nameAr:'ليلى',nameEn:'Layla',color:'#667eea',initial:'ل'},
+    {id:'c2',mangaId:'moons',nameAr:'سامي',nameEn:'Sami',color:'#764ba2',initial:'س'},
+    {id:'c3',mangaId:'moons',nameAr:'نور',nameEn:'Nour',color:'#a855f7',initial:'ن'},
+    {id:'c4',mangaId:'moons',nameAr:'خالد',nameEn:'Khalid',color:'#8b5cf6',initial:'خ'},
+    {id:'c5',mangaId:'lord',nameAr:'زيد',nameEn:'Zaid',color:'#f093fb',initial:'ز'},
+    {id:'c6',mangaId:'lord',nameAr:'مريم',nameEn:'Mariam',color:'#f5576c',initial:'م'}
+  ],
+  threads:[
+    {id:'t1',titleAr:'نظريات طريق الأقمار',titleEn:'Moons Road Theories',replies:42,pinned:true,hot:true},
+    {id:'t2',titleAr:'أفضل شخصية في السيد الكبير',titleEn:'Best Character in Grand Lord',replies:28,pinned:false,hot:true},
+    {id:'t3',titleAr:'توقعات الفصل القادم',titleEn:'Next Chapter Predictions',replies:15,pinned:false,hot:false},
+    {id:'t4',titleAr:'نقاش: نظام القوة في المانجا',titleEn:'Discussion: Power Systems in Manga',replies:67,pinned:true,hot:false},
+    {id:'t5',titleAr:'اقتراحات لقصص جديدة',titleEn:'Suggestions for New Stories',replies:9,pinned:false,hot:false}
+  ],
+  pins:[
+    {id:'p1',mangaId:'moons',page:1,x:30,y:25,textAr:'تكوين رائع!',textEn:'Great composition!'},
+    {id:'p2',mangaId:'moons',page:1,x:70,y:60,textAr:'هل لاحظتم التفاصيل في الخلفية؟',textEn:'Notice the background details?'},
+    {id:'p3',mangaId:'moons',page:2,x:45,y:40,textAr:'هذا المشهد مؤثر جداً',textEn:'This scene is very emotional'},
+    {id:'p4',mangaId:'moons',page:3,x:20,y:70,textAr:'لون السماء مذهل',textEn:'The sky color is amazing'},
+    {id:'p5',mangaId:'moons',page:5,x:60,y:30,textAr:'تطور الشخصية واضح هنا',textEn:'Character development is clear here'},
+    {id:'p6',mangaId:'moons',page:6,x:50,y:50,textAr:'نهاية مذهلة!',textEn:'Mind-blowing ending!'}
+  ],
+  approvals:[
+    {id:'a1',nameAr:'أحمد محمد',nameEn:'Ahmed Mohamed',date:'2026-04-20'},
+    {id:'a2',nameAr:'سارة علي',nameEn:'Sara Ali',date:'2026-04-21'},
+    {id:'a3',nameAr:'عمر حسن',nameEn:'Omar Hassan',date:'2026-04-22'}
+  ]
+};
+
+// ========== NAVIGATION ==========
+function navigate(viewId){
+  document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active')});
+  const target=document.getElementById('view-'+viewId);
+  if(target){target.classList.add('active');state.view=viewId}
+  renderDynamic();
+  window.scrollTo(0,0);
+}
+
+function renderDynamic(){
+  updateRoleUI();
+  if(state.view==='home')renderHome();
+  else if(state.view==='manga-detail')renderMangaDetail();
+  else if(state.view==='reader')renderReader();
+  else if(state.view==='characters')renderCharacters();
+  else if(state.view==='forum')renderForum();
+  else if(state.view==='admin')renderAdmin();
+}
+
+// ========== LANGUAGE ==========
+function toggleLang(){
+  const btn=document.querySelector('button[onclick="toggleLang()"]');
+  if(state.lang==='ar'){
+    state.lang='en';
+    document.documentElement.dir='ltr';
+    document.documentElement.lang='en';
+    btn.textContent='عربي';
+  }else{
+    state.lang='ar';
+    document.documentElement.dir='rtl';
+    document.documentElement.lang='ar';
+    btn.textContent='EN';
+  }
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    el.textContent=t(key);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const key=el.getAttribute('data-i18n-placeholder');
+    el.placeholder=t(key);
+  });
+  renderDynamic();
+}
+
+// ========== ROLE ==========
+function cycleRole(){
+  const roles=['guest','member','admin'];
+  const idx=roles.indexOf(state.role);
+  state.role=roles[(idx+1)%3];
+  updateRoleUI();
+  renderDynamic();
+}
+
+function login(role){
+  state.role=role;
+  document.getElementById('loginGate').style.opacity='0';
+  setTimeout(()=>{document.getElementById('loginGate').style.display='none'},400);
+  updateRoleUI();
+  renderDynamic();
+  // Show PWA toast after 3s
+  setTimeout(()=>{
+    if(!state.pwaShown){
+      document.getElementById('pwaToast').classList.add('show');
+      state.pwaShown=true;
+    }
+  },3000);
+}
+
+function updateRoleUI(){
+  const roleBtn=document.getElementById('roleBtn');
+  roleBtn.textContent=t('role_'+state.role);
+  const adminBtns=document.querySelectorAll('[id*="admin"][id*="NavBtn"]');
+  adminBtns.forEach(b=>{b.classList.toggle('hidden',state.role!=='admin')});
+}
+
+// ========== MOBILE NAV ==========
+function toggleMobileNav(){
+  const nav=document.getElementById('mobileNav');
+  const isOpen=nav.style.pointerEvents==='auto';
+  if(isOpen){
+    nav.style.opacity='0';
+    nav.style.pointerEvents='none';
+  }else{
+    nav.style.opacity='1';
+    nav.style.pointerEvents='auto';
+  }
+}
+
+// ========== HOME ==========
+function renderHome(){
+  // Continue reading
+  const contSection=document.getElementById('continueSection');
+  if(state.role!=='guest'){
+    contSection.classList.remove('hidden');
+    const grid=document.getElementById('continueGrid');
+    grid.innerHTML=db.manga.slice(0,3).map(m=>{
+      const progress=Math.floor(Math.random()*60)+20;
+      return `<div class="card-hover bg-white rounded-xl p-4 cursor-pointer" onclick="openManga('${m.id}')">
+        <div class="flex gap-4">
+          <div class="w-16 h-24 rounded-lg flex-shrink-0" style="background:${m.color}"></div>
+          <div class="flex-1">
+            <h4 class="font-bold text-sm mb-1">${state.lang==='ar'?m.titleAr:m.titleEn}</h4>
+            <div class="progress-bar mb-2"><div class="progress-bar-fill" style="width:${progress}%"></div></div>
+            <p class="text-xs text-gray-400">${t('chapter')} ${Math.floor(Math.random()*m.chapters)+1} / ${m.chapters}</p>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }else{contSection.classList.add('hidden')}
+
+  // Manga grid
+  const grid=document.getElementById('mangaGrid');
+  grid.innerHTML=db.manga.map(m=>{
+    const isLocked=state.role==='guest';
+    return `<div class="card-hover bg-white rounded-xl overflow-hidden cursor-pointer" onclick="openManga('${m.id}')">
+      <div class="aspect-[3/4]" style="background:${m.color}"></div>
+      <div class="p-4">
+        <h3 class="font-bold text-sm mb-1">${state.lang==='ar'?m.titleAr:m.titleEn}</h3>
+        <div class="flex items-center gap-2 text-xs text-gray-400">
+          <span class="text-gold"><i class="fa-solid fa-star"></i> ${m.rating}</span>
+          <span>${m.chapters} ${t('chapters')}</span>
+        </div>
+        ${isLocked?'<span class="inline-block mt-2 text-xs px-2 py-0.5 rounded-full badge-locked">'+t('locked')+'</span>':''}
+      </div>
+    </div>`;
+  }).join('');
+
+  // New chapters
+  const nc=document.getElementById('newChapters');
+  nc.innerHTML=db.manga.slice(0,3).map(m=>{
+    const chNum=m.freeCh;
+    return `<div class="flex items-center gap-4 bg-white rounded-xl p-4 cursor-pointer card-hover" onclick="openManga('${m.id}')">
+      <div class="w-12 h-12 rounded-lg flex-shrink-0" style="background:${m.color}"></div>
+      <div class="flex-1">
+        <h4 class="font-semibold text-sm">${state.lang==='ar'?m.titleAr:m.titleEn}</h4>
+        <p class="text-xs text-gray-400">${t('chapter')} ${chNum}</p>
+      </div>
+      <span class="text-xs px-3 py-1 rounded-full badge-free">${t('free')}</span>
+    </div>`;
+  }).join('');
+}
+
+// ========== MANGA DETAIL ==========
+function openManga(id){
+  state.mangaId=id;
+  navigate('manga-detail');
+}
+
+function renderMangaDetail(){
+  const m=db.manga.find(x=>x.id===state.mangaId);
+  if(!m)return;
+  document.getElementById('detailCover').style.background=m.color;
+  document.getElementById('detailTitle').textContent=state.lang==='ar'?m.titleAr:m.titleEn;
+  document.getElementById('detailDesc').textContent=state.lang==='ar'?m.descAr:m.descEn;
+  document.getElementById('detailChCount').textContent=m.chapters+' '+t('chapters');
+  // Rating
+  const stars=Math.floor(m.rating);
+  let ratingHTML='';
+  for(let i=0;i<5;i++)ratingHTML+=`<i class="fa-solid fa-star${i<stars?'':' fa-regular'}"></i>`;
+  ratingHTML+=`<span class="mr-1">${m.rating}</span>`;
+  document.getElementById('detailRating').innerHTML=ratingHTML;
+  // Tags
+  const tags=state.lang==='ar'?m.tagsAr:m.tagsEn;
+  document.getElementById('detailTags').innerHTML=tags.map(tag=>`<span class="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-600">${tag}</span>`).join('');
+  // Chapters
+  const cl=document.getElementById('chapterList');
+  let chHTML='';
+  for(let i=1;i<=m.chapters;i++){
+    const isFree=i<=m.freeCh;
+    const canRead=isFree||state.role!=='guest';
+    const badge=isFree?'badge-free':(state.role!=='guest'?'badge-premium':'badge-locked');
+    const badgeText=isFree?t('free'):(state.role!=='guest'?t('premium'):t('locked'));
+    chHTML+=`<div class="flex-shrink-0 w-40 bg-white rounded-xl overflow-hidden card-hover cursor-pointer ${canRead?'':'opacity-60'}" onclick="${canRead?`openReader('${m.id}',${i})`:''}">
+      <div class="h-20" style="background:${m.color};opacity:0.8"></div>
+      <div class="p-3">
+        <p class="font-bold text-xs mb-1">${t('chapter')} ${i}</p>
+        <span class="text-xs px-2 py-0.5 rounded-full ${badge}">${badgeText}</span>
+      </div>
+    </div>`;
+  }
+  cl.innerHTML=chHTML;
+  // Characters
+  const chars=db.chars.filter(c=>c.mangaId===m.id);
+  document.getElementById('charGrid').innerHTML=chars.map(c=>`
+    <div class="bg-white rounded-xl p-4 text-center card-hover cursor-pointer">
+      <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-xl font-bold" style="background:${c.color}">${c.initial}</div>
+      <p class="font-semibold text-sm">${state.lang==='ar'?c.nameAr:c.nameEn}</p>
+      <p class="text-xs text-gray-400 mt-1">${t('char_desc')}</p>
+    </div>
+  `).join('');
+}
+
+// ========== READER ==========
+function openReader(mangaId,chapter){
+  state.mangaId=mangaId;
+  state.readerPage=1;
+  state.currentScale=1;
+  state.panX=0;state.panY=0;
+  navigate('reader');
+  startIdleTimer();
+}
+
+function exitReader(){
+  resetZoom();
+  navigate('manga-detail');
+}
+
+function renderReader(){
+  const m=db.manga.find(x=>x.id===state.mangaId);
+  if(!m)return;
+  document.getElementById('readerMangaTitle').textContent=state.lang==='ar'?m.titleAr:m.titleEn;
+  renderReaderPage();
+  updatePageCounter();
+  setupReaderEvents();
+}
+
+function renderReaderPage(){
+  const svg=document.getElementById('readerSvg');
+  const page=state.readerPage;
+  // Generate SVG manga panel layout
+  const layouts=[
+    // Layout 1: Hero panel + 2 small
+    `<rect width="800" height="1200" fill="#111"/>
+     <rect x="20" y="20" width="760" height="500" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+     <rect x="20" y="540" width="370" height="300" rx="4" fill="#16213e" stroke="#333" stroke-width="1"/>
+     <rect x="410" y="540" width="370" height="300" rx="4" fill="#0f3460" stroke="#333" stroke-width="1"/>
+     <rect x="20" y="860" width="760" height="320" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+     <text x="400" y="280" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="24">Panel ${page}.1</text>
+     <text x="205" y="690" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="18">Panel ${page}.2</text>
+     <text x="595" y="690" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="18">Panel ${page}.3</text>
+     <text x="400" y="1020" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="20">Panel ${page}.4</text>`,
+    // Layout 2: 3 rows
+    `<rect width="800" height="1200" fill="#111"/>
+     <rect x="20" y="20" width="760" height="280" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+     <rect x="20" y="320" width="370" height="400" rx="4" fill="#16213e" stroke="#333" stroke-width="1"/>
+     <rect x="410" y="320" width="370" height="400" rx="4" fill="#0f3460" stroke="#333" stroke-width="1"/>
+     <rect x="20" y="740" width="760" height="440" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+     <text x="400" y="160" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="20">Panel ${page}.1</text>
+     <text x="205" y="520" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="18">Panel ${page}.2</text>
+     <text x="595" y="520" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="18">Panel ${page}.3</text>
+     <text x="400" y="960" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="22">Panel ${page}.4</text>`,
+    // Layout 3: Grid
+    `<rect width="800" height="1200" fill="#111"/>
+     <rect x="20" y="20" width="240" height="380" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+     <rect x="280" y="20" width="500" height="380" rx="4" fill="#16213e" stroke="#333" stroke-width="1"/>
+     <rect x="20" y="420" width="500" height="380" rx="4" fill="#0f3460" stroke="#333" stroke-width="1"/>
+     <rect x="540" y="420" width="240" height="380" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+     <rect x="20" y="820" width="760" height="360" rx="4" fill="#16213e" stroke="#333" stroke-width="1"/>
+     <text x="140" y="210" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="16">Panel ${page}.1</text>
+     <text x="530" y="210" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="18">Panel ${page}.2</text>
+     <text x="270" y="610" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="18">Panel ${page}.3</text>
+     <text x="660" y="610" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="16">Panel ${page}.4</text>
+     <text x="400" y="1000" text-anchor="middle" fill="#444" font-family="Cairo,Inter" font-size="20">Panel ${page}.5</text>`
+  ];
+  svg.innerHTML=layouts[(page-1)%3];
+  renderPins();
+}
+
+function updatePageCounter(){
+  const pc=document.getElementById('pageCounter');
+  const pageNum=state.lang==='ar'?toArabicNum(state.readerPage):state.readerPage;
+  const totalNum=state.lang==='ar'?toArabicNum(state.totalPages):state.totalPages;
+  pc.textContent=`${t('page')} ${pageNum} ${t('of')} ${totalNum}`;
+}
+
+function toArabicNum(n){
+  const arabicNums=['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).replace(/[0-9]/g,d=>arabicNums[parseInt(d)]);
+}
+
+function readerNext(){
+  if(state.readerPage<state.totalPages){
+    state.readerPage++;
+    renderReaderPage();
+    updatePageCounter();
+    resetIdleTimer();
+  }
+}
+
+function readerPrev(){
+  if(state.readerPage>1){
+    state.readerPage--;
+    renderReaderPage();
+    updatePageCounter();
+    resetIdleTimer();
+  }
+}
+
+// ========== ZOOM & PAN ==========
+function applyZoom(){
+  const wrapper=document.getElementById('readerPageWrapper');
+  wrapper.style.transform=`scale(${state.currentScale}) translate(${state.panX}px,${state.panY}px)`;
+  const resetBtn=document.getElementById('resetZoomBtn');
+  resetBtn.classList.toggle('hidden',state.currentScale<=1.1);
+}
+
+function resetZoom(){
+  state.currentScale=1;
+  state.panX=0;state.panY=0;
+  applyZoom();
+}
+
+// ========== READER TOUCH EVENTS ==========
+function setupReaderEvents(){
+  const container=document.getElementById('readerContainer');
+  if(!container)return;
+
+  // Remove old listeners by cloning
+  const newContainer=container.cloneNode(true);
+  container.parentNode.replaceChild(newContainer,container);
+
+  let touches=[];
+
+  newContainer.addEventListener('touchstart',(e)=>{
+    touches=Array.from(e.touches);
+    if(touches.length===2){
+      // Pinch start
+      state.isPinching=true;
+      state.isSwiping=false;
+      state.pinchStartDist=getTouchDist(touches);
+      state.pinchStartScale=state.currentScale;
+      e.preventDefault();
+    }else if(touches.length===1&&state.currentScale<=1.05){
+      // Swipe start (only if not zoomed)
+      state.isSwiping=true;
+      state.swipeStartX=touches[0].clientX;
+      state.swipeStartY=touches[0].clientY;
+      state.isPanning=false;
+    }else if(touches.length===1&&state.currentScale>1.05){
+      // Pan start (when zoomed)
+      state.isPanning=true;
+      state.startPanX=state.panX;
+      state.startPanY=state.panY;
+      state.swipeStartX=touches[0].clientX;
+      state.swipeStartY=touches[0].clientY;
+    }
+    resetIdleTimer();
+  },{passive:false});
+
+  newContainer.addEventListener('touchmove',(e)=>{
+    const currentTouches=Array.from(e.touches);
+    if(state.isPinching&&currentTouches.length===2){
+      const dist=getTouchDist(currentTouches);
+      const scale=state.pinchStartScale*(dist/state.pinchStartDist);
+      state.currentScale=Math.max(0.5,Math.min(4,scale));
+      applyZoom();
+      e.preventDefault();
+    }else if(state.isPanning&&currentTouches.length===1){
+      const dx=currentTouches[0].clientX-state.swipeStartX;
+      const dy=currentTouches[0].clientY-state.swipeStartY;
+      state.panX=state.startPanX+dx/state.currentScale;
+      state.panY=state.startPanY+dy/state.currentScale;
+      applyZoom();
+      e.preventDefault();
+    }else if(state.isSwiping&&currentTouches.length===1&&!state.isPinching){
+      // Only swipe if horizontal movement > vertical
+      const dx=Math.abs(currentTouches[0].clientX-state.swipeStartX);
+      const dy=Math.abs(currentTouches[0].clientY-state.swipeStartY);
+      if(dx>dy&&dx>30){
+        e.preventDefault();
+      }
+    }
+  },{passive:false});
+
+  newContainer.addEventListener('touchend',(e)=>{
+    if(state.isPinching){
+      state.isPinching=false;
+      if(state.currentScale<1.05)resetZoom();
+    }
+    if(state.isSwiping&&!state.isPinching){
+      const endTouch=e.changedTouches[0];
+      const dx=endTouch.clientX-state.swipeStartX;
+      const dy=Math.abs(endTouch.clientY-state.swipeStartY);
+      if(Math.abs(dx)>80&&dy<100){
+        if(state.lang==='ar'){
+          if(dx>0)readerNext();
+          else readerPrev();
+        }else{
+          if(dx<0)readerNext();
+          else readerPrev();
+        }
+      }
+      state.isSwiping=false;
+    }
+    if(state.isPanning){
+      state.isPanning=false;
+    }
+    touches=[];
+  });
+
+  // Tap to show chrome
+  newContainer.addEventListener('click',(e)=>{
+    if(state.isPinching||state.isSwiping)return;
+    resetIdleTimer();
+  });
+}
+
+function getTouchDist(touches){
+  const dx=touches[0].clientX-touches[1].clientX;
+  const dy=touches[0].clientY-touches[1].clientY;
+  return Math.sqrt(dx*dx+dy*dy);
+}
+
+// ========== IDLE CHROME HIDE ==========
+function startIdleTimer(){
+  resetIdleTimer();
+}
+
+function resetIdleTimer(){
+  clearTimeout(state.idleTimer);
+  document.getElementById('view-reader').classList.remove('chrome-hidden');
+  state.idleTimer=setTimeout(()=>{
+    if(state.view==='reader'){
+      document.getElementById('view-reader').classList.add('chrome-hidden');
+    }
+  },3000);
+}
+
+// ========== SPATIAL COMMENTS ==========
+function toggleSpatial(){
+  const overlay=document.getElementById('pinsOverlay');
+  const btn=document.getElementById('spatialToggle');
+  const isHidden=overlay.classList.contains('hidden');
+  overlay.classList.toggle('hidden');
+  btn.classList.toggle('text-gold',isHidden);
+  btn.classList.toggle('text-white',!isHidden);
+  if(isHidden)renderPins();
+}
+
+function renderPins(){
+  const overlay=document.getElementById('pinsOverlay');
+  if(overlay.classList.contains('hidden'))return;
+  const pins=db.pins.filter(p=>p.mangaId===state.mangaId&&p.page===state.readerPage);
+  overlay.innerHTML=pins.map(p=>{
+    let x=p.x;
+    if(state.lang==='ar')x=100-x;
+    return `<div class="pin-marker" style="left:${x}%;top:${p.y}%" onclick="showPinComment('${p.id}')">${db.pins.indexOf(p)+1}</div>`;
+  }).join('');
+  // Click to add pin
+  overlay.onclick=(e)=>{
+    if(e.target.classList.contains('pin-marker'))return;
+    const rect=overlay.getBoundingClientRect();
+    const x=((e.clientX-rect.left)/rect.width)*100;
+    const y=((e.clientY-rect.top)/rect.height)*100;
+    addNewPin(x,y);
+  };
+}
+
+function addNewPin(x,y){
+  const id='p'+Date.now();
+  if(state.lang==='ar')x=100-x;
+  db.pins.push({id:id,mangaId:state.mangaId,page:state.readerPage,x:100-x,y:y,textAr:'تعليق جديد',textEn:'New comment'});
+  renderPins();
+  showPinComment(id);
+}
+
+function showPinComment(pinId){
+  const pin=db.pins.find(p=>p.id===pinId);
+  if(!pin)return;
+  state.activePinId=pinId;
+  const list=document.getElementById('commentsList');
+  list.innerHTML=`<div class="bg-gray-50 rounded-xl p-4">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="w-7 h-7 rounded-full bg-gold text-white text-xs flex items-center justify-center font-bold">${db.pins.indexOf(pin)+1}</span>
+      <span class="text-xs text-gray-400">${t('page')} ${pin.page}</span>
+    </div>
+    <p class="text-sm">${state.lang==='ar'?pin.textAr:pin.textEn}</p>
+  </div>`;
+  openComments();
+}
+
+function openComments(){
+  state.sidebarOpen=true;
+  document.getElementById('commentsOverlay').classList.add('open');
+  document.getElementById('commentsSidebar').classList.add('open');
+}
+
+function closeComments(){
+  state.sidebarOpen=false;
+  document.getElementById('commentsOverlay').classList.remove('open');
+  document.getElementById('commentsSidebar').classList.remove('open');
+}
+
+function addComment(){
+  const input=document.getElementById('commentInput');
+  if(!input.value.trim()||!state.activePinId)return;
+  const pin=db.pins.find(p=>p.id===state.activePinId);
+  if(pin){
+    if(state.lang==='ar')pin.textAr=input.value;
+    else pin.textEn=input.value;
+  }
+  input.value='';
+  showPinComment(state.activePinId);
+}
+
+// ========== CHAPTER SHEET ==========
+function openChapterSheet(){
+  const sheet=document.getElementById('chapterSheet');
+  const m=db.manga.find(x=>x.id===state.mangaId);
+  if(!m)return;
+  const list=document.getElementById('sheetChapterList');
+  let html='';
+  for(let i=1;i<=m.chapters;i++){
+    const isFree=i<=m.freeCh;
+    const canRead=isFree||state.role!=='guest';
+    html+=`<div class="flex items-center justify-between p-3 rounded-xl ${canRead?'hover:bg-gray-50':'opacity-50'} cursor-pointer" onclick="${canRead?`openReader('${m.id}',${i});closeChapterSheet()`:''}">
+      <span class="font-semibold text-sm">${t('chapter')} ${i}</span>
+      <span class="text-xs px-2 py-0.5 rounded-full ${isFree?'badge-free':(state.role!=='guest'?'badge-premium':'badge-locked')}">${isFree?t('free'):(state.role!=='guest'?t('premium'):t('locked'))}</span>
+    </div>`;
+  }
+  list.innerHTML=html;
+  sheet.style.opacity='1';
+  sheet.style.pointerEvents='auto';
+  sheet.querySelector('div:last-child').style.transform='translateY(0)';
+}
+
+function closeChapterSheet(){
+  const sheet=document.getElementById('chapterSheet');
+  sheet.style.opacity='0';
+  sheet.style.pointerEvents='none';
+  sheet.querySelector('div:last-child').style.transform='translateY(100%)';
+}
+
+// ========== CHARACTERS ==========
+function renderCharacters(){
+  const grid=document.getElementById('allCharGrid');
+  grid.innerHTML=db.chars.map(c=>{
+    const manga=db.manga.find(m=>m.id===c.mangaId);
+    return `<div class="bg-white rounded-xl p-4 text-center card-hover cursor-pointer">
+      <div class="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold" style="background:${c.color}">${c.initial}</div>
+      <p class="font-semibold text-sm">${state.lang==='ar'?c.nameAr:c.nameEn}</p>
+      <p class="text-xs text-gray-400 mt-1">${manga?(state.lang==='ar'?manga.titleAr:manga.titleEn):''}</p>
+    </div>`;
+  }).join('');
+}
+
+// ========== FORUM ==========
+function renderForum(){
+  const list=document.getElementById('forumList');
+  list.innerHTML=db.threads.map(th=>`
+    <div class="bg-white rounded-xl p-5 card-hover cursor-pointer flex items-start gap-4">
+      <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+        ${th.pinned?'<i class="fa-solid fa-thumbtack text-gold text-sm"></i>':(th.hot?'<i class="fa-solid fa-fire text-red-500 text-sm"></i>':'<i class="fa-regular fa-comment text-gray-400 text-sm"></i>')}
+      </div>
+      <div class="flex-1">
+        <h4 class="font-semibold text-sm mb-1">${state.lang==='ar'?th.titleAr:th.titleEn}</h4>
+        <p class="text-xs text-gray-400">${th.replies} ${t('forum_replies')}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ========== ADMIN ==========
+function renderAdmin(){
+  document.getElementById('statPending').textContent=db.approvals.length;
+  const list=document.getElementById('approvalList');
+  list.innerHTML=db.approvals.map(a=>`
+    <div class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+      <div>
+        <p class="text-white font-semibold text-sm">${state.lang==='ar'?a.nameAr:a.nameEn}</p>
+        <p class="text-gray-400 text-xs">${a.date}</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="approveUser('${a.id}')" class="px-4 py-2 rounded-lg bg-green-600/20 text-green-400 text-xs font-semibold hover:bg-green-600/30 transition-colors min-h-[44px]">${t('approve')}</button>
+        <button onclick="rejectUser('${a.id}')" class="px-4 py-2 rounded-lg bg-red-600/20 text-red-400 text-xs font-semibold hover:bg-red-600/30 transition-colors min-h-[44px]">${t('reject')}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function approveUser(id){
+  db.approvals=db.approvals.filter(a=>a.id!==id);
+  renderAdmin();
+}
+
+function rejectUser(id){
+  db.approvals=db.approvals.filter(a=>a.id!==id);
+  renderAdmin();
+}
+
+// ========== PWA ==========
+function dismissPWA(){
+  document.getElementById('pwaToast').classList.remove('show');
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded',()=>{
+  // Apply initial i18n
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    el.textContent=t(key);
+  });
+  renderDynamic();
+});
+</script>
+</body>
+</html>

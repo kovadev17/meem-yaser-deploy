@@ -1,0 +1,4 @@
+.opencode/
+*.md
+build-*
+.env
