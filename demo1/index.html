@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<title>Meem Yaser Studio  Premium Clean</title>
+<title>Meem Yaser Studio  Private Reading Club</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -842,13 +842,13 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
     <span id="brandName">Meem Yaser Studio</span>
   </div>
   <div class="nav-links" id="navLinks">
-    <a href="#" data-page="home" class="active" id="navHome">الرئيسية</a>
-    <a href="#" data-page="browse" id="navBrowse">المكتبة</a>
-    <a href="#" data-page="admin" id="navAdmin">الإدارة</a>
+    <a href="#" data-page="home" class="active" id="navHome">Home</a>
+    <a href="#" data-page="browse" id="navBrowse">Library</a>
+    <a href="#" data-page="admin" id="navAdmin">Admin</a>
   </div>
   <div class="nav-actions">
-    <button class="lang-toggle" id="langToggle" title="Switch Language">AR</button>
-    <span class="role-badge member" id="roleBadge">عضو</span>
+    <button class="lang-toggle" id="langToggle" title="Switch Language">EN</button>
+    <span class="role-badge member" id="roleBadge">Member</span>
   </div>
 </nav>
 
@@ -857,8 +857,8 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
   <section class="hero">
     <div class="hero-grid">
       <div class="hero-content reveal">
-        <h1 id="heroTitle"><span>عوالم</span> لا تهدأ</h1>
-        <p id="heroDesc">نادي قراءة خاص للقصص المصورة. انضم إلى مجتمعنا الحصري واستكشف عوالم ميم ياسر.</p>
+        <h1 id="heroTitle"><span>Restless</span> Worlds</h1>
+        <p id="heroDesc">A private manga reading club. Join our exclusive community and explore the worlds of Meem Yaser.</p>
         <a href="#" class="hero-cta" id="heroCta" data-action="browse">استكشف المكتبة</a>
       </div>
       <div class="hero-visual reveal">
@@ -1002,7 +1002,7 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
     <select id="chapterFilter">
       <option value="all">الكل</option>
       <option value="free">مجاني</option>
-      <option value="premium">مميز</option>
+      <option value="member">Member</option>
     </select>
   </div>
   <div class="chapter-list" id="chapterList"></div>
@@ -1078,7 +1078,7 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
 // ===================== STATE =====================
 const state = {
   lang: 'ar',
-  user: { name: 'زائر', role: 'member', id: 'u1' },
+  user: { name: 'زائر', role: 'guest', id: 'u1' },
   currentManga: null,
   currentChapter: null,
   currentPage: 0,
@@ -1106,9 +1106,9 @@ const i18n = {
     aboutDesc2: 'منذ تأسيسه، طور الاستوديو أربع سلاسل رئيسية تجمع بين العمق الأدبي العربي والجماليات المرئية للمانغا.',
     searchPlaceholder: 'ابحث في الفصول...',
     newest: 'الأحدث', oldest: 'الأقدم', number: 'رقم الفصل',
-    all: 'الكل', free: 'مجاني', premium: 'مميز',
-    guest: 'زائر', member: 'عضو', pro: 'عضو', admin: 'مدير',
-    roles: { guest: 'زائر', member: 'عضو', pro: 'عضو', admin: 'مدير' },
+    all: 'الكل', free: 'مجاني', member: 'حصري',
+    guest: 'زائر', member: 'عضو', admin: 'مدير',
+    roles: { guest: 'زائر', member: 'عضو', admin: 'مدير' },
     faqTitle: 'الأسئلة الشائعة',
     faqQ1: 'كيف أصبح عضواً؟',
     faqA1: 'يمكنك التسجيل كزائر للمعاينة. للوصول الكامل، يطلب المدير الموافقة على عضويتك.',
@@ -1188,18 +1188,18 @@ const i18n = {
     heroCta: 'Explore Library',
     featuredTitle: 'Featured Series',
     featuredDesc: 'Choose from our growing collection of original manga',
-    tiersTitle: 'Membership Plans', tiersDesc: 'Pick the plan that fits you',
+    tiersTitle: 'Membership Access', tiersDesc: 'Approval-based access to our private reading club',
     aboutTitle: 'About the Studio',
     aboutDesc1: 'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through manga and graphic novels.',
     aboutDesc2: 'Since its founding, the studio has developed four main series blending Arabic literary depth with manga visual aesthetics.',
     searchPlaceholder: 'Search chapters...',
     newest: 'Newest', oldest: 'Oldest', number: 'Chapter Number',
-    all: 'All', free: 'Free', premium: 'Premium',
-    guest: 'Guest', member: 'Member', pro: 'Pro', admin: 'Admin',
-    roles: { guest: 'Guest', member: 'Member', pro: 'Pro', admin: 'Admin' },
+    all: 'All', free: 'Free', member: 'Member',
+    guest: 'Guest', member: 'Member', admin: 'Admin',
+    roles: { guest: 'Guest', member: 'Member', pro: 'Admin', admin: 'Admin' },
     faqTitle: 'FAQ',
     faqQ1: 'How do I become a member?',
-    faqA1: 'Register for free and enjoy all free chapters. To access member-only chapters, upgrade to a Member Access.',
+    faqA1: 'Register for free and enjoy all free chapters. To access member-only chapters, request a Member Access.',
     faqQ2: 'Can I read manga on mobile?',
     faqA2: 'Yes, the site is fully designed for mobile. Supports swipe navigation and pinch-zoom.',
     faqQ3: 'How do comments work?',
@@ -1433,7 +1433,7 @@ function renderChapterList() {
   $('#chapterList').innerHTML = list.map(c => {
     const locked = c.type !== 'free' && state.user.role === 'guest';
     const tagClass = c.type;
-    const tagText = c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='premium'?(state.lang==='ar'?'مميز':'Premium'):(state.lang==='ar'?'مبكر':'Early');
+    const tagText = c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='member'?(state.lang==='ar'?حصري':'Member'):(state.lang==='ar'?'مبكر':'Early');
     const thumb = c.thumbnail || `https://picsum.photos/seed/${m.id}ch${c.num}/100/100`;
     return `
       <div class="chapter-item ${locked?'locked':''}" data-num="${c.num}" data-locked="${locked}">
@@ -1624,7 +1624,7 @@ document.addEventListener('click', e => {
   const ch = e.target.closest('.chapter-item');
   if(!ch) return;
   const locked = ch.dataset.locked === 'true';
-  if(locked) { toast(state.lang==='ar'?'هذا الفصل مميز  ترقى للوصول':'Premium chapter  upgrade to access'); return; }
+  if(locked) { toast(state.lang==='ar'?'هذا الفصل مميز  ترقى للوصول':'Member chapter  request access'); return; }
   const num = +ch.dataset.num;
   openReader(state.currentManga.id, num);
 });
@@ -1762,7 +1762,7 @@ function updateText() {
   const sortSel = $('#chapterSort');
   sortSel.innerHTML = `<option value="newest">${l.newest}</option><option value="oldest">${l.oldest}</option><option value="number">${l.number}</option>`;
   const filterSel = $('#chapterFilter');
-  filterSel.innerHTML = `<option value="all">${l.all}</option><option value="free">${l.free}</option><option value="premium">${l.premium}</option>`;
+  filterSel.innerHTML = `<option value="all">${l.all}</option><option value="free">${l.free}</option><option value="member">${l.member}</option>`;
   $('#roleBadge').textContent = l.roles[state.user.role];
   
   // FAQ

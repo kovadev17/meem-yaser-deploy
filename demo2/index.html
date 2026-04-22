@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
@@ -771,6 +771,8 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
   50% { opacity: 0.5; transform: scale(0.8); }
 }
 
+
+.tier-price, .tier-card .price { display: none !important; }
 </style>
 </head>
 <body>
@@ -783,21 +785,21 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
     <span id="brandName">Meem Yaser Studio</span>
   </div>
   <div class="nav-links" id="navLinks">
-    <a href="#" data-page="home" class="active" id="navHome">الرئيسية</a>
-    <a href="#" data-page="browse" id="navBrowse">المكتبة</a>
-    <a href="#" data-page="admin" id="navAdmin">الإدارة</a>
+    <a href="#" data-page="home" class="active" id="navHome">Home</a>
+    <a href="#" data-page="browse" id="navBrowse">Library</a>
+    <a href="#" data-page="admin" id="navAdmin">Admin</a>
   </div>
   <div class="nav-actions">
     <button class="lang-toggle" id="langToggle">AR</button>
-    <span class="role-badge member" id="roleBadge">عضو</span>
+    <span class="role-badge member" id="roleBadge">Member</span>
   </div>
 </nav>
 
 <div class="page" id="homePage">
   <section class="hero">
-    <div class="hero-eyebrow reveal"><span class="dot"></span><span id="heroEyebrow">نادي قراءة خاص</span></div>
-    <h1 class="reveal" id="heroTitle"><em>عوالم</em><br>لا تهدأ</h1>
-    <p class="hero-sub reveal" id="heroDesc">نادي قراءة خاص للقصص المصورة. انضم إلى مجتمعنا الحصري واستكشف عوالم ميم ياسر.</p>
+    <div class="hero-eyebrow reveal"><span class="dot"></span><span id="heroEyebrow">Private Reading Club</span></div>
+    <h1 id="heroTitle"><span>Restless</span> Worlds</h1>
+    <p id="heroDesc">A private manga reading club. Join our exclusive community and explore the worlds of Meem Yaser.</p>
     <a href="#" class="hero-cta reveal" id="heroCta" data-action="browse">استكشف المكتبة</a>
   </section>
 
@@ -972,7 +974,7 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
     <select id="chapterFilter">
       <option value="all">الكل</option>
       <option value="free">مجاني</option>
-      <option value="premium">مميز</option>
+      <option value="member">Member</option>
     </select>
   </div>
   <div class="chapter-list" id="chapterList"></div>
@@ -1043,14 +1045,14 @@ body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.
 
 <script>
 const state={lang:'ar',user:{name:'زائر',role:'member',id:'u1'},currentManga:null,currentChapter:null,currentPage:0,zoom:1,isZoomed:false,commentsEnabled:false,adminTab:'users',page:'home'};
-const i18n={ar:{brand:'ميم ياسر ستوديو',navHome:'الرئيسية',navBrowse:'المكتبة',navAdmin:'الإدارة',heroEyebrow:'نادي قراءة خاص',heroTitle:'<em>عوالم</em><br>لا تهدأ',heroDesc:'نادي قراءة خاص للقصص المصورة. انضم إلى مجتمعنا الحصري واستكشف عوالم ميم ياسر.',heroCta:'استكشف المكتبة',featuredTitle:'المسلسلات المميزة',featuredDesc:'اختر من مجموعتنا المتنامية من القصص المصورة الأصلية',tiersTitle:'خطط العضوية',tiersDesc:'اختر الخطة التي تناسبك',aboutTitle:'عن الاستوديو',aboutDesc1:'ميم ياسر ستوديو هو بيت للسرد البصري في دبي. نخلق عوالم لا تهدأ من خلال فن القصص المصورة والروايات المصورة.',aboutDesc2:'منذ تأسيسه، طور الاستوديو أربع سلاسل رئيسية تجمع بين العمق الأدبي العربي والجماليات المرئية للمانغا.',searchPlaceholder:'ابحث في الفصول...',newest:'الأحدث',oldest:'الأقدم',number:'رقم الفصل',all:'الكل',free:'مجاني',premium:'مميز',guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير',roles:{guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير'}},en:{brand:'Meem Yaser Studio',navHome:'Home',navBrowse:'Library',navAdmin:'Admin',heroEyebrow:'Private Reading Club',heroTitle:'<em>Restless</em><br>Worlds',heroDesc:'A private reading club for illustrated stories. Join our exclusive community and explore Meem Yaser\'s worlds.',heroCta:'Explore Library',featuredTitle:'Featured Series',featuredDesc:'Choose from our growing collection of original manga',tiersTitle:'Membership Plans',tiersDesc:'Pick the plan that fits you',aboutTitle:'About the Studio',aboutDesc1:'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through manga and graphic novels.',aboutDesc2:'Since its founding, the studio has developed four main series blending Arabic literary depth with manga visual aesthetics.',searchPlaceholder:'Search chapters...',newest:'Newest',oldest:'Oldest',number:'Chapter Number',all:'All',free:'Free',premium:'Premium',guest:'Guest',member:'Member',pro:'Pro',admin:'Admin',roles:{guest:'Guest',member:'Member',pro:'Pro',admin:'Admin'}}};
+const i18n={ar:{brand:'ميم ياسر ستوديو',navHome:'الرئيسية',navBrowse:'المكتبة',navAdmin:'الإدارة',heroEyebrow:'نادي قراءة خاص',heroTitle:'<em>عوالم</em><br>لا تهدأ',heroDesc:'نادي قراءة خاص للقصص المصورة. انضم إلى مجتمعنا الحصري واستكشف عوالم ميم ياسر.',heroCta:'استكشف المكتبة',featuredTitle:'المسلسلات المميزة',featuredDesc:'اختر من مجموعتنا المتنامية من القصص المصورة الأصلية',tiersTitle:'خطط العضوية',tiersDesc:'اختر الخطة التي تناسبك',aboutTitle:'عن الاستوديو',aboutDesc1:'ميم ياسر ستوديو هو بيت للسرد البصري في دبي. نخلق عوالم لا تهدأ من خلال فن القصص المصورة والروايات المصورة.',aboutDesc2:'منذ تأسيسه، طور الاستوديو أربع سلاسل رئيسية تجمع بين العمق الأدبي العربي والجماليات المرئية للمانغا.',searchPlaceholder:'ابحث في الفصول...',newest:'الأحدث',oldest:'الأقدم',number:'رقم الفصل',all:'الكل',free:'مجاني',member:'حصري',guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير',roles:{guest:'زائر',member:'عضو',pro:'عضو',admin:'مدير'}},en:{brand:'Meem Yaser Studio',navHome:'Home',navBrowse:'Library',navAdmin:'Admin',heroEyebrow:'Private Reading Club',heroTitle:'<em>Restless</em><br>Worlds',heroDesc:'A private reading club for illustrated stories. Join our exclusive community and explore Meem Yaser\'s worlds.',heroCta:'Explore Library',featuredTitle:'Featured Series',featuredDesc:'Choose from our growing collection of original manga',tiersTitle:'Membership Access',tiersDesc:'Approval-based access to our private reading club',aboutTitle:'About the Studio',aboutDesc1:'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through manga and graphic novels.',aboutDesc2:'Since its founding, the studio has developed four main series blending Arabic literary depth with manga visual aesthetics.',searchPlaceholder:'Search chapters...',newest:'Newest',oldest:'Oldest',number:'Chapter Number',all:'All',free:'Free',member:'Member',guest:'Guest',member:'Member',pro:'Admin',admin:'Admin',roles:{guest:'Guest',member:'Member',pro:'Admin',admin:'Admin'}}};
 
 const mangaData=[
-  {id:1,titleAr:'طريق الأقمار',titleEn:'Moons Road',descAr:'رحلة عبر الصحراء حيث تلتقي الأحلام بالواقع.',descEn:'A journey across the desert where dreams meet reality.',chapters:12,status:'ongoing',rating:4.8,image:'https://picsum.photos/seed/moonsroad/600/800',chapterList:Array.from({length:12},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}: ${['البداية','اللقاء','الصحراء','القمر','الطريق','العاصفة','الواحة','القرية','السر','العودة','القرار','النهاية'][i]}`,titleEn:`Ch.${i+1}: ${['The Beginning','The Meeting','The Desert','The Moon','The Road','The Storm','The Oasis','The Village','The Secret','The Return','The Decision','The End'][i]}`,date:`2026-0${Math.floor(i/3)+1}-${(i%28)+1}`,type:i<3?'free':i<8?'premium':'early'}))},
-  {id:2,titleAr:'السيد الكبير',titleEn:'The Grand Lord',descAr:'في عالم مظلم، يصعد سيد من العدم ليغير كل شيء.',descEn:'In a dark world, a lord rises from nothing to change everything.',chapters:15,status:'ongoing',rating:4.9,image:'https://picsum.photos/seed/grandlord/600/800',chapterList:Array.from({length:15},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-0${Math.floor(i/4)+1}-${(i%28)+1}`,type:i<2?'free':'premium'}))},
-  {id:3,titleAr:'سمفونية الفناء',titleEn:'Symphony of Doom',descAr:'عندما يصبح الموسيقى سلاحاً، تبدأ الحرب الحقيقية.',descEn:'When music becomes a weapon, the real war begins.',chapters:8,status:'completed',rating:4.7,image:'https://picsum.photos/seed/symphony/600/800',chapterList:Array.from({length:8},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-01-${(i%28)+1}`,type:i<4?'free':'premium'}))},
-  {id:4,titleAr:'المتكلمون',titleEn:'The Speakers',descAr:'أسطورة هاكتفين تنتظر من يكملها.',descEn:'The legend of Haktvin awaits its completion.',chapters:10,status:'ongoing',rating:4.6,image:'https://picsum.photos/seed/speakers/600/800',chapterList:Array.from({length:10},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-02-${(i%28)+1}`,type:i<2?'free':i<6?'premium':'early'}))},
-  {id:5,titleAr:'قسيس السهاد',titleEn:'The Sleepless Chaplain',descAr:'رجل دين لا ينام، يسمع أسرار الليل.',descEn:'A cleric who never sleeps, hearing the secrets of the night.',chapters:6,status:'ongoing',rating:4.5,image:'https://picsum.photos/seed/sleepless/600/800',chapterList:Array.from({length:6},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-03-${(i%28)+1}`,type:i<1?'free':'premium'}))}
+  {id:1,titleAr:'طريق الأقمار',titleEn:'Moons Road',descAr:'رحلة عبر الصحراء حيث تلتقي الأحلام بالواقع.',descEn:'A journey across the desert where dreams meet reality.',chapters:12,status:'ongoing',rating:4.8,image:'https://picsum.photos/seed/moonsroad/600/800',chapterList:Array.from({length:12},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}: ${['البداية','اللقاء','الصحراء','القمر','الطريق','العاصفة','الواحة','القرية','السر','العودة','القرار','النهاية'][i]}`,titleEn:`Ch.${i+1}: ${['The Beginning','The Meeting','The Desert','The Moon','The Road','The Storm','The Oasis','The Village','The Secret','The Return','The Decision','The End'][i]}`,date:`2026-0${Math.floor(i/3)+1}-${(i%28)+1}`,type:i<3?'free':i<8?'member':'early'}))},
+  {id:2,titleAr:'السيد الكبير',titleEn:'The Grand Lord',descAr:'في عالم مظلم، يصعد سيد من العدم ليغير كل شيء.',descEn:'In a dark world, a lord rises from nothing to change everything.',chapters:15,status:'ongoing',rating:4.9,image:'https://picsum.photos/seed/grandlord/600/800',chapterList:Array.from({length:15},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-0${Math.floor(i/4)+1}-${(i%28)+1}`,type:i<2?'free':'member'}))},
+  {id:3,titleAr:'سمفونية الفناء',titleEn:'Symphony of Doom',descAr:'عندما يصبح الموسيقى سلاحاً، تبدأ الحرب الحقيقية.',descEn:'When music becomes a weapon, the real war begins.',chapters:8,status:'completed',rating:4.7,image:'https://picsum.photos/seed/symphony/600/800',chapterList:Array.from({length:8},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-01-${(i%28)+1}`,type:i<4?'free':'member'}))},
+  {id:4,titleAr:'المتكلمون',titleEn:'The Speakers',descAr:'أسطورة هاكتفين تنتظر من يكملها.',descEn:'The legend of Haktvin awaits its completion.',chapters:10,status:'ongoing',rating:4.6,image:'https://picsum.photos/seed/speakers/600/800',chapterList:Array.from({length:10},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-02-${(i%28)+1}`,type:i<2?'free':i<6?'member':'early'}))},
+  {id:5,titleAr:'قسيس السهاد',titleEn:'The Sleepless Chaplain',descAr:'رجل دين لا ينام، يسمع أسرار الليل.',descEn:'A cleric who never sleeps, hearing the secrets of the night.',chapters:6,status:'ongoing',rating:4.5,image:'https://picsum.photos/seed/sleepless/600/800',chapterList:Array.from({length:6},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-03-${(i%28)+1}`,type:i<1?'free':'member'}))}
 ];
 
 const mockComments=[
@@ -1061,7 +1063,7 @@ const mockComments=[
 
 const mockUsers=[
   {id:'u1',name:'أحمد علي',email:'ahmed@example.com',role:'member',status:'approved',date:'2026-01-15'},
-  {id:'u2',name:'سارة محمد',email:'sara@example.com',role:'pro',status:'approved',date:'2026-02-20'},
+  {id:'u2',name:'سارة محمد',email:'sara@example.com',role:'admin',status:'approved',date:'2026-02-20'},
   {id:'u3',name:'خالد عمر',email:'khaled@example.com',role:'guest',status:'pending',date:'2026-04-18'},
   {id:'u4',name:'ليلى حسن',email:'laila@example.com',role:'member',status:'approved',date:'2026-03-10'},
   {id:'u5',name:'يوسف سامي',email:'yousef@example.com',role:'guest',status:'banned',date:'2026-04-01'}
@@ -1085,7 +1087,7 @@ function renderMangaGrid(){
 }
 
 function renderTiers(){
-  const tiers=[{key:'guest',price:'0',labelAr:'زائر',labelEn:'Guest',features:['معاينة 3 فصول','قراءة محدودة','لا تعليقات']},{key:'member',price:'0',labelAr:'عضو',labelEn:'Member',features:['جميع الفصول المجانية','التعليقات','الملف الشخصي'],featured:true},{key:'pro',price:'29',labelAr:'عضو',labelEn:'Pro',features:['جميع الفصول','الوصول المبكر','دعم مميز','بدون إعلانات']},{key:'admin',price:'-',labelAr:'مدير',labelEn:'Admin',features:['لوحة الإدارة','إدارة الفصول','الإشراف','الإحصائيات']}];
+  const tiers=[{key:'guest',labelAr:'زائر',labelEn:'Guest',features:['معاينة 3 فصول','قراءة محدودة','لا تعليقات']},{key:'member',labelAr:'عضو',labelEn:'Member',features:['جميع الفصول المجانية','التعليقات','الملف الشخصي'],featured:true},{key:'pro',labelAr:'عضو',labelEn:'Admin',features:['جميع الفصول','الوصول المبكر','دعم مميز','بدون إعلانات']},{key:'admin',price:'-',labelAr:'مدير',labelEn:'Admin',features:['لوحة الإدارة','إدارة الفصول','الإشراف','الإحصائيات']}];
   $('#tiersGrid').innerHTML=tiers.map(t=>`<div class="tier-card ${t.featured?'featured':''} stagger-item" data-label="${state.lang==='ar'?'الأكثر شيوعاً':'Popular'}"><h3>${state.lang==='ar'?t.labelAr:t.labelEn}</h3><div class="price">${t.price}<span>/${state.lang==='ar'?'شهر':'mo'}</span></div><ul>${t.features.map(f=>`<li>${f}</li>`).join('')}</ul><button class="tier-btn" data-role="${t.key}">${state.lang==='ar'?'اختر':'Select'}</button></div>`).join('');
   applyStagger();
 }
@@ -1105,7 +1107,7 @@ function renderChapterList(){
   if(sort==='newest')list.reverse();else if(sort==='number')list.sort((a,b)=>a.num-b.num);
   $('#chapterList').innerHTML=list.map(c=>{
     const locked=c.type!=='free'&&state.user.role==='guest';
-    const tagText=c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='premium'?(state.lang==='ar'?'مميز':'Premium'):(state.lang==='ar'?'مبكر':'Early');
+    const tagText=c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='member'?(state.lang==='ar'?حصري':'Member'):(state.lang==='ar'?'مبكر':'Early');
     return `<div class="chapter-item ${locked?'locked':''}" data-num="${c.num}" data-locked="${locked}"><div class="ch-left"><div class="ch-num">${c.num}</div><div><div class="ch-title">${state.lang==='ar'?c.titleAr:c.titleEn}</div><div class="ch-date">${c.date}</div></div></div><div class="ch-right"><span class="ch-tag tag-${c.type}">${tagText}</span></div></div>`;
   }).join('');
 }
@@ -1190,7 +1192,7 @@ document.addEventListener('click',e=>{
 document.addEventListener('click',e=>{
   const ch=e.target.closest('.chapter-item');if(!ch)return;
   const locked=ch.dataset.locked==='true';
-  if(locked){toast(state.lang==='ar'?'هذا الفصل مميز  ترقى للوصول':'Premium chapter  upgrade to access');return;}
+  if(locked){toast(state.lang==='ar'?'هذا الفصل مميز  ترقى للوصول':'Member chapter  request access');return;}
   openReader(state.currentManga.id,+ch.dataset.num);
 });
 
@@ -1281,7 +1283,7 @@ function updateText(){
   $('#aboutTitle').textContent=l.aboutTitle;$('#aboutDesc1').textContent=l.aboutDesc1;$('#aboutDesc2').textContent=l.aboutDesc2;
   $('#chapterSearch').placeholder=l.searchPlaceholder;
   $('#chapterSort').innerHTML=`<option value="newest">${l.newest}</option><option value="oldest">${l.oldest}</option><option value="number">${l.number}</option>`;
-  $('#chapterFilter').innerHTML=`<option value="all">${l.all}</option><option value="free">${l.free}</option><option value="premium">${l.premium}</option>`;
+  $('#chapterFilter').innerHTML=`<option value="all">${l.all}</option><option value="free">${l.free}</option><option value="member">${l.member}</option>`;
   $('#roleBadge').textContent=l.roles[state.user.role];
 }
 
