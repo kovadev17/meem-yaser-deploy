@@ -11,6 +11,7 @@
   --bg: #FAFAF8; --text: #111; --text-muted: #666;
   --accent: #D4AF37; --border: rgba(0,0,0,0.06);
   --card: #fff;
+  --crimson: #B83232;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
@@ -87,6 +88,24 @@ body {
   color: var(--accent); font-weight: 600; border: 1px solid rgba(212,175,55,0.2);
 }
 
+/* Demo 5 — distinct crimson style */
+.featured-card.crimson {
+  border-color: var(--crimson);
+}
+.featured-card.crimson:hover {
+  box-shadow: 0 20px 60px rgba(184,50,50,0.15);
+}
+.featured-card.crimson .preview-badge {
+  background: var(--crimson); color: #fff;
+}
+.featured-card.crimson .preview-icon {
+  background: var(--crimson); color: #fff;
+}
+.featured-card.crimson .tag {
+  background: rgba(184,50,50,0.1);
+  color: var(--crimson); border-color: rgba(184,50,50,0.2);
+}
+
 /* Regular Demos */
 .demo-grid {
   max-width: 1200px; margin: 0 auto;
@@ -96,12 +115,10 @@ body {
   background: var(--card); border: 1px solid var(--border); border-radius: 16px;
   overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;
   text-decoration: none; color: inherit; display: block;
-  opacity: 0.7;
 }
 .demo-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-  opacity: 1;
 }
 .demo-card .preview {
   height: 180px; background: linear-gradient(135deg, #f5f5f3 0%, #ebe9e4 100%);
@@ -173,7 +190,7 @@ body {
 <section class="section">
   <div class="section-header">
     <h2>Featured</h2>
-    <p>The direction we are moving forward with</p>
+    <p>Two directions to choose from</p>
   </div>
   <div class="featured-grid">
     <a href="demo6/index.html" class="featured-card">
@@ -192,17 +209,19 @@ body {
         </div>
       </div>
     </a>
-    <a href="demo7/index.html" class="featured-card">
-      <div class="preview" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
-        <div class="preview-icon" style="background: #D4AF37; color: #1a1a1a; font-size: 2rem;">R</div>
+    <a href="demo5/index.html" class="featured-card crimson">
+      <div class="preview" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);">
+        <div class="preview-badge">Editorial Reader Pro</div>
+        <div class="preview-icon" style="background: #B83232; color: #fff; font-size: 2rem;">R</div>
       </div>
       <div class="card-body">
-        <h3>Restless Worlds</h3>
-        <p>React-based immersive experience with fluid animations and modern UI patterns. Built with Vite and bundled for standalone deployment.</p>
+        <h3>Restless Worlds Reader</h3>
+        <p>Editorial manga minimal design with Cormorant serif typography and Space Grotesk. Light library, dark reader, pointer-event gestures, chapter drawer, settings sheet, and skeleton loading. Focused purely on the reading experience.</p>
         <div class="meta">
-          <span class="tag">React</span>
-          <span class="tag">Vite</span>
-          <span class="tag">Bundled</span>
+          <span class="tag">Working</span>
+          <span class="tag">Pointer Gestures</span>
+          <span class="tag">Editorial</span>
+          <span class="tag">Reader Focus</span>
         </div>
       </div>
     </a>
@@ -212,7 +231,7 @@ body {
 <section class="section" style="background:#f5f5f3;">
   <div class="section-header">
     <h2>Previous Prototypes</h2>
-    <p>Earlier design explorations — some may have rendering issues</p>
+    <p>Earlier design explorations and alternative directions</p>
   </div>
   <div class="demo-grid">
     <a href="demo1/index.html" class="demo-card">
@@ -263,15 +282,15 @@ body {
         </div>
       </div>
     </a>
-    <a href="demo5/index.html" class="demo-card">
-      <div class="preview"><div class="preview-icon" style="background:var(--accent);color:#1a1a1a;">5</div></div>
+    <a href="demo7/index.html" class="demo-card">
+      <div class="preview"><div class="preview-icon" style="background:#D4AF37;color:#1a1a1a;">7</div></div>
       <div class="card-body">
-        <h3>Manga Uploader</h3>
-        <p>Drag-and-drop file upload with ZIP and CBZ support. Automatic chapter sorting, preview viewer.</p>
+        <h3>Restless Worlds (React)</h3>
+        <p>React-based immersive experience with fluid animations. Bundled app from Google AI Studio.</p>
         <div class="meta">
-          <span class="tag">ZIP/CBZ</span>
-          <span class="tag">Auto-Sort</span>
-          <span class="tag">Working</span>
+          <span class="tag">React</span>
+          <span class="tag">Vite</span>
+          <span class="tag">Bundled</span>
         </div>
       </div>
     </a>

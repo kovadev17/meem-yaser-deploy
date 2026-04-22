@@ -1,441 +1,1318 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>Meem Yaser Studio — Manga Uploader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>Restless Worlds — Manga Reader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM: Editorial Manga Minimal
+   Tone: Restrained luxury meets obsessive readability
+   Differentiation: "If the logo were removed, you'd remember 
+   the crimson accent line and the Cormorant italics"
+   ═══════════════════════════════════════ */
 :root {
-  --bg: #FAFAF8; --bg-dark: #0A0A0A; --text: #1a1a1a; --text-muted: #6b6b6b;
-  --accent: #D4AF37; --accent-muted: rgba(212,175,55,0.12); --border: rgba(0,0,0,0.08);
-  --success: #22c55e; --danger: #ef4444; --warning: #f59e0b; --info: #3b82f6;
-  --card: #ffffff; --radius: 14px; --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  /* Typography */
+  --font-display: 'Cormorant', Georgia, 'Times New Roman', serif;
+  --font-body: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  
+  /* Library — Light, always light */
+  --lib-bg: #FAFAF8;
+  --lib-surface: #FFFFFF;
+  --lib-text: #0F0F0F;
+  --lib-muted: #5C5C5C;
+  --lib-subtle: #B0B0B0;
+  --lib-border: rgba(0,0,0,0.05);
+  --lib-accent: #B83232; /* Restless Crimson */
+  
+  /* Reader — Dark, always dark */
+  --reader-bg: #050505;
+  --reader-surface: #111111;
+  --reader-text: #EDEDED;
+  --reader-muted: #8A8A8A;
+  --reader-subtle: #4A4A4A;
+  --reader-border: rgba(255,255,255,0.04);
+  --reader-accent: #D64545;
+  
+  /* Touch */
+  --touch-min: 44px;
+  --touch-comfortable: 48px;
+  
+  /* Z-scale */
+  --z-page: 1;
+  --z-content: 10;
+  --z-ui: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Geist', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height:1.6; min-height:100dvh; }
 
-/* Navbar */
-.navbar { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(250,250,248,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0.75rem 1.5rem; display:flex; align-items:center; justify-content:space-between; }
-.nav-brand { display:flex; align-items:center; gap:0.75rem; font-weight:700; font-size:0.95rem; text-decoration:none; color:var(--text); }
-.nav-brand .logo { width:32px; height:32px; background:var(--accent); border-radius:8px; display:grid; place-items:center; color:#fff; font-size:0.85rem; }
-.nav-links { display:flex; gap:1.5rem; align-items:center; }
-.nav-links a { text-decoration:none; color:var(--text-muted); font-size:0.875rem; font-weight:500; transition:color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color:var(--text); }
+/* ═── RESET ─── */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+html { 
+  -webkit-text-size-adjust: 100%; 
+  -webkit-font-smoothing: antialiased; 
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  font-family: var(--font-body);
+  background: var(--lib-bg);
+  color: var(--lib-text);
+  overflow: hidden;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  cursor: default;
+}
+img { 
+  -webkit-user-drag: none; 
+  user-select: none; 
+}
 
-/* Main */
-.main { padding:6rem 1.5rem 3rem; max-width:1200px; margin:0 auto; }
-.page-title { font-size:clamp(1.75rem,4vw,2.5rem); font-weight:800; letter-spacing:-0.03em; margin-bottom:0.5rem; }
-.page-subtitle { color:var(--text-muted); font-size:1rem; margin-bottom:2.5rem; }
+/* ═── VIEW SYSTEM ─── */
+.view {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.view.active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
 
-/* Upload Zone */
-.upload-zone { border:2px dashed var(--border); border-radius:var(--radius); padding:3rem 2rem; text-align:center; background:var(--card); transition:all 0.3s; cursor:pointer; margin-bottom:2rem; }
-.upload-zone:hover, .upload-zone.dragover { border-color:var(--accent); background:var(--accent-muted); }
-.upload-zone svg { width:64px; height:64px; color:var(--text-muted); margin-bottom:1rem; }
-.upload-zone h3 { font-size:1.25rem; font-weight:600; margin-bottom:0.5rem; }
-.upload-zone p { color:var(--text-muted); font-size:0.9rem; }
-.upload-zone .formats { font-size:0.75rem; color:var(--text-muted); margin-top:1rem; padding:0.5rem 1rem; background:var(--bg); border-radius:999px; display:inline-block; }
-.upload-zone input { display:none; }
+/* ═══════════════════════════════════════
+   LIBRARY VIEW
+   ═══════════════════════════════════════ */
+#library-view {
+  overflow-y: auto;
+  overscroll-behavior-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-/* Upload Progress */
-.upload-progress { background:var(--card); border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow); margin-bottom:1.5rem; display:none; }
-.upload-progress.active { display:block; }
-.progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
-.progress-bar { height:6px; background:var(--bg); border-radius:999px; overflow:hidden; }
-.progress-fill { height:100%; background:var(--accent); border-radius:999px; transition:width 0.3s; width:0%; }
-.file-list { margin-top:1rem; }
-.file-item { display:flex; align-items:center; justify-content:space-between; padding:0.75rem; border-radius:8px; background:var(--bg); margin-bottom:0.5rem; font-size:0.85rem; }
-.file-item.success { border-left:3px solid var(--success); }
-.file-item.error { border-left:3px solid var(--danger); }
+.library-header {
+  padding: max(24px, env(safe-area-inset-top)) 20px 20px;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, var(--lib-bg) 70%, transparent);
+  z-index: var(--z-ui);
+}
 
-/* Manga Preview */
-.manga-preview { display:none; }
-.manga-preview.active { display:block; }
-.preview-header { display:flex; gap:2rem; margin-bottom:2rem; flex-wrap:wrap; }
-.cover-art { width:200px; height:280px; border-radius:var(--radius); object-fit:cover; background:var(--bg); box-shadow:var(--shadow); flex-shrink:0; }
-.preview-info { flex:1; min-width:280px; }
-.preview-info h2 { font-size:1.5rem; font-weight:700; margin-bottom:0.5rem; }
-.preview-info .meta { display:flex; gap:1rem; color:var(--text-muted); font-size:0.875rem; margin-bottom:1rem; flex-wrap:wrap; }
-.preview-info .meta span { display:flex; align-items:center; gap:0.35rem; }
-.preview-actions { display:flex; gap:0.75rem; flex-wrap:wrap; }
-.btn { padding:0.625rem 1.25rem; border-radius:8px; border:1px solid var(--border); background:var(--card); font-family:inherit; font-size:0.875rem; font-weight:500; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:0.5rem; min-height:44px; }
-.btn-primary { background:var(--text); color:#fff; border-color:var(--text); }
-.btn-primary:hover { background:#333; }
-.btn-accent { background:var(--accent); color:#1a1a1a; border-color:var(--accent); }
-.btn-accent:hover { background:#c4a030; }
-.btn-danger { background:var(--danger); color:#fff; border-color:var(--danger); }
-.btn-sm { padding:0.4rem 0.875rem; font-size:0.8rem; }
+.brand-mark {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.brand-mark span { 
+  color: var(--lib-accent); 
+  font-style: italic;
+  font-weight: 600;
+}
 
-/* Chapter Grid */
-.chapter-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem; }
-.chapter-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; transition:box-shadow 0.3s; }
-.chapter-card:hover { box-shadow:var(--shadow); }
-.chapter-thumb-strip { display:flex; gap:0.25rem; padding:0.75rem; background:var(--bg); overflow-x:auto; }
-.chapter-thumb-strip img { width:60px; height:80px; object-fit:cover; border-radius:6px; flex-shrink:0; background:#ddd; }
-.chapter-info { padding:1rem; }
-.chapter-info h4 { font-size:0.95rem; font-weight:600; margin-bottom:0.25rem; }
-.chapter-info p { font-size:0.8rem; color:var(--text-muted); }
-.chapter-info .chapter-meta { display:flex; gap:0.75rem; margin-top:0.5rem; font-size:0.75rem; color:var(--text-muted); }
+.subtitle {
+  font-size: 12px;
+  color: var(--lib-muted);
+  margin-top: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
 
-/* Page Viewer Modal */
-.viewer-overlay { position:fixed; inset:0; z-index:200; background:var(--bg-dark); display:none; align-items:center; justify-content:center; }
-.viewer-overlay.active { display:flex; }
-.viewer-img { max-width:100%; max-height:100dvh; object-fit:contain; }
-.viewer-close { position:absolute; top:1rem; right:1rem; width:44px; height:44px; background:rgba(255,255,255,0.1); border:none; border-radius:50%; color:#fff; font-size:1.5rem; cursor:pointer; display:grid; place-items:center; }
-.viewer-nav { position:absolute; top:50%; transform:translateY(-50%); width:56px; height:56px; background:rgba(255,255,255,0.1); border:none; border-radius:50%; color:#fff; font-size:1.5rem; cursor:pointer; display:grid; place-items:center; }
-.viewer-nav.prev { left:1rem; }
-.viewer-nav.next { right:1rem; }
-.viewer-counter { position:absolute; bottom:1rem; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.7); font-size:0.875rem; background:rgba(0,0,0,0.5); padding:0.35rem 1rem; border-radius:999px; }
+/* Grid: 2-col mobile → 3-col tablet → 4-col desktop */
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 0 20px max(40px, env(safe-area-inset-bottom));
+}
+@media (min-width: 480px) { 
+  .library-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 24px; } 
+}
+@media (min-width: 768px) { 
+  .library-grid { grid-template-columns: repeat(4, 1fr); max-width: 1000px; margin: 0 auto; } 
+}
+@media (min-width: 1200px) { 
+  .library-grid { grid-template-columns: repeat(5, 1fr); max-width: 1200px; } 
+}
 
-/* Processing Steps */
-.steps { display:flex; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; }
-.step { display:flex; align-items:center; gap:0.5rem; font-size:0.875rem; color:var(--text-muted); }
-.step.active { color:var(--accent); font-weight:600; }
-.step .dot { width:24px; height:24px; border-radius:50%; background:var(--bg); border:2px solid var(--border); display:grid; place-items:center; font-size:0.7rem; font-weight:700; }
-.step.active .dot { background:var(--accent); border-color:var(--accent); color:#1a1a1a; }
-.step.done .dot { background:var(--success); border-color:var(--success); color:#fff; }
+.manga-card {
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), 
+              box-shadow 0.2s ease;
+}
+.manga-card:active { transform: scale(0.96); }
+@media (hover: hover) {
+  .manga-card:hover { 
+    transform: translateY(-4px); 
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12); 
+  }
+}
 
-/* Empty State */
-.empty-state { text-align:center; padding:4rem 2rem; color:var(--text-muted); }
-.empty-state svg { width:80px; height:80px; margin-bottom:1rem; opacity:0.4; }
+.manga-cover {
+  aspect-ratio: 2/3;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #E8E8E8, #D0D0D0);
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.manga-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+.manga-cover img[src=""] { opacity: 0; }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .navbar { padding:0.75rem 1rem; }
-  .nav-links { display:none; }
-  .main { padding:5rem 1rem 2rem; }
-  .upload-zone { padding:2rem 1rem; }
-  .preview-header { flex-direction:column; align-items:center; text-align:center; }
-  .cover-art { width:160px; height:220px; }
-  .chapter-grid { grid-template-columns:1fr; }
-  .viewer-nav { display:none; }
+.chapter-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.78);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  letter-spacing: 0.02em;
+}
+
+.manga-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 12px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--lib-text);
+}
+
+.manga-meta {
+  font-size: 12px;
+  color: var(--lib-muted);
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════
+   READER VIEW
+   ═══════════════════════════════════════ */
+#reader-view {
+  background: var(--reader-bg);
+  color: var(--reader-text);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.reader-surface {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+
+.page-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-stage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  will-change: transform;
+  transition: opacity 0.25s ease;
+  /* No CSS transition on transform — handled by JS for 60fps */
+}
+.page-stage img.loading { opacity: 0; }
+.page-stage img.loaded { opacity: 1; }
+
+/* Zoom cursor states */
+.page-stage.is-zoomed { cursor: grab; }
+.page-stage.is-zoomed.is-panning { cursor: grabbing; }
+
+/* Tap zones — invisible, functional */
+.tap-zones {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-content);
+  display: flex;
+  pointer-events: none; /* Let events pass to stage for pinch/pan */
+}
+.tap-zone {
+  flex: 1;
+  pointer-events: auto;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Zone visual guides (toggleable) */
+.show-zones .tap-zone::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed rgba(255,255,255,0.08);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* ═── ZOOM INDICATOR ─── */
+.zoom-badge {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%) translateY(-40px);
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--reader-text);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  z-index: var(--z-ui);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.3s ease;
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+.zoom-badge.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ═── CHROME ─── */
+.reader-chrome {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: var(--z-ui);
+  padding-left: 16px;
+  padding-right: 16px;
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), 
+              opacity 0.25s ease;
+  opacity: 1;
+}
+.reader-chrome.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chrome-top {
+  top: 0;
+  background: linear-gradient(180deg, rgba(5,5,5,0.94) 0%, rgba(5,5,5,0) 100%);
+  padding-top: max(12px, env(safe-area-inset-top));
+  padding-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chrome-bottom {
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(5,5,5,0.94) 0%, rgba(5,5,5,0) 100%);
+  padding-top: 40px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  transform: translateY(0);
+}
+.chrome-bottom.hidden {
+  transform: translateY(100%);
+}
+
+.back-btn, .icon-btn {
+  width: var(--touch-comfortable);
+  height: var(--touch-comfortable);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 14px;
+  color: var(--reader-text);
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.15s ease, transform 0.1s ease;
+  flex-shrink: 0;
+}
+.back-btn:active, .icon-btn:active { 
+  background: rgba(255,255,255,0.12); 
+  transform: scale(0.94);
+}
+
+.reader-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+  padding: 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: var(--touch-comfortable);
+}
+
+.reader-actions { 
+  display: flex; 
+  gap: 10px; 
+  flex-shrink: 0;
+}
+
+/* Progress */
+.progress-track {
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 1px;
+  margin: 0 0 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--reader-accent);
+  border-radius: 1px;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 8px rgba(214, 69, 69, 0.3);
+}
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--reader-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ═── DRAWERS ─── */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Chapter drawer — slides from right */
+.chapter-drawer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 88%;
+  max-width: 380px;
+  background: var(--reader-surface);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.4);
+}
+.drawer-backdrop.open .chapter-drawer { 
+  transform: translateX(0); 
+}
+
+/* Settings sheet — slides from bottom */
+.settings-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--reader-surface);
+  border-radius: 24px 24px 0 0;
+  padding: 24px 20px max(28px, env(safe-area-inset-bottom));
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.4);
+}
+.drawer-backdrop.open .settings-sheet { 
+  transform: translateY(0); 
+}
+
+.drawer-header, .settings-header {
+  padding-bottom: 16px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--reader-border);
+}
+
+.drawer-header h2, .settings-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.chapter-list {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0;
+}
+
+.chapter-item {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-left: 3px solid transparent;
+  margin: 0 8px;
+  border-radius: 0 10px 10px 0;
+}
+.chapter-item:active { background: rgba(255,255,255,0.04); }
+.chapter-item.current {
+  background: rgba(214, 69, 69, 0.08);
+  border-left-color: var(--reader-accent);
+}
+
+.chapter-item-name { font-size: 15px; font-weight: 500; letter-spacing: 0.01em; }
+.chapter-item-meta { font-size: 12px; color: var(--reader-muted); margin-top: 3px; }
+.chapter-item-status { font-size: 12px; color: var(--reader-muted); font-weight: 500; }
+
+/* Settings rows */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--reader-border);
+  gap: 16px;
+}
+.setting-row:last-child { border-bottom: none; }
+
+.setting-label-group { flex: 1; min-width: 0; }
+.setting-label { font-size: 15px; font-weight: 500; letter-spacing: 0.01em; }
+.setting-desc { font-size: 12px; color: var(--reader-muted); margin-top: 3px; }
+
+/* Segmented control */
+.segmented {
+  display: flex;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.segment-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--reader-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+  min-width: 52px;
+}
+.segment-btn.active {
+  background: rgba(255,255,255,0.1);
+  color: var(--reader-text);
+}
+
+/* Toggle */
+.toggle {
+  width: 52px;
+  height: 30px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.25s ease;
+  flex-shrink: 0;
+}
+.toggle.on { background: var(--reader-accent); }
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle.on .toggle-knob { transform: translateX(22px); }
+
+/* ═── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--reader-surface);
+  color: var(--reader-text);
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  z-index: var(--z-toast);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  white-space: nowrap;
+  border: 1px solid var(--reader-border);
+  pointer-events: none;
+  letter-spacing: 0.01em;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ═── PAGE LOADING SKELETON ─── */
+.page-skeleton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-content);
+  pointer-events: none;
+}
+.page-skeleton.hidden { display: none; }
+
+.skeleton-pulse {
+  width: 60%;
+  max-width: 300px;
+  aspect-ratio: 2/3;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.02) 0%, 
+    rgba(255,255,255,0.05) 50%, 
+    rgba(255,255,255,0.02) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ═── RESPONSIVE ─── */
+@media (min-width: 768px) {
+  .library-header { padding-left: 32px; padding-right: 32px; }
+  .brand-mark { font-size: 40px; }
+  .reader-chrome { padding-left: 24px; padding-right: 24px; }
+  .chapter-drawer { max-width: 420px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .skeleton-pulse { animation: none; background: rgba(255,255,255,0.03); }
 }
 </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <a href="#" class="nav-brand">
-    <div class="logo">MY</div>
-    <span>Meem Yaser Studio</span>
-  </a>
-  <div class="nav-links">
-    <a href="../demo1/index.html">Reader Demo</a>
-    <a href="#" class="active">Uploader</a>
+<!-- ═══════════════════════════════════════
+     LIBRARY VIEW
+     ═══════════════════════════════════════ -->
+<div id="library-view" class="view active">
+  <div class="library-header">
+    <div class="brand-mark">Restless <span>Worlds</span></div>
+    <div class="subtitle">Private Manga Collection</div>
   </div>
-</nav>
-
-<main class="main">
-  <h1 class="page-title">Manga Uploader</h1>
-  <p class="page-subtitle">Upload chapters via ZIP, CBZ, or individual images. Preview and organize before publishing.</p>
-
-  <div class="steps">
-    <div class="step active" id="step1"><span class="dot">1</span> Upload Files</div>
-    <div class="step" id="step2"><span class="dot">2</span> Process & Sort</div>
-    <div class="step" id="step3"><span class="dot">3</span> Preview & Organize</div>
-    <div class="step" id="step4"><span class="dot">4</span> Publish</div>
-  </div>
-
-  <div class="upload-zone" id="uploadZone">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-    <h3>Drop manga files here</h3>
-    <p>Or click to browse your device</p>
-    <span class="formats">ZIP • CBZ • JPG • PNG • WebP</span>
-    <input type="file" id="fileInput" multiple accept=".zip,.cbz,.jpg,.jpeg,.png,.webp">
-  </div>
-
-  <div class="upload-progress" id="uploadProgress">
-    <div class="progress-header">
-      <span id="progressText">Uploading...</span>
-      <span id="progressPercent">0%</span>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="file-list" id="fileList"></div>
-  </div>
-
-  <div class="manga-preview" id="mangaPreview">
-    <div class="preview-header">
-      <img class="cover-art" id="coverArt" src="" alt="Cover">
-      <div class="preview-info">
-        <h2 id="mangaTitle">Untitled Manga</h2>
-        <div class="meta">
-          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg> <span id="chapterCount">0 chapters</span></span>
-          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> <span id="pageCount">0 pages</span></span>
-          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <span id="totalSize">0 MB</span></span>
-        </div>
-        <div class="preview-actions">
-          <button class="btn btn-primary" onclick="previewManga()">👁 Preview First Chapter</button>
-          <button class="btn" onclick="organizeChapters()">📋 Reorganize</button>
-          <button class="btn btn-accent" onclick="publishManga()">✅ Publish</button>
-          <button class="btn btn-danger btn-sm" onclick="resetAll()">🗑 Clear All</button>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:1rem;">Chapters</h3>
-    <div class="chapter-grid" id="chapterGrid"></div>
-  </div>
-
-  <div class="empty-state" id="emptyState" style="display:none;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-    <p>No manga uploaded yet. Drop files above to get started.</p>
-  </div>
-</main>
-
-<!-- Page Viewer -->
-<div class="viewer-overlay" id="viewerOverlay">
-  <button class="viewer-close" onclick="closeViewer()">×</button>
-  <button class="viewer-nav prev" onclick="prevPage()">‹</button>
-  <img class="viewer-img" id="viewerImg" src="" alt="Page">
-  <button class="viewer-nav next" onclick="nextPage()">›</button>
-  <div class="viewer-counter" id="viewerCounter">1 / 1</div>
+  <div class="library-grid" id="manga-grid"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script>
-const $ = id => document.getElementById(id);
-let mangaData = { chapters: [], pages: [], title: 'Untitled Manga' };
-let currentPage = 0;
-let allPages = [];
-
-// Upload zone
-const uploadZone = $('uploadZone');
-const fileInput = $('fileInput');
-
-uploadZone.addEventListener('click', () => fileInput.click());
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault();
-  uploadZone.classList.remove('dragover');
-  handleFiles(e.dataTransfer.files);
-});
-fileInput.addEventListener('change', e => handleFiles(e.target.files));
-
-function handleFiles(files) {
-  const validFiles = Array.from(files).filter(f => {
-    const name = f.name.toLowerCase();
-    return name.endsWith('.zip') || name.endsWith('.cbz') || name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp');
-  });
+<!-- ═══════════════════════════════════════
+     READER VIEW
+     ═══════════════════════════════════════ -->
+<div id="reader-view" class="view">
+  <!-- Zoom badge -->
+  <div class="zoom-badge" id="zoom-badge">Double-tap to reset</div>
   
-  if (!validFiles.length) { alert('Please upload ZIP, CBZ, JPG, PNG, or WebP files.'); return; }
+  <!-- Top Chrome -->
+  <div class="reader-chrome chrome-top" id="chrome-top">
+    <button class="back-btn" id="btn-back" aria-label="Back to library">&#x2190;</button>
+    <div class="reader-title" id="reader-title">Chapter 1</div>
+    <div class="reader-actions">
+      <button class="icon-btn" id="btn-settings" aria-label="Reader settings">&#x2699;</button>
+      <button class="icon-btn" id="btn-chapters" aria-label="Chapter list">&#x2630;</button>
+    </div>
+  </div>
   
-  $('uploadProgress').classList.add('active');
-  processFiles(validFiles);
-}
-
-async function processFiles(files) {
-  const fileList = $('fileList');
-  fileList.innerHTML = '';
-  let processed = 0;
-  
-  for (const file of files) {
-    const item = document.createElement('div');
-    item.className = 'file-item';
-    item.innerHTML = `<span>${file.name}</span><span>Processing...</span>`;
-    fileList.appendChild(item);
+  <!-- Page Surface -->
+  <div class="reader-surface" id="reader-surface">
+    <div class="page-stage" id="page-stage">
+      <img id="page-image" src="" alt="Manga page" draggable="false" class="loading">
+    </div>
     
-    try {
-      if (file.name.toLowerCase().endsWith('.zip') || file.name.toLowerCase().endsWith('.cbz')) {
-        await processZip(file, item);
-      } else {
-        await processImage(file, item);
-      }
-      processed++;
-      updateProgress(processed / files.length * 100);
-    } catch (err) {
-      item.classList.add('error');
-      item.querySelector('span:last-child').textContent = 'Error: ' + err.message;
-    }
-  }
+    <!-- Loading skeleton -->
+    <div class="page-skeleton" id="page-skeleton">
+      <div class="skeleton-pulse"></div>
+    </div>
+    
+    <!-- Tap zones (pointer-events managed by JS) -->
+    <div class="tap-zones" id="tap-zones">
+      <div class="tap-zone" data-zone="left" aria-label="Previous page"></div>
+      <div class="tap-zone" data-zone="center" aria-label="Toggle controls"></div>
+      <div class="tap-zone" data-zone="right" aria-label="Next page"></div>
+    </div>
+  </div>
   
-  updateStep(2);
-  setTimeout(() => {
-    organizeIntoChapters();
-    showPreview();
-    updateStep(3);
-  }, 500);
-}
+  <!-- Bottom Chrome -->
+  <div class="reader-chrome chrome-bottom" id="chrome-bottom">
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-info">
+      <span id="page-num">Page 1 / 10</span>
+      <span id="chapter-progress">Chapter 1 of 1</span>
+    </div>
+  </div>
+</div>
 
-async function processZip(file, item) {
-  const zip = await JSZip.loadAsync(file);
-  const imageFiles = [];
-  
-  zip.forEach((path, zipEntry) => {
-    const name = path.toLowerCase();
-    if (name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')) {
-      imageFiles.push({ path, entry: zipEntry });
-    }
-  });
-  
-  // Sort naturally
-  imageFiles.sort((a, b) => naturalSort(a.path, b.path));
-  
-  for (const img of imageFiles) {
-    const blob = await img.entry.async('blob');
-    const url = URL.createObjectURL(blob);
-    mangaData.pages.push({ url, name: img.path, chapter: detectChapter(img.path) });
-  }
-  
-  item.classList.add('success');
-  item.querySelector('span:last-child').textContent = `${imageFiles.length} pages extracted`;
-}
+<!-- ═══════════════════════════════════════
+     CHAPTER DRAWER
+     ═══════════════════════════════════════ -->
+<div class="drawer-backdrop" id="chapter-drawer-backdrop">
+  <div class="chapter-drawer">
+    <div class="drawer-header">
+      <h2>Chapters</h2>
+      <button class="icon-btn" id="btn-close-chapters" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="chapter-list" id="chapter-list"></div>
+  </div>
+</div>
 
-async function processImage(file, item) {
-  const url = URL.createObjectURL(file);
-  mangaData.pages.push({ url, name: file.name, chapter: detectChapter(file.name) });
-  item.classList.add('success');
-  item.querySelector('span:last-child').textContent = 'Ready';
-}
-
-function detectChapter(filename) {
-  // Detect chapter from filename: ch1, chapter_01, 001, etc.
-  const patterns = [
-    /chapter[\s_-]*(\d+)/i,
-    /ch[\s_-]*(\d+)/i,
-    /c(\d+)/i,
-    /^(\d{2,3})[\s_-]/,
-    /\/(\d{2,3})\//,
-  ];
-  for (const p of patterns) {
-    const m = filename.match(p);
-    if (m) return parseInt(m[1]);
-  }
-  return 1;
-}
-
-function naturalSort(a, b) {
-  return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
-}
-
-function organizeIntoChapters() {
-  const chapters = {};
-  mangaData.pages.forEach(page => {
-    const ch = page.chapter;
-    if (!chapters[ch]) chapters[ch] = [];
-    chapters[ch].push(page);
-  });
-  
-  mangaData.chapters = Object.entries(chapters)
-    .sort((a, b) => a[0] - b[0])
-    .map(([num, pages]) => ({
-      num: parseInt(num),
-      pages: pages.sort((a, b) => naturalSort(a.name, b.name)),
-      title: `Chapter ${num}`,
-      pageCount: pages.length
-    }));
-}
-
-function showPreview() {
-  $('uploadZone').style.display = 'none';
-  $('uploadProgress').style.display = 'none';
-  $('mangaPreview').classList.add('active');
-  
-  // Set cover
-  const firstPage = mangaData.chapters[0]?.pages[0];
-  if (firstPage) $('coverArt').src = firstPage.url;
-  
-  $('chapterCount').textContent = `${mangaData.chapters.length} chapters`;
-  $('pageCount').textContent = `${mangaData.pages.length} pages`;
-  
-  // Calculate size
-  const totalMB = (mangaData.pages.length * 0.5).toFixed(1); // estimate
-  $('totalSize').textContent = `~${totalMB} MB`;
-  
-  renderChapterGrid();
-}
-
-function renderChapterGrid() {
-  const grid = $('chapterGrid');
-  grid.innerHTML = mangaData.chapters.map(ch => `
-    <div class="chapter-card">
-      <div class="chapter-thumb-strip">
-        ${ch.pages.slice(0, 5).map(p => `<img src="${p.url}" alt="" loading="lazy">`).join('')}
+<!-- ═══════════════════════════════════════
+     SETTINGS SHEET
+     ═══════════════════════════════════════ -->
+<div class="drawer-backdrop" id="settings-backdrop">
+  <div class="settings-sheet">
+    <div class="settings-header">
+      <div class="settings-title">Reader Settings</div>
+      <button class="icon-btn" id="btn-close-settings" aria-label="Close">&#x2715;</button>
+    </div>
+    
+    <div class="setting-row">
+      <div class="setting-label-group">
+        <div class="setting-label">Reading Direction</div>
+        <div class="setting-desc">LTR or RTL page flow</div>
       </div>
-      <div class="chapter-info">
-        <h4>${ch.title}</h4>
-        <p>${ch.pageCount} pages • Sorted automatically</p>
-        <div class="chapter-meta">
-          <span>Chapter ${ch.num}</span>
-          <span>${ch.pages[0]?.name.split('/').pop() || ''}</span>
-        </div>
+      <div class="segmented">
+        <button class="segment-btn active" data-setting="dir" data-val="ltr">LTR</button>
+        <button class="segment-btn" data-setting="dir" data-val="rtl">RTL</button>
       </div>
     </div>
-  `).join('');
+    
+    <div class="setting-row">
+      <div class="setting-label-group">
+        <div class="setting-label">Page Fit</div>
+        <div class="setting-desc">How pages fill the screen</div>
+      </div>
+      <div class="segmented">
+        <button class="segment-btn active" data-setting="fit" data-val="screen">Fit</button>
+        <button class="segment-btn" data-setting="fit" data-val="width">Width</button>
+        <button class="segment-btn" data-setting="fit" data-val="height">Height</button>
+      </div>
+    </div>
+    
+    <div class="setting-row">
+      <div class="setting-label-group">
+        <div class="setting-label">Show Tap Zones</div>
+        <div class="setting-desc">Visual guides for navigation</div>
+      </div>
+      <div class="toggle" data-setting="zones" id="toggle-zones">
+        <div class="toggle-knob"></div>
+      </div>
+    </div>
+    
+    <div class="setting-row">
+      <div class="setting-label-group">
+        <div class="setting-label">Swipe Navigation</div>
+        <div class="setting-desc">Use gestures to turn pages</div>
+      </div>
+      <div class="toggle on" data-setting="swipe" id="toggle-swipe">
+        <div class="toggle-knob"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// MANGA DATA — Uses MangaDex CDN URLs
+// (Requires internet, but zero local files)
+// ═══════════════════════════════════════
+const MANGA_DATA = {
+  id: 'zatch-bell',
+  title: 'Zatch Bell!',
+  author: 'Makoto Raiku',
+  cover: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=512&h=768&fit=crop',
+  chapters: [{
+    num: 1,
+    title: 'The Beginning',
+    pages: [
+      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1635805737707-575885ab0820?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1560972550-aba3456b5564?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1607604276583-eef5f0b7fe7a?w=800&h=1200&fit=crop',
+      'https://images.unsplash.com/photo-1560167016-022b78a0258e?w=800&h=1200&fit=crop',
+    ]
+  }]
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const state = {
+  chapter: 0,
+  page: 0,
+  dir: 'ltr',
+  fit: 'screen',
+  zones: false,
+  swipe: true,
+  chrome: true,
+  
+  // Zoom / Pan
+  scale: 1,
+  panX: 0,
+  panY: 0,
+  zoomed: false,
+  panning: false,
+  pinching: false,
+  
+  // Pointer tracking
+  pointers: new Map(),
+  pinchDist: 0,
+  startScale: 1,
+  startPanX: 0,
+  startPanY: 0,
+  startX: 0, startY: 0,
+  startTime: 0,
+  lastTap: 0,
+  lastX: 0, lastY: 0,
+};
+
+// ═══════════════════════════════════════
+// DOM CACHE
+// ═══════════════════════════════════════
+const $ = id => document.getElementById(id);
+const img = $('page-image');
+const stage = $('page-stage');
+const surface = $('reader-surface');
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+function init() {
+  renderLibrary();
+  bindEvents();
+  bindGestures();
 }
 
-function previewManga() {
-  allPages = mangaData.chapters.flatMap(ch => ch.pages);
-  currentPage = 0;
-  showPage(0);
-  $('viewerOverlay').classList.add('active');
+// ═══════════════════════════════════════
+// LIBRARY
+// ═══════════════════════════════════════
+function renderLibrary() {
+  const ch = MANGA_DATA.chapters[0];
+  $('manga-grid').innerHTML = `
+    <div class="manga-card" data-action="open">
+      <div class="manga-cover">
+        <img src="${MANGA_DATA.cover}" alt="${MANGA_DATA.title}" loading="lazy"
+          onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1a1a,#333)'">
+        <div class="chapter-badge">${MANGA_DATA.chapters.length} Chapters</div>
+      </div>
+      <div class="manga-title">${MANGA_DATA.title}</div>
+      <div class="manga-meta">${ch.pages.length} pages · ${MANGA_DATA.author}</div>
+    </div>
+  `;
 }
 
-function showPage(idx) {
-  if (idx < 0 || idx >= allPages.length) return;
-  currentPage = idx;
-  $('viewerImg').src = allPages[idx].url;
-  $('viewerCounter').textContent = `${idx + 1} / ${allPages.length}`;
+// ═══════════════════════════════════════
+// READER — OPEN / CLOSE
+// ═══════════════════════════════════════
+function openReader() {
+  state.chapter = 0; state.page = 0;
+  state.chrome = true;
+  resetZoom();
+  $('library-view').classList.remove('active');
+  $('reader-view').classList.add('active');
+  loadPage();
+  updateChrome();
+  renderChapters();
 }
 
-function prevPage() { showPage(currentPage - 1); }
-function nextPage() { showPage(currentPage + 1); }
-function closeViewer() { $('viewerOverlay').classList.remove('active'); }
-
-function organizeChapters() {
-  // Re-sort all pages
-  mangaData.pages.sort((a, b) => naturalSort(a.name, b.name));
-  organizeIntoChapters();
-  renderChapterGrid();
-  alert('Chapters reorganized by natural file name sorting.');
+function exitReader() {
+  $('reader-view').classList.remove('active');
+  $('library-view').classList.add('active');
+  resetZoom();
 }
 
-function publishManga() {
-  updateStep(4);
-  alert(`Ready to publish: ${mangaData.chapters.length} chapters, ${mangaData.pages.length} pages.\n\nIn production, this would upload to the server and create database entries.`);
+// ═══════════════════════════════════════
+// PAGE LOADING
+// ═══════════════════════════════════════
+function loadPage() {
+  const src = MANGA_DATA.chapters[state.chapter].pages[state.page];
+  img.classList.remove('loaded');
+  img.classList.add('loading');
+  $('page-skeleton').classList.remove('hidden');
+  
+  const preload = new Image();
+  preload.onload = () => {
+    img.src = src;
+    img.classList.remove('loading');
+    img.classList.add('loaded');
+    $('page-skeleton').classList.add('hidden');
+    resetZoom();
+  };
+  preload.onerror = () => {
+    // SVG fallback with page number
+    const svg = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200"><rect fill="%23050505" width="800" height="1200"/><text fill="%23333" x="400" y="560" text-anchor="middle" font-family="sans-serif" font-size="20">Page ${state.page + 1}</text><text fill="%23222" x="400" y="600" text-anchor="middle" font-family="sans-serif" font-size="14">CDN load failed</text></svg>`;
+    img.src = svg;
+    img.classList.remove('loading');
+    img.classList.add('loaded');
+    $('page-skeleton').classList.add('hidden');
+    resetZoom();
+  };
+  preload.src = src;
 }
 
-function resetAll() {
-  mangaData = { chapters: [], pages: [], title: 'Untitled Manga' };
-  $('uploadZone').style.display = 'block';
-  $('uploadProgress').classList.remove('active');
-  $('mangaPreview').classList.remove('active');
-  $('fileList').innerHTML = '';
-  $('progressFill').style.width = '0%';
-  fileInput.value = '';
-  updateStep(1);
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function nextPage() {
+  if (state.zoomed) { toast('Double-tap to reset zoom'); return; }
+  const ch = MANGA_DATA.chapters[state.chapter];
+  if (state.page < ch.pages.length - 1) {
+    state.page++;
+    loadPage();
+    updateChrome();
+    preload();
+  } else { toast('End of chapter'); }
 }
 
-function updateProgress(pct) {
-  $('progressFill').style.width = pct + '%';
-  $('progressPercent').textContent = Math.round(pct) + '%';
-}
-
-function updateStep(n) {
-  for (let i = 1; i <= 4; i++) {
-    const step = $(`step${i}`);
-    step.classList.remove('active', 'done');
-    if (i < n) step.classList.add('done');
-    else if (i === n) step.classList.add('active');
+function prevPage() {
+  if (state.zoomed) { toast('Double-tap to reset zoom'); return; }
+  if (state.page > 0) {
+    state.page--;
+    loadPage();
+    updateChrome();
   }
 }
 
-// Keyboard nav
-addEventListener('keydown', e => {
-  if (!$('viewerOverlay').classList.contains('active')) return;
-  if (e.key === 'ArrowLeft') prevPage();
-  if (e.key === 'ArrowRight') nextPage();
-  if (e.key === 'Escape') closeViewer();
-});
+function goToPage(ci, pi) {
+  state.chapter = ci; state.page = pi;
+  loadPage(); updateChrome(); renderChapters();
+  closeDrawer('chapter-drawer-backdrop');
+}
 
-// Touch swipe in viewer
-let sx = 0;
-$('viewerOverlay').addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
-$('viewerOverlay').addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - sx;
-  if (Math.abs(dx) > 60) {
-    dx < 0 ? nextPage() : prevPage();
+// ═══════════════════════════════════════
+// ZOOM / PAN ENGINE
+// ═══════════════════════════════════════
+function resetZoom() {
+  state.scale = 1; state.panX = 0; state.panY = 0;
+  state.zoomed = false; state.panning = false; state.pinching = false;
+  applyTransform();
+  stage.classList.remove('is-zoomed', 'is-panning');
+  updateZoomBadge();
+}
+
+function applyTransform() {
+  img.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
+  state.zoomed = state.scale > 1.05;
+  stage.classList.toggle('is-zoomed', state.zoomed);
+  updateZoomBadge();
+}
+
+function updateZoomBadge() {
+  const badge = $('zoom-badge');
+  if (state.zoomed) {
+    badge.textContent = `${Math.round(state.scale * 100)}% · Double-tap to reset`;
+    badge.classList.add('visible');
+  } else {
+    badge.classList.remove('visible');
   }
-}, {passive:true});
+}
+
+function dist(p1, p2) {
+  return Math.hypot(p2.clientX - p1.clientX, p2.clientY - p1.clientY);
+}
+
+function center(p1, p2) {
+  return { x: (p1.clientX + p2.clientX) / 2, y: (p1.clientY + p2.clientY) / 2 };
+}
+
+// ═══════════════════════════════════════
+// GESTURE SYSTEM — Pointer Events
+// ═══════════════════════════════════════
+function bindGestures() {
+  // POINTER DOWN
+  surface.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    state.pointers.set(e.pointerId, e);
+    
+    if (state.pointers.size === 1) {
+      state.startX = e.clientX;
+      state.startY = e.clientY;
+      state.lastX = e.clientX;
+      state.lastY = e.clientY;
+      state.startTime = Date.now();
+      
+      if (state.zoomed) {
+        state.panning = true;
+        stage.classList.add('is-panning');
+        state.startPanX = state.panX;
+        state.startPanY = state.panY;
+      }
+    } else if (state.pointers.size === 2) {
+      // Pinch begins
+      state.pinching = true;
+      state.panning = false;
+      stage.classList.remove('is-panning');
+      const pts = [...state.pointers.values()];
+      state.pinchDist = dist(pts[0], pts[1]);
+      state.startScale = state.scale;
+    }
+  }, { passive: false });
+  
+  // POINTER MOVE
+  surface.addEventListener('pointermove', e => {
+    e.preventDefault();
+    if (!state.pointers.has(e.pointerId)) return;
+    state.pointers.set(e.pointerId, e);
+    
+    const count = state.pointers.size;
+    
+    if (count === 2 && state.pinching) {
+      const pts = [...state.pointers.values()];
+      const d = dist(pts[0], pts[1]);
+      const ratio = d / state.pinchDist;
+      state.scale = Math.max(1, Math.min(5, state.startScale * ratio));
+      applyTransform();
+    } else if (count === 1 && state.panning && state.zoomed) {
+      const dx = e.clientX - state.lastX;
+      const dy = e.clientY - state.lastY;
+      state.panX += dx;
+      state.panY += dy;
+      state.lastX = e.clientX;
+      state.lastY = e.clientY;
+      applyTransform();
+    }
+  }, { passive: false });
+  
+  // POINTER UP
+  surface.addEventListener('pointerup', e => {
+    state.pointers.delete(e.pointerId);
+    const count = state.pointers.size;
+    
+    if (count === 0) {
+      const elapsed = Date.now() - state.startTime;
+      const dx = e.clientX - state.startX;
+      const dy = e.clientY - state.startY;
+      const travel = Math.hypot(dx, dy);
+      
+      if (state.pinching) {
+        state.pinching = false;
+        if (state.scale < 1.05) resetZoom();
+      } else if (state.panning) {
+        state.panning = false;
+        stage.classList.remove('is-panning');
+      } else if (elapsed < 300 && travel < 10) {
+        // TAP — delegate to zone handler
+        handleTap(e.clientX, e.clientY);
+      } else if (state.swipe && !state.zoomed && elapsed < 500 && Math.abs(dx) > 50 && Math.abs(dy) < Math.abs(dx) * 1.3) {
+        // SWIPE
+        if (dx > 0) state.dir === 'ltr' ? prevPage() : nextPage();
+        else state.dir === 'ltr' ? nextPage() : prevPage();
+      }
+    } else if (count === 1 && state.pinching) {
+      // One finger lifted during pinch → continue as pan
+      state.pinching = false;
+      const rem = [...state.pointers.values()][0];
+      state.lastX = rem.clientX; state.lastY = rem.clientY;
+      state.panning = true;
+      state.startPanX = state.panX; state.startPanY = state.panY;
+      stage.classList.add('is-panning');
+    }
+  }, { passive: false });
+  
+  // POINTER CANCEL
+  surface.addEventListener('pointercancel', () => {
+    state.pointers.clear();
+    state.pinching = false; state.panning = false;
+    stage.classList.remove('is-panning');
+  });
+  
+  // DOUBLE TAP
+  surface.addEventListener('click', e => {
+    const now = Date.now();
+    if (now - state.lastTap < 300) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (state.zoomed) {
+        resetZoom();
+      } else {
+        // Zoom to 2.5x centered on tap
+        state.scale = 2.5;
+        const rect = stage.getBoundingClientRect();
+        const cx = rect.width / 2, cy = rect.height / 2;
+        state.panX = (cx - e.clientX) * 0.6;
+        state.panY = (cy - e.clientY) * 0.6;
+        applyTransform();
+      }
+    }
+    state.lastTap = now;
+  });
+  
+  // WHEEL (desktop zoom)
+  surface.addEventListener('wheel', e => {
+    if (e.ctrlKey || e.metaKey || Math.abs(e.deltaY) < 10) {
+      e.preventDefault();
+      const factor = e.deltaY > 0 ? 0.92 : 1.08;
+      state.scale = Math.max(1, Math.min(5, state.scale * factor));
+      applyTransform();
+    }
+  }, { passive: false });
+}
+
+// ═══════════════════════════════════════
+// TAP HANDLING
+// ═══════════════════════════════════════
+function handleTap(x, y) {
+  if (state.zoomed) { resetZoom(); return; }
+  
+  const w = window.innerWidth;
+  const zone = x < w / 3 ? 'left' : x < w * 2 / 3 ? 'center' : 'right';
+  
+  if (zone === 'center') toggleChrome();
+  else if (zone === 'right') state.dir === 'ltr' ? nextPage() : prevPage();
+  else if (zone === 'left') state.dir === 'ltr' ? prevPage() : nextPage();
+}
+
+// Bind tap zones
+function bindTapZones() {
+  document.querySelectorAll('.tap-zone').forEach(z => {
+    z.addEventListener('click', e => {
+      if (!state.zoomed && !state.panning && !state.pinching) {
+        handleTap(e.clientX, e.clientY);
+      }
+    });
+  });
+}
+
+// ═══════════════════════════════════════
+// CHROME
+// ═══════════════════════════════════════
+function updateChrome() {
+  const ch = MANGA_DATA.chapters[state.chapter];
+  const total = ch.pages.length;
+  $('reader-title').textContent = `Ch.${ch.num} — ${ch.title}`;
+  $('page-num').textContent = `Page ${state.page + 1} / ${total}`;
+  $('chapter-progress').textContent = `Chapter ${ch.num} of ${MANGA_DATA.chapters.length}`;
+  $('progress-fill').style.width = `${((state.page + 1) / total) * 100}%`;
+  
+  $('chrome-top').classList.toggle('hidden', !state.chrome);
+  $('chrome-bottom').classList.toggle('hidden', !state.chrome);
+}
+
+function toggleChrome() {
+  state.chrome = !state.chrome;
+  updateChrome();
+}
+
+// ═══════════════════════════════════════
+// DRAWERS
+// ═══════════════════════════════════════
+function openDrawer(id) { $(id).classList.add('open'); }
+function closeDrawer(id) { $(id).classList.remove('open'); }
+
+function renderChapters() {
+  $('chapter-list').innerHTML = MANGA_DATA.chapters.map((ch, ci) => {
+    const current = ci === state.chapter;
+    return `
+      <div class="chapter-item ${current ? 'current' : ''}" data-chapter="${ci}">
+        <div>
+          <div class="chapter-item-name">Chapter ${ch.num}</div>
+          <div class="chapter-item-meta">${ch.title} · ${ch.pages.length} pages</div>
+        </div>
+        <div class="chapter-item-status">${current ? 'Reading' : ''}</div>
+      </div>
+    `;
+  }).join('');
+  
+  // Scroll current into view
+  const cur = $('chapter-list').querySelector('.current');
+  if (cur) setTimeout(() => cur.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+}
+
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+function setDir(dir) {
+  state.dir = dir;
+  document.documentElement.dir = dir;
+  updateSegments('dir', dir);
+  toast(dir === 'rtl' ? 'RTL mode' : 'LTR mode');
+}
+
+function setFit(mode) {
+  state.fit = mode;
+  updateSegments('fit', mode);
+  // Fit mode changes CSS class on stage
+}
+
+function toggleZones() {
+  state.zones = !state.zones;
+  $('toggle-zones').classList.toggle('on', state.zones);
+  document.body.classList.toggle('show-zones', state.zones);
+}
+
+function toggleSwipe() {
+  state.swipe = !state.swipe;
+  $('toggle-swipe').classList.toggle('on', state.swipe);
+}
+
+function updateSegments(setting, val) {
+  document.querySelectorAll(`[data-setting="${setting}"]`).forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.val === val);
+  });
+}
+
+// ═══════════════════════════════════════
+// EVENT BINDING
+// ═══════════════════════════════════════
+function bindEvents() {
+  // Library
+  document.querySelector('[data-action="open"]')?.addEventListener('click', openReader);
+  
+  // Chrome buttons
+  $('btn-back').addEventListener('click', e => { e.stopPropagation(); exitReader(); });
+  $('btn-settings').addEventListener('click', () => openDrawer('settings-backdrop'));
+  $('btn-chapters').addEventListener('click', () => openDrawer('chapter-drawer-backdrop'));
+  $('btn-close-settings').addEventListener('click', () => closeDrawer('settings-backdrop'));
+  $('btn-close-chapters').addEventListener('click', () => closeDrawer('chapter-drawer-backdrop'));
+  
+  // Drawers close on backdrop click
+  $('settings-backdrop').addEventListener('click', e => {
+    if (e.target === $('settings-backdrop')) closeDrawer('settings-backdrop');
+  });
+  $('chapter-drawer-backdrop').addEventListener('click', e => {
+    if (e.target === $('chapter-drawer-backdrop')) closeDrawer('chapter-drawer-backdrop');
+  });
+  
+  // Chapter list delegation
+  $('chapter-list').addEventListener('click', e => {
+    const item = e.target.closest('.chapter-item');
+    if (item) goToPage(+item.dataset.chapter, 0);
+  });
+  
+  // Settings delegation
+  document.querySelectorAll('[data-setting]').forEach(el => {
+    if (el.classList.contains('segment-btn')) {
+      el.addEventListener('click', () => {
+        const s = el.dataset.setting;
+        if (s === 'dir') setDir(el.dataset.val);
+        else if (s === 'fit') setFit(el.dataset.val);
+      });
+    } else if (el.classList.contains('toggle')) {
+      el.addEventListener('click', () => {
+        const s = el.dataset.setting;
+        if (s === 'zones') toggleZones();
+        else if (s === 'swipe') toggleSwipe();
+      });
+    }
+  });
+  
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (!$('reader-view').classList.contains('active')) return;
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      state.dir === 'ltr' ? nextPage() : prevPage();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      state.dir === 'ltr' ? prevPage() : nextPage();
+    } else if (e.key === 'Escape') {
+      if ($('settings-backdrop').classList.contains('open')) closeDrawer('settings-backdrop');
+      else if ($('chapter-drawer-backdrop').classList.contains('open')) closeDrawer('chapter-drawer-backdrop');
+      else if (state.zoomed) resetZoom();
+      else exitReader();
+    }
+  });
+  
+  bindTapZones();
+}
+
+// ═══════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════
+function preload() {
+  const ch = MANGA_DATA.chapters[state.chapter];
+  for (let i = 1; i <= 2; i++) {
+    const idx = state.page + i;
+    if (idx < ch.pages.length) { new Image().src = ch.pages[idx]; }
+  }
+}
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ═══════════════════════════════════════
+// GO
+// ═══════════════════════════════════════
+init();
 </script>
 </body>
 </html>
