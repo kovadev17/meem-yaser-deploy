@@ -302,6 +302,10 @@ body {
 }
 .chapter-item .ch-title { font-weight: 600; font-size: 0.9375rem; }
 .chapter-item .ch-date { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+.chapter-item .ch-thumb {
+  width: 60px; height: 60px; border-radius: 8px; object-fit: cover;
+  border: 1px solid var(--border); flex-shrink: 0;
+}
 .chapter-item .ch-right { display: flex; align-items: center; gap: 0.75rem; }
 .lock-icon {
   width: 18px; height: 18px; opacity: 0.4;
@@ -839,9 +843,9 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
         <p id="aboutDesc1">ميم ياسر ستوديو هو بيت للسرد البصري في دبي. نخلق عوالم لا تهدأ من خلال فن القصص المصورة والروايات المصورة.</p>
         <p id="aboutDesc2">منذ تأسيسه، طور الاستوديو أربع سلاسل رئيسية تجمع بين العمق الأدبي العربي والجماليات المرئية للمانغا.</p>
         <div class="about-stats">
-          <div><div class="as-num">5</div><div class="as-label">سلاسل</div></div>
-          <div><div class="as-num">47</div><div class="as-label">فصل</div></div>
-          <div><div class="as-num">1.2k</div><div class="as-label">قارئ</div></div>
+          <div><div class="as-num">5</div><div class="as-label" id="aboutStat1">سلاسل</div></div>
+          <div><div class="as-num">250+</div><div class="as-label" id="aboutStat2">فصل</div></div>
+          <div><div class="as-num">—</div><div class="as-label" id="aboutStat3">قارئ</div></div>
         </div>
       </div>
       <div class="about-image">
@@ -883,24 +887,21 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
     </div>
     <div class="testimonials-grid reveal" id="testimonialsGrid">
       <div class="testimonial-card">
-        <p>"أجمل قصص قرأتها في حياتي. الرسومات رائعة والقصة تجذب من البداية."</p>
+        <p>"تجربة قراءة رائعة. التصميم أنيق والتنقل سهل جداً."</p>
         <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user1/100/100" alt="">
-          <div><strong>أحمد المنصوري</strong><span>قارئ محترف</span></div>
+          <div><strong>قارئ 1</strong><span id="testRole1">عضو</span></div>
         </div>
       </div>
       <div class="testimonial-card">
-        <p>"تجربة قراءة فريدة على الهاتف. التصميم أنيق والتنقل سهل."</p>
+        <p>"أفضل طريقة لمتابعة القصص المصورة على الهاتف."</p>
         <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user2/100/100" alt="">
-          <div><strong>سارة الراشد</strong><span>عضو منذ سنتين</span></div>
+          <div><strong>قارئ 2</strong><span id="testRole2">عضو</span></div>
         </div>
       </div>
       <div class="testimonial-card">
-        <p>"أنا أتابع كل فصول جديد للسيد الكبير. الإثارة تحفزني دائماً."</p>
+        <p>"الواجهة العربية ممتازة والقراءة سلسة."</p>
         <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user3/100/100" alt="">
-          <div><strong>محمد العامري</strong><span>قارئ مبدئ</span></div>
+          <div><strong>قارئ 3</strong><span id="testRole3">عضو</span></div>
         </div>
       </div>
     </div>
@@ -967,7 +968,7 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
       <button class="zoom-btn" data-action="zoomOut" title="Zoom out">−</button>
       <button class="zoom-btn" data-action="zoomIn" title="Zoom in">+</button>
     </div>
-    <button data-action="toggleComments" class="comment-toggle" id="commentToggle">تعليقات</button>
+    <button data-action="toggleComments" class="comment-toggle hidden" id="commentToggle" style="display:none !important">تعليقات</button>
   </div>
   <div class="reader-viewport" id="readerViewport">
     <button class="reader-nav-btn prev" data-action="prevPage">&#8249;</button>
@@ -990,10 +991,10 @@ button:focus-visible, a:focus-visible { outline-offset: 2px; }
       <p>إدارة المستخدمين والفصول والتعليقات</p>
     </div>
     <div class="admin-stats">
-      <div class="stat-card"><div class="stat-value">1,247</div><div class="stat-label">المستخدمون</div></div>
-      <div class="stat-card"><div class="stat-value">47</div><div class="stat-label">الفصول</div></div>
-      <div class="stat-card"><div class="stat-value">3,892</div><div class="stat-label">التعليقات</div></div>
-      <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">بانتظار الموافقة</div></div>
+      <div class="stat-card"><div class="stat-value">—</div><div class="stat-label" id="adminStat1">المستخدمون</div></div>
+      <div class="stat-card"><div class="stat-value">—</div><div class="stat-label" id="adminStat2">الفصول</div></div>
+      <div class="stat-card"><div class="stat-value">—</div><div class="stat-label" id="adminStat3">التعليقات</div></div>
+      <div class="stat-card"><div class="stat-value">—</div><div class="stat-label" id="adminStat4">بانتظار الموافقة</div></div>
     </div>
     <div class="admin-tabs">
       <button class="admin-tab active" data-tab="users">المستخدمون</button>
@@ -1055,7 +1056,77 @@ const i18n = {
     newest: 'الأحدث', oldest: 'الأقدم', number: 'رقم الفصل',
     all: 'الكل', free: 'مجاني', premium: 'مميز',
     guest: 'زائر', member: 'عضو', pro: 'محترف', admin: 'مدير',
-    roles: { guest: 'زائر', member: 'عضو', pro: 'محترف', admin: 'مدير' }
+    roles: { guest: 'زائر', member: 'عضو', pro: 'محترف', admin: 'مدير' },
+    faqTitle: 'الأسئلة الشائعة',
+    faqQ1: 'كيف أصبح عضواً؟',
+    faqA1: 'يمكنك التسجيل مجاناً والاستمتاع بجميع الفصول المجانية. للوصول إلى الفصول المميزة، يمكنك الترقية إلى خطة المحترفين.',
+    faqQ2: 'هل يمكنني قراءة المانجا على الهاتف؟',
+    faqA2: 'نعم، الموقع مصمم بشكل كامل للجوال. يدعم التنقل بالسحب والتكبير/التصغير باللمس.',
+    faqQ3: 'كيف تعمل التعليقات؟',
+    faqA3: 'تظهر التعليقات في لوح جانبي أثناء القراءة. لا توجد دبابيس على الصفحة للتجنب تغطية الرسومات.',
+    faqQ4: 'ما هي طرق الدفع المتوفرة؟',
+    faqA4: 'ندعم بطاقات الائتمان والتحويلات البنكية. ندعم فيزا وماستركارد وأبل بي.',
+    testimonialsTitle: 'ما يقوله القارئون',
+    aboutStatsSeries: 'سلاسل',
+    aboutStatsChapters: 'فصل',
+    aboutStatsReaders: 'قارئ',
+    footerExplore: 'استكشف',
+    footerSupport: 'الدعم',
+    footerContact: 'تواصل',
+    footerCopyright: 'جميع الحقوق محفوظة.',
+    footerMadeIn: 'صنع بحب في دبي',
+    mobileNavHome: 'الرئيسية',
+    mobileNavLibrary: 'المكتبة',
+    mobileNavAdmin: 'الإدارة',
+    settingsTitle: 'الإعدادات',
+    rtlLabel: 'النص من اليمين لليسار',
+    rtlDesc: 'تبديل اتجاه القراءة في القارئ',
+    notificationsLabel: 'الإشعارات',
+    notificationsDesc: 'تلقي إشعارات عند صدور فصل جديد',
+    autonextLabel: 'الانتقال التلقائي',
+    autonextDesc: 'انتقل للفصل التالي بعد الانتهاء',
+    commentsLabel: 'التعليقات',
+    commentsDesc: 'إظهار لوح التعليقات تلقائياً',
+    kbTitle: 'اختصارات اللوحة المفاتيح',
+    kbNext: 'الصفحة التالية',
+    kbPrev: 'الصفحة السابقة',
+    kbClose: 'إغلاق القارئ',
+    kbComments: 'تبديل التعليقات',
+    kbSettings: 'الإعدادات',
+    kbZoom: 'تكبير/تصغير',
+    loadingText: 'جارٍ التحميل...',
+    commentToggle: 'تعليقات',
+    adminTitle: 'لوحة الإدارة',
+    adminDesc: 'إدارة المستخدمين والفصول والتعليقات',
+    adminUsers: 'المستخدمون',
+    adminChapters: 'الفصول',
+    adminComments: 'التعليقات',
+    adminUpload: 'رفع فصل',
+    adminUserCol: 'المستخدم',
+    adminEmailCol: 'البريد',
+    adminRoleCol: 'الدور',
+    adminStatusCol: 'الحالة',
+    adminDateCol: 'التاريخ',
+    adminActionCol: 'إجراء',
+    adminApproved: 'موافق',
+    adminPending: 'معلق',
+    adminBanned: 'محظور',
+    adminApproveBtn: 'موافقة',
+    adminRejectBtn: 'رفض',
+    adminBanBtn: 'حظر',
+    adminDeleteBtn: 'حذف',
+    adminSafe: 'آمن',
+    adminFlagged: 'مبلغ',
+    adminUploadTitle: 'رفع فصل جديد',
+    adminSelectManga: 'اختر العمل',
+    adminChapterNum: 'رقم الفصل',
+    adminFiles: 'الملفات',
+    adminDragDrop: 'اسحب الصور هنا أو انقر للاختيار',
+    adminUploadBtn: 'رفع الفصل',
+    adminChaptersPlaceholder: 'قائمة الفصول مع إمكانية التعديل والحذف',
+    guestFeatures: ['معاينة 3 فصول','قراءة محدودة','لا تعليقات'],
+    memberFeatures: ['جميع الفصول المعتمدة','التعليقات','الملف الشخصي'],
+    adminFeatures: ['لوحة الإدارة','موافقة الأعضاء','إدارة الفصول','الإشراف']
   },
   en: {
     brand: 'Meem Yaser Studio',
@@ -1073,7 +1144,77 @@ const i18n = {
     newest: 'Newest', oldest: 'Oldest', number: 'Chapter Number',
     all: 'All', free: 'Free', premium: 'Premium',
     guest: 'Guest', member: 'Member', pro: 'Pro', admin: 'Admin',
-    roles: { guest: 'Guest', member: 'Member', pro: 'Pro', admin: 'Admin' }
+    roles: { guest: 'Guest', member: 'Member', pro: 'Pro', admin: 'Admin' },
+    faqTitle: 'FAQ',
+    faqQ1: 'How do I become a member?',
+    faqA1: 'Register for free and enjoy all free chapters. To access premium chapters, upgrade to a Pro plan.',
+    faqQ2: 'Can I read manga on mobile?',
+    faqA2: 'Yes, the site is fully designed for mobile. Supports swipe navigation and pinch-zoom.',
+    faqQ3: 'How do comments work?',
+    faqA3: 'Comments appear in a sidebar panel while reading. No pins on the page to avoid covering artwork.',
+    faqQ4: 'What payment methods are available?',
+    faqA4: 'We accept credit cards and bank transfers. Visa, Mastercard, and Apple Pay supported.',
+    testimonialsTitle: 'What Readers Say',
+    aboutStatsSeries: 'series',
+    aboutStatsChapters: 'chapters',
+    aboutStatsReaders: 'readers',
+    footerExplore: 'Explore',
+    footerSupport: 'Support',
+    footerContact: 'Contact',
+    footerCopyright: 'All rights reserved.',
+    footerMadeIn: 'Made with love in Dubai',
+    mobileNavHome: 'Home',
+    mobileNavLibrary: 'Library',
+    mobileNavAdmin: 'Admin',
+    settingsTitle: 'Settings',
+    rtlLabel: 'Right-to-left text',
+    rtlDesc: 'Switch reading direction in reader',
+    notificationsLabel: 'Notifications',
+    notificationsDesc: 'Receive notifications when new chapters release',
+    autonextLabel: 'Auto-advance',
+    autonextDesc: 'Go to next chapter when finished',
+    commentsLabel: 'Comments',
+    commentsDesc: 'Show comments panel automatically',
+    kbTitle: 'Keyboard Shortcuts',
+    kbNext: 'Next Page',
+    kbPrev: 'Previous Page',
+    kbClose: 'Close Reader',
+    kbComments: 'Toggle Comments',
+    kbSettings: 'Settings',
+    kbZoom: 'Zoom In/Out',
+    loadingText: 'Loading...',
+    commentToggle: 'Comments',
+    adminTitle: 'Admin Dashboard',
+    adminDesc: 'Manage users, chapters, and comments',
+    adminUsers: 'Users',
+    adminChapters: 'Chapters',
+    adminComments: 'Comments',
+    adminUpload: 'Upload Chapter',
+    adminUserCol: 'User',
+    adminEmailCol: 'Email',
+    adminRoleCol: 'Role',
+    adminStatusCol: 'Status',
+    adminDateCol: 'Date',
+    adminActionCol: 'Action',
+    adminApproved: 'Approved',
+    adminPending: 'Pending',
+    adminBanned: 'Banned',
+    adminApproveBtn: 'Approve',
+    adminRejectBtn: 'Reject',
+    adminBanBtn: 'Ban',
+    adminDeleteBtn: 'Delete',
+    adminSafe: 'Safe',
+    adminFlagged: 'Flagged',
+    adminUploadTitle: 'Upload New Chapter',
+    adminSelectManga: 'Select Manga',
+    adminChapterNum: 'Chapter Number',
+    adminFiles: 'Files',
+    adminDragDrop: 'Drag images here or click to select',
+    adminUploadBtn: 'Upload Chapter',
+    adminChaptersPlaceholder: 'Chapter list with edit and delete options',
+    guestFeatures: ['Preview 3 chapters','Limited reading','No comments'],
+    memberFeatures: ['All approved chapters','Comments','Profile'],
+    adminFeatures: ['Admin dashboard','Approve members','Manage chapters','Moderation']
   }
 };
 
@@ -1138,11 +1279,10 @@ const mockComments = [
 ];
 
 const mockUsers = [
-  { id: 'u1', name: 'أحمد علي', email: 'ahmed@example.com', role: 'member', status: 'approved', date: '2026-01-15' },
-  { id: 'u2', name: 'سارة محمد', email: 'sara@example.com', role: 'pro', status: 'approved', date: '2026-02-20' },
-  { id: 'u3', name: 'خالد عمر', email: 'khaled@example.com', role: 'guest', status: 'pending', date: '2026-04-18' },
-  { id: 'u4', name: 'ليلى حسن', email: 'laila@example.com', role: 'member', status: 'approved', date: '2026-03-10' },
-  { id: 'u5', name: 'يوسف سامي', email: 'yousef@example.com', role: 'guest', status: 'banned', date: '2026-04-01' }
+  { id: 'u1', name: 'عضو 1', email: 'member@demo.local', role: 'member', status: 'approved', date: '2026-04-20' },
+  { id: 'u2', name: 'عضو 2', email: 'member2@demo.local', role: 'member', status: 'approved', date: '2026-04-19' },
+  { id: 'u3', name: 'زائر 1', email: 'guest@demo.local', role: 'guest', status: 'pending', date: '2026-04-22' },
+  { id: 'u4', name: 'عضو 3', email: 'member3@demo.local', role: 'member', status: 'approved', date: '2026-04-18' }
 ];
 
 const mockCommentsAdmin = [
@@ -1189,17 +1329,24 @@ function renderMangaGrid() {
 }
 
 function renderTiers() {
+  const l = i18n[state.lang];
   const tiers = [
-    { key: 'guest', price: '0', labelAr: 'زائر', labelEn: 'Guest', features: ['معاينة 3 فصول','قراءة محدودة','لا تعليقات'] },
-    { key: 'member', price: '0', labelAr: 'عضو', labelEn: 'Member', features: ['جميع الفصول المجانية','التعليقات','الملف الشخصي'], featured: true },
-    { key: 'pro', price: '29', labelAr: 'محترف', labelEn: 'Pro', features: ['جميع الفصول','الوصول المبكر','دعم مميز','بدون إعلانات'] },
-    { key: 'admin', price: '-', labelAr: 'مدير', labelEn: 'Admin', features: ['لوحة الإدارة','إدارة الفصول','الإشراف','الإحصائيات'] }
+    { key: 'guest', featured: false },
+    { key: 'member', featured: true },
+    { key: 'admin', featured: false }
   ];
+  const tierLabels = { guest: l.guest, member: l.member, admin: l.admin };
+  const tierFeatures = { guest: l.guestFeatures, member: l.memberFeatures, admin: l.adminFeatures };
+  const tierDesc = { 
+    guest: state.lang==='ar'?'معاينة محدودة دون تسجيل':'Limited preview without signup',
+    member: state.lang==='ar'?'وصول كامل بعد الموافقة':'Full access after approval',
+    admin: state.lang==='ar'?'إدارة الموافقات والمحتوى':'Manage approvals & content'
+  };
   $('#tiersGrid').innerHTML = tiers.map(t => `
-    <div class="tier-card ${t.featured?'featured':''} stagger-item" data-label="${state.lang==='ar'?'الأكثر شيوعاً':'Popular'}">
-      <h3>${state.lang==='ar'?t.labelAr:t.labelEn}</h3>
-      <div class="tier-price">${t.price}<span>/${state.lang==='ar'?'شهر':'mo'}</span></div>
-      <ul>${t.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+    <div class="tier-card ${t.featured?'featured':''} stagger-item" data-label="${state.lang==='ar'?'مُوصى به':'Recommended'}">
+      <h3>${tierLabels[t.key]}</h3>
+      <div class="tier-price" style="font-size:1rem;font-weight:500;color:var(--text-muted);margin:0.5rem 0;">${tierDesc[t.key]}</div>
+      <ul>${tierFeatures[t.key].map(f=>`<li>${f}</li>`).join('')}</ul>
       <button class="tier-btn" data-role="${t.key}">${state.lang==='ar'?'اختر':'Select'}</button>
     </div>
   `).join('');
@@ -1238,9 +1385,11 @@ function renderChapterList() {
     const locked = c.type !== 'free' && state.user.role === 'guest';
     const tagClass = c.type;
     const tagText = c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='premium'?(state.lang==='ar'?'مميز':'Premium'):(state.lang==='ar'?'مبكر':'Early');
+    const thumb = c.thumbnail || `https://picsum.photos/seed/${m.id}ch${c.num}/100/100`;
     return `
       <div class="chapter-item ${locked?'locked':''}" data-num="${c.num}" data-locked="${locked}">
         <div class="ch-left">
+          <img src="${thumb}" alt="" class="ch-thumb" loading="lazy" onerror="this.style.display='none'">
           <div class="ch-num">${c.num}</div>
           <div>
             <div class="ch-title">${state.lang==='ar'?c.titleAr:c.titleEn}</div>
@@ -1313,61 +1462,62 @@ function showCommentForm(x, y) {
 }
 
 function renderAdmin() {
+  const l = i18n[state.lang];
   const c = $('#adminContent');
   if(state.adminTab === 'users') {
     c.innerHTML = `
       <table class="admin-table">
-        <thead><tr><th>المستخدم</th><th>البريد</th><th>الدور</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th></tr></thead>
+        <thead><tr><th>${l.adminUserCol}</th><th>${l.adminEmailCol}</th><th>${l.adminRoleCol}</th><th>${l.adminStatusCol}</th><th>${l.adminDateCol}</th><th>${l.adminActionCol}</th></tr></thead>
         <tbody>${mockUsers.map(u=>`
           <tr>
             <td><strong>${u.name}</strong></td>
             <td>${u.email}</td>
             <td>${t('roles')[u.role]}</td>
-            <td><span class="status"><span class="status-dot-inline ${u.status}"></span>${u.status==='approved'?'موافق':u.status==='pending'?'معلق':'محظور'}</span></td>
+            <td><span class="status"><span class="status-dot-inline ${u.status}"></span>${u.status==='approved'?l.adminApproved:u.status==='pending'?l.adminPending:l.adminBanned}</span></td>
             <td>${u.date}</td>
             <td>
-              ${u.status==='pending'?`<button class="admin-btn approve">موافقة</button><button class="admin-btn reject">رفض</button>`:''}
-              ${u.status==='approved'?`<button class="admin-btn ban">حظر</button>`:''}
+              ${u.status==='pending'?`<button class="admin-btn approve">${l.adminApproveBtn}</button><button class="admin-btn reject">${l.adminRejectBtn}</button>`:''}
+              ${u.status==='approved'?`<button class="admin-btn ban">${l.adminBanBtn}</button>`:''}
             </td>
           </tr>
         `).join('')}</tbody>
       </table>`;
   } else if(state.adminTab === 'chapters') {
-    c.innerHTML = `<div style="padding:2rem; text-align:center; color:var(--text-dark-muted);">قائمة الفصول مع إمكانية التعديل والحذف</div>`;
+    c.innerHTML = `<div style="padding:2rem; text-align:center; color:var(--text-dark-muted);">${l.adminChaptersPlaceholder}</div>`;
   } else if(state.adminTab === 'comments') {
     c.innerHTML = `
       <table class="admin-table">
-        <thead><tr><th>المستخدم</th><th>العمل</th><th>التعليق</th><th>التاريخ</th><th>حالة</th><th>إجراء</th></tr></thead>
+        <thead><tr><th>${l.adminUserCol}</th><th>${l.adminActionCol}</th><th>${l.adminComments}</th><th>${l.adminDateCol}</th><th>${l.adminStatusCol}</th><th>${l.adminActionCol}</th></tr></thead>
         <tbody>${mockCommentsAdmin.map(c=>`
           <tr>
             <td><strong>${c.user}</strong></td>
             <td>${c.manga}</td>
             <td>${c.text}</td>
             <td>${c.date}</td>
-            <td>${c.flagged?'<span style="color:var(--danger)">مبلغ</span>':'<span style="color:var(--success)">آمن</span>'}</td>
-            <td><button class="admin-btn reject">حذف</button></td>
+            <td>${c.flagged?`<span style="color:var(--danger)">${l.adminFlagged}</span>`:`<span style="color:var(--success)">${l.adminSafe}</span>`}</td>
+            <td><button class="admin-btn reject">${l.adminDeleteBtn}</button></td>
           </tr>
         `).join('')}</tbody>
       </table>`;
   } else if(state.adminTab === 'upload') {
     c.innerHTML = `
       <div style="max-width:600px; background:var(--card-bg-dark); border:1px solid var(--border-dark); border-radius:12px; padding:2rem;">
-        <h3 style="margin-bottom:1rem;">رفع فصل جديد</h3>
+        <h3 style="margin-bottom:1rem;">${l.adminUploadTitle}</h3>
         <div style="margin-bottom:1rem;">
-          <label style="display:block; font-size:0.8rem; color:var(--text-dark-muted); margin-bottom:0.25rem;">اختر العمل</label>
+          <label style="display:block; font-size:0.8rem; color:var(--text-dark-muted); margin-bottom:0.25rem;">${l.adminSelectManga}</label>
           <select style="width:100%; padding:0.6rem; background:#0a0a0a; border:1px solid var(--border-dark); border-radius:6px; color:#fff; font-family:inherit;">
-            ${mangaData.map(m=>`<option>${m.titleAr}</option>`).join('')}
+            ${mangaData.map(m=>`<option>${state.lang==='ar'?m.titleAr:m.titleEn}</option>`).join('')}
           </select>
         </div>
         <div style="margin-bottom:1rem;">
-          <label style="display:block; font-size:0.8rem; color:var(--text-dark-muted); margin-bottom:0.25rem;">رقم الفصل</label>
+          <label style="display:block; font-size:0.8rem; color:var(--text-dark-muted); margin-bottom:0.25rem;">${l.adminChapterNum}</label>
           <input type="number" style="width:100%; padding:0.6rem; background:#0a0a0a; border:1px solid var(--border-dark); border-radius:6px; color:#fff; font-family:inherit;">
         </div>
         <div style="margin-bottom:1rem;">
-          <label style="display:block; font-size:0.8rem; color:var(--text-dark-muted); margin-bottom:0.25rem;">الملفات</label>
-          <div style="border:2px dashed var(--border-dark); border-radius:8px; padding:2rem; text-align:center; color:var(--text-dark-muted);">اسحب الصور هنا أو انقر للاختيار</div>
+          <label style="display:block; font-size:0.8rem; color:var(--text-dark-muted); margin-bottom:0.25rem;">${l.adminFiles}</label>
+          <div style="border:2px dashed var(--border-dark); border-radius:8px; padding:2rem; text-align:center; color:var(--text-dark-muted);">${l.adminDragDrop}</div>
         </div>
-        <button class="hero-cta" style="border:none; font-family:inherit;">رفع الفصل</button>
+        <button class="hero-cta" style="border:none; font-family:inherit;">${l.adminUploadBtn}</button>
       </div>`;
   }
 }
@@ -1565,6 +1715,84 @@ function updateText() {
   const filterSel = $('#chapterFilter');
   filterSel.innerHTML = `<option value="all">${l.all}</option><option value="free">${l.free}</option><option value="premium">${l.premium}</option>`;
   $('#roleBadge').textContent = l.roles[state.user.role];
+  
+  // FAQ
+  $('#faqTitle').textContent = l.faqTitle;
+  const faqItems = $$('.faq-item');
+  const faqQs = [l.faqQ1, l.faqQ2, l.faqQ3, l.faqQ4];
+  const faqAs = [l.faqA1, l.faqA2, l.faqA3, l.faqA4];
+  faqItems.forEach((item, i) => {
+    if (faqQs[i]) item.querySelector('.faq-question').textContent = faqQs[i];
+    if (faqAs[i]) item.querySelector('.faq-answer').textContent = faqAs[i];
+  });
+  
+  // Testimonials title
+  $('#testimonialsTitle').textContent = l.testimonialsTitle;
+  
+  // About stats labels
+  const statLabels = $$('.about-stats .as-label');
+  if (statLabels[0]) statLabels[0].textContent = l.aboutStatsSeries;
+  if (statLabels[1]) statLabels[1].textContent = l.aboutStatsChapters;
+  if (statLabels[2]) statLabels[2].textContent = l.aboutStatsReaders;
+  
+  // Footer
+  const footerHeadings = $$('.footer h4');
+  if (footerHeadings[0]) footerHeadings[0].textContent = l.footerExplore;
+  if (footerHeadings[1]) footerHeadings[1].textContent = l.footerSupport;
+  if (footerHeadings[2]) footerHeadings[2].textContent = l.footerContact;
+  
+  // Footer bottom
+  const fb = $('.footer-bottom');
+  if (fb) {
+    fb.innerHTML = `<span>2026 Meem Yaser Studio. ${l.footerCopyright}</span><span>${l.footerMadeIn}</span>`;
+  }
+  
+  // Mobile nav
+  const mNavItems = $$('.mobile-nav-item');
+  if (mNavItems[0]) mNavItems[0].childNodes[2].textContent = ' ' + l.mobileNavHome;
+  if (mNavItems[1]) mNavItems[1].childNodes[2].textContent = ' ' + l.mobileNavLibrary;
+  if (mNavItems[2]) mNavItems[2].childNodes[2].textContent = ' ' + l.mobileNavAdmin;
+  
+  // Settings modal
+  $('#settingsTitle').textContent = l.settingsTitle;
+  $('#rtlLabel').textContent = l.rtlLabel;
+  $('#rtlLabel').nextElementSibling.textContent = l.rtlDesc;
+  $('#notificationsLabel').textContent = l.notificationsLabel;
+  $('#notificationsLabel').nextElementSibling.textContent = l.notificationsDesc;
+  $('#autonextLabel').textContent = l.autonextLabel;
+  $('#autonextLabel').nextElementSibling.textContent = l.autonextDesc;
+  $('#commentsLabel').textContent = l.commentsLabel;
+  $('#commentsLabel').nextElementSibling.textContent = l.commentsDesc;
+  
+  // Keyboard shortcuts
+  $('#kbTitle').textContent = l.kbTitle;
+  $('#kbNext').textContent = l.kbNext;
+  $('#kbPrev').textContent = l.kbPrev;
+  $('#kbClose').textContent = l.kbClose;
+  $('#kbComments').textContent = l.kbComments;
+  $('#kbSettings').textContent = l.kbSettings;
+  $('#kbZoom').textContent = l.kbZoom;
+  
+  // Loading
+  $('#loadingText').textContent = l.loadingText;
+  
+  // Reader comment toggle
+  $('#commentToggle').textContent = l.commentToggle;
+  
+  // Admin panel
+  $$('.admin-header h1').forEach(el => el.textContent = l.adminTitle);
+  $$('.admin-header p').forEach(el => el.textContent = l.adminDesc);
+  const adminTabs = $$('.admin-tab');
+  if (adminTabs[0]) adminTabs[0].textContent = l.adminUsers;
+  if (adminTabs[1]) adminTabs[1].textContent = l.adminChapters;
+  if (adminTabs[2]) adminTabs[2].textContent = l.adminComments;
+  if (adminTabs[3]) adminTabs[3].textContent = l.adminUpload;
+  
+  // Re-render dynamic content
+  renderMangaGrid();
+  renderTiers();
+  if (state.currentManga) renderBrowser();
+  if ($('#adminPage').classList.contains('active')) renderAdmin();
 }
 
 // ===================== INIT =====================
