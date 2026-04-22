@@ -612,10 +612,10 @@
         // MOCK DATA
         const db = {
             manga: [
-                { id: 'm1', title: {en:'Sands of Eternity', ar:'رمال الخلود'}, desc: {en:'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.', ar:'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى.'}, tags: ['Action','Fantasy'], access: 'exclusive', chs: 45, rating: 4.8, cover: 'https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=800' },
-                { id: 'm2', title: {en:'Neon Ghost', ar:'شبح النيون'}, desc: {en:'A cybernetic assassin seeks redemption in a city where memories are the only currency left.', ar:'قاتل إلكتروني يبحث عن الخلاص في مدينة حيث الذكريات هي العملة الوحيدة المتبقية.'}, tags: ['Sci-Fi','Thriller'], access: 'premium', chs: 32, rating: 4.5, cover: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800' },
-                { id: 'm3', title: {en:'The Last Calligraphy', ar:'الخط الأخير'}, desc: {en:'The delicate art of calligraphy becomes a weapon in a war over forbidden knowledge.', ar:'يتحول فن الخط الدقيق إلى سلاح في حرب على المعرفة المحرمة.'}, tags: ['Drama','Historical'], access: 'free', chs: 28, rating: 4.9, cover: 'https://images.unsplash.com/photo-1613376023733-0a73315d9b06?q=80&w=800' },
-                { id: 'm4', title: {en:'Crimson Tide', ar:'المد القرمزي'}, desc: {en:'A detective uncovers a conspiracy that threatens to drown the world in a sea of red.', ar:'محقق يكتشف مؤامرة تهدد بإغراق العالم في بحر من اللون الأحمر.'}, tags: ['Action','Mystery'], access: 'locked', chs: 67, rating: 4.3, cover: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?q=80&w=800' }
+                { id: 'm1', title: {en:'Sands of Eternity', ar:'رمال الخلود'}, desc: {en:'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.', ar:'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى.'}, tags: ['Action','Fantasy'], access: 'exclusive', chs: 45, cover: 'https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=800' },
+                { id: 'm2', title: {en:'Neon Ghost', ar:'شبح النيون'}, desc: {en:'A cybernetic assassin seeks redemption in a city where memories are the only currency left.', ar:'قاتل إلكتروني يبحث عن الخلاص في مدينة حيث الذكريات هي العملة الوحيدة المتبقية.'}, tags: ['Sci-Fi','Thriller'], access: 'premium', chs: 32, cover: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800' },
+                { id: 'm3', title: {en:'The Last Calligraphy', ar:'الخط الأخير'}, desc: {en:'The delicate art of calligraphy becomes a weapon in a war over forbidden knowledge.', ar:'يتحول فن الخط الدقيق إلى سلاح في حرب على المعرفة المحرمة.'}, tags: ['Drama','Historical'], access: 'free', chs: 28, cover: 'https://images.unsplash.com/photo-1613376023733-0a73315d9b06?q=80&w=800' },
+                { id: 'm4', title: {en:'Crimson Tide', ar:'المد القرمزي'}, desc: {en:'A detective uncovers a conspiracy that threatens to drown the world in a sea of red.', ar:'محقق يكتشف مؤامرة تهدد بإغراق العالم في بحر من اللون الأحمر.'}, tags: ['Action','Mystery'], access: 'locked', chs: 67, cover: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?q=80&w=800' }
             ],
             chars: [
                 { id: 'c1', name: {en:'Amira Hassan', ar:'أميرة حسن'}, manga: 'm1', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'A fierce warrior of the dunes.', ar:'محاربة شرسة من الكثبان.'}, color: '#D4AF37' },
@@ -894,9 +894,8 @@
                         ${getCover(m.cover)}
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                         <div class="absolute top-3 end-3">${getBadge(m.access)}</div>
-                        <div class="absolute bottom-3 start-3 end-3 flex justify-between items-center text-white">
-                            <div class="text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-star text-accent text-[10px]"></i>${m.rating}</div>
-                            <div class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">${m.chs} CH</div>
+                        <div class=\"absolute bottom-3 start-3 end-3 flex justify-end items-center text-white\">
+                            <div class=\"text-[10px] font-bold text-gray-300 uppercase tracking-widest\">${m.chs} CH</div>
                         </div>
                     </div>
                     <h3 class="font-bold text-[15px] truncate group-hover:text-accent transition-colors">${v(m.title)}</h3>
@@ -956,9 +955,8 @@
                     </div>
                 </div>
                 <div class="flex-1 flex flex-col justify-center">
-                    <div class="flex gap-2 mb-4 flex-wrap">
-                        ${m.tags.map(t => `<span class="bg-gray-100 text-textMain px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">${t}</span>`).join('')}
-                        <span class="bg-accent/10 text-accent px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1"><i class="fa-solid fa-star"></i> ${m.rating}</span>
+                    <div class=\"flex gap-2 mb-4 flex-wrap\">
+                        ${m.tags.map(t => `<span class=\"bg-gray-100 text-textMain px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest\">${t}</span>`).join('')}
                     </div>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-2 uppercase tracking-tight">${v(m.title)}</h1>
                     <p class="text-xs font-black text-textSec mb-6 uppercase tracking-widest">BY MEEM YASER STUDIO</p>
