@@ -767,17 +767,17 @@ body.show-zones .tap-right { border-left:1px dashed rgba(212,175,55,0.1); }
       <div class="comment-item">
         <div class="comment-header"><span class="comment-author">Leila H.</span><span class="comment-time">2h ago</span></div>
         <div class="comment-text">The atmosphere in this opening is incredible. You can feel the weight of the gate before it even appears.</div>
-        <div class="comment-actions"><button class="comment-action">♡ 12</button><button class="comment-action">Reply</button></div>
+        <div class="comment-actions"><button class="comment-action">Reply</button></div>
       </div>
       <div class="comment-item">
         <div class="comment-header"><span class="comment-author">Omar K.</span><span class="comment-time">5h ago</span></div>
         <div class="comment-text">Panel 3 — the shadow work is masterful. Is this traditional ink or fully digital?</div>
-        <div class="comment-actions"><button class="comment-action">♡ 8</button><button class="comment-action">Reply</button></div>
+        <div class="comment-actions"><button class="comment-action">Reply</button></div>
       </div>
       <div class="comment-item">
         <div class="comment-header"><span class="comment-author">Noor A.</span><span class="comment-time">1d ago</span></div>
         <div class="comment-text">I keep coming back to this chapter. The pacing is deliberately slow and it works perfectly.</div>
-        <div class="comment-actions"><button class="comment-action">♡ 24</button><button class="comment-action">Reply</button></div>
+        <div class="comment-actions"><button class="comment-action">Reply</button></div>
       </div>
     </div>
     <div class="drawer-foot">
@@ -1143,7 +1143,7 @@ function postComment() {
   const list = document.getElementById('commentsList');
   const item = document.createElement('div');
   item.className = 'comment-item';
-  item.innerHTML = `<div class="comment-header"><span class="comment-author">You</span><span class="comment-time">Just now</span></div><div class="comment-text">${text}</div><div class="comment-actions"><button class="comment-action">♡ 0</button><button class="comment-action">Reply</button></div>`;
+  item.innerHTML = `<div class="comment-header"><span class="comment-author">You</span><span class="comment-time">Just now</span></div><div class="comment-text">${text}</div><div class="comment-actions"><button class="comment-action">Reply</button></div>`;
   list.appendChild(item);
   list.scrollTop = list.scrollHeight;
   input.value = '';

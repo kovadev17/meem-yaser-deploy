@@ -638,9 +638,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:2px solid v
   <div class="comments-drawer" id="commentsDrawer">
     <div class="drawer-head"><h3>Discussion</h3><span id="commentsCount">3</span></div>
     <div class="drawer-body" id="commentsList">
-      <div class="comment-item"><div class="comment-header"><span class="comment-author">Leila</span><span class="comment-time">2h ago</span></div><div class="comment-text">Picking up where I left off. The tension builds so well here.</div><div class="comment-actions"><button class="comment-action">♡ 12</button><button class="comment-action">Reply</button></div></div>
-      <div class="comment-item"><div class="comment-header"><span class="comment-author">Omar</span><span class="comment-time">5h ago</span></div><div class="comment-text">Just finished this chapter. That last panel gave me chills.</div><div class="comment-actions"><button class="comment-action">♡ 8</button><button class="comment-action">Reply</button></div></div>
-      <div class="comment-item"><div class="comment-header"><span class="comment-author">Noor</span><span class="comment-time">1d ago</span></div><div class="comment-text">This is my third read-through. Noticing new details every time.</div><div class="comment-actions"><button class="comment-action">♡ 24</button><button class="comment-action">Reply</button></div></div>
+      <div class="comment-item"><div class="comment-header"><span class="comment-author">Leila</span><span class="comment-time">2h ago</span></div><div class="comment-text">Picking up where I left off. The tension builds so well here.</div><div class="comment-actions"><button class="comment-action">Reply</button></div></div>
+      <div class="comment-item"><div class="comment-header"><span class="comment-author">Omar</span><span class="comment-time">5h ago</span></div><div class="comment-text">Just finished this chapter. That last panel gave me chills.</div><div class="comment-actions"><button class="comment-action">Reply</button></div></div>
+      <div class="comment-item"><div class="comment-header"><span class="comment-author">Noor</span><span class="comment-time">1d ago</span></div><div class="comment-text">This is my third read-through. Noticing new details every time.</div><div class="comment-actions"><button class="comment-action">Reply</button></div></div>
     </div>
     <div class="drawer-foot"><input type="text" id="commentInput" placeholder="Share your thoughts..."><button onclick="postComment()">→</button></div>
   </div>
@@ -755,7 +755,7 @@ function toggleShortcuts() { document.getElementById('shortcutsModal').classList
 function postComment() {
   const input = document.getElementById('commentInput'); const text = input.value.trim(); if (!text) return;
   const list = document.getElementById('commentsList'); const item = document.createElement('div');
-  item.className = 'comment-item'; item.innerHTML = `<div class="comment-header"><span class="comment-author">You</span><span class="comment-time">Just now</span></div><div class="comment-text">${text}</div><div class="comment-actions"><button class="comment-action">♡ 0</button><button class="comment-action">Reply</button></div>`;
+  item.className = 'comment-item'; item.innerHTML = `<div class="comment-header"><span class="comment-author">You</span><span class="comment-time">Just now</span></div><div class="comment-text">${text}</div><div class="comment-actions"><button class="comment-action">Reply</button></div>`;
   list.appendChild(item); list.scrollTop = list.scrollHeight; input.value = ''; showToast('Comment posted');
 }
 

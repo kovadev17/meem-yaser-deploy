@@ -590,9 +590,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:2px solid v
   <div class="comments-drawer" id="commentsDrawer">
     <div class="drawer-head"><h3>Comments</h3><span id="commentsCount">3</span></div>
     <div class="drawer-body" id="commentsList">
-      <div class="comment-item"><div class="comment-header"><span class="comment-author">Leila H.</span><span class="comment-time">2h ago</span></div><div class="comment-text">The art direction is stunning. Every panel feels intentional and weighted.</div><div class="comment-actions"><button class="comment-action">♡ 12</button><button class="comment-action">Reply</button></div></div>
-      <div class="comment-item"><div class="comment-header"><span class="comment-author">Omar K.</span><span class="comment-time">5h ago</span></div><div class="comment-text">Love the gallery view for browsing. Makes discovery feel organic and unhurried.</div><div class="comment-actions"><button class="comment-action">♡ 8</button><button class="comment-action">Reply</button></div></div>
-      <div class="comment-item"><div class="comment-header"><span class="comment-author">Noor A.</span><span class="comment-time">1d ago</span></div><div class="comment-text">I keep coming back to this chapter. The pacing is deliberately slow and it works.</div><div class="comment-actions"><button class="comment-action">♡ 24</button><button class="comment-action">Reply</button></div></div>
+      <div class="comment-item"><div class="comment-header"><span class="comment-author">Leila H.</span><span class="comment-time">2h ago</span></div><div class="comment-text">The art direction is stunning. Every panel feels intentional and weighted.</div><div class="comment-actions"><button class="comment-action">Reply</button></div></div>
+      <div class="comment-item"><div class="comment-header"><span class="comment-author">Omar K.</span><span class="comment-time">5h ago</span></div><div class="comment-text">Love the gallery view for browsing. Makes discovery feel organic and unhurried.</div><div class="comment-actions"><button class="comment-action">Reply</button></div></div>
+      <div class="comment-item"><div class="comment-header"><span class="comment-author">Noor A.</span><span class="comment-time">1d ago</span></div><div class="comment-text">I keep coming back to this chapter. The pacing is deliberately slow and it works.</div><div class="comment-actions"><button class="comment-action">Reply</button></div></div>
     </div>
     <div class="drawer-foot"><input type="text" id="commentInput" placeholder="Add a comment..."><button onclick="postComment()">→</button></div>
   </div>
@@ -707,7 +707,7 @@ function toggleShortcuts() { document.getElementById('shortcutsModal').classList
 function postComment() {
   const input = document.getElementById('commentInput'); const text = input.value.trim(); if (!text) return;
   const list = document.getElementById('commentsList'); const item = document.createElement('div');
-  item.className = 'comment-item'; item.innerHTML = `<div class="comment-header"><span class="comment-author">You</span><span class="comment-time">Just now</span></div><div class="comment-text">${text}</div><div class="comment-actions"><button class="comment-action">♡ 0</button><button class="comment-action">Reply</button></div>`;
+  item.className = 'comment-item'; item.innerHTML = `<div class="comment-header"><span class="comment-author">You</span><span class="comment-time">Just now</span></div><div class="comment-text">${text}</div><div class="comment-actions"><button class="comment-action">Reply</button></div>`;
   list.appendChild(item); list.scrollTop = list.scrollHeight; input.value = ''; showToast('Comment posted');
 }
 
