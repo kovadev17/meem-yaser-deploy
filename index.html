@@ -1376,12 +1376,12 @@
         // INIT — chapterFaces must be ready before any rendering
         var chapterFaces = [];
         (function() {
-            var skins = ['#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#b89060','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574','#c49464','#d4a574'];
-            var hairs = ['#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a','#2a1a0a','#1a0a0a','#3a2a1a','#0a0a0a','#4a3a2a'];
-            var bgs = ['#2a2a3a','#1a1a2e','#2a1a2e','#1a2a1e','#2a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e','#2a3a2a','#1a1a2e','#2a2a1e','#2a1a2e','#1a2a1e','#3a2a2a','#1a2a2e','#2a1a3e','#1a1a3e','#3a3a1e'];
-            var mouths = ['M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 38 Q30 40 40 38','M20 34 Q30 30 40 34','M20 37 L30 35 L40 37','M20 36 Q30 33 40 36','M20 37 L40 37','M20 35 Q30 37 40 35','M20 36 Q30 34 40 36','M20 37 L40 37','M20 34 Q30 30 40 34','M20 38 Q30 40 40 38'];
+            var skins = ['#f5d1b5','#e0ac69','#f5d1b5','#8d5524','#c68642','#f1c27d','#ffdbac','#e0ac69','#f5d1b5','#8d5524','#f5d1b5','#e0ac69','#f5d1b5','#8d5524','#c68642','#f1c27d','#ffdbac','#e0ac69','#f5d1b5','#8d5524'];
+            var hairs = ['#2d1b0d','#111111','#4a3728','#1a1a1a','#35281e','#2a1a0a','#111111','#4a3728','#1a1a1a','#35281e','#2d1b0d','#111111','#4a3728','#1a1a1a','#35281e','#2a1a0a','#111111','#4a3728','#1a1a1a','#35281e'];
+            var bgs = ['#f3f4f6','#e5e7eb','#d1d5db','#f3f4f6','#e5e7eb','#d1d5db','#f3f4f6','#e5e7eb','#d1d5db','#f3f4f6','#f3f4f6','#e5e7eb','#d1d5db','#f3f4f6','#e5e7eb','#d1d5db','#f3f4f6','#e5e7eb','#d1d5db','#f3f4f6'];
+            var mouths = ['M24 38 Q30 40 36 38','M24 39 L36 39','M24 37 Q30 34 36 37','M24 40 Q30 42 36 40','M24 39 L30 37 L36 39','M24 38 Q30 35 36 38','M24 39 L36 39','M24 37 Q30 39 36 37','M24 38 Q30 40 36 38','M24 39 L36 39','M24 40 Q30 42 36 40','M24 37 Q30 34 36 37','M24 39 L30 37 L36 39','M24 38 Q30 35 36 38','M24 39 L36 39','M24 37 Q30 39 36 37','M24 38 Q30 40 36 38','M24 39 L36 39','M24 37 Q30 34 36 37','M24 40 Q30 42 36 40'];
             for (var i = 0; i < 20; i++) {
-                var svg = '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" rx="8" fill="' + bgs[i] + '"/><circle cx="30" cy="28" r="16" fill="' + skins[i] + '"/><path d="M14 24 Q18 12 30 10 Q42 12 46 24" fill="' + hairs[i] + '"/><circle cx="24" cy="26" r="2.5" fill="#222"/><circle cx="36" cy="26" r="2.5" fill="#222"/><path d="' + mouths[i] + '" stroke="#222" stroke-width="1.5" fill="none"/></svg>';
+                var svg = '<svg viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"60\" height=\"60\" rx=\"12\" fill=\"' + bgs[i] + '\"/><circle cx=\"30\" cy=\"30\" r=\"20\" fill=\"rgba(0,0,0,0.03)\"/><circle cx=\"30\" cy=\"28\" r=\"18\" fill=\"' + skins[i] + '\"/><path d=\"M12 26 Q12 10 30 8 Q48 10 48 26\" fill=\"' + hairs[i] + '\"/><circle cx=\"22\" cy=\"28\" r=\"2\" fill=\"#111\"/><circle cx=\"38\" cy=\"28\" r=\"2\" fill=\"#111\"/><path d=\"' + mouths[i] + '\" stroke=\"#111\" stroke-width=\"1.5\" fill=\"none\"/></svg>';
                 chapterFaces.push('data:image/svg+xml;base64,' + btoa(svg));
             }
         })();
