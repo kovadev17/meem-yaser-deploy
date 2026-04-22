@@ -61,7 +61,7 @@
         body[lang="en"] { font-family: 'Inter', sans-serif; }
         body[lang="ar"] { font-family: 'Cairo', sans-serif; }
 
-        body.is-reader { background-color: #0A0A0A; color: #FAFAF8; }
+        body.is-reader { background-color: #000000; color: #FAFAF8; }
 
         /* Typography sizing */
         .t-title { font-size: clamp(48px, 6vw, 72px); line-height: 1.1; font-weight: 900; letter-spacing: -0.02em; }
@@ -221,10 +221,8 @@
                     <div class="w-10 h-10 rounded-full border-2 border-accent text-accent flex items-center justify-center text-xl font-bold font-arabic shadow-subtle group-hover:bg-accent group-hover:text-white transition-colors">م</div>
                     <span class="font-black tracking-widest text-lg hidden sm:block">MEEM YASER</span>
                 </div>
-                <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-textSec">
-                    <button onclick="navigate('hub')" class="hover:text-accent transition-colors min-h-[44px]" data-i18n="browse">Browse</button>
-                    <button onclick="navigate('forum')" class="hover:text-accent transition-colors min-h-[44px]" data-i18n="forum">Forum</button>
-                    <button onclick="navigate('characters')" class="hover:text-accent transition-colors min-h-[44px]" data-i18n="characters">Characters</button>
+                <div class="hidden md:flex items-center gap-8 text-sm font-bold tracking-tight text-textSec">
+                    <button onclick="navigate('hub')" class="hover:text-accent transition-colors min-h-[44px]" data-i18n="browse">THE VAULT</button>
                 </div>
             </div>
             
@@ -259,10 +257,8 @@
         <div class="flex justify-end mb-8">
             <button onclick="toggleMobileNav()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-textSec hover:text-textMain"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
-        <div class="flex flex-col gap-6 text-2xl font-black mb-12">
-            <button onclick="toggleMobileNav(); navigate('hub')" class="text-start min-h-[44px]" data-i18n="browse">Browse</button>
-            <button onclick="toggleMobileNav(); navigate('forum')" class="text-start min-h-[44px]" data-i18n="forum">Forum</button>
-            <button onclick="toggleMobileNav(); navigate('characters')" class="text-start min-h-[44px]" data-i18n="characters">Characters</button>
+        <div class="flex flex-col gap-8 text-3xl font-black mb-12">
+            <button onclick="toggleMobileNav(); navigate('hub')" class="text-start min-h-[44px]" data-i18n="browse">THE VAULT</button>
         </div>
         <div class="mt-auto border-t border-gray-100 pt-6 space-y-4">
             <button id="mobile-admin-btn" onclick="toggleMobileNav(); toggleAdminPanel()" class="w-full text-start text-accent font-bold min-h-[44px] hidden"><i class="fa-solid fa-shield-halved me-2"></i> <span data-i18n="admin_panel">Admin Panel</span></button>
@@ -302,21 +298,14 @@
         </section>
 
         <section id="view-hub" class="view pt-16 pb-20">
-            <div class="relative w-full h-[60vh] min-h-[400px] bg-reader overflow-hidden cursor-pointer group" onclick="openManga('m1')">
-                <svg class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[1.5s] ease-out" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-                    <defs><linearGradient id="hero-grad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#4a3000"/><stop offset="100%" stop-color="#0A0A0A"/></linearGradient></defs>
-                    <rect width="1200" height="600" fill="url(#hero-grad)"/>
-                    <path d="M0,600 L400,200 L800,450 L1200,100 L1200,600 Z" fill="#D4AF37" opacity="0.1"/>
-                    <circle cx="800" cy="200" r="100" fill="#FFF" opacity="0.05" filter="blur(20px)"/>
-                </svg>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent"></div>
-                
-                <div class="absolute bottom-0 w-full p-6 md:p-16 max-w-7xl mx-auto start-0 flex flex-col justify-end h-full rtl:right-0 rtl:left-auto">
-                    <span class="bg-accent text-textMain text-[10px] font-black px-3 py-1 rounded-full w-max tracking-widest uppercase mb-4 shadow-[0_0_15px_rgba(212,175,55,0.4)]" data-i18n="exclusive">EXCLUSIVE</span>
-                    <h2 class="t-title text-white mb-4 uppercase" data-i18n="hero_title">SANDS OF ETERNITY</h2>
-                    <p class="text-gray-300 t-body max-w-lg mb-8 line-clamp-2 hidden sm:block" data-i18n="hero_desc">In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.</p>
-                    <button class="bg-accent hover:bg-white text-textMain font-bold py-3.5 px-8 rounded-xl shadow-[0_10px_20px_rgba(212,175,55,0.3)] transition-all w-max hover:-translate-y-1 flex items-center gap-2 min-h-[44px]">
-                        <span data-i18n="start_reading">START READING</span> <i class="fa-solid fa-arrow-right rtl-flip"></i>
+            <div class="relative w-full h-[55vh] min-h-[400px] bg-[#FAFAF8] overflow-hidden cursor-pointer group border-b border-gray-100" onclick="openManga('m1')">
+                <img src="https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=2000" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-15 transition-opacity duration-700">
+                <div class="absolute inset-0 flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto">
+                    <span class="text-accent text-[11px] font-black tracking-[0.2em] uppercase mb-6" data-i18n="exclusive">PRIVATE COLLECTION</span>
+                    <h2 class="text-5xl md:text-7xl font-black text-textMain mb-6 leading-[0.9] uppercase tracking-tighter" data-i18n="hero_title">SANDS OF ETERNITY</h2>
+                    <p class="text-textSec text-lg max-w-xl mb-10 leading-relaxed hidden sm:block" data-i18n="hero_desc">Explore the Restless Worlds™ archive. A curated reading experience for members only.</p>
+                    <button class="bg-textMain text-white font-bold py-4 px-10 rounded-full shadow-lg transition-all w-max hover:-translate-y-1 hover:shadow-xl active:scale-95 flex items-center gap-3">
+                        <span data-i18n="start_reading">OPEN ARCHIVE</span> <i class="fa-solid fa-arrow-right rtl-flip text-xs"></i>
                     </button>
                 </div>
             </div>
@@ -333,24 +322,8 @@
                 </div>
 
                 <div>
-                    <h3 class="t-section mb-6" data-i18n="new_chapters">New Chapters</h3>
+                    <h3 class="t-section mb-6" data-i18n="new_chapters">Recent Additions</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" id="hub-new-grid"></div>
-                </div>
-
-                <div>
-                    <div class="flex justify-between items-end mb-6">
-                        <h3 class="t-section" data-i18n="characters">Characters</h3>
-                        <button onclick="navigate('characters')" class="text-sm font-bold text-textSec hover:text-textMain transition-colors flex items-center min-h-[44px]"><span data-i18n="all">All</span> <i class="fa-solid fa-arrow-right rtl-flip ms-1"></i></button>
-                    </div>
-                    <div class="flex overflow-x-auto gap-6 pb-4 no-scrollbar snap-x" id="hub-characters-grid"></div>
-                </div>
-
-                <div>
-                    <div class="flex justify-between items-end mb-6">
-                        <h3 class="t-section" data-i18n="community">Community Discussions</h3>
-                        <button onclick="navigate('forum')" class="text-sm font-bold text-textSec hover:text-textMain transition-colors flex items-center min-h-[44px]"><span data-i18n="forum">Forum</span> <i class="fa-solid fa-arrow-right rtl-flip ms-1"></i></button>
-                    </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4" id="hub-forum-grid"></div>
                 </div>
             </div>
 
@@ -459,58 +432,8 @@
             </div>
         </section>
 
-        <section id="view-characters" class="view pt-24 pb-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-                    <h2 class="t-title" data-i18n="characters">Characters</h2>
-                    <select class="bg-card border border-gray-200 text-sm font-bold rounded-lg px-4 py-2.5 focus:outline-none focus:border-accent outline-none min-h-[44px]">
-                        <option value="all" data-i18n="all_manga">All Manga</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6" id="characters-grid-page">
-                    </div>
-            </div>
-
-            <div id="char-detail-panel" class="slide-panel fixed top-0 end-0 h-full w-full sm:w-[400px] bg-card border-s border-gray-100 z-50 transform translate-x-full rtl:translate-x-0 rtl:-translate-x-full flex flex-col shadow-modal">
-                <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100 shrink-0">
-                    <h3 class="font-bold t-card" data-i18n="profile">Profile</h3>
-                    <button onclick="closeCharPanel()" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:text-textMain hover:bg-gray-200 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="flex-1 overflow-y-auto p-8" id="char-detail-content">
-                    </div>
-            </div>
-            <div id="char-backdrop" onclick="closeCharPanel()" class="fixed inset-0 bg-[#0A0A0A]/20 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"></div>
-        </section>
-
-        <section id="view-forum" class="view pt-24 pb-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
-                <div class="flex-1">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="t-title" data-i18n="forum">Forum</h2>
-                        <button id="new-thread-btn" onclick="showToast('New thread creation coming in Phase 1')" class="bg-accent hover:bg-yellow-600 text-white font-bold py-2.5 px-6 rounded-xl transition-colors hidden text-sm shadow-md flex items-center gap-2 min-h-[44px]"><i class="fa-solid fa-plus"></i> <span data-i18n="new_thread">NEW THREAD</span></button>
-                    </div>
-                    
-                    <div class="flex gap-6 border-b border-gray-200 mb-6 overflow-x-auto no-scrollbar font-bold text-sm">
-                        <button class="pb-3 border-b-2 border-textMain text-textMain whitespace-nowrap min-h-[44px]" data-i18n="all">All</button>
-                        <button class="pb-3 border-b-2 border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors min-h-[44px]" data-i18n="discussions">Discussions</button>
-                        <button class="pb-3 border-b-2 border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors min-h-[44px]" data-i18n="theories">Theories</button>
-                        <button class="pb-3 border-b-2 border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors min-h-[44px]" data-i18n="fan_art">Fan Art</button>
-                        <button class="pb-3 border-b-2 border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors min-h-[44px]" data-i18n="announcements">Announcements</button>
-                    </div>
-
-                    <div class="flex flex-col gap-4" id="forum-list">
-                        </div>
-                </div>
-                <div class="hidden lg:block w-[320px] shrink-0">
-                    <div class="bg-card border border-gray-100 rounded-2xl p-6 sticky top-24 shadow-subtle" id="forum-detail">
-                        <div class="text-center text-textSec py-12">
-                            <i class="fa-regular fa-comments text-4xl mb-4 opacity-50"></i>
-                            <p class="text-sm font-medium" data-i18n="select_thread">Select a thread to view details</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section id="view-characters" class="view pt-24 pb-20"></section>
+        <section id="view-forum" class="view pt-24 pb-20"></section>
 
     </main>
 
@@ -603,10 +526,10 @@
         // DICTIONARY
         const i18n = {
             en: {
-                private_club: 'PRIVATE READING CLUB', private_sub: 'Approval-only access to exclusive premium manga.', apply: 'APPLY FOR MEMBERSHIP', or: 'OR', enter_guest: 'Enter as Guest', enter_member: 'Enter as Member', enter_admin: 'Enter as Admin', browse: 'Browse', forum: 'Forum', characters: 'Characters', switch_role: 'Switch Role', admin_panel: 'Admin Panel', exclusive: 'EXCLUSIVE', hero_title: 'SANDS OF ETERNITY', hero_desc: 'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.', start_reading: 'START READING', continue_reading: 'Continue Reading', trending: 'Trending This Week', new_chapters: 'New Chapters', all: 'All', community: 'Community Discussions', about: 'About', terms: 'Terms', privacy: 'Privacy', contact: 'Contact', go_back: 'GO BACK', chapters: 'CHAPTERS', free: 'Free', locked: 'Locked', newest: 'Newest', oldest: 'Oldest', exit: 'Exit', spatial_threads: 'SPATIAL THREADS', coord_linked: 'Coordinate-linked comments', join_to_comment: 'Join to comment', all_manga: 'All Manga', profile: 'Profile', new_thread: 'NEW THREAD', discussions: 'Discussions', theories: 'Theories', fan_art: 'Fan Art', announcements: 'Announcements', select_thread: 'Select a thread to view details.', members_only: 'MEMBERS ONLY', locked_desc: 'This chapter requires membership to access. Apply for membership to unlock.', command_center: 'COMMAND CENTER', storage: 'STORAGE', members: 'MEMBERS', active: 'Active', chapters: 'CHAPTERS', published: 'Published', comments: 'COMMENTS', this_month: 'This month', pending_approvals: 'Pending Approvals', drag_drop: 'Drag chapter ZIP files here', quick_actions: 'Quick Actions', send_notif: 'Send Notification', mod_comments: 'Moderate Comments', manage_subs: 'Manage Subscriptions', view_analytics: 'View Analytics', install_app: 'INSTALL APP', install_desc: 'Add to home screen for the best reading experience', install: 'INSTALL', app_submit: 'Application submitted.', upload_comp: 'Upload Complete'
+                private_club: 'PRIVATE READING CLUB', private_sub: 'Approval-only access to exclusive premium manga.', apply: 'APPLY FOR MEMBERSHIP', or: 'OR', enter_guest: 'Enter as Guest', enter_member: 'Enter as Member', enter_admin: 'Enter as Admin', browse: 'THE VAULT', forum: 'Forum', characters: 'Characters', switch_role: 'Switch Role', admin_panel: 'Admin Panel', exclusive: 'EXCLUSIVE', hero_title: 'SANDS OF ETERNITY', hero_desc: 'Explore the Restless Worlds™ archive. A curated reading experience for members only.', start_reading: 'OPEN ARCHIVE', continue_reading: 'Continue Reading', trending: 'Vault Highlights', new_chapters: 'Recent Additions', all: 'All', community: 'Community Discussions', about: 'About', terms: 'Terms', privacy: 'Privacy', contact: 'Contact', go_back: 'GO BACK', chapters: 'COLLECTION', free: 'Free', locked: 'Locked', newest: 'Newest', oldest: 'Oldest', exit: 'Exit', spatial_threads: 'SPATIAL THREADS', coord_linked: 'Coordinate-linked comments', join_to_comment: 'Join to comment', all_manga: 'All Manga', profile: 'Profile', new_thread: 'NEW THREAD', discussions: 'Discussions', theories: 'Theories', fan_art: 'Fan Art', announcements: 'Announcements', select_thread: 'Select a thread to view details.', members_only: 'MEMBERS ONLY', locked_desc: 'This chapter requires membership to access. Apply for membership to unlock.', command_center: 'COMMAND CENTER', storage: 'STORAGE', members: 'MEMBERS', active: 'Active', chapters: 'CHAPTERS', published: 'Published', comments: 'COMMENTS', this_month: 'This month', pending_approvals: 'Pending Approvals', drag_drop: 'Drag chapter ZIP files here', quick_actions: 'Quick Actions', send_notif: 'Send Notification', mod_comments: 'Moderate Comments', manage_subs: 'Manage Subscriptions', view_analytics: 'View Analytics', install_app: 'INSTALL APP', install_desc: 'Add to home screen for the best reading experience', install: 'INSTALL', app_submit: 'Application submitted.', upload_comp: 'Upload Complete'
             },
             ar: {
-                private_club: 'نادي القراءة الخاص', private_sub: 'وصول حصري للمانجا المميزة بعد الموافقة.', apply: 'طلب عضوية', or: 'أو', enter_guest: 'الدخول كزائر', enter_member: 'الدخول كعضو', enter_admin: 'الدخول كمسؤول', browse: 'تصفح', forum: 'المنتدى', characters: 'الشخصيات', switch_role: 'تغيير الدور', admin_panel: 'لوحة الإدارة', exclusive: 'حصري', hero_title: 'رمال الخلود', hero_desc: 'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى.', start_reading: 'ابدأ القراءة', continue_reading: 'متابعة القراءة', trending: 'رائج هذا الأسبوع', new_chapters: 'فصول جديدة', all: 'الكل', community: 'نقاشات المجتمع', about: 'حول', terms: 'الشروط', privacy: 'الخصوصية', contact: 'اتصل بنا', go_back: 'العودة', chapters: 'الفصول', free: 'مجاني', locked: 'مغلق', newest: 'الأحدث', oldest: 'الأقدم', exit: 'خروج', spatial_threads: 'التعليقات المكانية', coord_linked: 'تعليقات مرتبطة بالإحداثيات', join_to_comment: 'انضم للتعليق', all_manga: 'كل المانجا', profile: 'الملف الشخصي', new_thread: 'موضوع جديد', discussions: 'نقاشات', theories: 'نظريات', fan_art: 'فنون المعجبين', announcements: 'إعلانات', select_thread: 'اختر موضوعاً لعرض التفاصيل.', members_only: 'للأعضاء فقط', locked_desc: 'يتطلب هذا الفصل عضوية للوصول إليه. قدم طلب عضوية لفتحه.', command_center: 'مركز القيادة', storage: 'التخزين', members: 'الأعضاء', active: 'نشط', chapters: 'الفصول', published: 'منشور', comments: 'التعليقات', this_month: 'هذا الشهر', pending_approvals: 'موافقات معلقة', drag_drop: 'اسحب ملفات الفصول (ZIP) هنا', quick_actions: 'إجراءات سريعة', send_notif: 'إرسال إشعار', mod_comments: 'إدارة التعليقات', manage_subs: 'إدارة الاشتراكات', view_analytics: 'عرض الإحصائيات', install_app: 'تثبيت التطبيق', install_desc: 'أضف إلى الشاشة الرئيسية لأفضل تجربة قراءة', install: 'تثبيت', app_submit: 'تم إرسال الطلب.', upload_comp: 'اكتمل الرفع'
+                private_club: 'نادي القراءة الخاص', private_sub: 'وصول حصري للمانجا المميزة بعد الموافقة.', apply: 'طلب عضوية', or: 'أو', enter_guest: 'الدخول كزائر', enter_member: 'الدخول كعضو', enter_admin: 'الدخول كمسؤول', browse: 'الخزنة', forum: 'المنتدى', characters: 'الشخصيات', switch_role: 'تغيير الدور', admin_panel: 'لوحة الإدارة', exclusive: 'حصري', hero_title: 'رمال الخلود', hero_desc: 'استكشف أرشيف عوالم لا تهدأ™. تجربة قراءة منسقة للأعضاء فقط.', start_reading: 'فتح الأرشيف', continue_reading: 'متابعة القراءة', trending: 'أبرز محتويات الخزنة', new_chapters: 'إضافات حديثة', all: 'الكل', community: 'نقاشات المجتمع', about: 'حول', terms: 'الشروط', privacy: 'الخصوصية', contact: 'اتصل بنا', go_back: 'العودة', chapters: 'المجموعة', free: 'مجاني', locked: 'مغلق', newest: 'الأحدث', oldest: 'الأقدم', exit: 'خروج', spatial_threads: 'التعليقات المكانية', coord_linked: 'تعليقات مرتبطة بالإحداثيات', join_to_comment: 'انضم للتعليق', all_manga: 'كل المانجا', profile: 'الملف الشخصي', new_thread: 'موضوع جديد', discussions: 'نقاشات', theories: 'نظريات', fan_art: 'فنون المعجبين', announcements: 'إعلانات', select_thread: 'اختر موضوعاً لعرض التفاصيل.', members_only: 'للأعضاء فقط', locked_desc: 'يتطلب هذا الفصل عضوية للوصول إليه. قدم طلب عضوية لفتحه.', command_center: 'مركز القيادة', storage: 'التخزين', members: 'الأعضاء', active: 'نشط', chapters: 'الفصول', published: 'منشور', comments: 'التعليقات', this_month: 'هذا الشهر', pending_approvals: 'موافقات معلقة', drag_drop: 'اسحب ملفات الفصول (ZIP) هنا', quick_actions: 'إجراءات سريعة', send_notif: 'إرسال إشعار', mod_comments: 'إدارة التعليقات', manage_subs: 'إدارة الاشتراكات', view_analytics: 'عرض الإحصائيات', install_app: 'تثبيت التطبيق', install_desc: 'أضف إلى الشاشة الرئيسية لأفضل تجربة قراءة', install: 'تثبيت', app_submit: 'تم إرسال الطلب.', upload_comp: 'اكتمل الرفع'
             }
         };
 
