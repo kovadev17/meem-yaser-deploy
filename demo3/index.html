@@ -1,1661 +1,1338 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<title>Meem Yaser Studio  Private Reading Club</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-/* ===== ROOT VARIABLES ===== */
-:root {
-  --bg-light: #FAFAF8;
-  --bg-warm: #F5F4F0;
-  --bg-dark: #050505;
-  --bg-reader: #060606;
-  --surface-dark: #0e0e0e;
-  --text-light: #111111;
-  --text-muted: #787774;
-  --text-dark: #e8e8e8;
-  --text-dark-muted: #666;
-  --accent: #D4AF37;
-  --accent-glow: rgba(212,175,55,0.08);
-  --border: rgba(0,0,0,0.06);
-  --border-dark: rgba(255,255,255,0.06);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <title>Meem Yaser Studio — Gold Vault | ميم ياسر ستوديو</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FAFAF8',
+                        card: '#FFFFFF',
+                        reader: '#000000', /* Pure black for OLED screens */
+                        accent: '#D4AF37',
+                        textMain: '#1A1A1A',
+                        textSec: '#6B7280',
+                        danger: '#EF4444',
+                        free: '#10B981',
+                        locked: '#9CA3AF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Cairo', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        subtle: '0 2px 8px rgba(0,0,0,0.04)',
+                        hover: '0 12px 30px rgba(0,0,0,0.08)',
+                        modal: '0 25px 50px rgba(0,0,0,0.15)',
+                        glow: '0 0 20px rgba(212,175,55,0.4)'
+                    },
+                    transitionTimingFunction: {
+                        custom: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                        bounce: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    }
+                }
+            }
+        }
+    </script>
 
-body {
-  font-family: 'Geist', 'Noto Sans Arabic', system-ui, sans-serif;
-  background: var(--bg-light); color: var(--text-light);
-  line-height: 1.6; -webkit-font-smoothing: antialiased;
-}
+    <style>
+        /* Base Resets & Theme Transitions */
+        :root { --transition-curve: cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        * { -webkit-tap-highlight-color: transparent; }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px) blur(4px); }
-  to { opacity: 1; transform: translateY(0) blur(0); }
-}
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
+        body {
+            background-color: #FAFAF8;
+            color: #1A1A1A;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
 
-.reveal {
-  opacity: 0; transform: translateY(16px) blur(2px);
-  transition: opacity 0.8s cubic-bezier(0.32,0.72,0,1), transform 0.8s cubic-bezier(0.32,0.72,0,1), filter 0.8s cubic-bezier(0.32,0.72,0,1);
-}
-.reveal.visible { opacity: 1; transform: translateY(0) blur(0); }
+        body[lang="en"] { font-family: 'Inter', sans-serif; }
+        body[lang="ar"] { font-family: 'Cairo', sans-serif; }
 
-.stagger-item {
-  opacity: 0; transform: translateY(12px);
-  transition: opacity 0.6s cubic-bezier(0.32,0.72,0,1), transform 0.6s cubic-bezier(0.32,0.72,0,1);
-}
-.stagger-item.visible { opacity: 1; transform: translateY(0); }
+        body.is-reader { background-color: #000000; color: #FAFAF8; }
 
-/* ===== LIQUID GLASS / ETHEREAL ===== */
-.ethereal-glass {
-  background: rgba(14,14,14,0.7);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.3);
-}
+        /* Typography sizing */
+        .t-title { font-size: clamp(40px, 5vw, 64px); line-height: 1.05; font-weight: 900; letter-spacing: -0.02em; }
+        .t-section { font-size: clamp(22px, 3.5vw, 28px); font-weight: 800; letter-spacing: -0.01em; }
+        .t-card { font-size: clamp(16px, 2vw, 20px); font-weight: 700; }
+        .t-body { font-size: clamp(14px, 1.5vw, 16px); }
+        
+        /* Interactive Polish */
+        .tap-effect { transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s; }
+        .tap-effect:active { transform: scale(0.97); }
 
-/* ===== NAVBAR (floating island) ===== */
-.navbar {
-  position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); z-index: 100;
-  display: flex; align-items: center; gap: 2rem;
-  padding: 0.6rem 1.25rem;
-  background: rgba(250,250,248,0.85);
-  backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  transition: background 0.3s, box-shadow 0.3s;
-}
-.nav-brand {
-  font-weight: 700; font-size: 0.9rem; letter-spacing: -0.02em;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.nav-brand .mark {
-  width: 24px; height: 24px; border-radius: 50%; background: var(--text-light);
-  display: grid; place-items: center; color: #fff; font-size: 0.65rem; font-weight: 800;
-}
-.nav-links { display: flex; align-items: center; gap: 1.5rem; }
-.nav-links a {
-  font-size: 0.8rem; font-weight: 500; color: var(--text-muted);
-  text-decoration: none; transition: color 0.3s cubic-bezier(0.32,0.72,0,1);
-}
-.nav-links a:hover, .nav-links a.active { color: var(--text-light); }
-.nav-actions { display: flex; align-items: center; gap: 0.5rem; }
-.lang-toggle {
-  padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600;
-  border: 1px solid var(--border); background: transparent; cursor: pointer;
-  font-family: inherit; color: var(--text-muted); transition: all 0.2s;
-}
-.lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
-.role-badge {
-  padding: 0.25rem 0.7rem; border-radius: 999px; font-size: 0.6rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-}
-.role-badge.guest { background: #e8e8e8; color: #555; }
-.role-badge.member { background: var(--accent-glow); color: #8a6d1a; }
-.role-badge.pro { background: #dbeafe; color: #1e3a5f; }
-.role-badge.admin { background: #fee2e2; color: #7f1d1d; }
+        /* Page View Transitions */
+        .view:not(.active) {
+            display: none !important;
+        }
+        .view.active {
+            animation: viewEnter 0.6s var(--transition-curve) forwards;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            min-height: 100vh;
+        }
+        @keyframes viewEnter {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* ===== HERO (asymmetric split) ===== */
-.hero {
-  min-height: 100dvh;
-  display: grid; grid-template-columns: 1fr 1fr;
-  align-items: center; gap: 4rem;
-  max-width: 1400px; margin: 0 auto; padding: 6rem 2rem 4rem;
-}
-.hero-content { padding-left: 2rem; }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em;
-  color: var(--text-muted); margin-bottom: 1.5rem;
-  padding: 0.35rem 0.9rem; border: 1px solid var(--border); border-radius: 999px;
-}
-.hero h1 {
-  font-size: clamp(2.75rem, 5.5vw, 5rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 1.25rem;
-}
-.hero h1 span { color: var(--accent); }
-.hero p {
-  font-size: 1.1rem; color: var(--text-muted); max-width: 46ch;
-  line-height: 1.7; margin-bottom: 2rem;
-}
+        /* Elements */
+        .hover-card { transition: all 0.4s var(--transition-curve); }
+        .hover-card:hover { transform: translateY(-4px); box-shadow: var(--tw-shadow-hover); z-index: 5; }
 
-/* Island CTA with nested icon */
-.hero-cta {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.75rem 1.25rem 0.75rem 1.5rem;
-  background: var(--text-light); color: #fff;
-  border-radius: 999px; font-weight: 600; font-size: 0.9rem;
-  text-decoration: none; border: none; cursor: pointer; font-family: inherit;
-  transition: all 0.3s cubic-bezier(0.32,0.72,0,1);
-}
-.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-.hero-cta:active { transform: scale(0.98); }
-.hero-cta .cta-icon {
-  width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.15);
-  display: grid; place-items: center; font-size: 0.8rem; transition: transform 0.3s;
-}
-.hero-cta:hover .cta-icon { transform: translateX(2px) translateY(-1px); }
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(107, 114, 128, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(107, 114, 128, 0.4); }
+        .is-reader ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); }
+        
+        /* Hide scrollbar for horizontal mobile lists */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-.hero-visual {
-  position: relative; display: flex; align-items: center; justify-content: center;
-}
-.hero-visual .hero-img-main {
-  width: 85%; aspect-ratio: 3/4; object-fit: cover; border-radius: 2rem;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-  transition: transform 0.5s cubic-bezier(0.32,0.72,0,1);
-}
-.hero-visual .hero-img-main:hover { transform: translateY(-6px) rotate(1deg); }
-.hero-visual .hero-img-float {
-  position: absolute; width: 40%; aspect-ratio: 1; object-fit: cover; border-radius: 1.5rem;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-  animation: float 6s ease-in-out infinite;
-}
-.hero-visual .hero-img-float.top { top: -5%; left: -5%; }
-.hero-visual .hero-img-float.bottom { bottom: -5%; right: -5%; animation-delay: -3s; }
+        /* SVG Reader Panels */
+        .manga-page-svg {
+            width: 100%; height: 100dvh;
+            object-fit: contain;
+            background: #000;
+        }
+        .manga-spread { max-width: 100% !important; width: 200%; }
 
-/* ===== SECTIONS (macro whitespace py-24+) ===== */
-.section { padding: 6rem 2rem; }
-.section-dark { background: var(--bg-dark); color: var(--text-dark); position: relative; overflow: hidden; }
-.section-dark::before {
-  content: ''; position: absolute; top: -50%; left: -20%; width: 60%; height: 100%;
-  background: radial-gradient(ellipse, rgba(212,175,55,0.04) 0%, transparent 70%);
-  pointer-events: none;
-}
-.section-dark::after {
-  content: ''; position: absolute; bottom: -30%; right: -10%; width: 50%; height: 80%;
-  background: radial-gradient(ellipse, rgba(212,175,55,0.03) 0%, transparent 70%);
-  pointer-events: none;
-}
-.section-header {
-  max-width: 1400px; margin: 0 auto 4rem;
-}
-.section-header .eyebrow {
-  font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em;
-  color: var(--text-muted); margin-bottom: 0.75rem;
-}
-.section-header h2 {
-  font-size: clamp(1.875rem, 4vw, 3rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.1;
-}
-.section-header p { color: var(--text-muted); margin-top: 0.5rem; max-width: 50ch; }
+        #reader-container {
+            touch-action: none;
+            overscroll-behavior: none;
+        }
+        .anim-snap {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Reader Chrome */
+        .reader-chrome { transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reader-idle .reader-chrome { opacity: 0; pointer-events: none; }
+        .reader-idle .reader-chrome.top { transform: translateY(-100%); }
+        .reader-idle .reader-chrome.bottom { transform: translateY(150%) translateX(-50%); }
+        .reader-idle #reader-disclaimer { opacity: 0; }
 
-/* ===== DOUBLE-BEZEL CARDS ===== */
-.bezel-outer {
-  background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);
-  border-radius: 2rem; padding: 0.375rem;
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
-}
-.bezel-inner {
-  background: #fff; border-radius: calc(2rem - 0.375rem);
-  box-shadow: inset 0 1px 1px rgba(255,255,255,0.8);
-  overflow: hidden;
-}
-.bento-grid {
-  max-width: 1400px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem;
-}
-.bento-card { cursor: pointer; transition: transform 0.4s cubic-bezier(0.32,0.72,0,1); }
-.bento-card:hover { transform: translateY(-6px); }
-.bento-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
-.bento-card .card-body { padding: 1.5rem; }
-.bento-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
-.bento-card .meta { font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 0.5rem; }
-.bento-large { grid-column: span 7; grid-row: span 2; }
-.bento-large img { aspect-ratio: 16/10; }
-.bento-mid { grid-column: span 5; }
-.bento-small { grid-column: span 4; }
-.bento-tall { grid-column: span 5; grid-row: span 2; }
-.bento-tall img { aspect-ratio: 3/4; height: 100%; }
+        /* Reader Panels & Animations */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .slide-panel { transition: transform 0.5s var(--transition-curve); }
+        
+        /* Progress Bar */
+        #reading-progress { transition: width 0.3s ease; }
 
-/* ===== TIERS (island buttons) ===== */
-.tiers-grid {
-  max-width: 1400px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
-}
-.tier-card {
-  background: #fff; border: 1px solid var(--border); border-radius: 1.5rem;
-  padding: 2rem; transition: border-color 0.3s, box-shadow 0.3s;
-}
-.tier-card:hover { border-color: rgba(212,175,55,0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.04); }
-.tier-card.featured { border-color: var(--accent); position: relative; }
-.tier-card.featured::before {
-  content: attr(data-label); position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-  background: var(--accent); color: #000; font-size: 0.6rem; font-weight: 700;
-  padding: 0.25rem 0.75rem; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em;
-}
-.tier-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
-.tier-card .price { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; margin: 1.25rem 0; }
-.tier-card .price span { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); }
-.tier-card ul { list-style: none; }
-.tier-card ul li {
-  font-size: 0.8rem; color: var(--text-muted); padding: 0.4rem 0;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.tier-card ul li::before {
-  content: ''; width: 16px; height: 16px; background: var(--accent);
-  border-radius: 50%; flex-shrink: 0;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
-}
-.tier-btn {
-  width: 100%; margin-top: 1.5rem; padding: 0.75rem;
-  background: var(--text-light); color: #fff; border: none; border-radius: 999px;
-  font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit;
-  transition: all 0.3s cubic-bezier(0.32,0.72,0,1);
-}
-.tier-btn:hover { background: #333; transform: scale(0.98); }
-.tier-card.featured .tier-btn { background: var(--accent); color: #000; }
-.tier-card.featured .tier-btn:hover { background: #c4a030; }
+        /* Modals & Overlays */
+        .overlay { transition: opacity 0.3s var(--transition-curve); }
+        .modal-content { transition: transform 0.3s var(--transition-curve); }
 
-/* ===== BROWSER ===== */
-.browser-page { display: none; padding-top: 6rem; min-height: 100dvh; }
-.browser-page.active { display: block; }
-.browser-header-wrap {
-  max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 1.5rem;
-  display: flex; gap: 2rem; align-items: flex-start;
-}
-.browser-header-wrap img {
-  width: 150px; aspect-ratio: 3/4; object-fit: cover; border-radius: 1.25rem;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
-}
-.browser-info h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
-.browser-info p { color: var(--text-muted); max-width: 55ch; margin-bottom: 1rem; }
-.browser-meta { display: flex; gap: 1.25rem; font-size: 0.8rem; color: var(--text-muted); }
-.browser-controls {
-  max-width: 1400px; margin: 0 auto; padding: 0 2rem 1.5rem;
-  display: flex; gap: 1rem; flex-wrap: wrap;
-}
-.browser-controls input, .browser-controls select {
-  padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 10px;
-  font-family: inherit; font-size: 0.85rem; background: #fff; min-width: 200px;
-}
-.browser-controls input:focus, .browser-controls select:focus { outline: none; border-color: #ccc; }
-.chapter-list { max-width: 1400px; margin: 0 auto; padding: 0 2rem 4rem; }
-.chapter-item { min-height: 80px; cursor: pointer; -webkit-tap-highlight-color: rgba(212,175,55,0.1); cursor: pointer; -webkit-tap-highlight-color: transparent;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem 1.25rem; background: #fff;
-  border: 1px solid var(--border); border-radius: 12px; margin-bottom: 0.5rem;
-  transition: all 0.3s cubic-bezier(0.32,0.72,0,1); cursor: pointer;
-}
-.chapter-item:hover { border-color: var(--accent); transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-.chapter-item.locked { opacity: 0.55; }
-.ch-left { gap: 16px; display: flex; align-items: center; gap: 1rem; }
-.ch-num {
-  width: 42px; height: 42px; border-radius: 10px; background: var(--bg-warm);
-  display: grid; place-items: center; font-weight: 700; font-size: 0.875rem;
-}
-.ch-title { font-weight: 600; font-size: 0.9rem; }
-.ch-date { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem; }
-.ch-right { display: flex; align-items: center; gap: 0.75rem; }
-.lock-icon {
-  width: 16px; height: 16px; opacity: 0.35;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E") center/contain no-repeat;
-}
-.ch-tag {
-  font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-  padding: 0.25rem 0.6rem; border-radius: 999px;
-}
-.tag-free { background: #dcfce7; color: #166534; }
-.tag-premium { background: #fef3c7; color: #92400e; }
-.tag-early { background: #dbeafe; color: #1e3a5f; }
+        /* Toast */
+        @keyframes toastIn {
+            from { opacity: 0; transform: translate(-50%, 20px) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+        }
+        .toast-animate { animation: toastIn 0.4s var(--transition-curve) forwards; }
 
-/* ===== READER ===== */
-.reader-page {
-  display: none; position: fixed; inset: 0; z-index: 200;
-  background: var(--bg-reader); color: var(--text-dark);
-}
-.reader-page.active { display: flex; flex-direction: column; }
-.reader-toolbar {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
-  padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
-  transition: opacity 0.4s cubic-bezier(0.32,0.72,0,1), transform 0.4s cubic-bezier(0.32,0.72,0,1);
-}
-.reader-toolbar.hidden { opacity: 0; transform: translateY(-20px); pointer-events: none; }
-.reader-toolbar button {
-  background: rgba(255,255,255,0.08); border: none; color: #fff;
-  width: 36px; height: 36px; border-radius: 10px; cursor: pointer;
-  display: grid; place-items: center; font-size: 1rem;
-  transition: background 0.2s;
-}
-.reader-toolbar button:hover { background: rgba(255,255,255,0.15); }
-.reader-info { text-align: center; }
-.reader-info h3 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }
-.reader-info span { font-size: 0.65rem; opacity: 0.5; }
-.reader-viewport { touch-action: pan-x pan-y pinch-zoom; -webkit-user-select: none; user-select: none; touch-action: pan-x pan-y;
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  overflow: hidden; position: relative; touch-action: pan-y pinch-zoom;
-}
-.reader-viewport.zoomed { touch-action: pinch-zoom; }
-.reader-page-img {
-  max-width: 100%; max-height: 100%; object-fit: contain;
-  transition: transform 0.4s cubic-bezier(0.32,0.72,0,1);
-  user-select: none; -webkit-user-select: none;
-}
-.reader-nav-btn {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 48px; height: 72px; background: rgba(255,255,255,0.04);
-  border: none; color: rgba(255,255,255,0.5); font-size: 1.25rem; cursor: pointer;
-  display: grid; place-items: center; border-radius: 10px; opacity: 0;
-  transition: opacity 0.2s, background 0.2s; z-index: 5;
-}
-.reader-viewport:hover .reader-nav-btn { opacity: 1; }
-.reader-nav-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-.reader-nav-btn.prev { left: 0.75rem; }
-.reader-nav-btn.next { right: 0.75rem; }
-.reader-progress {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: rgba(255,255,255,0.06);
-}
-.reader-progress-bar { height: 100%; background: var(--accent); transition: width 0.3s; }
-.reader-bottom-bar {
-  position: absolute; bottom: 0; left: 0; right: 0; padding: 0.6rem 1rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
-  display: flex; align-items: center; justify-content: space-between;
-  transition: opacity 0.4s cubic-bezier(0.32,0.72,0,1), transform 0.4s cubic-bezier(0.32,0.72,0,1);
-}
-.reader-bottom-bar.hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
-.comment-toggle {
-  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
-  color: #fff; padding: 0.35rem 0.8rem; border-radius: 8px; font-size: 0.7rem;
-  cursor: pointer; transition: background 0.2s; font-family: inherit;
-}
-.comment-toggle:hover { background: rgba(255,255,255,0.15); }
-.comment-toggle.active { background: var(--accent); color: #000; border-color: var(--accent); }
+        /* Line Clamp */
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* ===== SPATIAL COMMENTS ===== */
+        /* RTL Utils & Transitions */
+        html[dir="rtl"] .rtl-flip { transform: scaleX(-1); }
+        .rtl-flip { transition: transform 0.4s var(--transition-curve); }
 
- to { transform: rotate(-45deg) scale(1); } }
+        /* Mobile Adjustments */
+        .h-dvh { height: 100dvh; }
+        .min-h-dvh { min-height: 100dvh; }
+        
+        /* Smart Nav */
+        #navbar { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s; }
+        .nav-hidden { transform: translateY(-100%); }
 
-
-
-
-.comment-form-overlay textarea {
-  width: 100%; background: #060606; border: 1px solid var(--border-dark); border-radius: 6px;
-  padding: 0.4rem; color: #fff; font-family: inherit; font-size: 0.75rem; resize: none; height: 52px; margin-bottom: 0.4rem;
-}
-.comment-form-overlay textarea:focus { outline: none; border-color: var(--accent); }
-.cf-actions { display: flex; gap: 0.4rem; justify-content: flex-end; }
-.cf-actions button {
-  padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.7rem; border: none;
-  cursor: pointer; font-family: inherit; font-weight: 600;
-}
-.cf-cancel { background: transparent; color: #555; }
-.cf-submit { background: var(--accent); color: #000; }
-
-/* ===== ADMIN ===== */
-.admin-page { display: none; padding-top: 6rem; min-height: 100dvh; background: var(--bg-dark); color: var(--text-dark); }
-.admin-page.active { display: block; }
-.admin-wrap { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-.admin-header { margin-bottom: 2.5rem; }
-.admin-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; letter-spacing: -0.02em; }
-.admin-header p { color: #555; font-size: 0.85rem; }
-.admin-tabs {
-  display: flex; gap: 0.25rem; margin-bottom: 2rem;
-  border-bottom: 1px solid var(--border-dark); padding-bottom: 0.5rem;
-}
-.admin-tab {
-  padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600;
-  background: transparent; border: none; color: #555; cursor: pointer;
-  transition: all 0.2s; font-family: inherit;
-}
-.admin-tab:hover { color: #aaa; }
-.admin-tab.active { background: rgba(212,175,55,0.12); color: var(--accent); }
-.admin-stats {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem;
-}
-.stat-card {
-  background: var(--surface-dark); border: 1px solid var(--border-dark);
-  border-radius: 1rem; padding: 1.5rem;
-}
-.stat-value { font-size: 1.75rem; font-weight: 800; color: var(--accent); margin-bottom: 0.25rem; }
-.stat-label { font-size: 0.65rem; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
-.admin-table {
-  width: 100%; border-collapse: collapse;
-  background: var(--surface-dark); border: 1px solid var(--border-dark);
-  border-radius: 1rem; overflow: hidden;
-}
-.admin-table th, .admin-table td {
-  padding: 0.875rem 1rem; text-align: right; font-size: 0.8rem;
-}
-.admin-table th {
-  background: rgba(255,255,255,0.015); font-weight: 600; color: #555;
-  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em;
-}
-.admin-table td { border-top: 1px solid var(--border-dark); color: #ccc; }
-.admin-table tr:hover td { background: rgba(255,255,255,0.01); }
-.status-dot-inline { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-left: 0.4rem; }
-.status-dot-inline.pending { background: #f59e0b; }
-.status-dot-inline.approved { background: #22c55e; }
-.status-dot-inline.banned { background: #ef4444; }
-.admin-btn {
-  padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600;
-  border: none; cursor: pointer; font-family: inherit; margin-left: 0.2rem;
-}
-.admin-btn.approve { background: rgba(34,197,94,0.1); color: #4ade80; }
-.admin-btn.reject { background: rgba(239,68,68,0.1); color: #f87171; }
-.admin-btn.ban { background: rgba(245,158,11,0.1); color: #fbbf24; }
-
-/* ===== TOASTS ===== */
-.toast-container {
-  position: fixed; top: 5rem; left: 50%; transform: translateX(-50%);
-  z-index: 300; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;
-}
-.toast {
-  background: #111; color: #fff; padding: 0.625rem 1rem; border-radius: 8px;
-  font-size: 0.8rem; font-weight: 500; border: 1px solid var(--border-dark);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.3); animation: toastIn 0.4s cubic-bezier(0.32,0.72,0,1); pointer-events: auto;
-}
-.toast.hiding { animation: toastOut 0.3s forwards; }
-@keyframes toastIn { from { opacity:0; transform: translateY(-8px) scale(0.96); } to { opacity:1; transform: translateY(0) scale(1); } }
-@keyframes toastOut { to { opacity:0; transform: translateY(-8px) scale(0.96); } }
-
-/* ===== MOBILE NAV ===== */
-.mobile-nav {
-  display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(250,250,248,0.96); backdrop-filter: blur(16px);
-  border-top: 1px solid var(--border); padding: 0.4rem 0;
-}
-.mobile-nav-item {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
-  padding: 0.3rem; color: var(--text-muted); text-decoration: none; font-size: 0.6rem;
-  transition: color 0.2s; border: none; background: none; cursor: pointer; font-family: inherit;
-}
-.mobile-nav-item.active { color: var(--accent); }
-.mobile-nav-item svg { width: 20px; height: 20px; }
-
-/* ===== ABOUT ===== */
-.about-grid {
-  max-width: 1400px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
-}
-.about-content h2 {
-  font-size: clamp(1.75rem, 3.5vw, 2.75rem); font-weight: 800;
-  letter-spacing: -0.03em; margin-bottom: 1rem;
-}
-.about-content p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
-.about-stats { display: flex; gap: 2.5rem; margin-top: 1.5rem; }
-.about-stats div { text-align: center; }
-.about-stats .as-num { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
-.about-stats .as-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
-.about-image img { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 1.5rem; }
-
-/* ===== FOOTER ===== */
-.footer {
-  background: var(--text-light); color: #666; padding: 3rem 2rem;
-}
-.footer-grid {
-  max-width: 1400px; margin: 0 auto;
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
-}
-.footer-brand { color: #fff; font-weight: 700; margin-bottom: 0.4rem; }
-.footer-desc { font-size: 0.8rem; line-height: 1.7; }
-.footer h4 { color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.875rem; }
-.footer a { display: block; color: #666; text-decoration: none; font-size: 0.8rem; padding: 0.2rem 0; transition: color 0.2s; }
-.footer a:hover { color: #fff; }
-.footer-bottom {
-  max-width: 1400px; margin: 2rem auto 0; padding-top: 2rem;
-  border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.7rem;
-  display: flex; justify-content: space-between;
-}
-
-/* ===== MOBILE RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .hero { padding: 6rem 1rem 3rem; }
-  .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .bento-grid { grid-template-columns: 1fr; }
-  .bento-large, .bento-medium, .bento-small, .bento-tall { grid-column: span 1; grid-row: span 1; }
-  .tiers-grid { grid-template-columns: 1fr; }
-  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .nav-links { display: none; }
-  .mobile-nav { display: flex; }
-  .section { padding: 4rem 1rem; }
-  
-  /* Mobile Reader Critical Fixes */
-  .reader-overlay { padding: 0; }
-  .reader-page { border-radius: 0; width: 100vw; height: 100dvh; }
-  .reader-toolbar { padding: 0.75rem 1rem; }
-  .reader-toolbar .reader-title { font-size: 0.85rem; }
-  .reader-viewport { touch-action: pan-x pan-y pinch-zoom; -webkit-user-select: none; user-select: none; touch-action: pan-x pan-y; padding: 0; }
-  .reader-page-img { max-height: 75vh; width: 100%; }
-  .reader-nav-btn { 
-    display: flex; width: 56px; height: 56px; font-size: 1.75rem;
-    background: rgba(255,255,255,0.08); border-radius: 50%;
-    position: fixed; top: 50%; transform: translateY(-50%); z-index: 10;
-  }
-  .reader-nav-btn.prev { left: 0.5rem; }
-  .reader-nav-btn.next { right: 0.5rem; }
-  .reader-bottom-bar { padding: 0.75rem 1rem; }
-  .reader-progress { height: 3px; }
-  .comment-panel { width: 100%; right: -100%; }
-  .comment-panel.open { right: 0; }
-  
-  /* Touch targets minimum 44px */
-  .chapter-item { min-height: 80px; cursor: pointer; -webkit-tap-highlight-color: rgba(212,175,55,0.1); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 64px; padding: 0.75rem; }
-  .chapter-thumb { width: 60px; height: 60px; }
-  .tier-card { padding: 1.5rem 1rem; }
-  .btn, button, a { min-height: 44px; }
-  
-  /* Better mobile typography */
-  .hero-content h1 { font-size: clamp(1.75rem, 6vw, 2.5rem); }
-  .section-header h2 { font-size: clamp(1.5rem, 5vw, 2rem); }
-  
-  /* Mobile browser page */
-  .browser-page { padding: 5rem 0 5rem; }
-  .browser-content { padding: 1rem; }
-  .chapter-grid { max-height: calc(100dvh - 200px); }
-  
-  /* Bottom mobile nav */
-  .mobile-nav { height: 60px; }
-  .mobile-nav-item { font-size: 0.6rem; }
-  .mobile-nav-item svg { width: 20px; height: 20px; }
-  
-  /* Reduce padding for mobile */
-  .container { padding: 0 1rem; }
-}
-
-/* Extra small screens */
-@media (max-width: 380px) {
-  .reader-page-img { max-height: 70vh; }
-  .reader-toolbar { padding: 0.5rem 0.75rem; }
-  .reader-toolbar .reader-title { font-size: 0.75rem; }
-  .reader-nav-btn { width: 48px; height: 48px; font-size: 1.5rem; }
-  .hero-content h1 { font-size: 1.5rem; }
-}
-.hidden { display: none !important; }
-
-/* ===== SKELETON LOADERS ===== */
-.skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeletonShimmer 1.5s infinite;
-  border-radius: 4px;
-}
-@keyframes skeletonShimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-.skeleton-text { height: 12px; margin-bottom: 8px; }
-.skeleton-title { height: 16px; width: 60%; margin-bottom: 12px; }
-.skeleton-img { width: 100%; aspect-ratio: 3/4; }
-
-/* ===== SETTINGS MODAL ===== */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 250;
-  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-  display: none; align-items: center; justify-content: center;
-}
-.modal-overlay.active { display: flex; }
-.modal {
-  background: #fff; border-radius: 16px; width: 90%; max-width: 480px;
-  max-height: 80vh; overflow-y: auto; box-shadow: 0 24px 48px rgba(0,0,0,0.15);
-}
-.modal-header {
-  padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.modal-header h3 { font-size: 1.1rem; font-weight: 600; }
-.modal-close {
-  width: 32px; height: 32px; border-radius: 8px; border: none;
-  background: transparent; cursor: pointer; font-size: 1.1rem; color: var(--text-muted);
-  display: grid; place-items: center; transition: background 0.2s;
-}
-.modal-close:hover { background: var(--bg-warm, #f5f5f3); }
-.modal-body { padding: 1.5rem; }
-.setting-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem 0; border-bottom: 1px solid var(--border);
-}
-.setting-row:last-child { border-bottom: none; }
-.setting-label { font-size: 0.875rem; font-weight: 500; }
-.setting-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
-.toggle-switch {
-  width: 44px; height: 24px; border-radius: 999px; background: #ddd;
-  position: relative; cursor: pointer; transition: background 0.2s;
-  flex-shrink: 0;
-}
-.toggle-switch.active { background: var(--accent); }
-.toggle-switch::after {
-  content: ''; position: absolute; top: 2px; left: 2px;
-  width: 20px; height: 20px; border-radius: 50%; background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.2s;
-}
-.toggle-switch.active::after { transform: translateX(20px); }
-
-/* ===== KEYBOARD SHORTCUTS ===== */
-.kb-overlay {
-  position: fixed; inset: 0; z-index: 250;
-  background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
-  display: none; align-items: center; justify-content: center;
-}
-.kb-overlay.active { display: flex; }
-.kb-panel {
-  background: #fff; border-radius: 16px; padding: 2rem;
-  width: 90%; max-width: 420px; max-height: 70vh; overflow-y: auto;
-}
-.kb-panel h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.25rem; }
-.kb-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.625rem 0; border-bottom: 1px solid var(--border);
-}
-.kb-item:last-child { border-bottom: none; }
-.kb-item span { font-size: 0.875rem; color: var(--text-muted); }
-.kb-key {
-  display: inline-flex; align-items: center; gap: 0.25rem;
-}
-.kb-key kbd {
-  padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border);
-  background: var(--bg-warm, #f5f5f3); font-size: 0.75rem; font-family: inherit;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-}
-
-/* ===== FAQ ACCORDION ===== */
-.faq-section { max-width: 800px; margin: 0 auto; }
-.faq-item { border-bottom: 1px solid var(--border); }
-.faq-question {
-  width: 100%; padding: 1.25rem 0; display: flex; align-items: center; justify-content: space-between;
-  background: none; border: none; font-family: inherit; font-size: 0.95rem; font-weight: 500;
-  cursor: pointer; text-align: right; color: var(--text-light);
-}
-.faq-question::after {
-  content: '+'; font-size: 1.25rem; color: var(--text-muted); transition: transform 0.3s;
-}
-.faq-item.open .faq-question::after { transform: rotate(45deg); }
-.faq-answer {
-  max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease;
-  color: var(--text-muted); font-size: 0.875rem; line-height: 1.7;
-}
-.faq-item.open .faq-answer { max-height: 200px; padding-bottom: 1.25rem; }
-
-/* ===== TESTIMONIALS ===== */
-.testimonials-grid {
-  max-width: 1000px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-}
-.testimonial-card {
-  background: #fff; border: 1px solid var(--border); border-radius: 12px;
-  padding: 1.5rem; transition: box-shadow 0.3s;
-}
-.testimonial-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
-.testimonial-card p {
-  font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;
-  font-style: italic;
-}
-.testimonial-author {
-  display: flex; align-items: center; gap: 0.75rem;
-}
-.testimonial-author img {
-  width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
-}
-.testimonial-author strong { font-size: 0.85rem; }
-.testimonial-author span { font-size: 0.75rem; color: var(--text-muted); }
-
-/* ===== LOADING OVERLAY ===== */
-.loading-overlay {
-  position: fixed; inset: 0; z-index: 300;
-  background: var(--bg-light, #FAFAF8); display: none;
-  align-items: center; justify-content: center; flex-direction: column; gap: 1rem;
-}
-.loading-overlay.active { display: flex; }
-.loading-spinner {
-  width: 40px; height: 40px; border: 2px solid var(--border);
-  border-top-color: var(--accent); border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-overlay p { font-size: 0.875rem; color: var(--text-muted); }
-
-/* ===== READING SETTINGS IN READER ===== */
-.reader-settings {
-  position: absolute; top: 3rem; right: 1rem; z-index: 11;
-  background: rgba(20,20,20,0.95); border: 1px solid var(--border-dark);
-  border-radius: 12px; padding: 1rem; width: 220px;
-  display: none; backdrop-filter: blur(12px);
-}
-.reader-settings.active { display: block; }
-.reader-settings .rs-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.5rem 0; border-bottom: 1px solid var(--border-dark);
-}
-.reader-settings .rs-row:last-child { border-bottom: none; }
-.reader-settings label { font-size: 0.7rem; color: #888; }
-.reader-settings input[type="range"] { width: 80px; }
-
-/* ===== DARK MODAL OVERRIDES ===== */
-body.dark-page .modal, body.dark-page .kb-panel { background: #141414; color: #fff; border: 1px solid var(--border-dark); }
-body.dark-page .modal-header, body.dark-page .setting-row, body.dark-page .faq-item, body.dark-page .kb-item { border-color: var(--border-dark); }
-body.dark-page .modal-close { color: #888; }
-body.dark-page .modal-close:hover { background: rgba(255,255,255,0.05); }
-body.dark-page .setting-desc, body.dark-page .faq-answer, body.dark-page .kb-item span { color: #888; }
-body.dark-page .faq-question { color: #fff; }
-body.dark-page .toggle-switch { background: #333; }
-body.dark-page .loading-overlay { background: var(--bg-reader, #0A0A0A); }
-
-/* ===== PRINT STYLES ===== */
-@media print {
-  .navbar, .mobile-nav, .hero-cta, .footer, .toast-container { display: none !important; }
-  body { background: #fff; color: #000; }
-}
-
-/* ===== REDUCED MOTION ===== */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ===== FOCUS VISIBLE ===== */
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-button:focus-visible, a:focus-visible { outline-offset: 2px; }
-
-
-/* ===== CREATORS SECTION ===== */
-.creators-grid {
-  max-width: 1000px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
-}
-.creator-card {
-  text-align: center; padding: 1.5rem;
-  border: 1px solid var(--border); border-radius: 12px;
-  background: #fff; transition: transform 0.3s, box-shadow 0.3s;
-}
-.creator-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-}
-.creator-card img {
-  width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
-  margin-bottom: 0.75rem;
-}
-.creator-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.15rem; }
-.creator-card span { font-size: 0.7rem; color: var(--text-muted); }
-.creator-card p { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.6; }
-
-/* ===== SCROLLBAR STYLING ===== */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
-body.dark-page ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
-body.dark-page ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-
-/* ===== SELECTION COLOR ===== */
-::selection { background: rgba(212,175,55,0.25); color: inherit; }
-
-/* ===== IMAGE PLACEHOLDER SHIMMER ===== */
-.img-loading {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeletonShimmer 1.5s infinite;
-}
-
-/* ===== TOOLTIP UTILITIES ===== */
-[title] { position: relative; }
-
-/* ===== PULSE DOT ===== */
-.pulse-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
-}
-
-
-.tier-price, .tier-card .price { display: none !important; }
+        body {
+            transition: background-color 0.5s ease, color 0.5s ease, opacity 0.3s ease, transform 0.3s ease;
+        }
+        body.lang-fade-out {
+            opacity: 0;
+            transform: scale(0.99);
+            pointer-events: none;
+        }
+        
+        /* Edge to Edge Mobile Scrollers */
+        .bleed-scroll {
+            margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem;
+        }
+        @media (min-width: 640px) {
+            .bleed-scroll { margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+        }
+        @media (min-width: 1024px) {
+            .bleed-scroll { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+        }
+    
+    /* GOLD VAULT OVERRIDES */
+    .vault-hero {
+      background: linear-gradient(180deg, #0A0A0A 0%, #111 50%, #0A0A0A 100%);
+      position: relative;
+    }
+    .vault-hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.3) 50%, transparent 100%);
+    }
+    .vault-nav {
+      background: rgba(10,10,10,0.9);
+      border-bottom: 1px solid rgba(212,175,55,0.1);
+    }
+    .gold-glow {
+      box-shadow: 0 0 30px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+      border: 1px solid rgba(212,175,55,0.2);
+    }
+    .gold-text { color: #D4AF37; text-shadow: 0 0 20px rgba(212,175,55,0.3); }
+    .vault-card {
+      background: rgba(15,15,15,0.8);
+      border: 1px solid rgba(212,175,55,0.1);
+      transition: all 0.4s ease;
+    }
+    .vault-card:hover {
+      border-color: rgba(212,175,55,0.3);
+      box-shadow: 0 8px 32px rgba(212,175,55,0.1);
+    }
+    .vault-btn {
+      background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
+      border: 1px solid rgba(212,175,55,0.3);
+      color: #D4AF37;
+    }
+    .double-bezel {
+      border: 1px solid rgba(212,175,55,0.15);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.3);
+    }
 </style>
 </head>
-<body>
+<body lang="en" dir="ltr" class="relative selection:bg-accent/30">
 
-<div class="toast-container" id="toastContainer"></div>
+    <div id="toast-container" class="fixed bottom-[calc(2rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 items-center pointer-events-none"></div>
 
-<nav class="navbar" id="navbar">
-  <div class="nav-brand">
-    <div class="mark">MY</div>
-    <span id="brandName">Meem Yaser Studio</span>
-  </div>
-  <div class="nav-links" id="navLinks">
-    <a href="#" data-page="home" class="active" id="navHome">Home</a>
-    <a href="#" data-page="browse" id="navBrowse">Library</a>
-    <a href="#" data-page="admin" id="navAdmin">Admin</a>
-  </div>
-  <div class="nav-actions">
-    <button class="lang-toggle" id="langToggle">AR</button>
-    <span class="role-badge member" id="roleBadge">Member</span>
-  </div>
-</nav>
-
-<div class="page" id="homePage">
-  <section class="hero">
-    <div class="hero-content reveal">
-      <div class="hero-eyebrow"><span id="heroEyebrow">Private Reading Club</span></div>
-      <h1 id="heroTitle"><span>Restless</span> Worlds</h1>
-      <p id="heroDesc">A private manga reading club. Join our exclusive community and explore the worlds of Meem Yaser.</p>
-      <a href="#" class="hero-cta" id="heroCta" data-action="browse">
-        Explore the Library
-        <span class="cta-icon">&#8594;</span>
-      </a>
-    </div>
-    <div class="hero-visual reveal">
-      <img class="hero-img-main" src="https://picsum.photos/seed/hero3/500/700" alt="Hero">
-      <img class="hero-img-float top" src="https://picsum.photos/seed/float1/200/200" alt="">
-      <img class="hero-img-float bottom" src="https://picsum.photos/seed/float2/200/200" alt="">
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-header reveal">
-      <div class="eyebrow">Library</div>
-      <h2 id="featuredTitle">Featured Series</h2>
-      <p id="featuredDesc">Choose from our growing collection of original manga stories</p>
-    </div>
-    <div class="bento-grid" id="mangaGrid"></div>
-  </section>
-
-  <section class="section" style="background:var(--bg-warm);">
-    <div class="section-header reveal">
-      <div class="eyebrow">Membership</div>
-      <h2 id="tiersTitle">Membership Access</h2>
-      <p id="tiersDesc">Approval-based access to our private reading club</p>
-    </div>
-    <div class="tiers-grid" id="tiersGrid"></div>
-  </section>
-
-  <section class="section">
-    <div class="about-grid reveal">
-      <div class="about-content">
-        <div class="eyebrow">Studio</div>
-        <h2 id="aboutTitle">About the Studio</h2>
-        <p id="aboutDesc1">Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through the art of manga and graphic novels.</p>
-        <p id="aboutDesc2">Since its founding, the studio has developed four major series that blend Arabic literary depth with manga visual aesthetics.</p>
-        <div class="about-stats">
-          <div><div class="as-num">5</div><div class="as-label">سلاسل</div></div>
-          <div><div class="as-num">47</div><div class="as-label">Ch.</div></div>
-          <div><div class="as-num">1.2k</div><div class="as-label"></div></div>
+    <div id="pwa-toast" class="fixed bottom-6 start-6 z-[9998] bg-card p-4 rounded-2xl shadow-modal flex items-center gap-4 border border-gray-100 transition-all duration-500 transform translate-y-32 opacity-0 max-w-sm">
+        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-2xl font-bold font-arabic shrink-0 shadow-sm">م</div>
+        <div class="flex-1">
+            <h4 class="font-bold text-sm" data-i18n="install_app">INSTALL APP</h4>
+            <p class="text-xs text-textSec mt-1 leading-tight" data-i18n="install_desc">Add to home screen for the best reading experience</p>
         </div>
-      </div>
-      <div class="about-image">
-        <img src="https://picsum.photos/seed/studio3/800/500" alt="Studio">
-      </div>
+        <button onclick="dismissPwa()" class="text-accent font-bold text-sm hover:text-yellow-600 tap-effect p-2" data-i18n="install">INSTALL</button>
     </div>
-  </section>
 
-  
-  <section class="section">
-    <div class="section-header reveal">
-      <div class="eyebrow">Frequently Asked Questions</div>
-      <h2 id="faqTitle">Frequently Asked Questions</h2>
-    </div>
-    <div class="faq-section reveal" id="faqSection">
-      <div class="faq-item">
-        <button class="faq-question">How do I become a member?</button>
-        <div class="faq-answer">Register for free to enjoy all open chapters. To access member-only chapters, request membership and wait for admin approval.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">Can I read manga on my phone?</button>
-        <div class="faq-answer">Yes, the site is fully designed for mobile. It supports swipe navigation and pinch-to-zoom.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">How do I add comments on pages?</button>
-        <div class="faq-answer">During reading, open the Comments panel from the top bar. Add your thoughts in the side panel without covering the artwork.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">What payment methods are available?</button>
-        <div class="faq-answer">Membership is approval-based, not paid. Submit a request and our team will review your application.</div>
-      </div>
-    </div>
-  </section>
+    <nav id="navbar" class="fixed top-0 w-full bg-card/80 backdrop-blur-xl border-b border-gray-100/50 z-40 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-3 cursor-pointer group tap-effect" onclick="navigate('hub')">
+                    <div class="w-9 h-9 rounded-full border-[2.5px] border-accent text-accent flex items-center justify-center text-lg font-bold font-arabic shadow-sm group-hover:bg-accent group-hover:text-white transition-colors">م</div>
+                    <span class="font-black tracking-widest text-[15px] hidden sm:block pt-0.5">MEEM YASER</span>
+                </div>
+                <div class="hidden md:flex items-center gap-6 text-[13px] font-bold text-textSec uppercase tracking-wider">
+                    <button onclick="navigate('hub')" class="hover:text-textMain tap-effect transition-colors" data-i18n="browse">Browse</button>
+                    <button onclick="navigate('forum')" class="hover:text-textMain tap-effect transition-colors" data-i18n="forum">Forum</button>
+                    <button onclick="navigate('characters')" class="hover:text-textMain tap-effect transition-colors" data-i18n="characters">Characters</button>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1 sm:gap-3">
+                <button onclick="showToast(t('feature_wip'))" class="text-textSec hover:text-textMain tap-effect transition-colors w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50"><i class="fa-solid fa-search"></i></button>
+                <div onclick="showToast(t('feature_wip'))" class="relative cursor-pointer text-textSec hover:text-textMain tap-effect transition-colors w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-danger rounded-full border-2 border-card text-white text-[8px] font-bold flex items-center justify-center"></span>
+                </div>
+                <button onclick="toggleLang()" class="text-[11px] font-black font-mono border border-gray-200 px-2.5 py-1.5 rounded-lg hover:border-accent hover:text-accent tap-effect transition-colors ms-1" id="nav-lang-btn">EN / AR</button>
+                
+                <button class="md:hidden text-textSec hover:text-textMain tap-effect w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50" onclick="toggleMobileNav()"><i class="fa-solid fa-bars text-lg"></i></button>
 
-  <section class="section" style="background:var(--bg-warm, #F5F4F0);">
-    <div class="section-header reveal">
-      <div class="eyebrow">Reader Thoughts</div>
-      <h2 id="testimonialsTitle">What Readers Say</h2>
-    </div>
-    <div class="testimonials-grid reveal" id="testimonialsGrid">
-      <div class="testimonial-card">
-        <p>"The most beautiful stories I have ever read. The art is stunning and the story captivates from the start."</p>
-        <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user1/200/300" alt="">
-          <div><strong> 1</strong><span> Member</span></div>
+                <div class="relative group cursor-pointer hidden md:block ms-2">
+                    <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-white font-bold text-sm shadow-sm ring-2 ring-transparent group-hover:ring-gray-200 transition-all" id="nav-avatar">G</div>
+                    <div class="absolute end-0 top-[120%] w-56 bg-card rounded-2xl shadow-modal border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-full transition-all duration-300 z-50">
+                        <div class="p-4 border-b border-gray-50">
+                            <p class="text-sm font-bold text-textMain" id="nav-user-name">Guest User</p>
+                            <p class="text-[11px] text-textSec uppercase tracking-widest font-bold mt-1" id="nav-user-role">Guest</p>
+                        </div>
+                        <div class="p-2">
+                            <button id="nav-admin-btn" onclick="toggleAdminPanel()" class="w-full text-start px-4 py-2.5 text-[13px] text-accent hover:bg-accent/5 rounded-xl font-bold hidden mb-1 tap-effect"><i class="fa-solid fa-shield-halved me-2 w-4"></i> <span data-i18n="admin_panel">Admin Panel</span></button>
+                            <button onclick="navigate('login')" class="w-full text-start px-4 py-2.5 text-[13px] text-textSec hover:text-textMain hover:bg-gray-50 rounded-xl font-bold tap-effect"><i class="fa-solid fa-right-from-bracket me-2 w-4"></i> <span data-i18n="switch_role">Switch Role</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="testimonial-card">
-        <p>"A unique reading experience on mobile. The design is elegant and navigation effortless."</p>
-        <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user2/200/300" alt="">
-          <div><strong> 2</strong><span>Member since 2023</span></div>
+    </nav>
+
+    <div id="mobile-nav" class="fixed inset-0 bg-card/95 backdrop-blur-xl z-[150] transform translate-x-full rtl:-translate-x-full transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col p-6 sm:p-8 md:hidden">
+        <div class="flex justify-end mb-10 pt-[env(safe-area-inset-top)]">
+            <button onclick="toggleMobileNav()" class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-textSec hover:text-textMain tap-effect"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
-      </div>
-      <div class="testimonial-card">
-        <p>"I follow every new chapter of The Great Man. The excitement never fades."</p>
-        <div class="testimonial-author">
-          <img src="https://picsum.photos/seed/user3/200/300" alt="">
-          <div><strong> 3</strong><span> مبدئ</span></div>
+        <div class="flex flex-col gap-6 text-[28px] font-black tracking-tight mb-12">
+            <button onclick="toggleMobileNav(); navigate('hub')" class="text-start tap-effect text-textMain hover:text-accent transition-colors" data-i18n="browse">Browse</button>
+            <button onclick="toggleMobileNav(); navigate('forum')" class="text-start tap-effect text-textMain hover:text-accent transition-colors" data-i18n="forum">Forum</button>
+            <button onclick="toggleMobileNav(); navigate('characters')" class="text-start tap-effect text-textMain hover:text-accent transition-colors" data-i18n="characters">Characters</button>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-header reveal">
-      <div class="eyebrow">الفريق</div>
-      <h2 id="creatorsTitle">Our Team</h2>
-      <p id="creatorsDesc">The creative team building these worlds</p>
-    </div>
-    <div class="creators-grid reveal" id="creatorsGrid">
-      <div class="creator-card">
-        <img src="https://picsum.photos/seed/creator1/150/150" alt="">
-        <h4>Meem Yaser</h4>
-        <span>Founder & Artist</span>
-        <p>Visual team leader and world architect.</p>
-      </div>
-      <div class="creator-card">
-        <img src="https://picsum.photos/seed/creator2/150/150" alt="">
-        <h4>Layla Al-Hashimi</h4>
-        <span>Editor in Chief</span>
-        <p>Oversees story vision and character development.</p>
-      </div>
-      <div class="creator-card">
-        <img src="https://picsum.photos/seed/creator3/150/150" alt="">
-        <h4>Omar Al-Rashid</h4>
-        <span>Art Director</span>
-        <p>Transforms words into visual panels that convey emotion.</p>
-      </div>
-      <div class="creator-card">
-        <img src="https://picsum.photos/seed/creator4/150/150" alt="">
-        <h4>Nora Al-Qasimi</h4>
-        <span>Writer</span>
-        <p>Adds literary depth and internal dialogue to characters.</p>
-      </div>
-    </div>
-  </section>
-<footer class="footer">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand">Meem Yaser Studio</div>
-        <p class="footer-desc">Restless Worlds. Original manga from Dubai to the world.</p>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <a href="#">Library</a>
-        <a href="#">News</a>
-        <a href="#">Events</a>
-      </div>
-      <div>
-        <h4>Support</h4>
-        <a href="#">Help Center</a>
-        <a href="#">Terms</a>
-        <a href="#">Privacy</a>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <a href="#">hello@meemyaserstudio.ae</a>
-        <a href="#">@meemyaserstudio</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>2026 Meem Yaser Studio. All rights reserved.</span>
-      <span>Made with care in Dubai</span>
-    </div>
-  </footer>
-</div>
-
-<div class="browser-page" id="browserPage">
-  <div class="browser-header-wrap" id="browserHeader"></div>
-  <div class="browser-controls">
-    <input type="text" id="chapterSearch" placeholder="ابحث في الفصول...">
-    <select id="chapterSort">
-      <option value="newest">Newest</option>
-      <option value="oldest">Oldest</option>
-      <option value="number">Chapter Number</option>
-    </select>
-    <select id="chapterFilter">
-      <option value="all">All</option>
-      <option value="free">Free</option>
-      <option value="member">Member</option>
-    </select>
-  </div>
-  <div class="chapter-list" id="chapterList"></div>
-</div>
-
-<div class="reader-page" id="readerPage">
-  <div class="reader-toolbar" id="readerToolbar">
-    <button data-action="closeReader">&#10005;</button>
-    <div class="reader-info">
-      <h3 id="readerMangaTitle">-</h3>
-      <span id="readerPageInfo">-</span>
-    </div>
-    <div class="zoom-controls">
-      <button class="zoom-btn" data-action="zoomOut" title="Zoom out">−</button>
-      <button class="zoom-btn" data-action="zoomIn" title="Zoom in">+</button>
-    </div>
-    
-  </div>
-  <div class="reader-viewport" id="readerViewport">
-    <button class="reader-nav-btn prev" data-action="prevPage">&#8249;</button>
-    <img class="reader-page-img" id="readerImg" src="" alt="Page">
-    
-    <button class="reader-nav-btn next" data-action="nextPage">&#8250;</button>
-  </div>
-  <div class="reader-progress"><div class="reader-progress-bar" id="readerProgress"></div></div>
-  <div class="reader-bottom-bar" id="readerBottomBar">
-    <span id="readerChapterInfo">-</span>
-    <span id="readerZoomLevel">100%</span>
-  </div>
-</div>
-
-<div class="admin-page" id="adminPage">
-  <div class="admin-wrap">
-    <div class="admin-header">
-      <h1>Admin Dashboard</h1>
-      <p>Manage users, chapters, and comments</p>
-    </div>
-    <div class="admin-stats">
-      <div class="stat-card"><div class="stat-value">1,247</div><div class="stat-label">Users</div></div>
-      <div class="stat-card"><div class="stat-value">47</div><div class="stat-label">Chapters</div></div>
-      <div class="stat-card"><div class="stat-value">3,892</div><div class="stat-label">التعليقات</div></div>
-      <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Pending Approval</div></div>
-    </div>
-    <div class="admin-tabs">
-      <button class="admin-tab active" data-tab="users">Users</button>
-      <button class="admin-tab" data-tab="chapters">Chapters</button>
-      
-      <button class="admin-tab" data-tab="upload">Upload Chapter</button>
-    </div>
-    <div id="adminContent"></div>
-  </div>
-</div>
-
-<nav class="mobile-nav" id="mobileNav">
-  <button class="mobile-nav-item active" data-page="home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    الرئيسية
-  </button>
-  <button class="mobile-nav-item" data-page="browse">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    Library
-  </button>
-  <button class="mobile-nav-item" data-page="admin">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-    الإدارة
-  </button>
-</nav>
-
-<script>
-const state={lang: 'en',user:{name:'زائر',role:'member',id:'u1'},currentManga:null,currentChapter:null,currentPage:0,zoom:1,isZoomed:false,commentsEnabled:false,adminTab:'users',page:'home'};
-const i18n={ar:{brand:'ميم ياسر ستوديو',navHome:'الرئيسية',navBrowse:'Library',navAdmin:'الإدارة',heroEyebrow:'نادي قراءة خاص',heroTitle:'<span>Worlds</span><br>لا تهدأ',heroDesc:'نادي قراءة خاص للقصص المصورة. انضم إلى مجتمعنا الحصري وExplore عوالم ميم ياسر.',heroCta:'Explore the Library',featuredTitle:'Featured Series',featuredDesc:'Choose from our growing collection of original manga stories',tiersTitle:'Membership Access',tiersDesc:'Approval-based access to our private reading club',aboutTitle:'About the Studio',aboutDesc1:'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through the art of manga and graphic novels.',aboutDesc2:'Since its founding, the studio has developed four major series that blend Arabic literary depth with manga visual aesthetics.',searchPlaceholder:'ابحث في الفصول...',newest:'الأحدث',oldest:'الأقدم',number:'رقم الفصل',all:'الكل',free:'مجاني',member:'حصري',guest:'زائر',member:'Member',pro:'Member',admin:'مدير',roles:{guest:'زائر',member:'Member',pro:'Member',admin:'مدير'}},en:{brand:'Meem Yaser Studio',navHome:'Home',navBrowse:'Library',navAdmin:'Admin',heroEyebrow:'Private Reading Club',heroTitle:'<span>Restless</span><br>Worlds',heroDesc:'A private reading club for illustrated stories. Join our exclusive community and explore Meem Yaser\'s worlds.',heroCta:'Explore Library',featuredTitle:'Featured Series',featuredDesc:'Choose from our growing collection of original manga',tiersTitle:'Membership Access',tiersDesc:'Approval-based access to our private reading club',aboutTitle:'About the Studio',aboutDesc1:'Meem Yaser Studio is a home for visual storytelling in Dubai. We create restless worlds through manga and graphic novels.',aboutDesc2:'Since its founding, the studio has developed four main series blending Arabic literary depth with manga visual aesthetics.',searchPlaceholder:'Search chapters...',newest:'Newest',oldest:'Oldest',number:'Chapter Number',all:'All',free:'Free',member:'Member',guest:'Guest',member:'Member',pro:'Admin',admin:'Admin',roles:{guest:'Guest',member:'Member',pro:'Admin',admin:'Admin'}}};
-
-const mangaData=[
-  {id:1,titleAr:'طريق الأقمار',titleEn:'Moons Road',descAr:'رحلة عبر الصحراء حيث تلتقي الأحلام بالواقع.',descEn:'A journey across the desert where dreams meet reality.',chapters:12,status:'ongoing',rating:4.8,image:'https://picsum.photos/seed/moonsroad/600/800',chapterList:Array.from({length:12},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}: ${['البداية','اللقاء','الصحراء','القمر','الطريق','العاصفة','الواحة','القرية','السر','العودة','القرار','النهاية'][i]}`,titleEn:`Ch.${i+1}: ${['The Beginning','The Meeting','The Desert','The Moon','The Road','The Storm','The Oasis','The Village','The Secret','The Return','The Decision','The End'][i]}`,date:`2026-0${Math.floor(i/3)+1}-${(i%28)+1}`,type:i<3?'free':i<8?'member':'early'}))},
-  {id:2,titleAr:'السيد الكبير',titleEn:'The Grand Lord',descAr:'في عالم مظلم، يصعد سيد من العدم ليغير كل شيء.',descEn:'In a dark world, a lord rises from nothing to change everything.',chapters:15,status:'ongoing',rating:4.9,image:'https://picsum.photos/seed/grandlord/600/800',chapterList:Array.from({length:15},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-0${Math.floor(i/4)+1}-${(i%28)+1}`,type:i<2?'free':'member'}))},
-  {id:3,titleAr:'سمفونية الفناء',titleEn:'Symphony of Doom',descAr:'عندما يصبح الموسيقى سلاحاً، تبدأ الحرب الحقيقية.',descEn:'When music becomes a weapon, the real war begins.',chapters:8,status:'completed',rating:4.7,image:'https://picsum.photos/seed/symphony/600/800',chapterList:Array.from({length:8},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-01-${(i%28)+1}`,type:i<4?'free':'member'}))},
-  {id:4,titleAr:'المتكلمون',titleEn:'The Speakers',descAr:'أسطورة هاكتفين تنتظر من يكملها.',descEn:'The legend of Haktvin awaits its completion.',chapters:10,status:'ongoing',rating:4.6,image:'https://picsum.photos/seed/speakers/600/800',chapterList:Array.from({length:10},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-02-${(i%28)+1}`,type:i<2?'free':i<6?'member':'early'}))},
-  {id:5,titleAr:'قسيس السهاد',titleEn:'The Sleepless Chaplain',descAr:'رجل دين لا ينام، يسمع أسرار الليل.',descEn:'A cleric who never sleeps, hearing the secrets of the night.',chapters:6,status:'ongoing',rating:4.5,image:'https://picsum.photos/seed/sleepless/600/800',chapterList:Array.from({length:6},(_,i)=>({num:i+1,titleAr:`الفصل ${i+1}`,titleEn:`Ch.${i+1}`,date:`2026-03-${(i%28)+1}`,type:i<1?'free':'member'}))}
-];
-
-const mockComments=[
-  {id:1,mangaId:1,chapterNum:1,page:0,x:0.3,y:0.4,text:'ما أجمل هذا المشهد!',user:'أحمد',color:'u-red'},
-  {id:2,mangaId:1,chapterNum:1,page:0,x:0.7,y:0.6,text:'الرسم رائع هنا',user:'سارة',color:'u-blue'},
-  {id:3,mangaId:1,chapterNum:1,page:1,x:0.5,y:0.3,text:'تشويق غير طبيعي',user:'محمد',color:'u-green'}
-];
-
-const mockUsers=[
-  {id:'u1',name:'أحمد علي',email:'ahmed@example.com',role:'member',status:'approved',date:'2026-01-15'},
-  {id:'u2',name:'سارة محمد',email:'sara@example.com',role:'admin',status:'approved',date:'2026-02-20'},
-  {id:'u3',name:'خالد عمر',email:'khaled@example.com',role:'guest',status:'pending',date:'2026-04-18'},
-  {id:'u4',name:'ليلى حسن',email:'laila@example.com',role:'member',status:'approved',date:'2026-03-10'},
-  {id:'u5',name:'يوسف سامي',email:'yousef@example.com',role:'guest',status:'banned',date:'2026-04-01'}
-];
-
-const mockCommentsAdmin=[
-  {id:1,user:'أحمد',manga:'طريق الأقمار',text:'ما أجمل هذا المشهد!',date:'2026-04-20',flagged:false},
-  {id:2,user:'سارة',manga:'السيد الكبير',text:'محتوى غير لائق',date:'2026-04-19',flagged:true},
-  {id:3,user:'محمد',manga:'المتكلمون',text:'أسطورة رائعة!',date:'2026-04-18',flagged:false}
-];
-
-function $(s){return document.querySelector(s);}
-function $$(s){return document.querySelectorAll(s);}
-function t(k){return i18n[state.lang][k]||k;}
-function toast(m){const c=$('#toastContainer'),el=document.createElement('div');el.className='toast';el.textContent=m;c.appendChild(el);setTimeout(()=>{el.classList.add('hiding');setTimeout(()=>el.remove(),250);},3000);}
-
-function renderMangaGrid(){
-  const g=$('#mangaGrid'),sizes=['bento-large','bento-mid','bento-small','bento-tall','bento-mid'];
-  g.innerHTML=mangaData.map((m,i)=>{
-    if(i===0) return `<div class="bento-card ${sizes[i]} stagger-item" data-id="${m.id}" data-action="openManga"><div class="bezel-outer"><div class="bezel-inner"><img src="${m.image}" alt="${state.lang==='ar'?m.titleAr:m.titleEn}" loading="lazy"><div class="card-body"><h3>${state.lang==='ar'?m.titleAr:m.titleEn}</h3><div class="meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span style="margin:0 0.3rem">·</span></div></div></div></div></div>`;
-    return `<div class="bento-card ${sizes[i]} stagger-item" data-id="${m.id}" data-action="openManga"><img src="${m.image}" alt="${state.lang==='ar'?m.titleAr:m.titleEn}" loading="lazy"><div class="card-body"><h3>${state.lang==='ar'?m.titleAr:m.titleEn}</h3><div class="meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span style="margin:0 0.3rem">·</span></div></div></div>`;
-  }).join('');
-  applyStagger();
-}
-
-function renderTiers(){
-  const tiers=[{key:'guest',labelAr:'زائر',labelEn:'Guest',features:['معاينة 3 فصول','قراءة محدودة','لا تعليقات']},{key:'member',labelAr:'Member',labelEn:'Member',features:['جميع الفصول المجانية','التعليقات','الملف الشخصي'],featured:true},{key:'pro',labelAr:'Member',labelEn:'Admin',features:['جميع الفصول','الوصول المبكر','دعم مميز','بدون إعلانات']},{key:'admin',price:'-',labelAr:'مدير',labelEn:'Admin',features:['لوحة الإدارة','إدارة الفصول','الإشراف','الإحصائيات']}];
-  $('#tiersGrid').innerHTML=tiers.map(t=>`<div class="tier-card ${t.featured?'featured':''} stagger-item" data-label="${state.lang==='ar'?'الأكثر شيوعاً':'Popular'}"><h3>${state.lang==='ar'?t.labelAr:t.labelEn}</h3><div class="price">${t.price}<span>/${state.lang==='ar'?'شهر':'mo'}</span></div><ul>${t.features.map(f=>`<li>${f}</li>`).join('')}</ul><button class="tier-btn" data-role="${t.key}">${state.lang==='ar'?'اختر':'Select'}</button></div>`).join('');
-  applyStagger();
-}
-
-function renderBrowser(){
-  const m=state.currentManga;if(!m)return;
-  $('#browserHeader').innerHTML=`<img src="${m.image}" alt=""><div class="browser-info"><h1>${state.lang==='ar'?m.titleAr:m.titleEn}</h1><p>${state.lang==='ar'?m.descAr:m.descEn}</p><div class="browser-meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span>${m.status==='ongoing'?(state.lang==='ar'?'مستمر':'Ongoing'):(state.lang==='ar'?'مكتمل':'Completed')}</span></div></div>`;
-  renderChapterList();
-}
-
-function renderChapterList(){
-  const m=state.currentManga;if(!m)return;
-  let list=[...m.chapterList];
-  const s=$('#chapterSearch').value.toLowerCase(),sort=$('#chapterSort').value,filter=$('#chapterFilter').value;
-  if(s)list=list.filter(c=>(state.lang==='ar'?c.titleAr:c.titleEn).toLowerCase().includes(s));
-  if(filter!=='all')list=list.filter(c=>c.type===filter);
-  if(sort==='newest')list.reverse();else if(sort==='number')list.sort((a,b)=>a.num-b.num);
-  $('#chapterList').innerHTML=list.map(c=>{
-    const locked=c.type!=='free'&&state.user.role==='guest';
-    const tagText=c.type==='free'?(state.lang==='ar'?'مجاني':'Free'):c.type==='member'?(state.lang==='ar'?'حصري':'Member'):(state.lang==='ar'?'مبكر':'Early');
-    return `<div class="chapter-item ${locked?'locked':''}" data-num="${c.num}" data-locked="${locked}"><div class="ch-left"><div class="ch-num">${c.num}</div><div><div class="ch-title">${state.lang==='ar'?c.titleAr:c.titleEn}</div><div class="ch-date">${c.date}</div></div></div><div class="ch-right">${locked?'<div class="lock-icon"></div>':''}<span class="ch-tag tag-${c.type}">${tagText}</span></div></div>`;
-  }).join('');
-}
-
-function renderReader(){
-  const m=state.currentManga,ch=state.currentChapter;if(!m||!ch)return;
-  $('#readerMangaTitle').textContent=state.lang==='ar'?m.titleAr:m.titleEn;
-  $('#readerPageInfo').textContent=`${state.lang==='ar'?'صفحة':'Page'} ${state.currentPage+1} / ${ch.pages||5}`;
-  $('#readerChapterInfo').textContent=`${state.lang==='ar'?'فصل':'Ch.'} ${ch.num}  ${state.lang==='ar'?ch.titleAr:ch.titleEn}`;
-  $('#readerImg').src=`https://picsum.photos/seed/${m.id}ch${ch.num}pg${state.currentPage}/800/1200`;
-  $('#readerProgress').style.width=`${((state.currentPage+1)/(ch.pages||5))*100}%`;
-  $('#readerZoomLevel').textContent=`${Math.round(state.zoom*100)}%`;
-  $('#readerImg').style.transform=`scale(${state.zoom})`;
-  
-}
-
-" style="left:${c.x*100}%;top:${c.y*100}%" data-id="${c.id}"><div class="pin-core"></div><div class="spatial-tooltip">${c.user}: ${c.text}</div></div>`).join('');
-}
-
-function showCommentForm(x,y){
-  const layer=$('#spatialLayer'),existing=layer.querySelector('.comment-form-overlay');if(existing)existing.remove();
-  const form=document.createElement('div');form.className='comment-form-overlay';form.style.left=`calc(${x*100}% - 125px)`;form.style.top=`calc(${y*100}% - 85px)`;
-  form.innerHTML=`<textarea placeholder="${state.lang==='ar'?'اكتب تعليقك...':'Write your comment...'}"></textarea><div class="cf-actions"><button class="cf-cancel">${state.lang==='ar'?'إلغاء':'Cancel'}</button><button class="cf-submit">${state.lang==='ar'?'نشر':'Post'}</button></div>`;
-  form.querySelector('.cf-cancel').onclick=()=>form.remove();
-  form.querySelector('.cf-submit').onclick=()=>{
-    const text=form.querySelector('textarea').value.trim();if(!text)return;
-    mockComments.push({id:Date.now(),mangaId:state.currentManga.id,chapterNum:state.currentChapter.num,page:state.currentPage,x,y,text,user:state.user.name,color:'u-red'});
-    form.remove();toast(state.lang==='ar'?'تم نشر التعليق':'Comment posted');
-  };
-  layer.appendChild(form);
-}
-
-function renderAdmin(){
-  const c=$('#adminContent');
-  if(state.adminTab==='users'){
-    c.innerHTML=`<table class="admin-table"><thead><tr><th>المستخدم</th><th>البريد</th><th>الدور</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th></tr></thead><tbody>${mockUsers.map(u=>`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td>${t('roles')[u.role]}</td><td><span class="status"><span class="status-dot-inline ${u.status}"></span>${u.status==='approved'?'موافق':u.status==='pending'?'معلق':'محظور'}</span></td><td>${u.date}</td><td>${u.status==='pending'?`<button class="admin-btn approve">موافقة</button><button class="admin-btn reject">رفض</button>`:''}${u.status==='approved'?`<button class="admin-btn ban">حظر</button>`:''}</td></tr>`).join('')}</tbody></table>`;
-  } else if(state.adminTab==='chapters'){
-    c.innerHTML=`<div style="padding:2rem;text-align:center;color:#555">قائمة الفصول مع إمكانية التعديل والحذف</div>`;
-  } else if(state.adminTab==='comments'){
-    c.innerHTML=`<table class="admin-table"><thead><tr><th>المستخدم</th><th>العمل</th><th>التعليق</th><th>التاريخ</th><th>حالة</th><th>إجراء</th></tr></thead><tbody>${mockCommentsAdmin.map(c=>`<tr><td><strong>${c.user}</strong></td><td>${c.manga}</td><td>${c.text}</td><td>${c.date}</td><td>${c.flagged?'<span style="color:#f87171">مبلغ</span>':'<span style="color:#4ade80">آمن</span>'}</td><td><button class="admin-btn reject">حذف</button></td></tr>`).join('')}</tbody></table>`;
-  } else if(state.adminTab==='upload'){
-    c.innerHTML=`<div style="max-width:600px;background:#0e0e0e;border:1px solid var(--border-dark);border-radius:1rem;padding:2rem;"><h3 style="margin-bottom:1rem;font-weight:700;">رفع فصل جديد</h3><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#555;margin-bottom:0.25rem;">اختر العمل</label><select style="width:100%;padding:0.5rem;background:#060606;border:1px solid var(--border-dark);border-radius:6px;color:#fff;font-family:inherit;">${mangaData.map(m=>`<option>${m.titleAr}</option>`).join('')}</select></div><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#555;margin-bottom:0.25rem;">Chapter Number</label><input type="number" style="width:100%;padding:0.5rem;background:#060606;border:1px solid var(--border-dark);border-radius:6px;color:#fff;font-family:inherit;"></div><div style="margin-bottom:1rem;"><label style="display:block;font-size:0.75rem;color:#555;margin-bottom:0.25rem;">الملفات</label><div style="border:2px dashed var(--border-dark);border-radius:6px;padding:2rem;text-align:center;color:#555">اسحب الصور هنا أو انقر للاختيار</div></div><button class="hero-cta" style="border:none;font-family:inherit;font-size:0.875rem;">رفع الفصل</button></div>`;
-  }
-}
-
-function goToPage(page){
-  state.page=page;
-  $$('.page,.browser-page,.admin-page').forEach(p=>p.classList.remove('active'));
-  $('#readerPage').classList.remove('active');
-  document.body.classList.remove('dark-page');
-  $$('.mobile-nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===page));
-  $$('.nav-links a').forEach(n=>n.classList.toggle('active',n.dataset.page===page));
-  if(page==='home')$('#homePage').classList.add('active');
-  else if(page==='browse')$('#browserPage').classList.add('active');
-  else if(page==='admin'){$('#adminPage').classList.add('active');document.body.classList.add('dark-page');renderAdmin();}
-  window.scrollTo(0,0);
-}
-
-function openReader(mangaId,chapterNum){
-  const m=mangaData.find(x=>x.id===mangaId),ch=m.chapterList.find(x=>x.num===chapterNum);
-  state.currentManga=m;state.currentChapter=ch;state.currentPage=0;state.zoom=1;state.isZoomed=false;
-  $('#readerPage').classList.add('active');document.body.classList.add('dark-page');renderReader();
-}
-
-function closeReader(){$('#readerPage').classList.remove('active');document.body.classList.remove('dark-page');state.currentManga=null;state.currentChapter=null;}
-
-document.addEventListener('click',e=>{
-  const el=e.target.closest('[data-action]');if(!el)return;
-  const a=el.dataset.action;
-  if(a==='browse'){goToPage('browse');state.currentManga=mangaData[0];renderBrowser();}
-  if(a==='openManga'){state.currentManga=mangaData.find(m=>m.id===+el.dataset.id);goToPage('browse');renderBrowser();}
-  if(a==='closeReader')closeReader();
-  if(a==='toggleComments'){state.commentsEnabled=!state.commentsEnabled;$('#spatialLayer').classList.toggle('active',state.commentsEnabled);el.classList.toggle('active',state.commentsEnabled);}if(a==='zoomIn'){state.zoom=Math.min(state.zoom+0.2,3);$('#readerImg').style.transform=`scale(${state.zoom})`;$('#readerZoomLevel').textContent=Math.round(state.zoom*100)+'%';}if(a==='zoomOut'){state.zoom=Math.max(state.zoom-0.2,0.5);$('#readerImg').style.transform=`scale(${state.zoom})`;$('#readerZoomLevel').textContent=Math.round(state.zoom*100)+'%';}
-  if(a==='prevPage'){if(state.currentPage>0){state.currentPage--;renderReader();}}
-  if(a==='nextPage'){if(state.currentPage<(state.currentChapter.pages||5)-1){state.currentPage++;renderReader();}}
-});
-
-document.addEventListener('click',e=>{
-  const ch=e.target.closest('.chapter-item');if(!ch)return;
-  const locked=ch.dataset.locked==='true';
-  if(locked){toast(state.lang==='ar'?'هذا الفصل مميز  ترقى للوصول':'Member chapter  request access');return;}
-  openReader(state.currentManga.id,+ch.dataset.num);
-});
-
-document.addEventListener('click',e=>{
-  const tab=e.target.closest('.admin-tab');if(tab){state.adminTab=tab.dataset.tab;$$('.admin-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');renderAdmin();}
-});
-
-document.addEventListener('click',e=>{
-  const nav=e.target.closest('.mobile-nav-item');if(nav&&nav.classList.contains('mobile-nav-item')){goToPage(nav.dataset.page);}
-});
-
-document.addEventListener('click',e=>{
-  const nav=e.target.closest('.nav-links a');if(nav){e.preventDefault();goToPage(nav.dataset.page);if(nav.dataset.page==='browse'&&!state.currentManga){state.currentManga=mangaData[0];renderBrowser();}}
-});
-
-$('#langToggle').addEventListener('click',()=>{
-  state.lang=state.lang==='ar'?'en':'ar';
-  document.documentElement.lang=state.lang;
-  document.documentElement.dir=state.lang==='ar'?'rtl':'ltr';
-  $('#langToggle').textContent=state.lang==='ar'?'AR':'EN';
-  updateText();renderMangaGrid();renderTiers();
-  if(state.currentManga)renderBrowser();
-  if($('#readerPage').classList.contains('active'))renderReader();
-  toast(state.lang==='ar'?'تم تغيير اللغة':'Language changed');
-});
-
-$$('.browser-controls input,.browser-controls select').forEach(el=>el.addEventListener('input',renderChapterList));
-
-let sx=0,sy=0,st=0;
-const rv=$('#readerViewport');
-rv.addEventListener('touchstart',e=>{if(state.isZoomed)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now();},{passive:true});
-rv.addEventListener('touchend',e=>{
-  if(state.isZoomed)return;
-  const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy,dt=Date.now()-st;
-  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50&&dt<500){
-    if(dx<0&&state.currentPage<(state.currentChapter.pages||5)-1){state.currentPage++;renderReader();}
-    else if(dx>0&&state.currentPage>0){state.currentPage--;renderReader();}
-  }
-},{passive:true});
-
-let pinchDist=0;
-rv.addEventListener('touchstart',e=>{if(e.touches.length===2){pinchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
-rv.addEventListener('touchmove',e=>{
-  if(e.touches.length===2){
-    e.preventDefault();
-    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-    const scale=Math.min(Math.max(state.zoom*(d/pinchDist),1),3);
-    state.zoom=scale;state.isZoomed=scale>1.05;
-    $('#readerImg').style.transform=`scale(${scale})`;
-    $('#readerZoomLevel').textContent=`${Math.round(scale*100)}%`;
-    pinchDist=d;
-  }
-},{passive:false});
-
-let lastTap=0;
-rv.addEventListener('click',e=>{
-  const now=Date.now();if(now-lastTap<300)return;lastTap=now;
-  if(e.target.closest(');
-
-window.addEventListener('keydown',e=>{
-  if(!$('#readerPage').classList.contains('active'))return;
-  if(e.key==='ArrowRight'){if(state.currentPage>0){state.currentPage--;renderReader();}}
-  if(e.key==='ArrowLeft'){if(state.currentPage<(state.currentChapter.pages||5)-1){state.currentPage++;renderReader();}}
-  if(e.key==='Escape')closeReader();
-});
-
-const obs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:0.1});
-function applyReveal(){$$('.reveal').forEach(el=>obs.observe(el));}
-function applyStagger(){$$('.stagger-item:not(.visible)').forEach((el,i)=>{el.style.transitionDelay=`${i*80}ms`;setTimeout(()=>el.classList.add('visible'),50);});}
-
-window.addEventListener('scroll',()=>{$('#navbar').classList.toggle('scrolled',window.scrollY>40);});
-
-function updateText(){
-  const l=i18n[state.lang];
-  $('#brandName').textContent=l.brand;
-  $('#navHome').textContent=l.navHome;$('#navBrowse').textContent=l.navBrowse;$('#navAdmin').textContent=l.navAdmin;
-  $('#heroEyebrow').textContent=l.heroEyebrow;$('#heroTitle').innerHTML=l.heroTitle;$('#heroDesc').textContent=l.heroDesc;$('#heroCta').childNodes[0].textContent=l.heroCta+' ';
-  $('#featuredTitle').textContent=l.featuredTitle;$('#featuredDesc').textContent=l.featuredDesc;
-  $('#tiersTitle').textContent=l.tiersTitle;$('#tiersDesc').textContent=l.tiersDesc;
-  $('#aboutTitle').textContent=l.aboutTitle;$('#aboutDesc1').textContent=l.aboutDesc1;$('#aboutDesc2').textContent=l.aboutDesc2;
-  $('#chapterSearch').placeholder=l.searchPlaceholder;
-  $('#chapterSort').innerHTML=`<option value="newest">${l.newest}</option><option value="oldest">${l.oldest}</option><option value="number">${l.number}</option>`;
-  $('#chapterFilter').innerHTML=`<option value="all">${l.all}</option><option value="free">${l.free}</option><option value="member">${l.member}</option>`;
-  $('#roleBadge').textContent=l.roles[state.user.role];
-}
-
-renderMangaGrid();renderTiers();applyReveal();updateText();goToPage('home');
-
-
-// ===================== LOCALSTORAGE & SETTINGS =====================
-const settings = {
-  rtl: true,
-  notifications: true,
-  autonext: false,
-  showComments: true,
-  brightness: 100,
-  fontSize: 'medium'
-};
-
-function loadSettings() {
-  try {
-    const saved = localStorage.getItem('meemSettings');
-    if (saved) Object.assign(settings, JSON.parse(saved));
-  } catch(e) {}
-  applySettings();
-}
-
-function saveSettings() {
-  try { localStorage.setItem('meemSettings', JSON.stringify(settings)); } catch(e) {}
-}
-
-function applySettings() {
-  $$('[data-setting]').forEach(t => {
-    const key = t.dataset.setting;
-    t.classList.toggle('active', !!settings[key]);
-  });
-  if (settings.brightness !== 100) {
-    const img = $('#readerImg');
-    if (img) img.style.filter = `brightness(${settings.brightness}%)`;
-  }
-}
-
-function toggleSetting(key) {
-  settings[key] = !settings[key];
-  saveSettings();
-  applySettings();
-  if (key === 'showComments' && state.currentManga) {
-    
-  }
-  toast(state.lang === 'ar' ? 'تم حفظ الإعدادات' : 'Settings saved');
-}
-
-// ===================== MODALS =====================
-function openModal(id) { $(id).classList.add('active'); }
-function closeModal(id) { $(id).classList.remove('active'); }
-
-$('#settingsModal').addEventListener('click', e => {
-  if (e.target === $('#settingsModal')) closeModal('#settingsModal');
-});
-$('#kbOverlay').addEventListener('click', e => {
-  if (e.target === $('#kbOverlay')) closeModal('#kbOverlay');
-});
-
-document.addEventListener('click', e => {
-  const el = e.target.closest('[data-action]');
-  if (!el) return;
-  if (el.dataset.action === 'closeSettings') closeModal('#settingsModal');
-  if (el.dataset.action === 'openSettings') openModal('#settingsModal');
-  if (el.dataset.action === 'openKeyboard') openModal('#kbOverlay');
-});
-
-$$('[data-setting]').forEach(t => {
-  t.addEventListener('click', () => toggleSetting(t.dataset.setting));
-});
-
-// ===================== KEYBOARD SHORTCUTS =====================
-window.addEventListener('keydown', e => {
-  if (e.key === '?' && e.shiftKey) { e.preventDefault(); openModal('#kbOverlay'); }
-  if ($('#settingsModal').classList.contains('active')) {
-    if (e.key === 'Escape') closeModal('#settingsModal');
-    return;
-  }
-  if ($('#kbOverlay').classList.contains('active')) {
-    if (e.key === 'Escape') closeModal('#kbOverlay');
-    return;
-  }
-  if (!e.target.matches('input, textarea')) {
-    if (e.key.toLowerCase() === 's') { e.preventDefault(); openModal('#settingsModal'); }
-    if (e.key.toLowerCase() === 'c' && $('#readerPage').classList.contains('active')) {
-      e.preventDefault();
-      const btn = $('#commentToggle');
-      if (btn) btn.click();
-    }
-    if (e.key === '+' || e.key === '=') {
-      e.preventDefault();
-      if (state.zoom < 3) { state.zoom = Math.min(state.zoom + 0.25, 3); state.isZoomed = state.zoom > 1.05; renderReader(); }
-    }
-    if (e.key === '-') {
-      e.preventDefault();
-      if (state.zoom > 1) { state.zoom = Math.max(state.zoom - 0.25, 1); state.isZoomed = state.zoom > 1.05; renderReader(); }
-    }
-  }
-});
-
-// ===================== DEBOUNCE / THROTTLE =====================
-function debounce(fn, wait) {
-  let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
-}
-function throttle(fn, limit) {
-  let inThrottle;
-  return (...args) => {
-    if (!inThrottle) { fn(...args); inThrottle = true; setTimeout(() => inThrottle = false, limit); }
-  };
-}
-
-// Debounced search
-const debouncedRenderChapterList = debounce(renderChapterList, 300);
-const searchInput = $('#chapterSearch');
-if (searchInput) {
-  searchInput.removeEventListener('input', renderChapterList);
-  searchInput.addEventListener('input', debouncedRenderChapterList);
-}
-
-// ===================== FAQ ACCORDION =====================
-document.addEventListener('click', e => {
-  const q = e.target.closest('.faq-question');
-  if (!q) return;
-  const item = q.closest('.faq-item');
-  const wasOpen = item.classList.contains('open');
-  $$('.faq-item').forEach(f => f.classList.remove('open'));
-  if (!wasOpen) item.classList.add('open');
-});
-
-// ===================== LOADING =====================
-function showLoading() { $('#loadingOverlay').classList.add('active'); }
-function hideLoading() { $('#loadingOverlay').classList.remove('active'); }
-
-// ===================== ONBOARDING TOUR =====================
-const tourSteps = [
-  { el: '.navbar', textAr: 'التنقل بين الصفحات من هنا', textEn: 'Navigate between pages here' },
-  { el: '#langToggle', textAr: 'بدّل اللغة بين العربية والإنجليزية', textEn: 'Switch between Arabic and English' },
-  { el: '#heroCta', textAr: 'ابدأ استكشاف Library من هنا', textEn: 'Start exploring the library' }
-];
-
-function startTour() {
-  if (localStorage.getItem('meemTourDone')) return;
-  let step = 0;
-  function showStep() {
-    if (step >= tourSteps.length) { localStorage.setItem('meemTourDone', '1'); return; }
-    const s = tourSteps[step];
-    const target = $(s.el);
-    if (!target) { step++; showStep(); return; }
-    toast(state.lang === 'ar' ? s.textAr : s.textEn);
-    target.style.boxShadow = '0 0 0 3px rgba(212,175,55,0.4)';
-    setTimeout(() => { target.style.boxShadow = ''; step++; showStep(); }, 2500);
-  }
-  setTimeout(showStep, 1000);
-}
-
-// ===================== ANALYTICS MOCK =====================
-function track(event, data) {
-  try {
-    const events = JSON.parse(localStorage.getItem('meemEvents') || '[]');
-    events.push({ event, data, time: Date.now() });
-    localStorage.setItem('meemEvents', JSON.stringify(events.slice(-100)));
-  } catch(e) {}
-}
-
-// Track page views
-const originalGoToPage = goToPage;
-goToPage = function(page) {
-  track('page_view', { page, lang: state.lang });
-  originalGoToPage(page);
-};
-
-const originalOpenReader = openReader;
-openReader = function(mangaId, chapterNum) {
-  track('chapter_open', { mangaId, chapterNum });
-  originalOpenReader(mangaId, chapterNum);
-};
-
-// ===================== INIT =====================
-loadSettings();
-startTour();
-
-
-
-// ===================== IMAGE LAZY LOAD =====================
-const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-const imgObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const img = entry.target;
-      img.classList.add('img-loading');
-      img.onload = () => img.classList.remove('img-loading');
-      imgObserver.unobserve(img);
-    }
-  });
-}, { rootMargin: '50px' });
-lazyImages.forEach(img => imgObserver.observe(img));
-
-// ===================== OFFLINE DETECTION =====================
-window.addEventListener('online', () => toast(state.lang === 'ar' ? 'أنت الآن متصل بالإنترنت' : 'You are back online'));
-window.addEventListener('offline', () => toast(state.lang === 'ar' ? 'فقدت الاتصال بالإنترنت' : 'You are offline'));
-
-// ===================== COPY SHARE LINK =====================
-function copyShareLink(mangaId, chapterNum) {
-  const url = `${window.location.origin}${window.location.pathname}?manga=${mangaId}&ch=${chapterNum}`;
-  navigator.clipboard.writeText(url).then(() => {
-    toast(state.lang === 'ar' ? 'تم نسخ الرابط' : 'Link copied');
-  });
-}
-
-// ===================== BATTERY SAVER MODE =====================
-const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-if (mediaQuery.matches) {
-  document.documentElement.style.setProperty('--animation-duration', '0.01ms');
-}
-
-// ===================== PREFETCH NEXT CHAPTER =====================
-function prefetchNextChapter() {
-  if (!state.currentManga || !state.currentChapter) return;
-  const nextCh = state.currentManga.chapterList.find(c => c.num === state.currentChapter.num + 1);
-  if (nextCh) {
-    const img = new Image();
-    img.src = `https://picsum.photos/seed/${state.currentManga.id}ch${nextCh.num}pg0/800/1200`;
-  }
-}
-
-const originalRenderReader2 = renderReader;
-renderReader = function() {
-  originalRenderReader2();
-  prefetchNextChapter();
-};
-
-// ===================== LAST READ POSITION =====================
-function saveLastRead() {
-  if (!state.currentManga || !state.currentChapter) return;
-  try {
-    localStorage.setItem('meemLastRead', JSON.stringify({
-      mangaId: state.currentManga.id,
-      chapterNum: state.currentChapter.num,
-      page: state.currentPage,
-      time: Date.now()
-    }));
-  } catch(e) {}
-}
-
-window.addEventListener('beforeunload', saveLastRead);
-
-function restoreLastRead() {
-  try {
-    const saved = JSON.parse(localStorage.getItem('meemLastRead') || 'null');
-    if (saved && saved.mangaId) {
-      const manga = mangaData.find(m => m.id === saved.mangaId);
-      if (manga) {
-        console.log('Last read:', manga.titleAr, 'Ch.', saved.chapterNum);
-      }
-    }
-  } catch(e) {}
-}
-restoreLastRead();
-
-</script>
-
-<!-- ===== SETTINGS MODAL ===== -->
-<div class="modal-overlay" id="settingsModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="settingsTitle">Settings</h3>
-      <button class="modal-close" data-action="closeSettings">&#10005;</button>
-    </div>
-    <div class="modal-body">
-      <div class="setting-row">
-        <div>
-          <div class="setting-label" id="rtlLabel">Right-to-left text</div>
-          <div class="setting-desc">تبديل اتجاه القراءة في ال</div>
+        <div class="mt-auto border-t border-gray-100 pt-6 space-y-3 pb-[env(safe-area-inset-bottom)]">
+            <button id="mobile-admin-btn" onclick="toggleMobileNav(); toggleAdminPanel()" class="w-full text-start text-accent font-bold p-3 rounded-xl hover:bg-accent/5 tap-effect hidden"><i class="fa-solid fa-shield-halved me-3 text-lg"></i> <span data-i18n="admin_panel">Admin Panel</span></button>
+            <button onclick="toggleMobileNav(); navigate('login')" class="w-full text-start font-bold text-textSec hover:text-textMain p-3 rounded-xl hover:bg-gray-50 tap-effect"><i class="fa-solid fa-right-from-bracket me-3 text-lg"></i> <span data-i18n="switch_role">Switch Role</span></button>
         </div>
-        <div class="toggle-switch active" id="rtlToggle" data-setting="rtl"></div>
-      </div>
-      <div class="setting-row">
-        <div>
-          <div class="setting-label" id="notificationsLabel">Notifications</div>
-          <div class="setting-desc">Receive notifications when new chapters release</div>
-        </div>
-        <div class="toggle-switch active" id="notifToggle" data-setting="notifications"></div>
-      </div>
-      <div class="setting-row">
-        <div>
-          <div class="setting-label" id="autonextLabel">Auto-advance</div>
-          <div class="setting-desc">Advance to next chapter when finished</div>
-        </div>
-        <div class="toggle-switch" id="autonextToggle" data-setting="autonext"></div>
-      </div>
-      <div class="setting-row">
-        <div>
-          <div class="setting-label" id="commentsLabel">Written Comments</div>
-          <div class="setting-desc">Show comments on pages automatically</div>
-        </div>
-        <div class="toggle-switch active" id="commentsToggle" data-setting="showComments"></div>
-      </div>
     </div>
-  </div>
-</div>
 
-<!-- ===== KEYBOARD SHORTCUTS ===== -->
-<div class="kb-overlay" id="kbOverlay">
-  <div class="kb-panel">
-    <h3 id="kbTitle">Keyboard Shortcuts</h3>
-    <div class="kb-item"><span id="kbNext">الصفحة التالية</span><div class="kb-key"><kbd>&larr;</kbd></div></div>
-    <div class="kb-item"><span id="kbPrev">الصفحة السابقة</span><div class="kb-key"><kbd>&rarr;</kbd></div></div>
-    <div class="kb-item"><span id="kbClose">إغلاق ال</span><div class="kb-key"><kbd>ESC</kbd></div></div>
-    <div class="kb-item"><span id="kbComments">تبديل التعليقات</span><div class="kb-key"><kbd>C</kbd></div></div>
-    <div class="kb-item"><span id="kbSettings">Settings</span><div class="kb-key"><kbd>S</kbd></div></div>
-    <div class="kb-item"><span id="kbZoom">تكبير/تصغير</span><div class="kb-key"><kbd>+</kbd><kbd>-</kbd></div></div>
-  </div>
-</div>
+    <main class="w-full min-h-screen">
+        
+        <section id="view-login" class="view flex min-h-screen items-center justify-center px-4 relative overflow-hidden bg-primary pb-10">
+            <div class="w-full max-w-[420px] bg-card p-8 md:p-10 rounded-[2rem] shadow-modal relative z-10 text-center border border-gray-100">
+                <div class="w-16 h-16 rounded-2xl bg-accent mx-auto flex items-center justify-center text-white text-3xl font-bold font-arabic mb-8 shadow-glow transform rotate-3 hover:rotate-0 transition-transform duration-300">م</div>
+                <h1 class="text-[26px] font-black tracking-tight text-textMain mb-3 uppercase" data-i18n="private_club">PRIVATE READING CLUB</h1>
+                <p class="text-[15px] text-textSec mb-8 font-medium px-4" data-i18n="private_sub">Approval-only access to exclusive manga.</p>
+                
+                <button onclick="showToast(i18n[state.lang]['app_submit'])" class="w-full border-2 border-accent text-accent hover:bg-accent hover:text-white font-bold py-4 rounded-2xl transition-colors mb-8 tap-effect" data-i18n="apply">APPLY FOR MEMBERSHIP</button>
+                
+                <div class="flex items-center gap-4 mb-8 opacity-60">
+                    <div class="h-px bg-gray-300 flex-1"></div>
+                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest" data-i18n="or">OR</span>
+                    <div class="h-px bg-gray-300 flex-1"></div>
+                </div>
 
-<!-- ===== LOADING OVERLAY ===== -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-spinner"></div>
-  <p id="loadingText">جارٍ التحميل...</p>
-</div>
+                <div class="flex flex-col gap-3.5">
+                    <button onclick="login('guest')" class="w-full bg-gray-50 hover:bg-gray-100 text-textMain font-bold py-4 rounded-2xl transition-colors flex items-center justify-between px-6 border border-gray-100 group tap-effect">
+                        <span data-i18n="enter_guest">Enter as Guest</span> <i class="fa-solid fa-lock text-gray-400 text-xs group-hover:text-textMain rtl-flip transition-colors"></i>
+                    </button>
+                    <button onclick="login('member')" class="w-full bg-[#1A1A1A] hover:bg-black text-white font-bold py-4 rounded-2xl transition-colors flex items-center justify-between px-6 shadow-md group tap-effect">
+                        <span data-i18n="enter_member">Enter as Member</span> <i class="fa-solid fa-star text-gray-500 group-hover:text-accent rtl-flip transition-colors"></i>
+                    </button>
+                    <button onclick="login('admin')" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors flex items-center justify-between px-6 shadow-md group tap-effect">
+                        <span data-i18n="enter_admin">Enter as Admin</span> <i class="fa-solid fa-shield text-white/70 group-hover:text-white rtl-flip transition-colors"></i>
+                    </button>
+                </div>
+            </div>
+            <button onclick="toggleLang()" class="absolute bottom-8 text-[11px] font-black font-mono border border-gray-200 px-4 py-2 rounded-xl hover:border-accent hover:text-accent tap-effect transition-colors bg-card" id="login-lang-btn">EN / AR</button>
+        </section>
 
+        <section id="view-hub" class="view pt-[4rem] pb-20">
+            <div class="relative w-full h-[65vh] min-h-[450px] max-h-[700px] bg-reader overflow-hidden cursor-pointer group" onclick="openManga('m1')">
+                <svg class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-[2s] ease-out" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+                    <defs><linearGradient id="hero-grad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#4a3000"/><stop offset="100%" stop-color="#000000"/></linearGradient></defs>
+                    <rect width="1200" height="600" fill="url(#hero-grad)"/>
+                    <path d="M0,600 L400,200 L800,450 L1200,100 L1200,600 Z" fill="#D4AF37" opacity="0.15"/>
+                    <circle cx="800" cy="200" r="150" fill="#FFF" opacity="0.05" filter="blur(30px)"/>
+                </svg>
+                <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent lg:from-primary lg:via-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent rtl:from-transparent rtl:to-black/60"></div>
+                
+                <div class="absolute bottom-0 w-full p-6 md:p-16 max-w-7xl mx-auto start-0 flex flex-col justify-end h-full rtl:right-0 rtl:left-auto pb-12">
+                    <span class="bg-accent text-textMain text-[10px] font-black px-3 py-1.5 rounded-md w-max tracking-widest uppercase mb-5 shadow-glow" data-i18n="exclusive">EXCLUSIVE</span>
+                    <h2 class="t-title text-white mb-4 uppercase drop-shadow-lg" data-i18n="hero_title">SANDS OF ETERNITY</h2>
+                    <p class="text-gray-300 text-[15px] md:text-[17px] font-medium max-w-xl mb-8 line-clamp-2 md:line-clamp-3 leading-relaxed drop-shadow-md" data-i18n="hero_desc">In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.</p>
+                    <button class="bg-white text-textMain font-bold py-4 px-8 rounded-2xl shadow-lg transition-all w-max hover:-translate-y-1 flex items-center gap-3 tap-effect">
+                        <span data-i18n="start_reading">START READING</span> <i class="fa-solid fa-arrow-right rtl-flip text-accent"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-16">
+                <div id="hub-continue-section" class="hidden">
+                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-regular fa-clock text-accent opacity-70"></i> <span data-i18n="continue_reading">Continue Reading</span></h3>
+                    <div class="bleed-scroll">
+                        <div class="flex overflow-x-auto gap-5 pb-6 no-scrollbar snap-x snap-mandatory px-4 sm:px-6 lg:px-0" id="hub-continue-grid"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-fire text-danger opacity-80"></i> <span data-i18n="trending">Trending This Week</span></h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="hub-trending-grid"></div>
+                </div>
+
+                <div>
+                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-bolt text-accent opacity-80"></i> <span data-i18n="new_chapters">New Chapters</span></h3>
+                    <div class="bleed-scroll">
+                        <div class="flex sm:grid sm:grid-cols-3 lg:grid-cols-5 overflow-x-auto gap-4 md:gap-5 pb-6 no-scrollbar snap-x px-4 sm:px-6 lg:px-0" id="hub-new-grid"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-6">
+                        <h3 class="t-section flex items-center gap-3"><i class="fa-solid fa-masks-theater text-gray-400"></i> <span data-i18n="characters">Characters</span></h3>
+                        <button onclick="navigate('characters')" class="text-[13px] font-bold text-textSec hover:text-textMain transition-colors flex items-center tap-effect px-2 py-1"><span data-i18n="all">All</span> <i class="fa-solid fa-arrow-right rtl-flip ms-2 text-xs"></i></button>
+                    </div>
+                    <div class="bleed-scroll">
+                        <div class="flex overflow-x-auto gap-6 pb-6 no-scrollbar snap-x px-4 sm:px-6 lg:px-0" id="hub-characters-grid"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-6">
+                        <h3 class="t-section flex items-center gap-3"><i class="fa-regular fa-comments text-gray-400"></i> <span data-i18n="community">Community Discussions</span></h3>
+                        <button onclick="navigate('forum')" class="text-[13px] font-bold text-textSec hover:text-textMain transition-colors flex items-center tap-effect px-2 py-1"><span data-i18n="forum">Forum</span> <i class="fa-solid fa-arrow-right rtl-flip ms-2 text-xs"></i></button>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5" id="hub-forum-grid"></div>
+                </div>
+            </div>
+
+            <footer class="mt-24 border-t border-gray-200/60 bg-card py-12 px-4">
+                <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-[13px] text-textSec font-semibold">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center font-bold font-arabic text-lg shadow-sm">م</div>
+                        <span class="text-textMain tracking-wide">© 2026 Meem Yaser Studio</span>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-8 uppercase tracking-widest text-[11px]">
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="about">About</a>
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="terms">Terms</a>
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="privacy">Privacy</a>
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="contact">Contact</a>
+                    </div>
+                    <div class="flex gap-4 text-xl">
+                        <a href="#" class="hover:text-accent transition-colors tap-effect w-10 h-10 flex items-center justify-center bg-gray-50 rounded-full"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="hover:text-accent transition-colors tap-effect w-10 h-10 flex items-center justify-center bg-gray-50 rounded-full"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-accent transition-colors tap-effect w-10 h-10 flex items-center justify-center bg-gray-50 rounded-full"><i class="fa-brands fa-discord"></i></a>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+        <section id="view-detail" class="view pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+                <button onclick="navigate('hub')" class="mb-8 text-textSec hover:text-textMain font-bold text-[13px] tracking-widest uppercase flex items-center gap-3 transition-colors tap-effect w-max group py-2">
+                    <i class="fa-solid fa-arrow-left rtl-flip group-hover:-translate-x-1 rtl:group-hover:translate-x-1 transition-transform"></i> <span data-i18n="go_back">GO BACK</span>
+                </button>
+
+                <div class="flex flex-col md:flex-row gap-8 lg:gap-12 mb-20" id="detail-header"></div>
+
+                <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
+                    <div class="flex-1">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 pb-4">
+                            <h3 class="t-section flex items-center gap-3"><i class="fa-solid fa-list-ul text-gray-300"></i> <span data-i18n="chapters">CHAPTERS</span></h3>
+                            <div class="flex gap-1.5 text-[13px] font-bold bg-gray-100/80 p-1.5 rounded-xl flex-wrap">
+                                <button class="px-4 py-2 bg-white shadow-sm rounded-lg text-textMain tap-effect" data-i18n="all">All</button>
+                                <button class="px-4 py-2 text-textSec hover:text-textMain tap-effect rounded-lg hover:bg-gray-200/50 transition-colors" data-i18n="preview">Preview</button>
+                                <button class="px-4 py-2 text-textSec hover:text-textMain tap-effect rounded-lg hover:bg-gray-200/50 transition-colors" data-i18n="locked">Locked</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3" id="detail-chapters-list"></div>
+                    </div>
+
+                    <div class="w-full lg:w-[340px] shrink-0">
+                        <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-masks-theater text-gray-300"></i> <span data-i18n="characters">Characters</span></h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3" id="detail-characters-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-reader" class="view min-h-dvh bg-reader fixed inset-0 z-50 overflow-hidden flex flex-col no-select">
+            
+            <div id="reading-progress-bar" class="fixed top-0 left-0 h-[3px] bg-accent z-[60] shadow-glow" style="width: 20%;"></div>
+
+            <div class="reader-chrome top fixed top-0 w-full glass-panel z-40 flex items-center justify-between px-4 sm:px-6 shadow-sm pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] min-h-[4rem] h-auto border-b border-white/5">
+                <button onclick="exitReader()" class="text-gray-300 hover:text-white font-bold flex items-center gap-3 tap-effect transition-colors relative z-50 cursor-pointer bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full text-sm">
+                    <i class="fa-solid fa-arrow-left rtl-flip"></i> <span data-i18n="exit" class="hidden sm:inline">Exit</span>
+                </button>
+                <div class="text-white font-bold text-center truncate max-w-[50%] text-sm sm:text-[15px] tracking-wide opacity-90 drop-shadow-md" id="reader-title">Ch. 1: The Awakening</div>
+                <button onclick="toggleFullscreen()" class="text-gray-300 hover:text-white tap-effect transition-colors relative z-50 cursor-pointer w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center"><i class="fa-solid fa-expand"></i></button>
+            </div>
+
+            <div class="flex-1 w-full h-full flex items-center justify-center overflow-hidden bg-black" id="reader-container">
+                
+                <div id="reader-disclaimer" class="absolute top-24 left-1/2 -translate-x-1/2 z-30 bg-black/70 backdrop-blur-lg text-gray-300 text-[10px] sm:text-[11px] font-bold px-5 py-2.5 rounded-full border border-white/10 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap transition-opacity duration-500 uppercase tracking-widest">
+                    <i class="fa-solid fa-circle-info text-accent"></i> <span data-i18n="disclaimer">Mock placeholder images used for demonstration.</span>
+                </div>
+
+                <div id="manga-wrapper" class="relative w-full max-w-[800px] h-full flex justify-center items-center">
+                    <div id="svg-container" class="w-full h-full relative flex items-center justify-center"></div>
+                </div>
+            </div>
+
+            <div class="reader-chrome bottom fixed bottom-[calc(2.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 glass-panel border border-white/10 rounded-full px-2 py-2 flex items-center gap-2 z-40 shadow-[0_15px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+                <button onclick="prevPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-left rtl-flip text-lg"></i></button>
+                <div class="text-white font-mono text-[13px] font-bold px-4 text-center tracking-widest bg-black/40 py-2 rounded-full border border-white/5"><span id="reader-curr-page">1</span> <span class="opacity-40 mx-1">/</span> 5</div>
+                <button onclick="nextPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-right rtl-flip text-lg"></i></button>
+            </div>
+        </section>
+
+        <section id="view-characters" class="view pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+                    <h2 class="t-title" data-i18n="characters">Characters</h2>
+                    <select class="bg-card border-2 border-gray-100 text-[13px] font-bold uppercase tracking-widest rounded-xl px-5 py-3 focus:outline-none focus:border-accent outline-none cursor-pointer">
+                        <option value="all" data-i18n="all_manga">All Manga</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6" id="characters-grid-page"></div>
+            </div>
+
+            <div id="char-detail-panel" class="slide-panel fixed top-0 end-0 h-dvh w-full sm:w-[420px] bg-card border-s border-gray-100 z-50 transform translate-x-full rtl:translate-x-0 rtl:-translate-x-full flex flex-col shadow-modal">
+                <div class="h-[4.5rem] flex items-center justify-between px-8 border-b border-gray-100 shrink-0 pt-[env(safe-area-inset-top)]">
+                    <h3 class="font-bold t-card uppercase tracking-widest" data-i18n="profile">Profile</h3>
+                    <button onclick="closeCharPanel()" class="w-10 h-10 rounded-full bg-gray-50 text-gray-500 hover:text-textMain hover:bg-gray-100 flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-8 pb-[calc(2rem+env(safe-area-inset-bottom))]" id="char-detail-content"></div>
+            </div>
+            <div id="char-backdrop" onclick="closeCharPanel()" class="fixed inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-400"></div>
+        </section>
+
+        <section id="view-forum" class="view pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12">
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-10">
+                        <h2 class="t-title" data-i18n="forum">Forum</h2>
+                        <button id="new-thread-btn" onclick="showToast(t('feature_wip'))" class="bg-textMain hover:bg-black text-white font-bold py-3 px-6 rounded-xl transition-colors hidden text-[13px] uppercase tracking-widest shadow-md items-center gap-3 tap-effect"><i class="fa-solid fa-plus"></i> <span data-i18n="new_thread">NEW THREAD</span></button>
+                    </div>
+                    
+                    <div class="flex gap-8 border-b border-gray-200/60 mb-8 overflow-x-auto no-scrollbar font-bold text-[13px] uppercase tracking-widest pb-1">
+                        <button class="pb-3 border-b-[3px] border-accent text-textMain whitespace-nowrap tap-effect px-1" data-i18n="all">All</button>
+                        <button class="pb-3 border-b-[3px] border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors tap-effect px-1" data-i18n="discussions">Discussions</button>
+                        <button class="pb-3 border-b-[3px] border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors tap-effect px-1" data-i18n="theories">Theories</button>
+                        <button class="pb-3 border-b-[3px] border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors tap-effect px-1" data-i18n="fan_art">Fan Art</button>
+                    </div>
+
+                    <div class="flex flex-col gap-4" id="forum-list"></div>
+                </div>
+                <div class="hidden lg:block w-[360px] shrink-0">
+                    <div class="bg-card border border-gray-100 rounded-3xl p-8 sticky top-[5.5rem] shadow-subtle min-h-[400px] flex items-center justify-center transition-all" id="forum-detail">
+                        <div class="text-center text-textSec">
+                            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fa-regular fa-comments text-3xl opacity-40"></i></div>
+                            <p class="text-[15px] font-bold tracking-wide" data-i18n="select_thread">Select a thread to view details</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modal-locked" class="overlay fixed inset-0 z-[100] bg-reader/80 backdrop-blur-md hidden items-center justify-center opacity-0 p-4" onclick="closeModal('modal-locked')">
+        <div class="modal-content w-full max-w-[400px] bg-card border border-gray-100 rounded-[2rem] p-10 text-center shadow-modal transform scale-95" onclick="event.stopPropagation()">
+            <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 text-4xl mx-auto mb-8 shadow-inner">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h2 class="t-section text-textMain mb-3 uppercase tracking-tight" data-i18n="members_only">MEMBERS ONLY</h2>
+            <p class="text-textSec text-[15px] font-medium mb-10 px-2" data-i18n="locked_desc">Apply for membership to unlock.</p>
+            <button onclick="showToast(i18n[state.lang]['app_submit']); closeModal('modal-locked')" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors mb-3 shadow-md tap-effect" data-i18n="apply">APPLY FOR MEMBERSHIP</button>
+            <button onclick="closeModal('modal-locked')" class="w-full text-textSec hover:text-textMain hover:bg-gray-50 font-bold py-4 rounded-2xl transition-colors tap-effect" data-i18n="go_back">GO BACK</button>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="slide-panel fixed inset-0 z-[200] bg-reader text-white transform -translate-y-full overflow-y-auto no-scrollbar">
+        <div class="max-w-7xl mx-auto p-6 sm:p-8 md:p-12 pt-[calc(2rem+env(safe-area-inset-top))] pb-[calc(2rem+env(safe-area-inset-bottom))]">
+            <div class="flex items-center justify-between mb-12 border-b border-gray-800 pb-8">
+                <h2 class="t-section text-accent tracking-widest flex items-center gap-4"><i class="fa-solid fa-shield-halved"></i> <span data-i18n="command_center">COMMAND CENTER</span></h2>
+                <button onclick="toggleAdminPanel()" class="w-12 h-12 rounded-full bg-gray-900 text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl">
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest" data-i18n="storage">STORAGE</p>
+                    <p class="text-3xl font-black font-mono tracking-tight">4.2<span class="text-lg text-gray-500 ms-1">GB</span></p>
+                </div>
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl">
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest" data-i18n="members">MEMBERS</p>
+                    <p class="text-3xl font-black font-mono tracking-tight text-white">142</p>
+                    <p class="text-[10px] text-free mt-2 font-bold uppercase tracking-widest"><i class="fa-solid fa-circle text-[6px] me-1 align-middle"></i> <span data-i18n="active">Active</span></p>
+                </div>
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl">
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest" data-i18n="chapters">CHAPTERS</p>
+                    <p class="text-3xl font-black font-mono tracking-tight">258</p>
+                </div>
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-accent/10 text-8xl"><i class="fa-solid fa-comments"></i></div>
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest relative z-10" data-i18n="comments">COMMENTS</p>
+                    <p class="text-3xl font-black font-mono tracking-tight text-accent relative z-10">1,847</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+                <div>
+                    <h3 class="t-card mb-6 flex items-center gap-3 uppercase tracking-widest text-gray-400"><i class="fa-solid fa-user-clock text-accent"></i> <span data-i18n="pending_approvals">Pending Approvals</span></h3>
+                    <div class="space-y-3" id="admin-approvals"></div>
+                </div>
+                <div class="space-y-10">
+                    <div class="border-2 border-dashed border-gray-700/80 rounded-[2rem] p-12 text-center hover:border-accent hover:bg-[#151515] transition-all cursor-pointer group relative overflow-hidden tap-effect" onclick="simulateUpload(this)">
+                        <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform group-hover:bg-accent group-hover:text-black">
+                            <i class="fa-solid fa-cloud-arrow-up text-xl text-gray-500 group-hover:text-black transition-colors"></i>
+                        </div>
+                        <p class="font-bold text-[15px]" data-i18n="drag_drop">Drag chapter ZIP files here</p>
+                        <p class="text-xs text-gray-500 mt-2 font-mono">Max 50MB</p>
+                        <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gray-800 hidden" id="upload-progress-container"><div class="h-full bg-accent w-0 transition-all duration-[1.5s] ease-out shadow-glow" id="upload-progress-bar"></div></div>
+                    </div>
+                    <div>
+                        <h3 class="t-card mb-6 uppercase tracking-widest text-gray-400" data-i18n="quick_actions">Quick Actions</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="send_notif"><i class="fa-solid fa-bell text-gray-400 w-5 text-center"></i> Send Notification</button>
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="mod_comments"><i class="fa-solid fa-comments text-gray-400 w-5 text-center"></i> Moderate Comments</button>
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="manage_subs"><i class="fa-solid fa-users text-gray-400 w-5 text-center"></i> Manage Subscriptions</button>
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="view_analytics"><i class="fa-solid fa-chart-line text-gray-400 w-5 text-center"></i> View Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // STATE
+        const state = {
+            lang: 'en',
+            role: 'guest', // guest, member, admin
+            view: 'login',
+            mangaId: 'm1',
+            readerPage: 1,
+            uiVisible: true,
+            isPinching: false,
+            pwaShown: false,
+            lastScrollY: 0
+        };
+
+        // DICTIONARY
+        const i18n = {
+            en: {
+                private_club: 'PRIVATE READING CLUB', private_sub: 'Approval-only access to exclusive manga.', apply: 'APPLY FOR MEMBERSHIP', or: 'OR', enter_guest: 'Enter as Guest', enter_member: 'Enter as Member', enter_admin: 'Enter as Admin', browse: 'Browse', forum: 'Forum', characters: 'Characters', switch_role: 'Switch Role', admin_panel: 'Admin Panel', exclusive: 'EXCLUSIVE', hero_title: 'SANDS OF ETERNITY', hero_desc: 'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.', start_reading: 'START READING', continue_reading: 'Continue Reading', trending: 'Trending This Week', new_chapters: 'New Chapters', all: 'All', community: 'Community Discussions', about: 'About', terms: 'Terms', privacy: 'Privacy', contact: 'Contact', go_back: 'GO BACK', chapters: 'CHAPTERS', preview: 'Preview', locked: 'Locked', newest: 'Newest', oldest: 'Oldest', exit: 'Exit', all_manga: 'All Manga', profile: 'Profile', new_thread: 'NEW THREAD', discussions: 'Discussions', theories: 'Theories', fan_art: 'Fan Art', announcements: 'Announcements', select_thread: 'Select a thread to view details.', members_only: 'MEMBERS ONLY', locked_desc: 'This chapter requires membership to access. Apply for membership to unlock.', command_center: 'COMMAND CENTER', storage: 'STORAGE', members: 'MEMBERS', active: 'Active', chapters: 'CHAPTERS', published: 'Published', comments: 'COMMENTS', this_month: 'This month', pending_approvals: 'Pending Approvals', drag_drop: 'Drag chapter ZIP files here', quick_actions: 'Quick Actions', send_notif: 'Send Notification', mod_comments: 'Moderate Comments', manage_subs: 'Manage Subscriptions', view_analytics: 'View Analytics', install_app: 'INSTALL APP', install_desc: 'Add to home screen for the best reading experience', install: 'INSTALL', app_submit: 'Application submitted.', upload_comp: 'Upload Complete', disclaimer: 'Mock placeholder images used for demonstration.', feature_wip: 'Feature coming soon!'
+            },
+            ar: {
+                private_club: 'نادي القراءة الخاص', private_sub: 'وصول حصري للمانجا بعد الموافقة.', apply: 'طلب عضوية', or: 'أو', enter_guest: 'الدخول كزائر', enter_member: 'الدخول كعضو', enter_admin: 'الدخول كمسؤول', browse: 'تصفح', forum: 'المنتدى', characters: 'الشخصيات', switch_role: 'تغيير الدور', admin_panel: 'لوحة الإدارة', exclusive: 'حصري', hero_title: 'رمال الخلود', hero_desc: 'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى.', start_reading: 'ابدأ القراءة', continue_reading: 'متابعة القراءة', trending: 'رائج هذا الأسبوع', new_chapters: 'فصول جديدة', all: 'الكل', community: 'نقاشات المجتمع', about: 'حول', terms: 'الشروط', privacy: 'الخصوصية', contact: 'اتصل بنا', go_back: 'العودة', chapters: 'الفصول', preview: 'معاينة', locked: 'مغلق', newest: 'الأحدث', oldest: 'الأقدم', exit: 'خروج', all_manga: 'كل المانجا', profile: 'الملف الشخصي', new_thread: 'موضوع جديد', discussions: 'نقاشات', theories: 'نظريات', fan_art: 'فنون المعجبين', announcements: 'إعلانات', select_thread: 'اختر موضوعاً لعرض التفاصيل.', members_only: 'للأعضاء فقط', locked_desc: 'يتطلب هذا الفصل عضوية للوصول إليه. قدم طلب عضوية لفتحه.', command_center: 'مركز القيادة', storage: 'التخزين', members: 'الأعضاء', active: 'نشط', chapters: 'الفصول', published: 'منشور', comments: 'التعليقات', this_month: 'هذا الشهر', pending_approvals: 'موافقات معلقة', drag_drop: 'اسحب ملفات الفصول (ZIP) هنا', quick_actions: 'إجراءات سريعة', send_notif: 'إرسال إشعار', mod_comments: 'إدارة التعليقات', manage_subs: 'إدارة الاشتراكات', view_analytics: 'عرض الإحصائيات', install_app: 'تثبيت التطبيق', install_desc: 'أضف إلى الشاشة الرئيسية لأفضل تجربة قراءة', install: 'تثبيت', app_submit: 'تم إرسال الطلب.', upload_comp: 'اكتمل الرفع', disclaimer: 'صور نائبة استخدمت لأغراض التوضيح فقط.', feature_wip: 'هذه الميزة قريباً!'
+            }
+        };
+
+        // MOCK DATA
+        const db = {
+            manga: [
+                { id: 'm1', title: {en:'Sands of Eternity', ar:'رمال الخلود'}, desc: {en:'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards. What mysteries lie within the shifting dunes?', ar:'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى. ما هي الأسرار التي تكمن في الكثبان الرملية المتغيرة؟'}, tags: ['Action','Fantasy'], access: 'exclusive', chs: 45, cover: '#D4AF37' },
+                { id: 'm2', title: {en:'Neon Ghost', ar:'شبح النيون'}, desc: {en:'A cybernetic assassin seeks redemption in a neon-lit metropolis run by rogue AI.', ar:'قاتل إلكتروني يبحث عن الخلاص في مدينة مضاءة بالنيون تديرها ذكاء اصطناعي متمرد.'}, tags: ['Sci-Fi','Thriller'], access: 'locked', chs: 32, cover: '#3B82F6' },
+                { id: 'm3', title: {en:'The Last Calligraphy', ar:'الخط الأخير'}, desc: {en:'The delicate art of calligraphy turns into a lethal weapon in the hands of a grieving master.', ar:'يتحول فن الخط الدقيق إلى سلاح مميت في يد سيد حزين.'}, tags: ['Drama','Historical'], access: 'preview', chs: 28, cover: '#6B7280' },
+                { id: 'm4', title: {en:'Crimson Tide', ar:'المد القرمزي'}, desc: {en:'A gritty detective uncovers a conspiracy that stretches across the seven seas.', ar:'محقق شجاع يكتشف مؤامرة تمتد عبر البحار السبعة.'}, tags: ['Action','Mystery'], access: 'locked', chs: 67, cover: '#EF4444' },
+                { id: 'm5', title: {en:'Echoes of Earth', ar:'أصداء الأرض'}, desc: {en:'Humanity left Earth centuries ago. Now, a small crew returns to see what evolved.', ar:'غادرت البشرية الأرض منذ قرون. الآن، يعود طاقم صغير ليروا ما تطور.'}, tags: ['Sci-Fi','Adventure'], access: 'preview', chs: 15, cover: '#10B981' }
+            ],
+            chars: [
+                { id: 'c1', name: {en:'Amira Hassan', ar:'أميرة حسن'}, manga: 'm1', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'A fierce warrior of the dunes, she wields the dual curved blades with lethal precision.', ar:'محاربة شرسة من الكثبان، تستخدم الشفرات المنحنية المزدوجة بدقة مميتة.'}, color: '#D4AF37' },
+                { id: 'c2', name: {en:'The Navigator', ar:'الملاح'}, manga: 'm1', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A mysterious figure who commands the very sandstorms that plague the outer rim.', ar:'شخصية غامضة تتحكم في العواصف الرملية التي تبتلي الحافة الخارجية.'}, color: '#1A1A1A' },
+                { id: 'c3', name: {en:'Kai', ar:'كاي'}, manga: 'm2', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'Half machine, half ghost. He operates in the shadows of the cyber-city.', ar:'نصف آلة، نصف شبح. يعمل في ظلال المدينة الإلكترونية.'}, color: '#3B82F6' },
+                { id: 'c4', name: {en:'Zara', ar:'زارا'}, manga: 'm2', role: {en:'Supporting', ar:'مساعد'}, bio: {en:'The brilliant hacker who provides Kai with his intel and tech upgrades.', ar:'المخترقة العبقرية التي تزود كاي بالمعلومات وترقيات التكنولوجيا.'}, color: '#8B5CF6' },
+                { id: 'c5', name: {en:'Yusuf', ar:'يوسف'}, manga: 'm3', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'The master penman whose strokes can alter reality itself.', ar:'سيد القلم الذي يمكن أن تغير خطوطه الواقع نفسه.'}, color: '#10B981' },
+                { id: 'c6', name: {en:'Red General', ar:'الجنرال الأحمر'}, manga: 'm4', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A ruthless leader who will stop at nothing to control the crimson fleets.', ar:'قائد لا يرحم لن يتوقف عند أي شيء للسيطرة على الأساطيل القرمزية.'}, color: '#EF4444' }
+            ],
+            threads: [
+                { id: 't1', title: {en:'Chapter 45 Discussion [SPOILERS]', ar:'نقاش الفصل 45 [حرق]'}, author: 'Admin Yaser', role: 'admin', replies: 23, hot: true, pin: true, prev: {en:'Let us talk about that ending... I did not see that betrayal coming at all.', ar:'لنتحدث عن تلك النهاية... لم أتوقع تلك الخيانة على الإطلاق.'} },
+                { id: 't2', title: {en:'Who is the masked figure?', ar:'من هو الشخص المقنع؟'}, author: 'DesertFox', role: 'member', replies: 15, hot: false, pin: false, prev: {en:'I have a solid theory about the events in chapter 12. Hear me out.', ar:'لدي نظرية قوية حول أحداث الفصل 12. اسمعوني.'} },
+                { id: 't3', title: {en:'Fan art: Amira in the dunes', ar:'رسم: أميرة في الكثبان'}, author: 'ArtLover', role: 'member', replies: 8, hot: false, pin: false, prev: {en:'Took me over 15 hours to draw the sand texture correctly!', ar:'استغرق رسمي أكثر من 15 ساعة لرسم نسيج الرمل بشكل صحيح!'} },
+                { id: 't4', title: {en:'New chapter schedule update', ar:'تحديث جدول الفصول'}, author: 'Admin Yaser', role: 'admin', replies: 102, hot: false, pin: true, prev: {en:'We are moving to a weekly release schedule starting next month.', ar:'سننتقل إلى جدول إصدار أسبوعي بدءاً من الشهر المقبل.'} },
+                { id: 't5', title: {en:'Favorite panel so far?', ar:'اللوحة المفضلة حتى الآن؟'}, author: 'Reader99', role: 'member', replies: 31, hot: true, pin: false, prev: {en:'Drop your absolute favorite spreads and panels below.', ar:'ضعوا لوحاتكم المفضلة المطلقة أدناه.'} }
+            ],
+            approvals: [
+                { id: 1, email: 'user1@example.com', date: '2 days ago' },
+                { id: 2, email: 'fan99@manga.net', date: '1 day ago' },
+                { id: 3, email: 'ahmed@studio.ae', date: '5 hours ago' }
+            ]
+        };
+
+        // --- CORE UTILS ---
+        const t = (key) => i18n[state.lang][key] || key;
+        const v = (obj) => obj[state.lang] || obj.en;
+
+        function updateTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (el.tagName === 'INPUT') el.placeholder = t(key);
+                else el.innerText = t(key);
+            });
+            const str = state.lang === 'en' ? '<span class="text-accent">EN</span> / AR' : 'EN / <span class="text-accent">AR</span>';
+            document.getElementById('nav-lang-btn').innerHTML = str;
+            document.getElementById('login-lang-btn').innerHTML = str;
+        }
+
+        function toggleLang() {
+            document.body.classList.add('lang-fade-out');
+            
+            setTimeout(() => {
+                state.lang = state.lang === 'en' ? 'ar' : 'en';
+                document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.lang = state.lang;
+                updateTranslations();
+                renderDynamic();
+                
+                requestAnimationFrame(() => {
+                    setTimeout(() => document.body.classList.remove('lang-fade-out'), 50);
+                });
+            }, 300);
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-[#1A1A1A] text-white px-6 py-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.3)] text-[13px] font-bold flex items-center gap-4 toast-animate pointer-events-auto border border-white/10';
+            toast.innerHTML = `<i class="fa-solid fa-check text-accent text-lg"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translate(-50%, 20px) scale(0.95)'; setTimeout(()=>toast.remove(),400); }, 3000);
+        }
+
+        // --- NAVIGATION & SCROLL ---
+        window.addEventListener('scroll', () => {
+            if(state.view !== 'hub' && state.view !== 'detail' && state.view !== 'forum' && state.view !== 'characters') return;
+            const nav = document.getElementById('navbar');
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 100 && currentScrollY > state.lastScrollY) {
+                nav.classList.add('nav-hidden'); // Scroll Down -> Hide
+            } else {
+                nav.classList.remove('nav-hidden'); // Scroll Up -> Show
+            }
+            state.lastScrollY = currentScrollY;
+        }, { passive: true });
+
+        function login(role) {
+            state.role = role;
+            const rTxt = role === 'admin' ? 'Admin' : (role === 'member' ? 'Member' : 'Guest');
+            document.getElementById('nav-avatar').innerHTML = role === 'admin' ? '<i class="fa-solid fa-shield"></i>' : (role === 'member' ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-solid fa-user"></i>');
+            document.getElementById('nav-avatar').className = `w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-sm ring-2 ring-transparent group-hover:ring-gray-200 transition-all ${role === 'admin' ? 'bg-accent' : (role === 'member' ? 'bg-[#1A1A1A]' : 'bg-gray-400')}`;
+            document.getElementById('nav-user-name').innerText = rTxt;
+            document.getElementById('nav-user-role').innerText = role;
+            
+            const adminBtns = [document.getElementById('nav-admin-btn'), document.getElementById('mobile-admin-btn')];
+            adminBtns.forEach(btn => role === 'admin' ? btn.classList.remove('hidden') : btn.classList.add('hidden'));
+
+            navigate('hub');
+
+            if(!state.pwaShown) {
+                state.pwaShown = true;
+                setTimeout(() => {
+                    if(state.view === 'hub') {
+                        const pt = document.getElementById('pwa-toast');
+                        pt.classList.remove('hidden');
+                        setTimeout(() => pt.classList.remove('translate-y-32', 'opacity-0'), 10);
+                    }
+                }, 3000);
+            }
+        }
+
+        function dismissPwa() {
+            const pt = document.getElementById('pwa-toast');
+            pt.classList.add('translate-y-32', 'opacity-0');
+            setTimeout(() => pt.classList.add('hidden'), 500);
+        }
+
+        function toggleMobileNav() {
+            const menu = document.getElementById('mobile-nav');
+            const isHidden = menu.classList.contains('translate-x-full') || menu.classList.contains('-translate-x-full');
+            if(isHidden) {
+                menu.classList.remove('translate-x-full', '-translate-x-full');
+            } else {
+                menu.classList.add(state.lang === 'ar' ? '-translate-x-full' : 'translate-x-full');
+            }
+        }
+
+        function navigate(viewId) {
+            if(state.view === 'reader') {
+                document.body.classList.remove('is-reader');
+            }
+
+            document.querySelectorAll('.view').forEach(v => {
+                v.classList.remove('active');
+            });
+            
+            const target = document.getElementById(`view-${viewId}`);
+            target.classList.add('active');
+            state.view = viewId;
+            window.scrollTo(0,0);
+            state.lastScrollY = 0;
+
+            const nav = document.getElementById('navbar');
+            if(viewId === 'login' || viewId === 'reader') nav.classList.add('hidden');
+            else {
+                nav.classList.remove('hidden', 'nav-hidden');
+            }
+
+            if(viewId === 'reader') {
+                document.body.classList.add('is-reader');
+                state.uiVisible = true;
+                document.getElementById('view-reader').classList.remove('reader-idle');
+                updateReaderProgress();
+            }
+
+            renderDynamic();
+        }
+
+        function openManga(id) {
+            state.mangaId = id;
+            navigate('detail');
+        }
+
+        function readChapter(num, status) {
+            if((status === 'locked' || status === 'premium') && state.role === 'guest') {
+                showModal('modal-locked');
+                return;
+            }
+            if(status === 'locked' && state.role === 'member') {
+                showModal('modal-locked');
+                return;
+            }
+            state.readerPage = 1;
+            navigate('reader');
+        }
+
+        // --- MODALS & PANELS ---
+        function showModal(id) {
+            const m = document.getElementById(id);
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            setTimeout(() => {
+                m.classList.remove('opacity-0', 'pointer-events-none');
+                m.querySelector('.modal-content').classList.remove('scale-95');
+            }, 10);
+        }
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            m.classList.add('opacity-0', 'pointer-events-none');
+            m.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
+        }
+
+        function toggleAdminPanel() {
+            const p = document.getElementById('admin-panel');
+            if(p.classList.contains('-translate-y-full')) {
+                p.classList.remove('-translate-y-full');
+                document.body.style.overflow = 'hidden';
+                renderAdminApprovals();
+            } else {
+                p.classList.add('-translate-y-full');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function renderAdminApprovals() {
+            document.getElementById('admin-approvals').innerHTML = db.approvals.map(a => `
+                <div class="flex justify-between items-center p-5 bg-[#151515] border border-gray-800 rounded-2xl hover:bg-gray-900 transition-colors group" id="appr-${a.id}">
+                    <div><p class="text-[13px] font-bold text-white">${a.email}</p><p class="text-[10px] text-gray-500 font-mono mt-1 uppercase tracking-widest">${a.date}</p></div>
+                    <div class="flex gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                        <button onclick="resolveAppr(${a.id}, 'Approved')" class="w-10 h-10 bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black rounded-xl flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-check"></i></button>
+                        <button onclick="resolveAppr(${a.id}, 'Denied')" class="w-10 h-10 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-[13px] text-gray-500 font-bold p-4">No pending approvals.</p>';
+        }
+        
+        function resolveAppr(id, st) {
+            db.approvals = db.approvals.filter(x => x.id !== id);
+            renderAdminApprovals();
+            showToast(`User ${st}`);
+        }
+
+        function simulateUpload(el) {
+            const cont = document.getElementById('upload-progress-container');
+            const bar = document.getElementById('upload-progress-bar');
+            cont.classList.remove('hidden');
+            setTimeout(() => bar.style.width = '100%', 50);
+            setTimeout(() => {
+                showToast(t('upload_comp'));
+                cont.classList.add('hidden');
+                bar.style.width = '0';
+            }, 1550);
+        }
+
+        // --- RENDERERS ---
+        function renderDynamic() {
+            if(state.view === 'hub') renderHub();
+            if(state.view === 'detail') renderDetail();
+            if(state.view === 'reader') renderReaderPage();
+            if(state.view === 'characters') renderCharacters();
+            if(state.view === 'forum') renderForum();
+        }
+
+        function getCover(color) {
+            return `<svg class="w-full h-full object-cover opacity-80 transition-transform duration-700 ease-out" viewBox="0 0 400 600"><rect width="400" height="600" fill="${color}"/><path d="M0,600 L200,300 L400,500 L400,600 Z" fill="#000" opacity="0.25"/><circle cx="200" cy="200" r="100" fill="#FFF" opacity="0.08" filter="blur(10px)"/></svg>`;
+        }
+
+        function getBadge(acc) {
+            if(acc === 'exclusive') return `<span class="bg-accent text-[#1A1A1A] text-[9px] font-black px-2.5 py-1 rounded-md tracking-widest uppercase shadow-sm"><i class="fa-solid fa-crown me-1 text-[8px]"></i>${t('exclusive')}</span>`;
+            if(acc === 'preview') return `<span class="bg-gray-600 text-white text-[9px] font-black px-2.5 py-1 rounded-md tracking-widest uppercase shadow-sm">${t('preview')}</span>`;
+            return `<span class="bg-gray-800 text-white text-[9px] font-black px-2.5 py-1 rounded-md tracking-widest uppercase shadow-sm"><i class="fa-solid fa-lock me-1 text-[8px]"></i>${t('locked')}</span>`;
+        }
+
+        function renderHub() {
+            if(state.role !== 'guest') {
+                document.getElementById('hub-continue-section').classList.remove('hidden');
+                document.getElementById('hub-continue-grid').innerHTML = ['m1','m2'].map(id => {
+                    const m = db.manga.find(x => x.id === id);
+                    return `
+                    <div class="min-w-[280px] sm:min-w-[320px] bg-card rounded-3xl p-4 shadow-subtle hover:shadow-hover cursor-pointer border border-gray-100 flex gap-5 snap-start transition-shadow group tap-effect" onclick="openManga('${id}')">
+                        <div class="w-20 h-28 rounded-2xl bg-gray-200 overflow-hidden shrink-0 relative group-hover:scale-[1.02] transition-transform">${getCover(m.cover)}</div>
+                        <div class="flex-1 flex flex-col justify-center min-w-0 py-1">
+                            <h4 class="font-bold text-[15px] truncate group-hover:text-accent transition-colors">${v(m.title)}</h4>
+                            <p class="text-[13px] font-medium text-textSec mt-1">Ch. 12 / ${m.chs}</p>
+                            <div class="w-full h-2 bg-gray-100 rounded-full mt-4 overflow-hidden"><div class="h-full bg-accent rounded-full w-[45%]"></div></div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } else {
+                document.getElementById('hub-continue-section').classList.add('hidden');
+            }
+
+            document.getElementById('hub-trending-grid').innerHTML = db.manga.map(m => `
+                <div class="group cursor-pointer tap-effect" onclick="openManga('${m.id}')">
+                    <div class="w-full aspect-[2/3] bg-gray-200 rounded-[2rem] overflow-hidden mb-4 relative shadow-subtle group-hover:shadow-hover group-hover:-translate-y-1.5 transition-all">
+                        ${getCover(m.cover)}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 end-4">${getBadge(m.access)}</div>
+                        <div class="absolute bottom-4 start-4 end-4 flex justify-end items-center text-white">
+                            <div class="text-[10px] font-black text-white/90 uppercase tracking-widest drop-shadow-md">${m.chs} CH</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-[16px] truncate group-hover:text-accent transition-colors px-1">${v(m.title)}</h3>
+                    <p class="text-[13px] text-textSec font-medium mt-1 px-1">${m.tags.join(', ')}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('hub-new-grid').innerHTML = [1,2,3,4,5].map((i, idx) => {
+                const m = db.manga[idx % db.manga.length];
+                return `
+                <div class="cursor-pointer group tap-effect min-w-[140px] sm:min-w-0 snap-start" onclick="openManga('${m.id}')">
+                    <div class="w-full aspect-square rounded-[1.5rem] overflow-hidden bg-gray-200 mb-3 relative shadow-subtle group-hover:shadow-hover group-hover:-translate-y-1 transition-all">
+                        ${getCover(m.cover)}
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                        <div class="absolute top-3 start-3 bg-danger text-white text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest shadow-sm">NEW</div>
+                        <div class="absolute inset-0 flex items-center justify-center font-black text-white/90 text-2xl group-hover:scale-110 transition-transform drop-shadow-lg">CH ${m.chs + i}</div>
+                    </div>
+                    <h4 class="font-bold text-[14px] truncate group-hover:text-accent transition-colors px-1">${v(m.title)}</h4>
+                    <p class="text-[10px] text-textSec mt-1 px-1 font-bold uppercase tracking-widest">${i*2}H AGO</p>
+                </div>`;
+            }).join('');
+
+            document.getElementById('hub-characters-grid').innerHTML = db.chars.map(c => `
+                <div class="flex flex-col items-center cursor-pointer group snap-start w-20 shrink-0 tap-effect" onclick="navigate('characters')">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3 shadow-subtle group-hover:shadow-hover transition-all transform group-hover:scale-105 border-[3px] border-white group-hover:border-accent relative flex items-center justify-center text-3xl font-black text-white" style="background-color: ${c.color}">
+                        ${v(c.name).charAt(0)}
+                    </div>
+                    <div class="font-bold text-[13px] text-center line-clamp-1 w-full group-hover:text-accent transition-colors px-1">${v(c.name)}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('hub-forum-grid').innerHTML = db.threads.slice(0,4).map(th => `
+                <div class="bg-card p-6 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover transition-all cursor-pointer group flex flex-col h-full tap-effect" onclick="navigate('forum')">
+                    <div class="flex justify-between items-start mb-3 gap-3">
+                        <h4 class="font-bold text-[15px] line-clamp-2 flex-1 group-hover:text-accent transition-colors leading-snug">${v(th.title)}</h4>
+                        <div class="flex gap-1.5 shrink-0 pt-0.5">
+                            ${th.pin ? '<i class="fa-solid fa-thumbtack text-accent text-[11px] transform -rotate-45"></i>' : ''}
+                            ${th.hot ? '<i class="fa-solid fa-fire text-danger text-[11px]"></i>' : ''}
+                        </div>
+                    </div>
+                    <p class="text-[13px] text-textSec line-clamp-2 mb-5 flex-1 leading-relaxed">${v(th.prev)}</p>
+                    <div class="flex justify-between items-center text-[10px] text-gray-400 font-bold tracking-widest uppercase mt-auto border-t border-gray-50 pt-4">
+                        <span class="flex items-center gap-2"><div class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] text-white shadow-sm ${th.role==='admin'?'bg-accent':'bg-gray-400'}">${th.author.charAt(0)}</div> <span class="${th.role==='admin'?'text-accent':''}">${th.author}</span></span>
+                        <span class="flex items-center gap-1.5 hover:text-accent transition-colors"><i class="fa-regular fa-comment rtl-flip"></i>${th.replies}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDetail() {
+            const m = db.manga.find(x => x.id === state.mangaId) || db.manga[0];
+            
+            document.getElementById('detail-header').innerHTML = `
+                <div class="w-full md:w-[35%] lg:w-[30%] shrink-0">
+                    <div class="w-full aspect-[2/3] rounded-[2.5rem] overflow-hidden shadow-modal bg-gray-200 relative group">
+                        ${getCover(m.cover)}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-6 left-0 right-0 flex justify-center">
+                            <span class="bg-black/50 backdrop-blur-md text-white text-[10px] font-black px-4 py-2 rounded-full tracking-widest uppercase border border-white/10 group-hover:scale-105 transition-transform">VOL 1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col justify-center pt-4 md:pt-0">
+                    <div class="flex gap-2 mb-5 flex-wrap">
+                        ${m.tags.map(t => `<span class="bg-gray-100 text-textMain px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest">${t}</span>`).join('')}
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-[64px] font-black mb-3 uppercase tracking-tight leading-[1.1]">${v(m.title)}</h1>
+                    <p class="text-[11px] font-black text-accent mb-8 uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-pen-nib"></i> BY MEEM YASER STUDIO</p>
+                    <p class="t-body text-gray-600 leading-relaxed max-w-2xl mb-10 font-medium text-[15px] sm:text-[16px]">${v(m.desc)}</p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="readChapter(1, 'preview')" class="bg-accent hover:bg-yellow-600 text-[#1A1A1A] font-black py-4 px-8 rounded-2xl shadow-[0_10px_25px_rgba(212,175,55,0.4)] transition-all flex items-center gap-3 tap-effect">
+                            ${t('start_reading')} <i class="fa-solid fa-arrow-right rtl-flip"></i>
+                        </button>
+                        <button onclick="showToast(t('feature_wip'))" class="bg-white border-2 border-gray-200 text-textMain hover:bg-gray-50 hover:border-gray-300 font-bold px-6 rounded-2xl transition-all flex items-center justify-center tap-effect"><i class="fa-solid fa-share-nodes text-lg"></i></button>
+                    </div>
+                </div>
+            `;
+
+            let chHtml = '';
+            for(let i=20; i>=1; i--) {
+                let st = i <= 3 ? 'preview' : 'locked';
+
+                let bCls = st==='preview' ? 'bg-gray-100 text-textMain' : 'bg-gray-50 border border-gray-100 text-gray-400';
+                let bTxt = st==='preview' ? t('preview') : `<i class="fa-solid fa-lock me-1 text-[8px]"></i>${t('members_only')}`;
+                let hoverCls = st==='preview' ? 'hover:border-accent hover:shadow-subtle' : 'hover:bg-gray-50';
+
+                chHtml += `
+                <div class="flex items-center justify-between p-4 sm:p-5 border border-gray-100 rounded-2xl bg-card transition-all cursor-pointer group tap-effect ${hoverCls}" onclick="readChapter(${i}, '${st}')">
+                    <div class="flex items-center gap-4 sm:gap-5">
+                        <div class="w-14 h-14 bg-gray-50 rounded-[14px] flex items-center justify-center font-mono font-bold text-textSec text-xl group-hover:text-accent group-hover:bg-accent/5 transition-colors shrink-0 shadow-inner">${i}</div>
+                        <div>
+                            <h4 class="font-bold text-[15px] group-hover:text-accent transition-colors">Chapter ${i}${i===1?' : The Awakening':''}</h4>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-2"><i class="fa-regular fa-calendar"></i> Oct ${i}, 2026 <span class="w-1 h-1 rounded-full bg-gray-300"></span> 24 Pages</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1.5 rounded-lg text-[9px] font-black tracking-widest uppercase flex items-center ${bCls}">${bTxt}</span>
+                </div>`;
+            }
+            document.getElementById('detail-chapters-list').innerHTML = chHtml;
+
+            const chars = db.chars.filter(c => c.manga === m.id);
+            document.getElementById('detail-characters-grid').innerHTML = chars.map(c => `
+                <div class="bg-card p-4 rounded-2xl border border-gray-100 flex items-center gap-4 cursor-pointer hover:border-accent hover:shadow-subtle transition-all group tap-effect" onclick="navigate('characters')">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl shrink-0 group-hover:scale-110 transition-transform shadow-sm border-[3px] border-white ring-1 ring-gray-100" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
+                    <div class="min-w-0">
+                        <div class="font-bold text-[14px] truncate group-hover:text-accent transition-colors">${v(c.name)}</div>
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1.5 truncate">${v(c.role)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCharacters() {
+            document.getElementById('characters-grid-page').innerHTML = db.chars.map(c => `
+                <div class="bg-card p-6 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover hover:border-accent/30 transition-all cursor-pointer text-center flex flex-col items-center group tap-effect" onclick="openCharDetail('${c.id}')">
+                    <div class="w-[100px] h-[100px] rounded-full flex items-center justify-center text-white text-4xl font-black mb-5 shadow-sm border-[4px] border-white ring-1 ring-gray-100 group-hover:scale-110 group-hover:rotate-3 transition-transform" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
+                    <h4 class="font-bold text-[16px] mb-1.5 group-hover:text-accent transition-colors leading-tight px-1">${v(c.name)}</h4>
+                    <p class="text-[13px] font-medium text-textSec mb-5 truncate w-full px-1">${v(db.manga.find(m=>m.id===c.manga).title)}</p>
+                    <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg bg-gray-50 text-gray-500 border border-gray-100">${v(c.role)}</span>
+                </div>
+            `).join('');
+        }
+
+        function openCharDetail(id) {
+            const c = db.chars.find(x => x.id === id);
+            const m = db.manga.find(x => x.id === c.manga);
+            
+            document.getElementById('char-detail-content').innerHTML = `
+                <div class="w-36 h-36 mx-auto rounded-full flex items-center justify-center text-white text-6xl font-black mb-6 shadow-modal border-4 border-card ring-1 ring-gray-100" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
+                <h2 class="text-3xl font-black text-center mb-3 leading-tight tracking-tight">${v(c.name)}</h2>
+                <div class="flex justify-center mb-10">
+                    <span class="bg-accent/10 text-accent text-[11px] font-black px-4 py-1.5 rounded-lg uppercase tracking-widest border border-accent/20">${v(c.role)}</span>
+                </div>
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-[11px] font-black text-gray-400 mb-4 uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-3"><i class="fa-solid fa-book-open"></i> Appears In</h4>
+                        <div class="flex items-center gap-4 bg-gray-50/80 p-4 rounded-2xl border border-gray-100 cursor-pointer hover:border-accent hover:bg-white transition-colors group tap-effect shadow-subtle" onclick="closeCharPanel(); setTimeout(()=>openManga('${c.manga}'), 300)">
+                            <div class="w-12 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0 group-hover:scale-105 transition-transform shadow-sm">${getCover(m.cover)}</div>
+                            <div>
+                                <span class="font-bold text-[15px] group-hover:text-accent transition-colors block mb-1">${v(m.title)}</span>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">View Manga <i class="fa-solid fa-arrow-right rtl-flip ml-1"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-[11px] font-black text-gray-400 mb-4 uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-3"><i class="fa-solid fa-clipboard-user"></i> Biography</h4>
+                        <p class="text-[15px] leading-relaxed text-textMain font-medium">${v(c.bio)}</p>
+                    </div>
+                </div>
+            `;
+            
+            const panel = document.getElementById('char-detail-panel');
+            const backdrop = document.getElementById('char-backdrop');
+            panel.classList.remove('translate-x-full', '-translate-x-full');
+            backdrop.classList.remove('hidden');
+            requestAnimationFrame(() => backdrop.classList.remove('opacity-0'));
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCharPanel() {
+            const panel = document.getElementById('char-detail-panel');
+            const backdrop = document.getElementById('char-backdrop');
+            panel.classList.add(state.lang === 'ar' ? '-translate-x-full' : 'translate-x-full');
+            backdrop.classList.add('opacity-0');
+            setTimeout(() => { backdrop.classList.add('hidden'); document.body.style.overflow = ''; }, 400);
+        }
+
+        function renderForum() {
+            document.getElementById('new-thread-btn').style.display = state.role !== 'guest' ? 'flex' : 'none';
+            document.getElementById('forum-list').innerHTML = db.threads.map(th => `
+                <div class="bg-card p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover transition-all cursor-pointer group flex flex-col sm:flex-row gap-5 sm:gap-6 items-start tap-effect" onclick="document.getElementById('forum-detail').innerHTML = '<div class=\\'text-center py-10 w-full\\'><h3 class=\\'font-bold text-xl mb-3 leading-snug px-4\\'>${v(th.title).replace(/'/g,"\\'")}</h3><p class=\\'text-[13px] text-textSec font-medium\\'>Loading full thread...</p></div>'">
+                    <div class="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 shrink-0 group-hover:bg-accent group-hover:text-white transition-colors border border-gray-100 shadow-inner group-hover:shadow-glow"><i class="fa-regular fa-comment text-xl"></i></div>
+                    <div class="flex-1 pt-1 w-full">
+                        <div class="flex gap-2.5 mb-2 items-center flex-wrap">
+                            ${th.pin ? '<span class="bg-accent/10 text-accent p-1.5 rounded-lg text-[10px]"><i class="fa-solid fa-thumbtack transform -rotate-45"></i></span>' : ''}
+                            ${th.hot ? '<span class="bg-danger/10 text-danger p-1.5 rounded-lg text-[10px]"><i class="fa-solid fa-fire"></i></span>' : ''}
+                            <h3 class="font-bold text-[16px] group-hover:text-accent transition-colors leading-snug tracking-tight">${v(th.title)}</h3>
+                        </div>
+                        <p class="text-[14px] text-gray-600 mb-5 line-clamp-1 font-medium">${v(th.prev)}</p>
+                        <div class="flex flex-wrap gap-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest items-center">
+                            <span class="flex items-center gap-2"><div class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] text-white shadow-sm ${th.role==='admin'?'bg-accent':'bg-[#1A1A1A]'}">${th.author.charAt(0)}</div> <span class="${th.role==='admin'?'text-accent':''}">${th.author}</span></span>
+                            <span class="w-1 h-1 rounded-full bg-gray-200"></span>
+                            <span>2 HOURS AGO</span>
+                            <span class="w-1 h-1 rounded-full bg-gray-200"></span>
+                            <span class="text-textSec group-hover:text-accent transition-colors"><i class="fa-regular fa-comment me-1.5 rtl-flip"></i> ${th.replies} REPLIES</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- READER LOGIC ---
+        let scale = 1;
+        let panX = 0, panY = 0;
+        let startX = 0, startY = 0;
+        let lastX = 0, lastY = 0;
+        let isPanning = false;
+        let isSwiping = false;
+        let initialPinchDist = null;
+        let initialScale = 1;
+        let lastTapTime = 0;
+        let touchStartTime = 0;
+        const wrap = document.getElementById('manga-wrapper');
+        const readerCont = document.getElementById('reader-container');
+
+        function getSVGPage(p) {
+            const pages = [
+                'https://images.unsplash.com/photo-1509316153822-d2d81f247a06?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1542359649-31e03cd4d909?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=1600&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1682687982501-1e5898cb8f4b?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100'
+            ];
+            
+            const isSpread = p === 4;
+            const cls = isSpread ? "manga-page-svg manga-spread opacity-0 transition-opacity duration-300" : "manga-page-svg opacity-0 transition-opacity duration-300";
+            const url = pages[p-1] || pages[0];
+            
+            return `<img src="${url}" class="${cls}" alt="Page ${p}" draggable="false" onload="this.classList.remove('opacity-0')" />`;
+        }
+
+        function resetZoom() {
+            scale = 1; panX = 0; panY = 0;
+            wrap.style.transform = `translate(0px, 0px) scale(1)`;
+        }
+        
+        function updateReaderProgress() {
+            const bar = document.getElementById('reading-progress-bar');
+            if(bar) bar.style.width = `${(state.readerPage / 5) * 100}%`;
+        }
+
+        function renderReaderPage(direction = 0) {
+            document.getElementById('reader-curr-page').innerText = state.readerPage;
+            updateReaderProgress();
+            
+            const cont = document.getElementById('svg-container');
+            
+            // Slide animation starting position
+            let startTranslate = '0px';
+            if (direction !== 0) {
+                let isNext = direction > 0;
+                let moveRight = state.lang === 'ar' ? isNext : !isNext;
+                startTranslate = moveRight ? '30px' : '-30px';
+            }
+
+            cont.style.opacity = '0';
+            cont.style.transform = `translateX(${startTranslate})`;
+            
+            setTimeout(() => {
+                resetZoom();
+                wrap.classList.remove('anim-snap');
+                
+                if (direction !== 0) {
+                    let fromRight = state.lang === 'ar' ? direction < 0 : direction > 0;
+                    let startPos = fromRight ? window.innerWidth : -window.innerWidth;
+                    wrap.style.transform = `translate(${startPos}px, 0px) scale(1)`;
+                    void wrap.offsetWidth; 
+                } else {
+                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
+                }
+
+                cont.innerHTML = getSVGPage(state.readerPage);
+                
+                if (direction !== 0) {
+                    wrap.classList.add('anim-snap');
+                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
+                }
+                
+                if(state.readerPage === 4) wrap.classList.replace('max-w-[800px]', 'max-w-[1600px]');
+                else wrap.classList.replace('max-w-[1600px]', 'max-w-[800px]');
+
+                requestAnimationFrame(() => { 
+                    cont.style.opacity = '1'; 
+                    cont.style.transform = 'translateX(0)';
+                });
+            }, 150);
+        }
+
+        function executePageTurn(isNext) {
+            if(isNext) {
+                if(state.readerPage < 5) { state.readerPage++; renderReaderPage(1); }
+                else { bounceEdge(-1); }
+            } else {
+                if(state.readerPage > 1) { state.readerPage--; renderReaderPage(-1); }
+                else { bounceEdge(1); }
+            }
+        }
+
+        function bounceEdge(dir) {
+            wrap.classList.add('anim-snap');
+            let visualDir = state.lang === 'ar' ? -dir : dir;
+            wrap.style.transform = `translate(${visualDir * 50}px, 0px) scale(1)`;
+            setTimeout(() => { wrap.style.transform = `translate(0px, 0px) scale(1)`; }, 250);
+        }
+
+        function prevPage(e) { if(e) e.stopPropagation(); executePageTurn(false); }
+        function nextPage(e) { if(e) e.stopPropagation(); executePageTurn(true); }
+        function exitReader() { navigate('detail'); if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
+
+        function toggleFullscreen() {
+            if(!document.fullscreenElement) {
+                const promise = document.documentElement.requestFullscreen();
+                if (promise) {
+                    promise.catch(() => {
+                        showToast(state.lang === 'en' ? 'Fullscreen not supported in preview environment' : 'وضع ملء الشاشة غير مدعوم هنا');
+                    });
+                }
+            }
+            else document.exitFullscreen().catch(()=>{});
+        }
+
+        function toggleChrome() {
+            state.uiVisible = !state.uiVisible;
+            const view = document.getElementById('view-reader');
+            if (state.uiVisible) view.classList.remove('reader-idle');
+            else view.classList.add('reader-idle');
+        }
+
+        // --- MOBILE TOUCH LOGIC ---
+        readerCont.addEventListener('touchstart', e => {
+            if(state.view !== 'reader') return;
+            wrap.classList.remove('anim-snap');
+
+            if(e.touches.length === 1) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                lastX = startX; lastY = startY;
+                isPanning = scale > 1;
+                isSwiping = scale === 1;
+                touchStartTime = Date.now();
+
+                // Double Tap Zoom
+                if(touchStartTime - lastTapTime < 300) {
+                    e.preventDefault();
+                    wrap.classList.add('anim-snap');
+                    if(scale > 1) resetZoom();
+                    else {
+                        scale = 2; 
+                        wrap.style.transform = `translate(0px, 0px) scale(${scale})`;
+                    }
+                    lastTapTime = 0;
+                    isSwiping = false; isPanning = false;
+                    return;
+                }
+                lastTapTime = touchStartTime;
+
+            } else if (e.touches.length === 2) {
+                isPanning = false; isSwiping = false;
+                initialPinchDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                initialScale = scale;
+            }
+        }, {passive: false});
+
+        readerCont.addEventListener('touchmove', e => {
+            if(state.view !== 'reader') return;
+            e.preventDefault(); 
+            
+            if (e.touches.length === 2 && initialPinchDist) {
+                let currentDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                scale = Math.max(1, Math.min(initialScale * (currentDist / initialPinchDist), 4));
+                wrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+            } else if (e.touches.length === 1) {
+                let cx = e.touches[0].clientX;
+                let cy = e.touches[0].clientY;
+                let dx = cx - lastX;
+                let dy = cy - lastY;
+                lastX = cx; lastY = cy;
+
+                if (isPanning) {
+                    panX += dx; panY += dy;
+                    wrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+                } else if (isSwiping) {
+                    let swipeDist = cx - startX;
+                    wrap.style.transform = `translate(${swipeDist}px, 0px) scale(1)`;
+                }
+            }
+        }, {passive: false});
+
+        readerCont.addEventListener('touchend', e => {
+            if(state.view !== 'reader') return;
+            if(e.touches.length > 0) return; 
+
+            // Snap Pan Bounds
+            if (scale > 1) {
+                wrap.classList.add('anim-snap');
+                let maxPanX = (window.innerWidth * scale - window.innerWidth) / 2;
+                let maxPanY = (window.innerHeight * scale - window.innerHeight) / 2;
+                panX = Math.max(-maxPanX, Math.min(maxPanX, panX));
+                panY = Math.max(-maxPanY, Math.min(maxPanY, panY));
+                wrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+            }
+
+            // Handle Tap or Swipe Release
+            if (isSwiping) {
+                let cx = e.changedTouches[0].clientX;
+                let cy = e.changedTouches[0].clientY;
+                let diffX = cx - startX;
+                let diffY = cy - startY;
+                let timeDiff = Date.now() - touchStartTime;
+                isSwiping = false;
+
+                // Taps
+                if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10 && timeDiff < 300) {
+                    wrap.classList.add('anim-snap');
+                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
+                    
+                    if(e.target.closest('button') || e.target.closest('.reader-chrome')) return;
+                    
+                    let w = window.innerWidth;
+                    let isAr = state.lang === 'ar';
+                    if (cx < w * 0.3) { executePageTurn(isAr ? true : false); }
+                    else if (cx > w * 0.7) { executePageTurn(isAr ? false : true); }
+                    else { toggleChrome(); }
+                    return;
+                }
+
+                // Swipe Turns
+                if (Math.abs(diffX) > 60) {
+                    let isNext = state.lang === 'ar' ? (diffX > 0) : (diffX < 0);
+                    executePageTurn(isNext);
+                } else {
+                    wrap.classList.add('anim-snap');
+                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
+                }
+            }
+            initialPinchDist = null;
+        });
+
+        document.addEventListener('keydown', e => {
+            if(state.view !== 'reader') return;
+            if(e.key === 'ArrowRight') state.lang==='ar'?prevPage():nextPage();
+            if(e.key === 'ArrowLeft') state.lang==='ar'?nextPage():prevPage();
+            if(e.key === 'Escape') exitReader();
+        });
+
+        // INIT
+        updateTranslations();
+        navigate(state.view);
+
+    </script>
 </body>
 </html>
