@@ -1473,5 +1473,91 @@ window.MeemYaser = { version: '1.0.0', MANGA_DATA, openReader, closeReader, togg
 <!-- FINAL: Version info -->
 <div style="display:none" data-version="1.0.0" data-build="2026-04-22"></div>
 
+<!-- BONUS: Extra responsive breakpoints for large tablets -->
+<style>
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .reader-manga-img { max-height: 88vh; }
+  .reader-page-track { gap: 40px; }
+  .chapter-drawer { width: 360px; }
+}
+@media (min-width: 1367px) {
+  .reader-manga-img { max-height: 92vh; }
+  .reader-page-track { gap: 48px; }
+  .chapter-drawer { width: 400px; }
+}
+</style>
+
+<!-- BONUS: Prefers-reduced-motion support -->
+<style>
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+
+<!-- BONUS: Print styles for chapter pages -->
+<style>
+@media print {
+  .reader-chrome, .reader-progress, .chapter-drawer, .comment-panel, .settings-sheet, .notification-toast { display: none !important; }
+  .reader-manga-img { max-height: 100%; page-break-inside: avoid; }
+}
+</style>
+
+<!-- BONUS: Focus-visible polyfill styles -->
+<style>
+:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+</style>
+
+<!-- BONUS: Extra utility JS -->
+<script>
+// Debounce utility for resize events
+function debounce(fn, wait) {
+  let t;
+  return function() {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, arguments), wait);
+  };
+}
+
+// Throttle utility for scroll events
+function throttle(fn, limit) {
+  let inThrottle;
+  return function() {
+    if (!inThrottle) {
+      fn.apply(this, arguments);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// IntersectionObserver helper for lazy images
+const lazyImageObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.dataset.src || img.src;
+      img.classList.remove('lazy');
+      lazyImageObserver.unobserve(img);
+    }
+  });
+}, { rootMargin: '200px' });
+
+// Auto-announce page changes to screen readers
+function announcePage(page) {
+  const live = document.getElementById('ariaLive');
+  if (live) live.textContent = 'Page ' + page;
+}
+</script>
+
 </body>
 </html>

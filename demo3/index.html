@@ -1425,5 +1425,77 @@ window.MeemYaser = { version: '1.0.0', MANGA_DATA, openReader, closeReader, togg
 <!-- FINAL: Version info -->
 <div style="display:none" data-version="1.0.0" data-build="2026-04-22"></div>
 
+<!-- BONUS: Large tablet responsive adjustments -->
+<style>
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .reader-manga-img { max-height: 88vh; }
+  .reader-page-track { gap: 40px; }
+  .chapter-drawer { width: 360px; }
+}
+@media (min-width: 1367px) {
+  .reader-manga-img { max-height: 92vh; }
+  .reader-page-track { gap: 48px; }
+  .chapter-drawer { width: 400px; }
+}
+</style>
+
+<!-- BONUS: Reduced motion support -->
+<style>
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+
+<!-- BONUS: Print styles -->
+<style>
+@media print {
+  .reader-chrome, .reader-progress, .chapter-drawer, .comment-panel, .settings-sheet, .notification-toast { display: none !important; }
+  .reader-manga-img { max-height: 100%; page-break-inside: avoid; }
+}
+</style>
+
+<!-- BONUS: Focus-visible styles -->
+<style>
+:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
+:focus:not(:focus-visible) { outline: none; }
+</style>
+
+<!-- BONUS: Utility JS helpers -->
+<script>
+function debounce(fn, wait) { let t; return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), wait); }; }
+function throttle(fn, limit) { let inThrottle; return function() { if (!inThrottle) { fn.apply(this, arguments); inThrottle = true; setTimeout(() => inThrottle = false, limit); } }; }
+function announcePage(page) { const live = document.getElementById('ariaLive'); if (live) live.textContent = 'Page ' + page; }
+</script>
+
+<!-- BONUS: Extra accessibility roles for reader -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reader = document.querySelector('.reader-container');
+  if (reader) { reader.setAttribute('role', 'main'); reader.setAttribute('aria-label', 'Manga Reader'); }
+  const track = document.querySelector('.reader-page-track');
+  if (track) { track.setAttribute('role', 'list'); }
+  const pages = document.querySelectorAll('.reader-manga-img');
+  pages.forEach((p, i) => { p.setAttribute('role', 'listitem'); p.setAttribute('aria-label', 'Page ' + (i + 1)); });
+});
+</script>
+
+<!-- BONUS: Keyboard shortcut legend (hidden, for reference) -->
+<div style="display:none" data-shortcuts='{"ArrowRight":"Next page","ArrowLeft":"Previous page","Escape":"Close panels","f":"Fullscreen","+":"Zoom in","-":"Zoom out","0":"Reset zoom"}'></div>
+
+<!-- BONUS: Meta viewport helper for older browsers -->
+<meta name="HandheldFriendly" content="true">
+<meta name="MobileOptimized" content="width">
+<meta name="format-detection" content="telephone=no">
+
+<!-- BONUS: PWA manifest link placeholder -->
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWVlbSBZYXNlciBTdHVkaW8iLCJzaG9ydF9uYW1lIjoiUmVzdGxlc3MgV29ybGRzIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwQTBBMEEiLCJ0aGVtZV9jb2xvciI6IiMwQTBBMEEifQ==">
+
+<!-- BONUS: Apple touch icon placeholder -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect fill='%230A0A0A' width='180' height='180'/%3E%3Ctext x='90' y='110' font-size='80' text-anchor='middle' fill='%23D4AF37'%3E%3C/text%3E%3C/svg%3E">
+
 </body>
 </html>
