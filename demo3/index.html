@@ -1121,8 +1121,8 @@ function toast(m){const c=$('#toastContainer'),el=document.createElement('div');
 function renderMangaGrid(){
   const g=$('#mangaGrid'),sizes=['bento-large','bento-mid','bento-small','bento-tall','bento-mid'];
   g.innerHTML=mangaData.map((m,i)=>{
-    if(i===0) return `<div class="bento-card ${sizes[i]} stagger-item" data-id="${m.id}" data-action="openManga"><div class="bezel-outer"><div class="bezel-inner"><img src="${m.image}" alt="${state.lang==='ar'?m.titleAr:m.titleEn}" loading="lazy"><div class="card-body"><h3>${state.lang==='ar'?m.titleAr:m.titleEn}</h3><div class="meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span style="margin:0 0.3rem">·</span><span>${m.rating} ★</span></div></div></div></div></div>`;
-    return `<div class="bento-card ${sizes[i]} stagger-item" data-id="${m.id}" data-action="openManga"><img src="${m.image}" alt="${state.lang==='ar'?m.titleAr:m.titleEn}" loading="lazy"><div class="card-body"><h3>${state.lang==='ar'?m.titleAr:m.titleEn}</h3><div class="meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span style="margin:0 0.3rem">·</span><span>${m.rating} ★</span></div></div></div>`;
+    if(i===0) return `<div class="bento-card ${sizes[i]} stagger-item" data-id="${m.id}" data-action="openManga"><div class="bezel-outer"><div class="bezel-inner"><img src="${m.image}" alt="${state.lang==='ar'?m.titleAr:m.titleEn}" loading="lazy"><div class="card-body"><h3>${state.lang==='ar'?m.titleAr:m.titleEn}</h3><div class="meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span style="margin:0 0.3rem">·</span></div></div></div></div></div>`;
+    return `<div class="bento-card ${sizes[i]} stagger-item" data-id="${m.id}" data-action="openManga"><img src="${m.image}" alt="${state.lang==='ar'?m.titleAr:m.titleEn}" loading="lazy"><div class="card-body"><h3>${state.lang==='ar'?m.titleAr:m.titleEn}</h3><div class="meta"><span>${m.chapters} ${state.lang==='ar'?'فصل':'chapters'}</span><span style="margin:0 0.3rem">·</span></div></div></div>`;
   }).join('');
   applyStagger();
 }
