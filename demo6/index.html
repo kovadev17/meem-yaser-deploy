@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <title>Meem Yaser Studio | ميم ياسر ستوديو</title>
+    <title>Rūsuma Reading Club | روسوما نادي القراءة</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -192,7 +192,7 @@
     <div id="toast-container" class="fixed bottom-[calc(2rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 items-center pointer-events-none"></div>
 
     <div id="pwa-toast" class="fixed bottom-6 start-6 z-[9998] bg-card p-4 rounded-2xl shadow-modal flex items-center gap-4 border border-gray-100 transition-all duration-500 transform translate-y-32 opacity-0 max-w-sm">
-        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-2xl font-bold font-arabic shrink-0 shadow-sm">م</div>
+        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-2xl font-bold font-arabic shrink-0 shadow-sm">ر</div>
         <div class="flex-1">
             <h4 class="font-bold text-sm" data-i18n="install_app">INSTALL APP</h4>
             <p class="text-xs text-textSec mt-1 leading-tight" data-i18n="install_desc">Add to home screen for the best reading experience</p>
@@ -204,8 +204,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-3 cursor-pointer group tap-effect" onclick="navigate('hub')">
-                    <div class="w-9 h-9 rounded-full border-[2.5px] border-accent text-accent flex items-center justify-center text-lg font-bold font-arabic shadow-sm group-hover:bg-accent group-hover:text-white transition-colors">م</div>
-                    <span class="font-black tracking-widest text-[15px] hidden sm:block pt-0.5">MEEM YASER</span>
+                    <div class="w-9 h-9 rounded-full border-[2.5px] border-accent text-accent flex items-center justify-center text-lg font-bold font-arabic shadow-sm group-hover:bg-accent group-hover:text-white transition-colors">ر</div>
+                    <span class="font-black tracking-widest text-[15px] hidden sm:block pt-0.5">RūSUMA</span>
                 </div>
                 <div class="hidden md:flex items-center gap-6 text-[13px] font-bold text-textSec uppercase tracking-wider">
                     <button onclick="navigate('hub')" class="hover:text-textMain tap-effect transition-colors" data-i18n="browse">Browse</button>
@@ -260,11 +260,11 @@
         
         <section id="view-login" class="view flex min-h-screen items-center justify-center px-4 relative overflow-hidden bg-primary pb-10">
             <div class="w-full max-w-[420px] bg-card p-8 md:p-10 rounded-[2rem] shadow-modal relative z-10 text-center border border-gray-100">
-                <div class="w-16 h-16 rounded-2xl bg-accent mx-auto flex items-center justify-center text-white text-3xl font-bold font-arabic mb-8 shadow-glow transform rotate-3 hover:rotate-0 transition-transform duration-300">م</div>
-                <h1 class="text-[26px] font-black tracking-tight text-textMain mb-3 uppercase" data-i18n="private_club">PRIVATE READING CLUB</h1>
-                <p class="text-[15px] text-textSec mb-8 font-medium px-4" data-i18n="private_sub">Approval-only access to exclusive manga.</p>
+                <div class="w-16 h-16 rounded-2xl bg-accent mx-auto flex items-center justify-center text-white text-3xl font-bold font-arabic mb-8 shadow-glow transform rotate-3 hover:rotate-0 transition-transform duration-300">ر</div>
+                <h1 class="text-[26px] font-black tracking-tight text-textMain mb-3 uppercase" data-i18n="reading_club">READING CLUB</h1>
+                <p class="text-[15px] text-textSec mb-8 font-medium px-4" data-i18n="reading_sub">Sign up to explore exclusive Rūsuma stories and join the community.</p>
                 
-                <button onclick="showToast(i18n[state.lang]['app_submit'])" class="w-full border-2 border-accent text-accent hover:bg-accent hover:text-white font-bold py-4 rounded-2xl transition-colors mb-8 tap-effect" data-i18n="apply">APPLY FOR MEMBERSHIP</button>
+                <button onclick="showModal('modal-tc')" class="w-full border-2 border-accent text-accent hover:bg-accent hover:text-white font-bold py-4 rounded-2xl transition-colors mb-8 tap-effect" data-i18n="join">JOIN THE CLUB</button>
                 
                 <div class="flex items-center gap-4 mb-8 opacity-60">
                     <div class="h-px bg-gray-300 flex-1"></div>
@@ -317,7 +317,7 @@
                 </div>
 
                 <div>
-                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-fire text-danger opacity-80"></i> <span data-i18n="trending">Trending This Week</span></h3>
+                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-book-open text-accent opacity-80"></i> <span data-i18n="trending">Stories</span></h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="hub-trending-grid"></div>
                 </div>
 
@@ -345,13 +345,35 @@
                     </div>
                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5" id="hub-forum-grid"></div>
                 </div>
+
+                <!-- Stats Section -->
+                <div class="mt-16">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-stories">5</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Stories</div>
+                        </div>
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-chapters">187</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Chapters</div>
+                        </div>
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-characters">300+</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Characters</div>
+                        </div>
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-readers">12.4K</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Readers</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <footer class="mt-24 border-t border-gray-200/60 bg-card py-12 px-4">
                 <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-[13px] text-textSec font-semibold">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center font-bold font-arabic text-lg shadow-sm">م</div>
-                        <span class="text-textMain tracking-wide">© 2026 Meem Yaser Studio</span>
+                        <div class="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center font-bold font-arabic text-lg shadow-sm">ر</div>
+                        <span class="text-textMain tracking-wide">© 2026 Rūsuma — Restless Worlds</span>
                     </div>
                     <div class="flex flex-wrap justify-center gap-8 uppercase tracking-widest text-[11px]">
                         <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="about">About</a>
@@ -432,7 +454,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
                     <h2 class="t-title" data-i18n="characters">Characters</h2>
                     <select class="bg-card border-2 border-gray-100 text-[13px] font-bold uppercase tracking-widest rounded-xl px-5 py-3 focus:outline-none focus:border-accent outline-none cursor-pointer">
-                        <option value="all" data-i18n="all_manga">All Manga</option>
+                        <option value="all" data-i18n="all_stories">All Stories</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6" id="characters-grid-page"></div>
@@ -484,9 +506,28 @@
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h2 class="t-section text-textMain mb-3 uppercase tracking-tight" data-i18n="members_only">MEMBERS ONLY</h2>
-            <p class="text-textSec text-[15px] font-medium mb-10 px-2" data-i18n="locked_desc">Apply for membership to unlock.</p>
-            <button onclick="showToast(i18n[state.lang]['app_submit']); closeModal('modal-locked')" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors mb-3 shadow-md tap-effect" data-i18n="apply">APPLY FOR MEMBERSHIP</button>
+            <p class="text-textSec text-[15px] font-medium mb-10 px-2" data-i18n="locked_desc">Join the Reading Club to unlock all chapters.</p>
+            <button onclick="closeModal('modal-locked'); setTimeout(()=>showModal('modal-tc'), 300)" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors mb-3 shadow-md tap-effect" data-i18n="apply">JOIN THE CLUB</button>
             <button onclick="closeModal('modal-locked')" class="w-full text-textSec hover:text-textMain hover:bg-gray-50 font-bold py-4 rounded-2xl transition-colors tap-effect" data-i18n="go_back">GO BACK</button>
+        </div>
+    </div>
+
+    <!-- T&C Modal for auto-approval membership -->
+    <div id="modal-tc" class="overlay fixed inset-0 z-[100] bg-reader/80 backdrop-blur-md hidden items-center justify-center opacity-0 p-4" onclick="closeModal('modal-tc')">
+        <div class="modal-content w-full max-w-[420px] bg-card border border-gray-100 rounded-[2rem] p-8 text-center shadow-modal transform scale-95 max-h-[80vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-glow">
+                <i class="fa-solid fa-file-signature"></i>
+            </div>
+            <h2 class="t-section text-textMain mb-3 uppercase tracking-tight">Terms & Conditions</h2>
+            <p class="text-textSec text-[13px] font-medium mb-6 px-2 leading-relaxed">By joining the Rūsuma Reading Club, you agree to respect the creative work of Meem Yaser and the Restless Worlds community. Membership is free and grants access to exclusive stories and discussions.</p>
+            <div class="bg-gray-50 rounded-xl p-4 text-left text-[12px] text-textSec mb-6 space-y-2">
+                <p>• Content is for personal, non-commercial use only</p>
+                <p>• Do not redistribute or share chapter images</p>
+                <p>• Be respectful in comments and forum discussions</p>
+                <p>• Membership may be revoked for violations</p>
+            </div>
+            <button onclick="acceptTC()" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors mb-3 shadow-md tap-effect">I AGREE — JOIN NOW</button>
+            <button onclick="closeModal('modal-tc')" class="w-full text-textSec hover:text-textMain hover:bg-gray-50 font-bold py-4 rounded-2xl transition-colors tap-effect">GO BACK</button>
         </div>
     </div>
 
@@ -563,10 +604,10 @@
         // DICTIONARY
         const i18n = {
             en: {
-                private_club: 'PRIVATE READING CLUB', private_sub: 'Approval-only access to exclusive manga.', apply: 'APPLY FOR MEMBERSHIP', or: 'OR', enter_guest: 'Enter as Guest', enter_member: 'Enter as Member', enter_admin: 'Enter as Admin', browse: 'Browse', forum: 'Forum', characters: 'Characters', switch_role: 'Switch Role', admin_panel: 'Admin Panel', exclusive: 'EXCLUSIVE', hero_title: 'SANDS OF ETERNITY', hero_desc: 'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.', start_reading: 'START READING', continue_reading: 'Continue Reading', trending: 'Trending This Week', new_chapters: 'New Chapters', all: 'All', community: 'Community Discussions', about: 'About', terms: 'Terms', privacy: 'Privacy', contact: 'Contact', go_back: 'GO BACK', chapters: 'CHAPTERS', preview: 'Preview', locked: 'Locked', newest: 'Newest', oldest: 'Oldest', exit: 'Exit', all_manga: 'All Manga', profile: 'Profile', new_thread: 'NEW THREAD', discussions: 'Discussions', theories: 'Theories', fan_art: 'Fan Art', announcements: 'Announcements', select_thread: 'Select a thread to view details.', members_only: 'MEMBERS ONLY', locked_desc: 'This chapter requires membership to access. Apply for membership to unlock.', command_center: 'COMMAND CENTER', storage: 'STORAGE', members: 'MEMBERS', active: 'Active', chapters: 'CHAPTERS', published: 'Published', comments: 'COMMENTS', this_month: 'This month', pending_approvals: 'Pending Approvals', drag_drop: 'Drag chapter ZIP files here', quick_actions: 'Quick Actions', send_notif: 'Send Notification', mod_comments: 'Moderate Comments', manage_subs: 'Manage Subscriptions', view_analytics: 'View Analytics', install_app: 'INSTALL APP', install_desc: 'Add to home screen for the best reading experience', install: 'INSTALL', app_submit: 'Application submitted.', upload_comp: 'Upload Complete', disclaimer: 'Mock placeholder images used for demonstration.', feature_wip: 'Feature coming soon!'
+                reading_club: 'READING CLUB', reading_sub: 'Sign up to explore exclusive Rūsuma stories and join the community.', join: 'JOIN THE CLUB', private_club: 'READING CLUB', private_sub: 'Sign up to explore exclusive Rūsuma stories and join the community.', apply: 'JOIN THE CLUB', or: 'OR', enter_guest: 'Enter as Guest', enter_member: 'Enter as Member', enter_admin: 'Enter as Admin', browse: 'Browse', forum: 'Forum', characters: 'Characters', switch_role: 'Switch Role', admin_panel: 'Admin Panel', exclusive: 'EXCLUSIVE', hero_title: 'SANDS OF ETERNITY', hero_desc: 'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.', start_reading: 'START READING', continue_reading: 'Continue Reading', trending: 'Stories', new_chapters: 'New Chapters', all: 'All', community: 'Community Discussions', about: 'About', terms: 'Terms', privacy: 'Privacy', contact: 'Contact', go_back: 'GO BACK', chapters: 'CHAPTERS', preview: 'Preview', locked: 'Locked', newest: 'Newest', oldest: 'Oldest', exit: 'Exit', all_stories: 'All Stories', profile: 'Profile', new_thread: 'NEW THREAD', discussions: 'Discussions', theories: 'Theories', fan_art: 'Fan Art', announcements: 'Announcements', select_thread: 'Select a thread to view details.', members_only: 'MEMBERS ONLY', locked_desc: 'This chapter requires membership to access. Join the Reading Club to unlock.', command_center: 'COMMAND CENTER', storage: 'STORAGE', members: 'MEMBERS', active: 'Active', published: 'Published', comments: 'COMMENTS', this_month: 'This month', pending_approvals: 'Pending Approvals', drag_drop: 'Drag chapter ZIP files here', quick_actions: 'Quick Actions', send_notif: 'Send Notification', mod_comments: 'Moderate Comments', manage_subs: 'Manage Subscriptions', view_analytics: 'View Analytics', install_app: 'INSTALL APP', install_desc: 'Add to home screen for the best reading experience', install: 'INSTALL', app_submit: 'Welcome to the Reading Club!', upload_comp: 'Upload Complete', disclaimer: 'Placeholder images used for demonstration.', feature_wip: 'Coming soon!'
             },
             ar: {
-                private_club: 'نادي القراءة الخاص', private_sub: 'وصول حصري للمانجا بعد الموافقة.', apply: 'طلب عضوية', or: 'أو', enter_guest: 'الدخول كزائر', enter_member: 'الدخول كعضو', enter_admin: 'الدخول كمسؤول', browse: 'تصفح', forum: 'المنتدى', characters: 'الشخصيات', switch_role: 'تغيير الدور', admin_panel: 'لوحة الإدارة', exclusive: 'حصري', hero_title: 'رمال الخلود', hero_desc: 'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى.', start_reading: 'ابدأ القراءة', continue_reading: 'متابعة القراءة', trending: 'رائج هذا الأسبوع', new_chapters: 'فصول جديدة', all: 'الكل', community: 'نقاشات المجتمع', about: 'حول', terms: 'الشروط', privacy: 'الخصوصية', contact: 'اتصل بنا', go_back: 'العودة', chapters: 'الفصول', preview: 'معاينة', locked: 'مغلق', newest: 'الأحدث', oldest: 'الأقدم', exit: 'خروج', all_manga: 'كل المانجا', profile: 'الملف الشخصي', new_thread: 'موضوع جديد', discussions: 'نقاشات', theories: 'نظريات', fan_art: 'فنون المعجبين', announcements: 'إعلانات', select_thread: 'اختر موضوعاً لعرض التفاصيل.', members_only: 'للأعضاء فقط', locked_desc: 'يتطلب هذا الفصل عضوية للوصول إليه. قدم طلب عضوية لفتحه.', command_center: 'مركز القيادة', storage: 'التخزين', members: 'الأعضاء', active: 'نشط', chapters: 'الفصول', published: 'منشور', comments: 'التعليقات', this_month: 'هذا الشهر', pending_approvals: 'موافقات معلقة', drag_drop: 'اسحب ملفات الفصول (ZIP) هنا', quick_actions: 'إجراءات سريعة', send_notif: 'إرسال إشعار', mod_comments: 'إدارة التعليقات', manage_subs: 'إدارة الاشتراكات', view_analytics: 'عرض الإحصائيات', install_app: 'تثبيت التطبيق', install_desc: 'أضف إلى الشاشة الرئيسية لأفضل تجربة قراءة', install: 'تثبيت', app_submit: 'تم إرسال الطلب.', upload_comp: 'اكتمل الرفع', disclaimer: 'صور نائبة استخدمت لأغراض التوضيح فقط.', feature_wip: 'هذه الميزة قريباً!'
+                reading_club: 'نادي القراءة', reading_sub: 'سجّل لاستكشاف قصص روسوما الحصرية والانضمام للمجتمع.', join: 'انضم إلينا', private_club: 'نادي القراءة', private_sub: 'سجّل لاستكشاف قصص روسوما الحصرية والانضمام للمجتمع.', apply: 'انضم إلينا', or: 'أو', enter_guest: 'الدخول كزائر', enter_member: 'الدخول كعضو', enter_admin: 'الدخول كمسؤول', browse: 'تصفح', forum: 'المنتدى', characters: 'الشخصيات', switch_role: 'تغيير الدور', admin_panel: 'لوحة الإدارة', exclusive: 'حصري', hero_title: 'رمال الخلود', hero_desc: 'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى.', start_reading: 'ابدأ القراءة', continue_reading: 'متابعة القراءة', trending: 'قصصنا', new_chapters: 'فصول جديدة', all: 'الكل', community: 'نقاشات المجتمع', about: 'حول', terms: 'الشروط', privacy: 'الخصوصية', contact: 'اتصل بنا', go_back: 'العودة', chapters: 'الفصول', preview: 'معاينة', locked: 'مغلق', newest: 'الأحدث', oldest: 'الأقدم', exit: 'خروج', all_stories: 'كل القصص', profile: 'الملف الشخصي', new_thread: 'موضوع جديد', discussions: 'نقاشات', theories: 'نظريات', fan_art: 'فنون المعجبين', announcements: 'إعلانات', select_thread: 'اختر موضوعاً لعرض التفاصيل.', members_only: 'للأعضاء فقط', locked_desc: 'يتطلب هذا الفصل عضوية للوصول إليه. انضم لنادي القراءة لفتحه.', command_center: 'مركز القيادة', storage: 'التخزين', members: 'الأعضاء', active: 'نشط', published: 'منشور', comments: 'التعليقات', this_month: 'هذا الشهر', pending_approvals: 'موافقات معلقة', drag_drop: 'اسحب ملفات الفصول (ZIP) هنا', quick_actions: 'إجراءات سريعة', send_notif: 'إرسال إشعار', mod_comments: 'إدارة التعليقات', manage_subs: 'إدارة الاشتراكات', view_analytics: 'عرض الإحصائيات', install_app: 'تثبيت التطبيق', install_desc: 'أضف إلى الشاشة الرئيسية لأفضل تجربة قراءة', install: 'تثبيت', app_submit: 'أهلاً بك في نادي القراءة!', upload_comp: 'اكتمل الرفع', disclaimer: 'صور نائبة استخدمت لأغراض التوضيح فقط.', feature_wip: 'هذه الميزة قريباً!'
             }
         };
 
@@ -580,12 +621,12 @@
                 { id: 'm5', title: {en:'Echoes of Earth', ar:'أصداء الأرض'}, desc: {en:'Humanity left Earth centuries ago. Now, a small crew returns to see what evolved.', ar:'غادرت البشرية الأرض منذ قرون. الآن، يعود طاقم صغير ليروا ما تطور.'}, tags: ['Sci-Fi','Adventure'], access: 'preview', chs: 15, cover: '#10B981' }
             ],
             chars: [
-                { id: 'c1', name: {en:'Amira Hassan', ar:'أميرة حسن'}, manga: 'm1', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'A fierce warrior of the dunes, she wields the dual curved blades with lethal precision.', ar:'محاربة شرسة من الكثبان، تستخدم الشفرات المنحنية المزدوجة بدقة مميتة.'}, color: '#D4AF37' },
-                { id: 'c2', name: {en:'The Navigator', ar:'الملاح'}, manga: 'm1', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A mysterious figure who commands the very sandstorms that plague the outer rim.', ar:'شخصية غامضة تتحكم في العواصف الرملية التي تبتلي الحافة الخارجية.'}, color: '#1A1A1A' },
-                { id: 'c3', name: {en:'Kai', ar:'كاي'}, manga: 'm2', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'Half machine, half ghost. He operates in the shadows of the cyber-city.', ar:'نصف آلة، نصف شبح. يعمل في ظلال المدينة الإلكترونية.'}, color: '#3B82F6' },
-                { id: 'c4', name: {en:'Zara', ar:'زارا'}, manga: 'm2', role: {en:'Supporting', ar:'مساعد'}, bio: {en:'The brilliant hacker who provides Kai with his intel and tech upgrades.', ar:'المخترقة العبقرية التي تزود كاي بالمعلومات وترقيات التكنولوجيا.'}, color: '#8B5CF6' },
-                { id: 'c5', name: {en:'Yusuf', ar:'يوسف'}, manga: 'm3', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'The master penman whose strokes can alter reality itself.', ar:'سيد القلم الذي يمكن أن تغير خطوطه الواقع نفسه.'}, color: '#10B981' },
-                { id: 'c6', name: {en:'Red General', ar:'الجنرال الأحمر'}, manga: 'm4', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A ruthless leader who will stop at nothing to control the crimson fleets.', ar:'قائد لا يرحم لن يتوقف عند أي شيء للسيطرة على الأساطيل القرمزية.'}, color: '#EF4444' }
+                { id: 'c1', name: {en:'Amira Hassan', ar:'أميرة حسن'}, manga: 'm1', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'A fierce warrior of the dunes, she wields the dual curved blades with lethal precision.', ar:'محاربة شرسة من الكثبان، تستخدم الشفرات المنحنية المزدوجة بدقة مميتة.'}, color: '#D4AF37', likes: 1247 },
+                { id: 'c2', name: {en:'The Navigator', ar:'الملاح'}, manga: 'm1', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A mysterious figure who commands the very sandstorms that plague the outer rim.', ar:'شخصية غامضة تتحكم في العواصف الرملية التي تبتلي الحافة الخارجية.'}, color: '#1A1A1A', likes: 892 },
+                { id: 'c3', name: {en:'Kai', ar:'كاي'}, manga: 'm2', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'Half machine, half ghost. He operates in the shadows of the cyber-city.', ar:'نصف آلة، نصف شبح. يعمل في ظلال المدينة الإلكترونية.'}, color: '#3B82F6', likes: 2103 },
+                { id: 'c4', name: {en:'Zara', ar:'زارا'}, manga: 'm2', role: {en:'Supporting', ar:'مساعد'}, bio: {en:'The brilliant hacker who provides Kai with his intel and tech upgrades.', ar:'المخترقة العبقرية التي تزود كاي بالمعلومات وترقيات التكنولوجيا.'}, color: '#8B5CF6', likes: 1567 },
+                { id: 'c5', name: {en:'Yusuf', ar:'يوسف'}, manga: 'm3', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'The master penman whose strokes can alter reality itself.', ar:'سيد القلم الذي يمكن أن تغيّر خطوطه الواقع نفسه.'}, color: '#10B981', likes: 743 },
+                { id: 'c6', name: {en:'Red General', ar:'الجنرال الأحمر'}, manga: 'm4', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A ruthless leader who will stop at nothing to control the crimson fleets.', ar:'قائد لا يرحم لن يتوقف عند أي شيء للسيطرة على الأساطيل القرمزية.'}, color: '#EF4444', likes: 1892 }
             ],
             threads: [
                 { id: 't1', title: {en:'Chapter 45 Discussion [SPOILERS]', ar:'نقاش الفصل 45 [حرق]'}, author: 'Admin Yaser', role: 'admin', replies: 23, hot: true, pin: true, prev: {en:'Let us talk about that ending... I did not see that betrayal coming at all.', ar:'لنتحدث عن تلك النهاية... لم أتوقع تلك الخيانة على الإطلاق.'} },
@@ -762,6 +803,33 @@
             setTimeout(() => { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
         }
 
+        function acceptTC() {
+            closeModal('modal-tc');
+            setTimeout(() => {
+                login('member');
+                showToast(i18n[state.lang]['app_submit']);
+            }, 350);
+        }
+
+        const likedChars = new Set();
+        function toggleLike(charId) {
+            const c = db.chars.find(x => x.id === charId);
+            if(!c) return;
+            const el = document.getElementById(`char-likes-${charId}`);
+            if(likedChars.has(charId)) {
+                likedChars.delete(charId);
+                c.likes--;
+                if(el) el.textContent = c.likes.toLocaleString();
+                showToast('Like removed');
+            } else {
+                likedChars.add(charId);
+                c.likes++;
+                if(el) el.textContent = c.likes.toLocaleString();
+                showToast('Liked!');
+            }
+            // In production, this would POST to /api/characters/like
+        }
+
         function toggleAdminPanel() {
             const p = document.getElementById('admin-panel');
             if(p.classList.contains('-translate-y-full')) {
@@ -878,6 +946,7 @@
                         ${v(c.name).charAt(0)}
                     </div>
                     <div class="font-bold text-[13px] text-center line-clamp-1 w-full group-hover:text-accent transition-colors px-1">${v(c.name)}</div>
+                    <div class="text-[10px] text-textSec mt-1 flex items-center gap-1"><i class="fa-solid fa-heart text-danger text-[8px]"></i> ${c.likes.toLocaleString()}</div>
                 </div>
             `).join('');
 
@@ -955,21 +1024,25 @@
             document.getElementById('detail-characters-grid').innerHTML = chars.map(c => `
                 <div class="bg-card p-4 rounded-2xl border border-gray-100 flex items-center gap-4 cursor-pointer hover:border-accent hover:shadow-subtle transition-all group tap-effect" onclick="navigate('characters')">
                     <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl shrink-0 group-hover:scale-110 transition-transform shadow-sm border-[3px] border-white ring-1 ring-gray-100" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 flex-1">
                         <div class="font-bold text-[14px] truncate group-hover:text-accent transition-colors">${v(c.name)}</div>
                         <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1.5 truncate">${v(c.role)}</div>
                     </div>
+                    <div class="text-[11px] font-bold text-textSec flex items-center gap-1 shrink-0"><i class="fa-solid fa-heart text-danger text-[9px]"></i> ${c.likes.toLocaleString()}</div>
                 </div>
             `).join('');
         }
 
         function renderCharacters() {
             document.getElementById('characters-grid-page').innerHTML = db.chars.map(c => `
-                <div class="bg-card p-6 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover hover:border-accent/30 transition-all cursor-pointer text-center flex flex-col items-center group tap-effect" onclick="openCharDetail('${c.id}')">
+                <div class="bg-card p-6 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover hover:border-accent/30 transition-all cursor-pointer text-center flex flex-col items-center group tap-effect relative" onclick="openCharDetail('${c.id}')">
                     <div class="w-[100px] h-[100px] rounded-full flex items-center justify-center text-white text-4xl font-black mb-5 shadow-sm border-[4px] border-white ring-1 ring-gray-100 group-hover:scale-110 group-hover:rotate-3 transition-transform" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
                     <h4 class="font-bold text-[16px] mb-1.5 group-hover:text-accent transition-colors leading-tight px-1">${v(c.name)}</h4>
-                    <p class="text-[13px] font-medium text-textSec mb-5 truncate w-full px-1">${v(db.manga.find(m=>m.id===c.manga).title)}</p>
-                    <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg bg-gray-50 text-gray-500 border border-gray-100">${v(c.role)}</span>
+                    <p class="text-[13px] font-medium text-textSec mb-3 truncate w-full px-1">${v(db.manga.find(m=>m.id===c.manga).title)}</p>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg bg-gray-50 text-gray-500 border border-gray-100">${v(c.role)}</span>
+                    </div>
+                    <div class="text-[11px] font-bold text-textSec flex items-center gap-1"><i class="fa-solid fa-heart text-danger text-[9px]"></i> ${c.likes.toLocaleString()}</div>
                 </div>
             `).join('');
         }
@@ -980,9 +1053,15 @@
             
             document.getElementById('char-detail-content').innerHTML = `
                 <div class="w-36 h-36 mx-auto rounded-full flex items-center justify-center text-white text-6xl font-black mb-6 shadow-modal border-4 border-card ring-1 ring-gray-100" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
-                <h2 class="text-3xl font-black text-center mb-3 leading-tight tracking-tight">${v(c.name)}</h2>
-                <div class="flex justify-center mb-10">
+                <h2 class="text-3xl font-black text-center mb-2 leading-tight tracking-tight">${v(c.name)}</h2>
+                <div class="flex justify-center mb-3">
                     <span class="bg-accent/10 text-accent text-[11px] font-black px-4 py-1.5 rounded-lg uppercase tracking-widest border border-accent/20">${v(c.role)}</span>
+                </div>
+                <div class="flex justify-center mb-8">
+                    <button onclick="toggleLike('${c.id}')" class="flex items-center gap-2 bg-gray-50 hover:bg-danger/10 border border-gray-100 hover:border-danger/30 text-textSec hover:text-danger font-bold px-5 py-2.5 rounded-xl transition-all tap-effect group">
+                        <i class="fa-solid fa-heart group-hover:scale-110 transition-transform"></i>
+                        <span id="char-likes-${c.id}">${c.likes.toLocaleString()}</span>
+                    </button>
                 </div>
                 <div class="space-y-8">
                     <div>
@@ -991,7 +1070,7 @@
                             <div class="w-12 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0 group-hover:scale-105 transition-transform shadow-sm">${getCover(m.cover)}</div>
                             <div>
                                 <span class="font-bold text-[15px] group-hover:text-accent transition-colors block mb-1">${v(m.title)}</span>
-                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">View Manga <i class="fa-solid fa-arrow-right rtl-flip ml-1"></i></span>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">View Story <i class="fa-solid fa-arrow-right rtl-flip ml-1"></i></span>
                             </div>
                         </div>
                     </div>
