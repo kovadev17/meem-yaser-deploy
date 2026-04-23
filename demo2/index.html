@@ -967,7 +967,15 @@ function exportReadingData() {
 
 // ===== MORE: Import reading data =====
 function importReadingData(file) {
-  const read
+  const reader = new FileReader();
+  reader.onload = e => {
+    try { const data = JSON.parse(e.target.result); showToast('Data imported'); }
+    catch(err) { showToast('Invalid file'); }
+  };
+  reader.readAsText(file);
+}
+</script>
+
 <!-- ===== BULK CONTENT SECTION 2 ===== -->
 <div class="bulk-section" id="bulkSection2">
   <div class="bulk-container">
@@ -1220,6 +1228,7 @@ function debounce(fn, ms) {
   };
 }
 
+<script>
 // ===== MORE: Lazy load images =====
 function initLazyLoad() {
   const imgObserver = new IntersectionObserver((entries) => {
