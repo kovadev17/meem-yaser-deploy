@@ -12,7 +12,7 @@
    DESIGN SYSTEM: Editorial Manga Minimal
    Tone: Restrained luxury meets obsessive readability
    Differentiation: "If the logo were removed, you'd remember 
-   the crimson accent line and the Cormorant italics"
+   the gold accent line and the Cormorant italics"
    ═══════════════════════════════════════ */
 :root {
   /* Typography */
@@ -556,7 +556,6 @@ img {
   cursor: pointer;
   transition: background 0.15s ease;
   margin: 0 0 2px 0;
-  border-radius: 0 10px 10px 0;
   gap: 12px;
 }
 .chapter-item-thumb {
@@ -1173,7 +1172,6 @@ function clampPan() {
     return;
   }
   const rect = stage.getBoundingClientRect();
-  const imgRect = img.getBoundingClientRect();
   const scaledW = rect.width * state.scale;
   const scaledH = rect.height * state.scale;
   
@@ -1287,8 +1285,31 @@ function bindGestures() {
         state.panning = false;
         stage.classList.remove('is-panning');
       } else if (elapsed < 300 && travel < 10) {
-        // TAP — delegate to zone handler
-        handleTap(e.clientX, e.clientY);
+        // TAP or DOUBLE-TAP
+        const now = Date.now();
+        if (now - state.lastTap < 300) {
+          // DOUBLE TAP — toggle zoom
+          e.preventDefault();
+          e.stopPropagation();
+          if (state.zoomed) {
+            resetZoom();
+          } else {
+            const rect = stage.getBoundingClientRect();
+            const tapX = e.clientX - rect.left;
+            const tapY = e.clientY - rect.top;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            state.scale = 2.5;
+            state.panX = (cx - tapX) * (state.scale - 1);
+            state.panY = (cy - tapY) * (state.scale - 1);
+            applyTransform();
+          }
+          state.lastTap = 0; // Prevent triple-tap
+        } else {
+          // SINGLE TAP — delegate to zone handler
+          handleTap(e.clientX, e.clientY);
+        }
+        state.lastTap = now;
       } else if (state.swipe && !state.zoomed && elapsed < 500 && Math.abs(dx) > 50 && Math.abs(dy) < Math.abs(dx) * 1.3) {
         // SWIPE
         if (dx > 0) state.dir === 'ltr' ? prevPage() : nextPage();
@@ -1310,32 +1331,6 @@ function bindGestures() {
     state.pointers.clear();
     state.pinching = false; state.panning = false;
     stage.classList.remove('is-panning');
-  });
-  
-  // DOUBLE TAP
-  surface.addEventListener('click', e => {
-    const now = Date.now();
-    if (now - state.lastTap < 300) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (state.zoomed) {
-        resetZoom();
-      } else {
-        // Zoom to 2.5x centered on tap point
-        const rect = stage.getBoundingClientRect();
-        const tapX = e.clientX - rect.left;
-        const tapY = e.clientY - rect.top;
-        const cx = rect.width / 2;
-        const cy = rect.height / 2;
-        
-        state.scale = 2.5;
-        // Calculate pan so tap point stays under finger
-        state.panX = (cx - tapX) * (state.scale - 1);
-        state.panY = (cy - tapY) * (state.scale - 1);
-        applyTransform();
-      }
-    }
-    state.lastTap = now;
   });
   
   // WHEEL (desktop zoom)
