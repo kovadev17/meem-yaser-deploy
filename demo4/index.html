@@ -81,6 +81,8 @@ button { font-family:inherit; cursor:pointer; }
 .comp-ch-item:hover { border-color:var(--gold); }
 .comp-ch-item.locked { opacity:0.5; cursor:not-allowed; }
 .comp-ch-item.locked:hover { border-color:var(--border); }
+.comp-ch-thumb { width:48px; height:64px; border-radius:8px; object-fit:cover; flex-shrink:0; background:var(--bg-warm); border:1px solid var(--border); box-shadow:var(--shadow); transition:transform 0.25s ease; }
+.comp-ch-item:hover .comp-ch-thumb { transform:scale(1.05); }
 .comp-ch-num { font-size:0.85rem; font-weight:700; color:var(--text-muted); min-width:24px; }
 .comp-ch-title { flex:1; font-size:0.9rem; font-weight:500; }
 .comp-ch-status { font-size:0.7rem; font-weight:600; padding:0.25rem 0.5rem; border-radius:4px; background:var(--gold-soft); color:var(--gold); }
@@ -581,31 +583,37 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:2px solid v
     <div class="comp-section-title">All Chapters</div>
     <div class="comp-ch-list">
       <div class="comp-ch-item" onclick="openReader(0,0)">
+        <img class="comp-ch-thumb" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=200&h=260&fit=crop" alt="The Gate Opens" loading="lazy">
         <span class="comp-ch-num">01</span>
         <span class="comp-ch-title">The Gate Opens</span>
         <span class="comp-ch-status">In Progress</span>
       </div>
       <div class="comp-ch-item locked">
+        <img class="comp-ch-thumb" src="https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=200&h=260&fit=crop" alt="Moons Road" loading="lazy">
         <span class="comp-ch-num">02</span>
         <span class="comp-ch-title">Moons Road</span>
         <span class="comp-ch-status locked">Locked</span>
       </div>
       <div class="comp-ch-item locked">
+        <img class="comp-ch-thumb" src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=200&h=260&fit=crop" alt="Symphony of Doom" loading="lazy">
         <span class="comp-ch-num">03</span>
         <span class="comp-ch-title">Symphony of Doom</span>
         <span class="comp-ch-status locked">Locked</span>
       </div>
       <div class="comp-ch-item locked">
+        <img class="comp-ch-thumb" src="https://images.unsplash.com/photo-1633218388467-539651dcf81a?w=200&h=260&fit=crop" alt="The Grand Lord" loading="lazy">
         <span class="comp-ch-num">04</span>
         <span class="comp-ch-title">The Grand Lord</span>
         <span class="comp-ch-status locked">Locked</span>
       </div>
       <div class="comp-ch-item locked">
+        <img class="comp-ch-thumb" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200&h=260&fit=crop" alt="The Speakers" loading="lazy">
         <span class="comp-ch-num">05</span>
         <span class="comp-ch-title">The Speakers</span>
         <span class="comp-ch-status locked">Locked</span>
       </div>
       <div class="comp-ch-item locked">
+        <img class="comp-ch-thumb" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200&h=260&fit=crop" alt="The Sleepless Chaplain" loading="lazy">
         <span class="comp-ch-num">06</span>
         <span class="comp-ch-title">The Sleepless Chaplain</span>
         <span class="comp-ch-status locked">Locked</span>

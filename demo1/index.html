@@ -164,6 +164,13 @@ button { font-family:inherit; cursor:pointer; }
 .vault-chapter.locked { opacity:0.45; cursor:not-allowed; }
 .vault-chapter.locked:hover { background:transparent; border-color:transparent; transform:none; }
 
+.vault-ch-thumb {
+  width:56px; height:72px; border-radius:10px; object-fit:cover; flex-shrink:0;
+  background:var(--bg-warm); border:1px solid var(--border); box-shadow:var(--shadow);
+  transition:transform 0.25s ease, box-shadow 0.25s ease;
+}
+.vault-chapter:hover .vault-ch-thumb { transform:scale(1.05); box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+
 .vault-ch-num {
   width:52px; height:52px; border-radius:14px; background:var(--bg-warm);
   display:grid; place-items:center; font-family:var(--font-mono);
@@ -676,6 +683,7 @@ body.show-zones .tap-right { border-left:1px dashed rgba(212,175,55,0.1); }
     </div>
 
     <button class="vault-chapter" data-chapter="0" onclick="openReader(0,0)">
+      <img class="vault-ch-thumb" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=200&h=260&fit=crop" alt="The Gate Opens" loading="lazy">
       <div class="vault-ch-num">01</div>
       <div class="vault-ch-info">
         <div class="vault-ch-title" data-i18n="ch1Title">The Gate Opens</div>
@@ -686,6 +694,7 @@ body.show-zones .tap-right { border-left:1px dashed rgba(212,175,55,0.1); }
     </button>
 
     <button class="vault-chapter locked" data-chapter="1">
+      <img class="vault-ch-thumb" src="https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=200&h=260&fit=crop" alt="Moons Road" loading="lazy">
       <div class="vault-ch-num">02</div>
       <div class="vault-ch-info">
         <div class="vault-ch-title" data-i18n="ch2Title">Moons Road</div>
@@ -695,6 +704,7 @@ body.show-zones .tap-right { border-left:1px dashed rgba(212,175,55,0.1); }
     </button>
 
     <button class="vault-chapter locked" data-chapter="2">
+      <img class="vault-ch-thumb" src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=200&h=260&fit=crop" alt="Symphony of Doom" loading="lazy">
       <div class="vault-ch-num">03</div>
       <div class="vault-ch-info">
         <div class="vault-ch-title" data-i18n="ch3Title">Symphony of Doom</div>
@@ -704,6 +714,7 @@ body.show-zones .tap-right { border-left:1px dashed rgba(212,175,55,0.1); }
     </button>
 
     <button class="vault-chapter locked" data-chapter="3">
+      <img class="vault-ch-thumb" src="https://images.unsplash.com/photo-1633218388467-539651dcf81a?w=200&h=260&fit=crop" alt="The Grand Lord" loading="lazy">
       <div class="vault-ch-num">04</div>
       <div class="vault-ch-info">
         <div class="vault-ch-title" data-i18n="ch4Title">The Grand Lord</div>
@@ -713,6 +724,7 @@ body.show-zones .tap-right { border-left:1px dashed rgba(212,175,55,0.1); }
     </button>
 
     <button class="vault-chapter locked" data-chapter="4">
+      <img class="vault-ch-thumb" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200&h=260&fit=crop" alt="The Speakers" loading="lazy">
       <div class="vault-ch-num">05</div>
       <div class="vault-ch-info">
         <div class="vault-ch-title" data-i18n="ch5Title">The Speakers</div>
@@ -722,6 +734,7 @@ body.show-zones .tap-right { border-left:1px dashed rgba(212,175,55,0.1); }
     </button>
 
     <button class="vault-chapter locked" data-chapter="5">
+      <img class="vault-ch-thumb" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200&h=260&fit=crop" alt="The Sleepless Chaplain" loading="lazy">
       <div class="vault-ch-num">06</div>
       <div class="vault-ch-info">
         <div class="vault-ch-title" data-i18n="ch6Title">The Sleepless Chaplain</div>

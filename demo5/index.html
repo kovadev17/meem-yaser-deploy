@@ -554,7 +554,19 @@ img {
   transition: background 0.15s ease;
   margin: 0 0 2px 0;
   border-radius: 0 10px 10px 0;
+  gap: 12px;
 }
+.chapter-item-thumb {
+  width: 44px;
+  height: 58px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.2s ease;
+}
+.chapter-item:hover .chapter-item-thumb { transform: scale(1.05); }
 .chapter-item:active { background: rgba(255,255,255,0.04); }
 .chapter-item.current {
   background: rgba(214, 69, 69, 0.08);
@@ -1364,10 +1376,19 @@ function closeDrawer(id) { $(id).classList.remove('open'); }
 
 function renderChapters() {
   const manga = currentManga();
+  const thumbs = [
+    'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=200&h=260&fit=crop',
+    'https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=200&h=260&fit=crop',
+    'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=200&h=260&fit=crop',
+    'https://images.unsplash.com/photo-1633218388467-539651dcf81a?w=200&h=260&fit=crop',
+    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200&h=260&fit=crop',
+    'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200&h=260&fit=crop',
+  ];
   $('chapter-list').innerHTML = manga.chapters.map((ch, ci) => {
     const current = ci === state.chapter;
     return `
       <div class="chapter-item ${current ? 'current' : ''}" data-chapter="${ci}">
+        <img class="chapter-item-thumb" src="${thumbs[ci] || thumbs[0]}" alt="${ch.title}" loading="lazy">
         <div>
           <div class="chapter-item-name">Chapter ${ch.num}</div>
           <div class="chapter-item-meta">${ch.title} · ${ch.pages.length} pages</div>
