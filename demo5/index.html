@@ -26,7 +26,7 @@
   --lib-muted: #5C5C5C;
   --lib-subtle: #B0B0B0;
   --lib-border: rgba(0,0,0,0.05);
-  --lib-accent: #B83232; /* Restless Crimson */
+  --lib-accent: #D4AF37; /* Restless Gold */
   
   /* Reader — Dark, always dark */
   --reader-bg: #050505;
@@ -35,7 +35,7 @@
   --reader-muted: #8A8A8A;
   --reader-subtle: #4A4A4A;
   --reader-border: rgba(255,255,255,0.04);
-  --reader-accent: #D64545;
+  --reader-accent: #D4AF37;
   
   /* Touch */
   --touch-min: 44px;
@@ -122,10 +122,10 @@ img {
 }
 
 .subtitle {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--lib-muted);
   margin-top: 8px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 500;
 }
@@ -194,10 +194,10 @@ img {
 
 .manga-title {
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   margin-top: 12px;
-  line-height: 1.3;
+  line-height: 1.35;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -205,10 +205,11 @@ img {
 }
 
 .manga-meta {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--lib-muted);
-  margin-top: 4px;
+  margin-top: 5px;
   font-weight: 400;
+  line-height: 1.4;
 }
 
 /* ═── UPLOAD CARD ─── */
@@ -308,6 +309,7 @@ img {
   display: block;
   will-change: transform;
   transition: opacity 0.25s ease;
+  transform-origin: center center;
   /* No CSS transition on transform — handled by JS for 60fps */
 }
 .page-stage img.loading { opacity: 0; }
@@ -459,9 +461,10 @@ img {
 }
 .progress-fill {
   height: 100%;
-  background: var(--reader-accent);
+  background: linear-gradient(90deg, var(--reader-accent), #F0D878);
   border-radius: 1px;
   transition: width 0.25s ease;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
 }
 .progress-info {
   display: flex;
@@ -569,13 +572,13 @@ img {
 .chapter-item:hover .chapter-item-thumb { transform: scale(1.05); }
 .chapter-item:active { background: rgba(255,255,255,0.04); }
 .chapter-item.current {
-  background: rgba(214, 69, 69, 0.08);
+  background: rgba(212, 175, 55, 0.08);
   border-left-color: var(--reader-accent);
 }
 
-.chapter-item-name { font-size: 15px; font-weight: 500; letter-spacing: 0.01em; }
-.chapter-item-meta { font-size: 12px; color: var(--reader-muted); margin-top: 3px; }
-.chapter-item-status { font-size: 12px; color: var(--reader-muted); font-weight: 500; }
+.chapter-item-name { font-size: 16px; font-weight: 500; letter-spacing: 0.01em; line-height: 1.4; }
+.chapter-item-meta { font-size: 13px; color: var(--reader-muted); margin-top: 4px; line-height: 1.4; }
+.chapter-item-status { font-size: 13px; color: var(--reader-accent); font-weight: 500; }
 
 /* Settings rows */
 .setting-row {
@@ -726,7 +729,7 @@ img {
 <div id="library-view" class="view active">
   <div class="library-header">
     <div class="brand-mark">Restless <span>Worlds</span></div>
-    <div class="subtitle">Private Manga Collection</div>
+    <div class="subtitle">Rūsuma Collection</div>
   </div>
   <div class="library-grid" id="manga-grid"></div>
 </div>
@@ -1164,7 +1167,26 @@ function resetZoom() {
   updateZoomBadge();
 }
 
+function clampPan() {
+  if (state.scale <= 1) {
+    state.panX = 0; state.panY = 0;
+    return;
+  }
+  const rect = stage.getBoundingClientRect();
+  const imgRect = img.getBoundingClientRect();
+  const scaledW = rect.width * state.scale;
+  const scaledH = rect.height * state.scale;
+  
+  // Calculate max pan values so image edges don't go past container edges
+  const maxPanX = Math.max(0, (scaledW - rect.width) / 2);
+  const maxPanY = Math.max(0, (scaledH - rect.height) / 2);
+  
+  state.panX = Math.max(-maxPanX, Math.min(maxPanX, state.panX));
+  state.panY = Math.max(-maxPanY, Math.min(maxPanY, state.panY));
+}
+
 function applyTransform() {
+  clampPan();
   img.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
   state.zoomed = state.scale > 1.05;
   stage.classList.toggle('is-zoomed', state.zoomed);
@@ -1299,12 +1321,17 @@ function bindGestures() {
       if (state.zoomed) {
         resetZoom();
       } else {
-        // Zoom to 2.5x centered on tap
-        state.scale = 2.5;
+        // Zoom to 2.5x centered on tap point
         const rect = stage.getBoundingClientRect();
-        const cx = rect.width / 2, cy = rect.height / 2;
-        state.panX = (cx - e.clientX) * 0.6;
-        state.panY = (cy - e.clientY) * 0.6;
+        const tapX = e.clientX - rect.left;
+        const tapY = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        
+        state.scale = 2.5;
+        // Calculate pan so tap point stays under finger
+        state.panX = (cx - tapX) * (state.scale - 1);
+        state.panY = (cy - tapY) * (state.scale - 1);
         applyTransform();
       }
     }
