@@ -185,7 +185,59 @@
         @media (min-width: 1024px) {
             .bleed-scroll { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
         }
-    </style>
+    
+        /* Reader Engine v2 — Fixed Viewport Architecture */
+        #reader-viewport {
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #page-stage {
+            touch-action: none;
+        }
+        #page-stage img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            transform-origin: center center;
+            transition: opacity 0.25s ease;
+        }
+        #page-stage img.manga-spread {
+            max-width: 1600px !important;
+            width: 200%;
+        }
+        .tap-zone {
+            position: relative;
+        }
+        .tap-zone::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 1px dashed rgba(255,255,255,0.06);
+            border-radius: 4px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .show-zones .tap-zone::after {
+            opacity: 1;
+        }
+        .reader-chrome.top {
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reader-chrome.bottom {
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        #page-skeleton > div {
+            animation: skeleton-shimmer 1.5s ease-in-out infinite;
+        }
+</style>
 </head>
 <body lang="en" dir="ltr" class="relative selection:bg-accent/30">
 
@@ -420,29 +472,47 @@
         </section>
 
         <section id="view-reader" class="view min-h-dvh bg-reader fixed inset-0 z-50 overflow-hidden flex flex-col no-select">
-            
             <div id="reading-progress-bar" class="fixed top-0 left-0 h-[3px] bg-accent z-[60] shadow-glow" style="width: 20%;"></div>
 
-            <div class="reader-chrome top fixed top-0 w-full glass-panel z-40 flex items-center justify-between px-4 sm:px-6 shadow-sm pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] min-h-[4rem] h-auto border-b border-white/5">
+            <!-- Zoom badge -->
+            <div id="zoom-badge" class="fixed top-[calc(3rem+env(safe-area-inset-top))] left-1/2 -translate-x-1/2 z-[55] bg-white/10 backdrop-blur-xl text-white text-xs font-bold px-4 py-2 rounded-full border border-white/10 opacity-0 transition-all duration-300 pointer-events-none whitespace-nowrap tracking-wide">Double-tap to reset</div>
+
+            <!-- Top Chrome -->
+            <div class="reader-chrome top fixed top-0 w-full glass-panel z-40 flex items-center justify-between px-4 sm:px-6 shadow-sm pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] min-h-[4rem] h-auto border-b border-white/5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" id="reader-chrome-top">
                 <button onclick="exitReader()" class="text-gray-300 hover:text-white font-bold flex items-center gap-3 tap-effect transition-colors relative z-50 cursor-pointer bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full text-sm">
                     <i class="fa-solid fa-arrow-left rtl-flip"></i> <span data-i18n="exit" class="hidden sm:inline">Exit</span>
                 </button>
-                <div class="text-white font-bold text-center truncate max-w-[50%] text-sm sm:text-[15px] tracking-wide opacity-90 drop-shadow-md" id="reader-title">Ch. 1: The Awakening</div>
+                <div class="text-white font-bold text-center truncate max-w-[50%] text-sm sm:text-[15px] tracking-wide opacity-90 drop-shadow-md" id="reader-title-display">Ch. 1: The Awakening</div>
                 <button onclick="toggleFullscreen()" class="text-gray-300 hover:text-white tap-effect transition-colors relative z-50 cursor-pointer w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center"><i class="fa-solid fa-expand"></i></button>
             </div>
 
-            <div class="flex-1 w-full h-full flex items-center justify-center overflow-hidden bg-black" id="reader-container">
+            <!-- PAGE VIEWPORT — gesture container, overflow hidden, UI outside -->
+            <div id="reader-viewport" class="flex-1 w-full h-full relative overflow-hidden bg-black touch-none select-none">
                 
-                <div id="reader-disclaimer" class="absolute top-24 left-1/2 -translate-x-1/2 z-30 bg-black/70 backdrop-blur-lg text-gray-300 text-[10px] sm:text-[11px] font-bold px-5 py-2.5 rounded-full border border-white/10 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap transition-opacity duration-500 uppercase tracking-widest">
+                <div id="reader-disclaimer" class="absolute top-20 left-1/2 -translate-x-1/2 z-30 bg-black/70 backdrop-blur-lg text-gray-300 text-[10px] sm:text-[11px] font-bold px-5 py-2.5 rounded-full border border-white/10 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap transition-opacity duration-500 uppercase tracking-widest">
                     <i class="fa-solid fa-circle-info text-accent"></i> <span data-i18n="disclaimer">Mock placeholder images used for demonstration.</span>
                 </div>
 
-                <div id="manga-wrapper" class="relative w-full max-w-[800px] h-full flex justify-center items-center">
+                <!-- Page Stage — image layer that gets transformed -->
+                <div id="page-stage" class="absolute inset-0 flex items-center justify-center overflow-hidden">
                     <div id="svg-container" class="w-full h-full relative flex items-center justify-center"></div>
+                </div>
+
+                <!-- Loading skeleton -->
+                <div id="page-skeleton" class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none hidden">
+                    <div class="w-[60%] max-w-[300px] aspect-[2/3] rounded-lg animate-pulse bg-gradient-to-r from-white/[0.02] via-white/[0.05] to-white/[0.02] bg-[length:200%_100%]"></div>
+                </div>
+
+                <!-- Tap zones (pointer-events managed by JS) -->
+                <div id="tap-zones" class="absolute inset-0 z-30 flex pointer-events-none">
+                    <div class="tap-zone flex-1 pointer-events-auto cursor-pointer" data-zone="left" aria-label="Previous page"></div>
+                    <div class="tap-zone flex-1 pointer-events-auto cursor-pointer" data-zone="center" aria-label="Toggle controls"></div>
+                    <div class="tap-zone flex-1 pointer-events-auto cursor-pointer" data-zone="right" aria-label="Next page"></div>
                 </div>
             </div>
 
-            <div class="reader-chrome bottom fixed bottom-[calc(2.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 glass-panel border border-white/10 rounded-full px-2 py-2 flex items-center gap-2 z-40 shadow-[0_15px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+            <!-- Bottom Chrome -->
+            <div class="reader-chrome bottom fixed bottom-[calc(2.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 glass-panel border border-white/10 rounded-full px-2 py-2 flex items-center gap-2 z-40 shadow-[0_15px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" id="reader-chrome-bottom">
                 <button onclick="prevPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-left rtl-flip text-lg"></i></button>
                 <div class="text-white font-mono text-[13px] font-bold px-4 text-center tracking-widest bg-black/40 py-2 rounded-full border border-white/5"><span id="reader-curr-page">1</span> <span class="opacity-40 mx-1">/</span> 5</div>
                 <button onclick="nextPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-right rtl-flip text-lg"></i></button>
@@ -1121,19 +1191,26 @@
             `).join('');
         }
 
-        // --- READER LOGIC ---
-        let scale = 1;
-        let panX = 0, panY = 0;
-        let startX = 0, startY = 0;
-        let lastX = 0, lastY = 0;
-        let isPanning = false;
-        let isSwiping = false;
-        let initialPinchDist = null;
-        let initialScale = 1;
-        let lastTapTime = 0;
-        let touchStartTime = 0;
-        const wrap = document.getElementById('manga-wrapper');
-        const readerCont = document.getElementById('reader-container');
+                // --- READER ENGINE v2 (Merged from Demo 5) ---
+        // Fixed viewport: UI chrome is outside gesture zone. Only image layer transforms.
+        
+        const rState = {
+            scale: 1, panX: 0, panY: 0,
+            zoomed: false, panning: false, pinching: false,
+            pointers: new Map(),
+            pinchDist: 0, startScale: 1,
+            startPanX: 0, startPanY: 0,
+            startX: 0, startY: 0, startTime: 0,
+            lastTap: 0, lastX: 0, lastY: 0,
+            swipe: true,
+            dir: 'ltr'
+        };
+
+        const viewport = document.getElementById('reader-viewport');
+        const pageStage = document.getElementById('page-stage');
+        const svgContainer = document.getElementById('svg-container');
+        const zoomBadge = document.getElementById('zoom-badge');
+        const skeleton = document.getElementById('page-skeleton');
 
         function getSVGPage(p) {
             const pages = [
@@ -1143,69 +1220,212 @@
                 'https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=1600&h=1200&q=80&sat=-100',
                 'https://images.unsplash.com/photo-1682687982501-1e5898cb8f4b?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100'
             ];
-            
             const isSpread = p === 4;
             const cls = isSpread ? "manga-page-svg manga-spread opacity-0 transition-opacity duration-300" : "manga-page-svg opacity-0 transition-opacity duration-300";
             const url = pages[p-1] || pages[0];
-            
-            return `<img src="${url}" class="${cls}" alt="Page ${p}" draggable="false" onload="this.classList.remove('opacity-0')" />`;
+            return `<img src="${url}" class="${cls}" alt="Page ${p}" draggable="false" onload="this.classList.remove('opacity-0')" style="will-change:transform;" id="active-page-img" />`;
         }
 
         function resetZoom() {
-            scale = 1; panX = 0; panY = 0;
-            wrap.style.transform = `translate(0px, 0px) scale(1)`;
+            rState.scale = 1; rState.panX = 0; rState.panY = 0;
+            rState.zoomed = false; rState.panning = false; rState.pinching = false;
+            applyTransform();
+            updateZoomBadge();
         }
-        
+
+        function clampPan() {
+            if (rState.scale <= 1) { rState.panX = 0; rState.panY = 0; return; }
+            const rect = pageStage.getBoundingClientRect();
+            // Max pan so image edges don't go past container center
+            const maxPanX = Math.max(0, (rect.width * rState.scale - rect.width) / 2);
+            const maxPanY = Math.max(0, (rect.height * rState.scale - rect.height) / 2);
+            rState.panX = Math.max(-maxPanX, Math.min(maxPanX, rState.panX));
+            rState.panY = Math.max(-maxPanY, Math.min(maxPanY, rState.panY));
+        }
+
+        function applyTransform() {
+            clampPan();
+            const img = document.getElementById('active-page-img');
+            if (img) {
+                img.style.transform = `translate(${rState.panX}px, ${rState.panY}px) scale(${rState.scale})`;
+            }
+            rState.zoomed = rState.scale > 1.05;
+            updateZoomBadge();
+        }
+
+        function updateZoomBadge() {
+            if (rState.zoomed) {
+                zoomBadge.textContent = `${Math.round(rState.scale * 100)}% · Double-tap to reset`;
+                zoomBadge.style.opacity = '1';
+                zoomBadge.style.transform = 'translate(-50%, 0)';
+            } else {
+                zoomBadge.style.opacity = '0';
+                zoomBadge.style.transform = 'translate(-50%, -10px)';
+            }
+        }
+
+        function dist(p1, p2) {
+            return Math.hypot(p2.clientX - p1.clientX, p2.clientY - p1.clientY);
+        }
+
+        // --- GESTURE SYSTEM — Pointer Events on viewport ---
+        viewport.addEventListener('pointerdown', e => {
+            if (state.view !== 'reader') return;
+            // Don't intercept buttons/chrome
+            if (e.target.closest('button') || e.target.closest('.reader-chrome')) return;
+            e.preventDefault();
+            viewport.setPointerCapture(e.pointerId);
+            rState.pointers.set(e.pointerId, e);
+
+            if (rState.pointers.size === 1) {
+                rState.startX = e.clientX; rState.startY = e.clientY;
+                rState.lastX = e.clientX; rState.lastY = e.clientY;
+                rState.startTime = Date.now();
+                if (rState.zoomed) {
+                    rState.panning = true;
+                    rState.startPanX = rState.panX; rState.startPanY = rState.panY;
+                }
+            } else if (rState.pointers.size === 2) {
+                rState.pinching = true; rState.panning = false;
+                const pts = [...rState.pointers.values()];
+                rState.pinchDist = dist(pts[0], pts[1]);
+                rState.startScale = rState.scale;
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('pointermove', e => {
+            if (state.view !== 'reader') return;
+            if (!rState.pointers.has(e.pointerId)) return;
+            e.preventDefault();
+            rState.pointers.set(e.pointerId, e);
+            const count = rState.pointers.size;
+
+            if (count === 2 && rState.pinching) {
+                const pts = [...rState.pointers.values()];
+                const d = dist(pts[0], pts[1]);
+                const ratio = d / rState.pinchDist;
+                rState.scale = Math.max(1, Math.min(5, rState.startScale * ratio));
+                applyTransform();
+            } else if (count === 1 && rState.panning && rState.zoomed) {
+                const dx = e.clientX - rState.lastX;
+                const dy = e.clientY - rState.lastY;
+                rState.panX += dx; rState.panY += dy;
+                rState.lastX = e.clientX; rState.lastY = e.clientY;
+                applyTransform();
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('pointerup', e => {
+            rState.pointers.delete(e.pointerId);
+            const count = rState.pointers.size;
+
+            if (count === 0) {
+                const elapsed = Date.now() - rState.startTime;
+                const dx = e.clientX - rState.startX;
+                const dy = e.clientY - rState.startY;
+                const travel = Math.hypot(dx, dy);
+
+                if (rState.pinching) {
+                    rState.pinching = false;
+                    if (rState.scale < 1.05) resetZoom();
+                } else if (rState.panning) {
+                    rState.panning = false;
+                    applyTransform(); // clamp
+                } else if (elapsed < 300 && travel < 10) {
+                    const now = Date.now();
+                    if (now - rState.lastTap < 300) {
+                        // DOUBLE TAP — zoom at point
+                        e.preventDefault();
+                        if (rState.zoomed) { resetZoom(); }
+                        else {
+                            const rect = pageStage.getBoundingClientRect();
+                            const tapX = e.clientX - rect.left;
+                            const tapY = e.clientY - rect.top;
+                            const cx = rect.width / 2; const cy = rect.height / 2;
+                            rState.scale = 2.5;
+                            rState.panX = (cx - tapX) * (rState.scale - 1);
+                            rState.panY = (cy - tapY) * (rState.scale - 1);
+                            applyTransform();
+                        }
+                        rState.lastTap = 0;
+                    } else {
+                        handleTap(e.clientX, e.clientY);
+                    }
+                    rState.lastTap = now;
+                } else if (rState.swipe && !rState.zoomed && elapsed < 500 && Math.abs(dx) > 50 && Math.abs(dy) < Math.abs(dx) * 1.3) {
+                    // SWIPE page turn
+                    const isNext = state.lang === 'ar' ? (dx > 0) : (dx < 0);
+                    executePageTurn(isNext);
+                }
+            } else if (count === 1 && rState.pinching) {
+                rState.pinching = false;
+                const rem = [...rState.pointers.values()][0];
+                rState.lastX = rem.clientX; rState.lastY = rem.clientY;
+                rState.panning = true;
+                rState.startPanX = rState.panX; rState.startPanY = rState.panY;
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('pointercancel', () => {
+            rState.pointers.clear();
+            rState.pinching = false; rState.panning = false;
+        });
+
+        // WHEEL (desktop zoom)
+        viewport.addEventListener('wheel', e => {
+            if (e.ctrlKey || e.metaKey || Math.abs(e.deltaY) < 10) {
+                e.preventDefault();
+                const factor = e.deltaY > 0 ? 0.92 : 1.08;
+                rState.scale = Math.max(1, Math.min(5, rState.scale * factor));
+                applyTransform();
+            }
+        }, { passive: false });
+
+        function handleTap(x, y) {
+            if (rState.zoomed) { resetZoom(); return; }
+            const w = window.innerWidth;
+            const isAr = state.lang === 'ar';
+            if (x < w / 3) { executePageTurn(isAr ? true : false); }
+            else if (x < w * 2 / 3) { toggleChrome(); }
+            else { executePageTurn(isAr ? false : true); }
+        }
+
+        // Bind tap zones
+        document.querySelectorAll('.tap-zone').forEach(z => {
+            z.addEventListener('click', e => {
+                if (!rState.zoomed && !rState.panning && !rState.pinching) {
+                    handleTap(e.clientX, e.clientY);
+                }
+            });
+        });
+
+        // --- PAGE TURNS & RENDERING (from Demo 6) ---
         function updateReaderProgress() {
             const bar = document.getElementById('reading-progress-bar');
             if(bar) bar.style.width = `${(state.readerPage / 5) * 100}%`;
+            const title = document.getElementById('reader-title-display');
+            if(title) title.textContent = `Ch. ${state.readerPage}: The Awakening`;
         }
 
         function renderReaderPage(direction = 0) {
             document.getElementById('reader-curr-page').innerText = state.readerPage;
             updateReaderProgress();
-            
-            const cont = document.getElementById('svg-container');
-            
-            // Slide animation starting position
-            let startTranslate = '0px';
-            if (direction !== 0) {
-                let isNext = direction > 0;
-                let moveRight = state.lang === 'ar' ? isNext : !isNext;
-                startTranslate = moveRight ? '30px' : '-30px';
-            }
+            resetZoom();
 
-            cont.style.opacity = '0';
-            cont.style.transform = `translateX(${startTranslate})`;
-            
+            // Skeleton
+            skeleton.classList.remove('hidden');
+
             setTimeout(() => {
-                resetZoom();
-                wrap.classList.remove('anim-snap');
-                
-                if (direction !== 0) {
-                    let fromRight = state.lang === 'ar' ? direction < 0 : direction > 0;
-                    let startPos = fromRight ? window.innerWidth : -window.innerWidth;
-                    wrap.style.transform = `translate(${startPos}px, 0px) scale(1)`;
-                    void wrap.offsetWidth; 
-                } else {
-                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
-                }
+                svgContainer.innerHTML = getSVGPage(state.readerPage);
+                skeleton.classList.add('hidden');
 
-                cont.innerHTML = getSVGPage(state.readerPage);
-                
-                if (direction !== 0) {
-                    wrap.classList.add('anim-snap');
-                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
+                // Handle spread sizing
+                const img = document.getElementById('active-page-img');
+                if (img) {
+                    if(state.readerPage === 4) { img.classList.add('manga-spread'); img.style.maxWidth = '1600px'; }
+                    else { img.classList.remove('manga-spread'); img.style.maxWidth = '800px'; }
                 }
-                
-                if(state.readerPage === 4) wrap.classList.replace('max-w-[800px]', 'max-w-[1600px]');
-                else wrap.classList.replace('max-w-[1600px]', 'max-w-[800px]');
-
-                requestAnimationFrame(() => { 
-                    cont.style.opacity = '1'; 
-                    cont.style.transform = 'translateX(0)';
-                });
-            }, 150);
+            }, 80);
         }
 
         function executePageTurn(isNext) {
@@ -1219,10 +1439,12 @@
         }
 
         function bounceEdge(dir) {
-            wrap.classList.add('anim-snap');
+            const img = document.getElementById('active-page-img');
+            if (!img) return;
+            img.style.transition = 'transform 0.25s cubic-bezier(0.16,1,0.3,1)';
             let visualDir = state.lang === 'ar' ? -dir : dir;
-            wrap.style.transform = `translate(${visualDir * 50}px, 0px) scale(1)`;
-            setTimeout(() => { wrap.style.transform = `translate(0px, 0px) scale(1)`; }, 250);
+            img.style.transform = `translate(${visualDir * 30}px, 0px) scale(1)`;
+            setTimeout(() => { img.style.transform = `translate(0px, 0px) scale(1)`; }, 250);
         }
 
         function prevPage(e) { if(e) e.stopPropagation(); executePageTurn(false); }
@@ -1232,146 +1454,33 @@
         function toggleFullscreen() {
             if(!document.fullscreenElement) {
                 const promise = document.documentElement.requestFullscreen();
-                if (promise) {
-                    promise.catch(() => {
-                        showToast(state.lang === 'en' ? 'Fullscreen not supported in preview environment' : 'وضع ملء الشاشة غير مدعوم هنا');
-                    });
-                }
-            }
-            else document.exitFullscreen().catch(()=>{});
+                if (promise) promise.catch(() => showToast(state.lang === 'en' ? 'Fullscreen not supported' : 'وضع ملء الشاشة غير مدعوم'));
+            } else document.exitFullscreen().catch(()=>{});
         }
 
         function toggleChrome() {
             state.uiVisible = !state.uiVisible;
-            const view = document.getElementById('view-reader');
-            if (state.uiVisible) view.classList.remove('reader-idle');
-            else view.classList.add('reader-idle');
+            const top = document.getElementById('reader-chrome-top');
+            const bottom = document.getElementById('reader-chrome-bottom');
+            const disclaimer = document.getElementById('reader-disclaimer');
+            if (state.uiVisible) {
+                top.style.opacity = '1'; top.style.transform = 'translateY(0)';
+                bottom.style.opacity = '1'; bottom.style.transform = 'translate(-50%, 0)';
+                if(disclaimer) disclaimer.style.opacity = '1';
+            } else {
+                top.style.opacity = '0'; top.style.transform = 'translateY(-100%)';
+                bottom.style.opacity = '0'; bottom.style.transform = 'translate(-50%, 150%)';
+                if(disclaimer) disclaimer.style.opacity = '0';
+            }
         }
 
-        // --- MOBILE TOUCH LOGIC ---
-        readerCont.addEventListener('touchstart', e => {
-            if(state.view !== 'reader') return;
-            wrap.classList.remove('anim-snap');
-
-            if(e.touches.length === 1) {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                lastX = startX; lastY = startY;
-                isPanning = scale > 1;
-                isSwiping = scale === 1;
-                touchStartTime = Date.now();
-
-                // Double Tap Zoom
-                if(touchStartTime - lastTapTime < 300) {
-                    e.preventDefault();
-                    wrap.classList.add('anim-snap');
-                    if(scale > 1) resetZoom();
-                    else {
-                        scale = 2; 
-                        wrap.style.transform = `translate(0px, 0px) scale(${scale})`;
-                    }
-                    lastTapTime = 0;
-                    isSwiping = false; isPanning = false;
-                    return;
-                }
-                lastTapTime = touchStartTime;
-
-            } else if (e.touches.length === 2) {
-                isPanning = false; isSwiping = false;
-                initialPinchDist = Math.hypot(
-                    e.touches[0].clientX - e.touches[1].clientX,
-                    e.touches[0].clientY - e.touches[1].clientY
-                );
-                initialScale = scale;
-            }
-        }, {passive: false});
-
-        readerCont.addEventListener('touchmove', e => {
-            if(state.view !== 'reader') return;
-            e.preventDefault(); 
-            
-            if (e.touches.length === 2 && initialPinchDist) {
-                let currentDist = Math.hypot(
-                    e.touches[0].clientX - e.touches[1].clientX,
-                    e.touches[0].clientY - e.touches[1].clientY
-                );
-                scale = Math.max(1, Math.min(initialScale * (currentDist / initialPinchDist), 4));
-                wrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-            } else if (e.touches.length === 1) {
-                let cx = e.touches[0].clientX;
-                let cy = e.touches[0].clientY;
-                let dx = cx - lastX;
-                let dy = cy - lastY;
-                lastX = cx; lastY = cy;
-
-                if (isPanning) {
-                    panX += dx; panY += dy;
-                    wrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-                } else if (isSwiping) {
-                    let swipeDist = cx - startX;
-                    wrap.style.transform = `translate(${swipeDist}px, 0px) scale(1)`;
-                }
-            }
-        }, {passive: false});
-
-        readerCont.addEventListener('touchend', e => {
-            if(state.view !== 'reader') return;
-            if(e.touches.length > 0) return; 
-
-            // Snap Pan Bounds
-            if (scale > 1) {
-                wrap.classList.add('anim-snap');
-                let maxPanX = (window.innerWidth * scale - window.innerWidth) / 2;
-                let maxPanY = (window.innerHeight * scale - window.innerHeight) / 2;
-                panX = Math.max(-maxPanX, Math.min(maxPanX, panX));
-                panY = Math.max(-maxPanY, Math.min(maxPanY, panY));
-                wrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-            }
-
-            // Handle Tap or Swipe Release
-            if (isSwiping) {
-                let cx = e.changedTouches[0].clientX;
-                let cy = e.changedTouches[0].clientY;
-                let diffX = cx - startX;
-                let diffY = cy - startY;
-                let timeDiff = Date.now() - touchStartTime;
-                isSwiping = false;
-
-                // Taps
-                if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10 && timeDiff < 300) {
-                    wrap.classList.add('anim-snap');
-                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
-                    
-                    if(e.target.closest('button') || e.target.closest('.reader-chrome')) return;
-                    
-                    let w = window.innerWidth;
-                    let isAr = state.lang === 'ar';
-                    if (cx < w * 0.3) { executePageTurn(isAr ? true : false); }
-                    else if (cx > w * 0.7) { executePageTurn(isAr ? false : true); }
-                    else { toggleChrome(); }
-                    return;
-                }
-
-                // Swipe Turns
-                if (Math.abs(diffX) > 60) {
-                    let isNext = state.lang === 'ar' ? (diffX > 0) : (diffX < 0);
-                    executePageTurn(isNext);
-                } else {
-                    wrap.classList.add('anim-snap');
-                    wrap.style.transform = `translate(0px, 0px) scale(1)`;
-                }
-            }
-            initialPinchDist = null;
-        });
-
+        // Keyboard
         document.addEventListener('keydown', e => {
             if(state.view !== 'reader') return;
             if(e.key === 'ArrowRight') state.lang==='ar'?prevPage():nextPage();
             if(e.key === 'ArrowLeft') state.lang==='ar'?nextPage():prevPage();
-            if(e.key === 'Escape') exitReader();
-        });
-
-        // INIT
+            if(e.key === 'Escape') { if(rState.zoomed) resetZoom(); else exitReader(); }
+        });// INIT
         updateTranslations();
         navigate(state.view);
 
