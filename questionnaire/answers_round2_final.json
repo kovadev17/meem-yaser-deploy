@@ -1,0 +1,234 @@
+{
+  "round": 2,
+  "source": "follow-up questionnaire (27 questions)",
+  "total_answered": 27,
+  "raw_answers": {
+    "q1": "other",
+    "q2": "other",
+    "q3": "not-yet",
+    "q4": "most",
+    "q5": "other",
+    "q6": "other",
+    "q7": "yes-detailed",
+    "q8": "other",
+    "q9": "padded",
+    "q10": "other",
+    "q11": "drag-folder",
+    "q12": "separate",
+    "q13": "later",
+    "q14": "images-cover-meta",
+    "q15": "logo-only",
+    "q16": "premium",
+    "q17": "other",
+    "q18": "other",
+    "q19": "yes-help",
+    "q20": "me-invite",
+    "q21": "other",
+    "q22": "other",
+    "q23": "thirds",
+    "q24": "paypal",
+    "q25": "mobile-first",
+    "q26": "maybe",
+    "q27": "I don't always upload full chapters at once.\nSometimes I split a chapter into parts (e.g. 40 pages → upload 20 pages as Part 1, then continue later).\n\nSo the system should support updating an existing chapter or adding parts progressively without breaking the reading order.",
+    "q1-other": "I prefer no overlay subtitles. Each language should have its own dedicated version of the pages, keeping the artwork clean and the reading experience intact.",
+    "q2-other": "Pinch-to-zoom on mobile and iPad with a clean UI (no buttons). On desktop, zoom buttons are fine as long as they stay minimal or auto-hide. Zoom should not interfere with page swiping.",
+    "q6-other": "I prefer comments to be visible immediately (no pre-approval). Please include moderation tools like reporting, the ability to delete comments, and ban users when needed.",
+    "q8-other": "Stories may include seasons, so the structure should support: StoryName/Season01/Ch01/",
+    "q10-other": "I use a mix of PNG and JPEG. It would be ideal if the platform automatically converts and optimizes them to WebP during upload.",
+    "q17-other": "No visible toggle button. The UI should hide/show with a simple tap on the screen (like Dropbox). Clean, minimal, and immersive",
+    "q18-other": "The reader should be dark mode only, while the main website stays light mode. No toggle or switching needed.",
+    "q21-other": "I'll set up Stripe when I'm ready to launch subscriptions",
+    "q22-other": "I have existing websites and social media accounts that should be integrated"
+  },
+  "structured_qa": [
+    {
+      "number": 1,
+      "question": "Subtitles for translated content — how should they appear?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "I prefer no overlay subtitles. Each language should have its own dedicated version of the pages, keeping the artwork clean and the reading experience intact."
+    },
+    {
+      "number": 2,
+      "question": "Should readers be able to zoom in on pages?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "Pinch-to-zoom on mobile and iPad with a clean UI (no buttons). On desktop, zoom buttons are fine as long as they stay minimal or auto-hide. Zoom should not interfere with page swiping."
+    },
+    {
+      "number": 3,
+      "question": "How many moderators will manage the forum and comments?",
+      "answer_value": "not-yet",
+      "answer_label": "Not yet",
+      "other_text": null
+    },
+    {
+      "number": 4,
+      "question": "What should moderators be able to do without your approval?",
+      "answer_value": "most",
+      "answer_label": "Most actions",
+      "other_text": null
+    },
+    {
+      "number": 5,
+      "question": "Who handles the comment approval queue?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": null
+    },
+    {
+      "number": 6,
+      "question": "Should forum posts and page comments use the same moderation rules?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "I prefer comments to be visible immediately (no pre-approval). Please include moderation tools like reporting, the ability to delete comments, and ban users when needed."
+    },
+    {
+      "number": 7,
+      "question": "Should there be an audit log visible to you as owner?",
+      "answer_value": "yes-detailed",
+      "answer_label": "Yes — detailed log",
+      "other_text": null
+    },
+    {
+      "number": 8,
+      "question": "How do you currently organize chapter files?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "Stories may include seasons, so the structure should support: StoryName/Season01/Ch01/"
+    },
+    {
+      "number": 9,
+      "question": "How do you name individual page files within a chapter?",
+      "answer_value": "padded",
+      "answer_label": "Zero-padded",
+      "other_text": null
+    },
+    {
+      "number": 10,
+      "question": "What file formats are your pages in?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "I use a mix of PNG and JPEG. It would be ideal if the platform automatically converts and optimizes them to WebP during upload."
+    },
+    {
+      "number": 11,
+      "question": "How do you want to upload chapters to the platform?",
+      "answer_value": "drag-folder",
+      "answer_label": "Drag folder",
+      "other_text": null
+    },
+    {
+      "number": 12,
+      "question": "How should character profiles and world-building documents be uploaded?",
+      "answer_value": "separate",
+      "answer_label": "Separate section",
+      "other_text": null
+    },
+    {
+      "number": 13,
+      "question": "Can you share a sample chapter for development testing?",
+      "answer_value": "later",
+      "answer_label": "After scope signed",
+      "other_text": null
+    },
+    {
+      "number": 14,
+      "question": "What visual assets can you provide for each story?",
+      "answer_value": "images-cover-meta",
+      "answer_label": "Images + covers + metadata",
+      "other_text": null
+    },
+    {
+      "number": 15,
+      "question": "Do you have existing brand assets we should use?",
+      "answer_value": "logo-only",
+      "answer_label": "Logo only",
+      "other_text": null
+    },
+    {
+      "number": 16,
+      "question": "What feeling should the landing page evoke?",
+      "answer_value": "premium",
+      "answer_label": "Premium/luxury",
+      "other_text": null
+    },
+    {
+      "number": 17,
+      "question": "Should the reader have a theater mode?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "No visible toggle button. The UI should hide/show with a simple tap on the screen (like Dropbox). Clean, minimal, and immersive"
+    },
+    {
+      "number": 18,
+      "question": "Should there be a light/dark mode toggle?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "The reader should be dark mode only, while the main website stays light mode. No toggle or switching needed."
+    },
+    {
+      "number": 19,
+      "question": "Do you own restlessworlds.com (or your preferred domain)?",
+      "answer_value": "yes-help",
+      "answer_label": "Yes, need DNS help",
+      "other_text": null
+    },
+    {
+      "number": 20,
+      "question": "How should the code repository be handled?",
+      "answer_value": "me-invite",
+      "answer_label": "I create repo, invite you",
+      "other_text": null
+    },
+    {
+      "number": 21,
+      "question": "What payment processor do you have (or plan to use) for subscriptions?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "I'll set up Stripe when I'm ready to launch subscriptions"
+    },
+    {
+      "number": 22,
+      "question": "Do you have existing digital infrastructure we should integrate with?",
+      "answer_value": "other",
+      "answer_label": "Other",
+      "other_text": "I have existing websites and social media accounts that should be integrated"
+    },
+    {
+      "number": 23,
+      "question": "What payment schedule works for you?",
+      "answer_value": "thirds",
+      "answer_label": "Three payments",
+      "other_text": null
+    },
+    {
+      "number": 24,
+      "question": "What's your preferred payment method?",
+      "answer_value": "paypal",
+      "answer_label": "PayPal invoice",
+      "other_text": null
+    },
+    {
+      "number": 25,
+      "question": "What platforms should we prioritize?",
+      "answer_value": "mobile-first",
+      "answer_label": "Mobile-first",
+      "other_text": null
+    },
+    {
+      "number": 26,
+      "question": "Should we architect for merchandise or store integration later?",
+      "answer_value": "maybe",
+      "answer_label": "Maybe, don't design around it",
+      "other_text": null
+    },
+    {
+      "number": 27,
+      "question": "Is there anything else we should know?",
+      "answer_value": "I don't always upload full chapters at once.\nSometimes I split a chapter into parts (e.g. 40 pages → upload 20 pages as Part 1, then continue later).\n\nSo the system should support updating an existing chapter or adding parts progressively without breaking the reading order.",
+      "answer_label": "I don't always upload full chapters at once.\nSometimes I split a chapter into parts (e.g. 40 pages → upload 20 pages as Part 1, then continue later).\n\nSo the system should support updating an existing chapter or adding parts progressively without breaking the reading order.",
+      "other_text": null
+    }
+  ]
+}

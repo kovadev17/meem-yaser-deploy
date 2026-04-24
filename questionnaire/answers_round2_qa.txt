@@ -1,0 +1,128 @@
+======================================================================
+MEEM YASER STUDIO — FOLLOW-UP QUESTIONNAIRE ANSWERS
+Round 2 of 2 • 27 Questions • All Answered
+======================================================================
+
+SOURCE: Follow-up questionnaire (followup.html)
+DECODED FROM: Base64 code sent by Meem via email
+
+----------------------------------------------------------------------
+
+Q1: Subtitles for translated content — how should they appear?
+  Answer: Other
+  Details: I prefer no overlay subtitles. Each language should have its own dedicated version of the pages, keeping the artwork clean and the reading experience intact.
+
+
+Q2: Should readers be able to zoom in on pages?
+  Answer: Other
+  Details: Pinch-to-zoom on mobile and iPad with a clean UI (no buttons). On desktop, zoom buttons are fine as long as they stay minimal or auto-hide. Zoom should not interfere with page swiping.
+
+
+Q3: How many moderators will manage the forum and comments?
+  Answer: Not yet
+
+
+Q4: What should moderators be able to do without your approval?
+  Answer: Most actions
+
+
+Q5: Who handles the comment approval queue?
+  Answer: Other
+
+
+Q6: Should forum posts and page comments use the same moderation rules?
+  Answer: Other
+  Details: I prefer comments to be visible immediately (no pre-approval). Please include moderation tools like reporting, the ability to delete comments, and ban users when needed.
+
+
+Q7: Should there be an audit log visible to you as owner?
+  Answer: Yes — detailed log
+
+
+Q8: How do you currently organize chapter files?
+  Answer: Other
+  Details: Stories may include seasons, so the structure should support: StoryName/Season01/Ch01/
+
+
+Q9: How do you name individual page files within a chapter?
+  Answer: Zero-padded
+
+
+Q10: What file formats are your pages in?
+  Answer: Other
+  Details: I use a mix of PNG and JPEG. It would be ideal if the platform automatically converts and optimizes them to WebP during upload.
+
+
+Q11: How do you want to upload chapters to the platform?
+  Answer: Drag folder
+
+
+Q12: How should character profiles and world-building documents be uploaded?
+  Answer: Separate section
+
+
+Q13: Can you share a sample chapter for development testing?
+  Answer: After scope signed
+
+
+Q14: What visual assets can you provide for each story?
+  Answer: Images + covers + metadata
+
+
+Q15: Do you have existing brand assets we should use?
+  Answer: Logo only
+
+
+Q16: What feeling should the landing page evoke?
+  Answer: Premium/luxury
+
+
+Q17: Should the reader have a theater mode?
+  Answer: Other
+  Details: No visible toggle button. The UI should hide/show with a simple tap on the screen (like Dropbox). Clean, minimal, and immersive
+
+
+Q18: Should there be a light/dark mode toggle?
+  Answer: Other
+  Details: The reader should be dark mode only, while the main website stays light mode. No toggle or switching needed.
+
+
+Q19: Do you own restlessworlds.com (or your preferred domain)?
+  Answer: Yes, need DNS help
+
+
+Q20: How should the code repository be handled?
+  Answer: I create repo, invite you
+
+
+Q21: What payment processor do you have (or plan to use) for subscriptions?
+  Answer: Other
+  Details: I'll set up Stripe when I'm ready to launch subscriptions
+
+
+Q22: Do you have existing digital infrastructure we should integrate with?
+  Answer: Other
+  Details: I have existing websites and social media accounts that should be integrated
+
+
+Q23: What payment schedule works for you?
+  Answer: Three payments
+
+
+Q24: What's your preferred payment method?
+  Answer: PayPal invoice
+
+
+Q25: What platforms should we prioritize?
+  Answer: Mobile-first
+
+
+Q26: Should we architect for merchandise or store integration later?
+  Answer: Maybe, don't design around it
+
+
+Q27: Is there anything else we should know?
+  Answer: I don't always upload full chapters at once.
+Sometimes I split a chapter into parts (e.g. 40 pages → upload 20 pages as Part 1, then continue later).
+
+So the system should support updating an existing chapter or adding parts progressively without breaking the reading order.
