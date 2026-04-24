@@ -1,318 +1,1828 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-<meta name="theme-color" content="#070707">
-<title>Restless Worlds — Rūsuma Vault</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
-body{font-family:'Space Grotesk',system-ui,sans-serif;background:#070707;color:#f0f0f0;line-height:1.55;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-img{-webkit-user-drag:none;user-select:none}
-button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
-.view{position:fixed;inset:0;overflow:hidden;display:none;opacity:0;transition:opacity .35s cubic-bezier(.22,1,.36,1)}
-.view.active{display:flex;flex-direction:column;opacity:1}
-.brand-bar{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.25rem;background:rgba(7,7,7,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
-.brand-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:inherit}
-.brand-mark{width:32px;height:32px;background:#D4AF37;border-radius:8px;display:grid;place-items:center;color:#000;font-weight:800;font-size:.8rem}
-.brand-title{font-weight:700;font-size:.85rem;letter-spacing:-.01em}
-.brand-sub{font-size:.65rem;color:#777;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
-.brand-nav{display:flex;gap:1.5rem;align-items:center}
-.nav-link{text-decoration:none;color:#777;font-size:.75rem;font-weight:500;letter-spacing:.02em;padding:.3rem 0;position:relative;transition:color .2s}
-.nav-link:hover,.nav-link.active{color:#f0f0f0}
-.nav-link.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:#D4AF37}
-.lang-toggle{display:flex;align-items:center;gap:.3rem;border:1px solid rgba(255,255,255,.06);padding:.35rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600;color:#777;transition:all .2s}
-.lang-toggle:hover{border-color:#D4AF37;color:#D4AF37}
-#library-view{overflow-y:auto;overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch}
-.vault-hero{padding:5rem 1.5rem 2.5rem;max-width:720px;margin:0 auto;text-align:center}
-.vault-label{font-family:'Space Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.25em;color:#D4AF37;margin-bottom:1.25rem}
-.vault-hero h1{font-size:clamp(2.5rem,6vw,4rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-bottom:.75rem}
-.vault-hero p{color:#777;font-size:.95rem;max-width:42ch;margin:0 auto 2rem}
-.vault-grid{max-width:1000px;margin:0 auto;padding:0 1.25rem 5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
-.vault-card{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;background:#0c0c0c;transition:all .35s cubic-bezier(.22,1,.36,1);border:1px solid rgba(255,255,255,.06)}
-.vault-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.12)}
-.vault-card img{width:100%;height:220px;object-fit:cover;display:block;transition:transform .6s ease}
-.vault-card:hover img{transform:scale(1.06)}
-.vault-card-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.85) 0%,transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:1rem}
-.vault-card-title{color:#fff;font-weight:600;font-size:.85rem;margin-bottom:.2rem}
-.vault-card-meta{color:#777;font-size:.65rem;font-family:'Space Mono',monospace}
-.vault-card-status{position:absolute;top:.6rem;right:.6rem;font-size:.55rem;font-weight:700;padding:.25rem .5rem;border-radius:4px;background:#D4AF37;color:#000;text-transform:uppercase;letter-spacing:.05em}
-.search-bar{max-width:400px;margin:0 auto 2rem;padding:0 1.25rem}
-.search-bar input{width:100%;padding:.75rem 1rem;background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;color:#f0f0f0;font-size:.9rem;outline:none}
-.search-bar input:focus{border-color:#D4AF37}
-.search-bar input::placeholder{color:#444}
-#reader-view{background:#020202;padding-top:0;z-index:2000}
-.reader-stage{width:100%;height:100dvh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;touch-action:none}
-.reader-stage img{max-width:100%;max-height:100%;object-fit:contain;transition:opacity .25s ease;will-change:transform}
-.reader-stage img.loading{opacity:.3}
-.reader-stage img.loaded{opacity:1}
-.tap-zone{position:absolute;top:0;bottom:0;z-index:50}
-.tap-left{left:0;width:28%}
-.tap-right{right:0;width:28%}
-.reader-top{position:absolute;top:0;left:0;right:0;z-index:100;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent);opacity:0;transition:opacity .3s}
-.reader-top.visible{opacity:1}
-.reader-btn{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);display:grid;place-items:center;color:#fff;font-size:1.1rem;transition:background .2s}
-.reader-btn:hover{background:rgba(255,255,255,.15)}
-.reader-info{position:absolute;bottom:0;left:0;right:0;z-index:100;padding:1rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);opacity:0;transition:opacity .3s}
-.reader-info.visible{opacity:1}
-.reader-progress{flex:1;height:2px;background:rgba(255,255,255,.1);border-radius:1px;margin:0 1rem;overflow:hidden}
-.reader-progress-fill{height:100%;background:#D4AF37;border-radius:1px;width:0;transition:width .3s}
-.zoom-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#D4AF37;padding:.5rem 1rem;border-radius:8px;font-size:.8rem;opacity:0;pointer-events:none;transition:opacity .3s;z-index:200}
-.zoom-badge.visible{opacity:1}
-.chapter-drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2500;display:flex;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .3s}
-.chapter-drawer-backdrop:not(.hidden){opacity:1;pointer-events:auto}
-.chapter-drawer{width:320px;max-width:85vw;height:100%;background:#0c0c0c;border-left:1px solid rgba(255,255,255,.06);overflow-y:auto;padding:1rem}
-.chapter-item{display:flex;align-items:center;gap:.75rem;padding:.75rem;border-radius:8px;cursor:pointer;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.06)}
-.chapter-item:hover{background:#141414}
-.chapter-item.locked{opacity:.4;cursor:not-allowed}
-.ch-num{font-family:'Space Mono',monospace;font-size:.75rem;color:#D4AF37;min-width:28px}
-.ch-title{flex:1;font-size:.85rem}
-.ch-lock{color:#777;font-size:.8rem}
-.ch-pages{font-size:.7rem;color:#555}
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
-.modal-backdrop:not(.hidden){opacity:1;pointer-events:auto}
-.modal-content{background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1.5rem;max-width:400px;width:90%;max-height:80vh;overflow-y:auto}
-.modal-title{font-size:1.1rem;font-weight:700;margin-bottom:.75rem}
-.modal-text{font-size:.9rem;color:#777;margin-bottom:1.25rem;line-height:1.6}
-.btn-primary{background:#D4AF37;color:#000;padding:.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:.85rem;width:100%;margin-bottom:.5rem;border:none;cursor:pointer}
-.btn-secondary{background:#141414;color:#f0f0f0;padding:.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:.85rem;width:100%;border:1px solid rgba(255,255,255,.06);cursor:pointer}
-.admin-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:#070707;z-index:1500;overflow-y:auto;padding:5rem 1.5rem 2rem;display:none}
-.admin-panel:not(.hidden){display:block}
-.admin-title{font-size:1.25rem;font-weight:700;margin-bottom:1.5rem}
-.admin-appr-row{display:flex;justify-content:space-between;align-items:center;padding:1rem;background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;margin-bottom:.5rem}
-.appr-email{font-size:.85rem;font-weight:600}
-.appr-date{font-size:.65rem;color:#777;font-family:'Space Mono',monospace;margin-top:.2rem}
-.appr-actions{display:flex;gap:.5rem}
-.btn-appr-yes,.btn-appr-no{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-weight:700;border:none}
-.btn-appr-yes{background:rgba(34,197,94,.15);color:#22c55e}
-.btn-appr-no{background:rgba(239,68,68,.15);color:#ef4444}
-#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#141414;color:#f0f0f0;padding:.75rem 1.5rem;border-radius:12px;font-size:.85rem;border:1px solid rgba(255,255,255,.06);opacity:0;pointer-events:none;transition:all .3s;z-index:4000}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.section{padding:1.5rem;max-width:800px;margin:0 auto}
-.section-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#777;font-weight:700;margin-bottom:1rem;font-family:'Space Mono',monospace}
-.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem}
-.char-card{background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1rem;text-align:center;cursor:pointer;transition:all .2s}
-.char-card:hover{border-color:rgba(255,255,255,.12)}
-.char-avatar{width:56px;height:56px;border-radius:50%;background:rgba(212,175,55,.08);display:grid;place-items:center;margin:0 auto .75rem;font-weight:700;color:#D4AF37}
-.char-name{font-weight:600;font-size:.85rem;margin-bottom:.2rem}
-.char-role{font-size:.7rem;color:#777}
-.forum-item{background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1rem;margin-bottom:.75rem;cursor:pointer;transition:all .2s}
-.forum-item:hover{border-color:rgba(255,255,255,.12)}
-.forum-title{font-weight:600;font-size:.9rem;margin-bottom:.35rem}
-.forum-prev{font-size:.8rem;color:#777;margin-bottom:.5rem}
-.forum-meta{font-size:.65rem;color:#444;font-family:'Space Mono',monospace;display:flex;gap:1rem}
-.upload-zone{border:2px dashed rgba(255,255,255,.06);border-radius:12px;padding:2rem;text-align:center;transition:border-color .2s;cursor:pointer}
-.upload-zone:hover{border-color:#D4AF37}
-.upload-zone input{display:none}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <title>Rūsuma Reading Club | روسوما نادي القراءة</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FAFAF8',
+                        card: '#FFFFFF',
+                        reader: '#000000', /* Pure black for OLED screens */
+                        accent: '#C9A227',
+                        accentLight: '#E8C84A',
+                        accentDark: '#9A7B1A',
+                        textMain: '#1A1A1A',
+                        textSec: '#6B7280',
+                        danger: '#EF4444',
+                        free: '#10B981',
+                        locked: '#9CA3AF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Cairo', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        subtle: '0 2px 8px rgba(0,0,0,0.04)',
+                        hover: '0 12px 30px rgba(0,0,0,0.08)',
+                        modal: '0 25px 50px rgba(0,0,0,0.15)',
+                        glow: '0 0 20px rgba(212,175,55,0.4)'
+                    },
+                    transitionTimingFunction: {
+                        custom: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                        bounce: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Resets & Theme Transitions */
+        :root { --transition-curve: cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        * { -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #FAFAF8;
+            color: #1A1A1A;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body[lang="en"] { font-family: 'Inter', sans-serif; }
+        body[lang="ar"] { font-family: 'Cairo', sans-serif; }
+
+        body.is-reader { background-color: #000000; color: #FAFAF8; }
+
+        /* Typography sizing */
+        .t-title { font-size: clamp(40px, 5vw, 64px); line-height: 1.05; font-weight: 900; letter-spacing: -0.02em; }
+        .t-section { font-size: clamp(22px, 3.5vw, 28px); font-weight: 800; letter-spacing: -0.01em; }
+        
+        /* Arabic font shaping fix — letter-spacing breaks cursive connections */
+        html[dir="rtl"] .t-title,
+        html[dir="rtl"] .t-section,
+        body[lang="ar"] .t-title,
+        body[lang="ar"] .t-section,
+        body[lang="ar"] *,
+        html[dir="rtl"] * {
+            letter-spacing: 0 !important;
+            word-break: normal !important;
+            overflow-wrap: break-word;
+            font-variant-ligatures: normal;
+            text-rendering: optimizeLegibility;
+        }
+        
+        /* Ensure Cairo loads with proper Arabic shaping */
+        body[lang="ar"] {
+            font-family: 'Cairo', 'Noto Sans Arabic', 'Tahoma', sans-serif;
+        }
+        .t-card { font-size: clamp(16px, 2vw, 20px); font-weight: 700; }
+        .t-body { font-size: clamp(14px, 1.5vw, 16px); }
+        
+        /* Interactive Polish */
+        .tap-effect { transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s; }
+        .tap-effect:active { transform: scale(0.97); }
+
+        /* Page View Transitions */
+        .view:not(.active) {
+            display: none !important;
+        }
+        .view.active {
+            animation: viewEnter 0.6s var(--transition-curve) forwards;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            min-height: 100vh;
+        }
+        @keyframes viewEnter {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Elements */
+        .hover-card { transition: all 0.4s var(--transition-curve); }
+        .hover-card:hover { transform: translateY(-4px); box-shadow: var(--tw-shadow-hover); z-index: 5; }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(107, 114, 128, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(107, 114, 128, 0.4); }
+        .is-reader ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); }
+        
+        /* Hide scrollbar for horizontal mobile lists */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* SVG Reader Panels */
+        .manga-page-svg {
+            width: 100%; height: 100dvh;
+            object-fit: contain;
+            background: #000;
+        }
+        .manga-spread { max-width: 100% !important; width: 200%; }
+
+        #reader-container {
+            touch-action: none;
+            overscroll-behavior: none;
+        }
+        .anim-snap {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Reader Chrome */
+        .reader-chrome { transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reader-idle .reader-chrome { opacity: 0; pointer-events: none; }
+        .reader-idle .reader-chrome.top { transform: translateY(-100%); }
+        .reader-idle .reader-chrome.bottom { transform: translateY(150%) translateX(-50%); }
+        .reader-idle #reader-disclaimer { opacity: 0; }
+
+        /* Reader Panels & Animations */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .slide-panel { transition: transform 0.5s var(--transition-curve); }
+        
+        /* Progress Bar */
+        #reading-progress { transition: width 0.3s ease; }
+
+        /* Modals & Overlays */
+        .overlay { transition: opacity 0.3s var(--transition-curve); }
+        .modal-content { transition: transform 0.3s var(--transition-curve); }
+
+        /* Toast */
+        @keyframes toastIn {
+            from { opacity: 0; transform: translate(-50%, 20px) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+        }
+        .toast-animate { animation: toastIn 0.4s var(--transition-curve) forwards; }
+
+        /* Line Clamp */
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* RTL Utils & Transitions */
+        html[dir="rtl"] .rtl-flip { transform: scaleX(-1); }
+        .rtl-flip { transition: transform 0.4s var(--transition-curve); }
+
+        /* Mobile Adjustments */
+        .h-dvh { height: 100dvh; }
+        .min-h-dvh { min-height: 100dvh; }
+        
+        /* Smart Nav */
+        #navbar { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s; }
+        .nav-hidden { transform: translateY(-100%); }
+
+        body {
+            transition: background-color 0.5s ease, color 0.5s ease, opacity 0.3s ease, transform 0.3s ease;
+        }
+        body.lang-fade-out {
+            opacity: 0;
+            transform: scale(0.99);
+            pointer-events: none;
+        }
+
+        /* Upload Overlay */
+        .upload-overlay.open { opacity: 1 !important; pointer-events: auto !important; }
+        .upload-overlay .upload-modal { transform: scale(0.95) translateY(20px); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+        .upload-overlay.open .upload-modal { transform: scale(1) translateY(0) !important; }
+        .drop-zone.drag-over { border-color: var(--tw-colors-accent) !important; background: rgba(201, 162, 39, 0.05) !important; }
+        .upload-item.done .text-xs { color: #10B981; }
+        .upload-item.error .text-xs { color: #EF4444; }
+
+        /* Gold-enhanced accents */
+        .gold-glow { box-shadow: 0 0 30px rgba(201, 162, 39, 0.3); }
+        .gold-border { border-color: rgba(201, 162, 39, 0.4); }
+        .gold-text { color: #E8C84A; }
+        
+        /* Edge to Edge Mobile Scrollers */
+        .bleed-scroll {
+            margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem;
+        }
+        @media (min-width: 640px) {
+            .bleed-scroll { margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+        }
+        @media (min-width: 1024px) {
+            .bleed-scroll { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+        }
+    
+        /* Reader Engine v2 — Fixed Viewport Architecture */
+        #reader-viewport {
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #page-stage {
+            touch-action: none;
+        }
+        #page-stage img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            transform-origin: center center;
+            transition: opacity 0.25s ease;
+        }
+        #page-stage img.manga-spread {
+            max-width: 1600px !important;
+            width: 200%;
+        }
+        .tap-zone {
+            position: relative;
+        }
+        .tap-zone::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 1px dashed rgba(255,255,255,0.06);
+            border-radius: 4px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .show-zones .tap-zone::after {
+            opacity: 1;
+        }
+        .reader-chrome.top {
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reader-chrome.bottom {
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        #page-skeleton > div {
+            animation: skeleton-shimmer 1.5s ease-in-out infinite;
+        }
 </style>
 </head>
-<body><div id="library-view" class="view active">
-  <div class="brand-bar">
-    <a href="#" class="brand-logo" onclick="renderAll();return false">
-      <div class="brand-mark">R</div>
-      <div class="brand-text"><div class="brand-title">Restless Worlds</div><div class="brand-sub">Rūsuma Collection</div></div>
-    </a>
-    <div class="brand-nav">
-      <a href="#" class="nav-link active" onclick="switchView('library');return false">Library</a>
-      <a href="#" class="nav-link" onclick="switchView('characters');return false">Characters</a>
-      <a href="#" class="nav-link" onclick="switchView('forum');return false">Forum</a>
-      <button class="lang-toggle" onclick="toggleLang()">EN <span style="color:#444">/</span> AR</button>
-      <button class="reader-btn" style="width:auto;padding:0 .7rem;font-size:.75rem" onclick="state.role==='admin'?toggleAdminPanel():showLogin()"><span id="user-badge">Guest</span></button>
+<body lang="en" dir="ltr" class="relative selection:bg-accent/30">
+
+    <div id="toast-container" class="fixed bottom-[calc(2rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 items-center pointer-events-none"></div>
+
+    <div id="pwa-toast" class="fixed bottom-6 start-6 z-[9998] bg-card p-4 rounded-2xl shadow-modal flex items-center gap-4 border border-gray-100 transition-all duration-500 transform translate-y-32 opacity-0 max-w-sm">
+        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-2xl font-bold font-arabic shrink-0 shadow-sm">ر</div>
+        <div class="flex-1">
+            <h4 class="font-bold text-sm" data-i18n="install_app">INSTALL APP</h4>
+            <p class="text-xs text-textSec mt-1 leading-tight" data-i18n="install_desc">Add to home screen for the best reading experience</p>
+        </div>
+        <button onclick="dismissPwa()" class="text-accent font-bold text-sm hover:text-yellow-600 tap-effect p-2" data-i18n="install">INSTALL</button>
     </div>
-  </div>
-  <div class="vault-hero">
-    <div class="vault-label">Rūsuma Collection</div>
-    <h1>Restless Worlds</h1>
-    <p id="tagline">Original illustrated stories. One universe.</p>
-  </div>
-  <div class="search-bar"><input type="text" placeholder="Search series..." oninput="handleSearch(this.value)"></div>
-  <div class="vault-grid" id="manga-grid"></div>
-  <div style="max-width:1000px;margin:0 auto;padding:0 1.25rem 3rem">
-    <div class="upload-zone" onclick="this.querySelector('input').click()">
-      <input type="file" accept=".cbz" onchange="handleCBZ(this.files[0])">
-      <div style="font-size:1.5rem;margin-bottom:.5rem">⬆</div>
-      <div style="font-size:.85rem;color:#777">Upload your own CBZ</div>
+
+    <nav id="navbar" class="fixed top-0 w-full bg-card/80 backdrop-blur-xl border-b border-gray-100/50 z-40 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-3 cursor-pointer group tap-effect" onclick="navigate('hub')">
+                    <div class="w-9 h-9 rounded-full border-[2.5px] border-accent text-accent flex items-center justify-center text-lg font-bold font-arabic shadow-sm group-hover:bg-accent group-hover:text-white transition-colors">ر</div>
+                    <span class="font-black tracking-widest text-[15px] hidden sm:block pt-0.5">RūSUMA</span>
+                </div>
+                <div class="hidden md:flex items-center gap-6 text-[13px] font-bold text-textSec uppercase tracking-wider">
+                    <button onclick="navigate('hub')" class="hover:text-textMain tap-effect transition-colors" data-i18n="browse">Browse</button>
+                    <button onclick="navigate('forum')" class="hover:text-textMain tap-effect transition-colors" data-i18n="forum">Forum</button>
+                    <button onclick="navigate('characters')" class="hover:text-textMain tap-effect transition-colors" data-i18n="characters">Characters</button>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1 sm:gap-3">
+                <button onclick="showToast(t('feature_wip'))" class="text-textSec hover:text-textMain tap-effect transition-colors w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50"><i class="fa-solid fa-search"></i></button>
+                <div onclick="showToast(t('feature_wip'))" class="relative cursor-pointer text-textSec hover:text-textMain tap-effect transition-colors w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-danger rounded-full border-2 border-card text-white text-[8px] font-bold flex items-center justify-center"></span>
+                </div>
+                <button onclick="toggleLang()" class="text-[11px] font-black font-mono border border-gray-200 px-2.5 py-1.5 rounded-lg hover:border-accent hover:text-accent tap-effect transition-colors ms-1" id="nav-lang-btn">EN / AR</button>
+                
+                <button class="md:hidden text-textSec hover:text-textMain tap-effect w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50" onclick="toggleMobileNav()"><i class="fa-solid fa-bars text-lg"></i></button>
+
+                <div class="relative group cursor-pointer hidden md:block ms-2">
+                    <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-white font-bold text-sm shadow-sm ring-2 ring-transparent group-hover:ring-gray-200 transition-all" id="nav-avatar">G</div>
+                    <div class="absolute end-0 top-[120%] w-56 bg-card rounded-2xl shadow-modal border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-full transition-all duration-300 z-50">
+                        <div class="p-4 border-b border-gray-50">
+                            <p class="text-sm font-bold text-textMain" id="nav-user-name">Guest User</p>
+                            <p class="text-[11px] text-textSec uppercase tracking-widest font-bold mt-1" id="nav-user-role">Guest</p>
+                        </div>
+                        <div class="p-2">
+                            <button id="nav-admin-btn" onclick="toggleAdminPanel()" class="w-full text-start px-4 py-2.5 text-[13px] text-accent hover:bg-accent/5 rounded-xl font-bold hidden mb-1 tap-effect"><i class="fa-solid fa-shield-halved me-2 w-4"></i> <span data-i18n="admin_panel">Admin Panel</span></button>
+                            <button onclick="navigate('login')" class="w-full text-start px-4 py-2.5 text-[13px] text-textSec hover:text-textMain hover:bg-gray-50 rounded-xl font-bold tap-effect"><i class="fa-solid fa-right-from-bracket me-2 w-4"></i> <span data-i18n="switch_role">Switch Role</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-nav" class="fixed inset-0 bg-card/95 backdrop-blur-xl z-[150] transform translate-x-full rtl:-translate-x-full transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col p-6 sm:p-8 md:hidden">
+        <div class="flex justify-end mb-10 pt-[env(safe-area-inset-top)]">
+            <button onclick="toggleMobileNav()" class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-textSec hover:text-textMain tap-effect"><i class="fa-solid fa-xmark text-xl"></i></button>
+        </div>
+        <div class="flex flex-col gap-6 text-[28px] font-black tracking-tight mb-12">
+            <button onclick="toggleMobileNav(); navigate('hub')" class="text-start tap-effect text-textMain hover:text-accent transition-colors" data-i18n="browse">Browse</button>
+            <button onclick="toggleMobileNav(); navigate('forum')" class="text-start tap-effect text-textMain hover:text-accent transition-colors" data-i18n="forum">Forum</button>
+            <button onclick="toggleMobileNav(); navigate('characters')" class="text-start tap-effect text-textMain hover:text-accent transition-colors" data-i18n="characters">Characters</button>
+        </div>
+        <div class="mt-auto border-t border-gray-100 pt-6 space-y-3 pb-[env(safe-area-inset-bottom)]">
+            <button id="mobile-admin-btn" onclick="toggleMobileNav(); toggleAdminPanel()" class="w-full text-start text-accent font-bold p-3 rounded-xl hover:bg-accent/5 tap-effect hidden"><i class="fa-solid fa-shield-halved me-3 text-lg"></i> <span data-i18n="admin_panel">Admin Panel</span></button>
+            <button onclick="toggleMobileNav(); navigate('login')" class="w-full text-start font-bold text-textSec hover:text-textMain p-3 rounded-xl hover:bg-gray-50 tap-effect"><i class="fa-solid fa-right-from-bracket me-3 text-lg"></i> <span data-i18n="switch_role">Switch Role</span></button>
+        </div>
     </div>
-  </div>
-</div>
 
-<div id="reader-view" class="view">
-  <div class="reader-top" id="reader-top">
-    <button class="reader-btn" onclick="exitReader()">←</button>
-    <div style="text-align:center"><div id="reader-title" style="font-weight:600;font-size:.85rem"></div><div id="reader-chapter" style="font-size:.7rem;color:#777"></div></div>
-    <button class="reader-btn" onclick="toggleChapterDrawer()">☰</button>
-  </div>
-  <div class="reader-stage" id="reader-stage">
-    <div class="tap-zone tap-left" onclick="prevPage()"></div>
-    <div class="tap-zone tap-right" onclick="nextPage()"></div>
-    <div id="page-skeleton" style="position:absolute;width:60%;height:70%;background:linear-gradient(90deg,#0c0c0c 25%,#141414 50%,#0c0c0c 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px"></div>
-    <img id="reader-img" class="loading" alt="Page" draggable="false" style="z-index:10">
-    <div id="gesture-surface" style="position:absolute;inset:0;z-index:60;touch-action:none"></div>
-    <div class="zoom-badge" id="zoom-badge"></div>
-  </div>
-  <div class="reader-info" id="reader-info">
-    <button class="reader-btn" onclick="prevPage()">‹</button>
-    <div class="reader-progress"><div class="reader-progress-fill" id="read-progress"></div></div>
-    <div id="reader-page-num" style="font-size:.75rem;color:#777;font-family:'Space Mono',monospace;white-space:nowrap"></div>
-    <button class="reader-btn" onclick="nextPage()">›</button>
-  </div>
-  <div class="chapter-drawer-backdrop hidden" id="chapter-drawer-backdrop" onclick="if(event.target===this)this.classList.add('hidden')">
-    <div class="chapter-drawer" id="chapter-drawer"></div>
-  </div>
-</div>
+    <main class="w-full min-h-screen">
+        
+        <section id="view-login" class="view flex min-h-screen items-center justify-center px-4 relative overflow-hidden bg-primary pb-10">
+            <div class="w-full max-w-[420px] bg-card p-8 md:p-10 rounded-[2rem] shadow-modal relative z-10 text-center border border-gray-100">
+                <div class="w-16 h-16 rounded-2xl bg-accent mx-auto flex items-center justify-center text-white text-3xl font-bold font-arabic mb-8 shadow-glow transform rotate-3 hover:rotate-0 transition-transform duration-300">ر</div>
+                <h1 class="text-[26px] font-black tracking-tight text-textMain mb-3 uppercase" data-i18n="reading_club">READING CLUB</h1>
+                <p class="text-[15px] text-textSec mb-8 font-medium px-4" data-i18n="reading_sub">Sign up to explore exclusive Rūsuma stories and join the community.</p>
+                
+                <button onclick="showModal('modal-tc')" class="w-full border-2 border-accent text-accent hover:bg-accent hover:text-white font-bold py-4 rounded-2xl transition-colors mb-8 tap-effect" data-i18n="join">JOIN THE CLUB</button>
+                
+                <div class="flex items-center gap-4 mb-8 opacity-60">
+                    <div class="h-px bg-gray-300 flex-1"></div>
+                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest" data-i18n="or">OR</span>
+                    <div class="h-px bg-gray-300 flex-1"></div>
+                </div>
 
-<div id="characters-view" class="view">
-  <div class="brand-bar">
-    <a href="#" class="brand-logo" onclick="switchView('library');return false"><div class="brand-mark">R</div><div class="brand-text"><div class="brand-title">Restless Worlds</div></div></a>
-    <div class="brand-nav">
-      <a href="#" class="nav-link" onclick="switchView('library');return false">Library</a>
-      <a href="#" class="nav-link active" onclick="switchView('characters');return false">Characters</a>
-      <a href="#" class="nav-link" onclick="switchView('forum');return false">Forum</a>
-      <button class="lang-toggle" onclick="toggleLang()">EN / AR</button>
+                <div class="flex flex-col gap-3.5">
+                    <button onclick="login('guest')" class="w-full bg-gray-50 hover:bg-gray-100 text-textMain font-bold py-4 rounded-2xl transition-colors flex items-center justify-between px-6 border border-gray-100 group tap-effect">
+                        <span data-i18n="enter_guest">Enter as Guest</span> <i class="fa-solid fa-lock text-gray-400 text-xs group-hover:text-textMain rtl-flip transition-colors"></i>
+                    </button>
+                    <button onclick="login('member')" class="w-full bg-[#1A1A1A] hover:bg-black text-white font-bold py-4 rounded-2xl transition-colors flex items-center justify-between px-6 shadow-md group tap-effect">
+                        <span data-i18n="enter_member">Enter as Member</span> <i class="fa-solid fa-star text-gray-500 group-hover:text-accent rtl-flip transition-colors"></i>
+                    </button>
+                    <button onclick="login('admin')" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors flex items-center justify-between px-6 shadow-md group tap-effect">
+                        <span data-i18n="enter_admin">Enter as Admin</span> <i class="fa-solid fa-shield text-white/70 group-hover:text-white rtl-flip transition-colors"></i>
+                    </button>
+                </div>
+            </div>
+            <button onclick="toggleLang()" class="absolute bottom-8 text-[11px] font-black font-mono border border-gray-200 px-4 py-2 rounded-xl hover:border-accent hover:text-accent tap-effect transition-colors bg-card" id="login-lang-btn">EN / AR</button>
+        </section>
+
+        <section id="view-hub" class="view pt-[4rem] pb-20">
+            <div class="relative w-full h-[65vh] min-h-[450px] max-h-[700px] bg-reader overflow-hidden cursor-pointer group" onclick="openManga('m1')">
+                <svg class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-[2s] ease-out" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+                    <defs><linearGradient id="hero-grad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#4a3000"/><stop offset="100%" stop-color="#000000"/></linearGradient></defs>
+                    <rect width="1200" height="600" fill="url(#hero-grad)"/>
+                    <path d="M0,600 L400,200 L800,450 L1200,100 L1200,600 Z" fill="#D4AF37" opacity="0.15"/>
+                    <circle cx="800" cy="200" r="150" fill="#FFF" opacity="0.05" filter="blur(30px)"/>
+                </svg>
+                <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent lg:from-primary lg:via-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent rtl:from-transparent rtl:to-black/60"></div>
+                
+                <div class="absolute bottom-0 w-full p-6 md:p-16 max-w-7xl mx-auto start-0 flex flex-col justify-end h-full rtl:right-0 rtl:left-auto pb-12">
+                    <span class="bg-accent text-textMain text-[10px] font-black px-3 py-1.5 rounded-md w-max tracking-widest uppercase mb-5 shadow-glow" data-i18n="exclusive">EXCLUSIVE</span>
+                    <h2 class="t-title text-white mb-4 uppercase drop-shadow-lg" data-i18n="hero_title">SANDS OF ETERNITY</h2>
+                    <p class="text-gray-300 text-[15px] md:text-[17px] font-medium max-w-xl mb-8 line-clamp-2 md:line-clamp-3 leading-relaxed drop-shadow-md" data-i18n="hero_desc">In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.</p>
+                    <button class="bg-white text-textMain font-bold py-4 px-8 rounded-2xl shadow-lg transition-all w-max hover:-translate-y-1 flex items-center gap-3 tap-effect">
+                        <span data-i18n="start_reading">START READING</span> <i class="fa-solid fa-arrow-right rtl-flip text-accent"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-16">
+                <div id="hub-continue-section" class="hidden">
+                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-regular fa-clock text-accent opacity-70"></i> <span data-i18n="continue_reading">Continue Reading</span></h3>
+                    <div class="bleed-scroll">
+                        <div class="flex overflow-x-auto gap-5 pb-6 no-scrollbar snap-x snap-mandatory px-4 sm:px-6 lg:px-0" id="hub-continue-grid"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-book-open text-accent opacity-80"></i> <span data-i18n="trending">Stories</span></h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="hub-trending-grid"></div>
+                </div>
+
+                <div>
+                    <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-bolt text-accent opacity-80"></i> <span data-i18n="new_chapters">New Chapters</span></h3>
+                    <div class="bleed-scroll">
+                        <div class="flex sm:grid sm:grid-cols-3 lg:grid-cols-5 overflow-x-auto gap-4 md:gap-5 pb-6 no-scrollbar snap-x px-4 sm:px-6 lg:px-0" id="hub-new-grid"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-6">
+                        <h3 class="t-section flex items-center gap-3"><i class="fa-solid fa-masks-theater text-gray-400"></i> <span data-i18n="characters">Characters</span></h3>
+                        <button onclick="navigate('characters')" class="text-[13px] font-bold text-textSec hover:text-textMain transition-colors flex items-center tap-effect px-2 py-1"><span data-i18n="all">All</span> <i class="fa-solid fa-arrow-right rtl-flip ms-2 text-xs"></i></button>
+                    </div>
+                    <div class="bleed-scroll">
+                        <div class="flex overflow-x-auto gap-6 pb-6 no-scrollbar snap-x px-4 sm:px-6 lg:px-0" id="hub-characters-grid"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-6">
+                        <h3 class="t-section flex items-center gap-3"><i class="fa-regular fa-comments text-gray-400"></i> <span data-i18n="community">Community Discussions</span></h3>
+                        <button onclick="navigate('forum')" class="text-[13px] font-bold text-textSec hover:text-textMain transition-colors flex items-center tap-effect px-2 py-1"><span data-i18n="forum">Forum</span> <i class="fa-solid fa-arrow-right rtl-flip ms-2 text-xs"></i></button>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5" id="hub-forum-grid"></div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="mt-16">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-stories">5</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Stories</div>
+                        </div>
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-chapters">187</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Chapters</div>
+                        </div>
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-characters">300+</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Characters</div>
+                        </div>
+                        <div class="bg-card border border-gray-100 rounded-[2rem] p-6 text-center shadow-subtle">
+                            <div class="text-3xl font-black text-accent mb-1" id="stat-readers">12.4K</div>
+                            <div class="text-[11px] font-bold text-textSec uppercase tracking-widest">Readers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="mt-24 border-t border-gray-200/60 bg-card py-12 px-4">
+                <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-[13px] text-textSec font-semibold">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center font-bold font-arabic text-lg shadow-sm">ر</div>
+                        <span class="text-textMain tracking-wide">© 2026 Rūsuma — Restless Worlds</span>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-8 uppercase tracking-widest text-[11px]">
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="about">About</a>
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="terms">Terms</a>
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="privacy">Privacy</a>
+                        <a href="#" class="hover:text-textMain transition-colors tap-effect py-2" data-i18n="contact">Contact</a>
+                    </div>
+                    <div class="flex gap-4 text-xl">
+                        <a href="#" class="hover:text-accent transition-colors tap-effect w-10 h-10 flex items-center justify-center bg-gray-50 rounded-full"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="hover:text-accent transition-colors tap-effect w-10 h-10 flex items-center justify-center bg-gray-50 rounded-full"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-accent transition-colors tap-effect w-10 h-10 flex items-center justify-center bg-gray-50 rounded-full"><i class="fa-brands fa-discord"></i></a>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+        <section id="view-detail" class="view pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+                <button onclick="navigate('hub')" class="mb-8 text-textSec hover:text-textMain font-bold text-[13px] tracking-widest uppercase flex items-center gap-3 transition-colors tap-effect w-max group py-2">
+                    <i class="fa-solid fa-arrow-left rtl-flip group-hover:-translate-x-1 rtl:group-hover:translate-x-1 transition-transform"></i> <span data-i18n="go_back">GO BACK</span>
+                </button>
+
+                <div class="flex flex-col md:flex-row gap-8 lg:gap-12 mb-20" id="detail-header"></div>
+
+                <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
+                    <div class="flex-1">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 pb-4">
+                            <h3 class="t-section flex items-center gap-3"><i class="fa-solid fa-list-ul text-gray-300"></i> <span data-i18n="chapters">CHAPTERS</span></h3>
+                            <div class="flex gap-1.5 text-[13px] font-bold bg-gray-100/80 p-1.5 rounded-xl flex-wrap">
+                                <button class="px-4 py-2 bg-white shadow-sm rounded-lg text-textMain tap-effect" data-i18n="all">All</button>
+                                <button class="px-4 py-2 text-textSec hover:text-textMain tap-effect rounded-lg hover:bg-gray-200/50 transition-colors" data-i18n="preview">Preview</button>
+                                <button class="px-4 py-2 text-textSec hover:text-textMain tap-effect rounded-lg hover:bg-gray-200/50 transition-colors" data-i18n="locked">Locked</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3" id="detail-chapters-list"></div>
+                    </div>
+
+                    <div class="w-full lg:w-[340px] shrink-0">
+                        <h3 class="t-section mb-6 flex items-center gap-3"><i class="fa-solid fa-masks-theater text-gray-300"></i> <span data-i18n="characters">Characters</span></h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3" id="detail-characters-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-reader" class="view min-h-dvh bg-reader fixed inset-0 z-50 overflow-hidden flex flex-col no-select">
+            <div id="reading-progress-bar" class="fixed top-0 left-0 h-[3px] bg-accent z-[60] shadow-glow" style="width: 20%;"></div>
+
+            <!-- Zoom badge -->
+            <div id="zoom-badge" class="fixed top-[calc(3rem+env(safe-area-inset-top))] left-1/2 -translate-x-1/2 z-[55] bg-white/10 backdrop-blur-xl text-white text-xs font-bold px-4 py-2 rounded-full border border-white/10 opacity-0 transition-all duration-300 pointer-events-none whitespace-nowrap tracking-wide">Double-tap to reset</div>
+
+            <!-- Top Chrome -->
+            <div class="reader-chrome top fixed top-0 w-full glass-panel z-40 flex items-center justify-between px-4 sm:px-6 shadow-sm pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] min-h-[4rem] h-auto border-b border-white/5 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" id="reader-chrome-top">
+                <button onclick="exitReader()" class="text-gray-300 hover:text-white font-bold flex items-center gap-3 tap-effect transition-colors relative z-50 cursor-pointer bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full text-sm">
+                    <i class="fa-solid fa-arrow-left rtl-flip"></i> <span data-i18n="exit" class="hidden sm:inline">Exit</span>
+                </button>
+                <div class="text-white font-bold text-center truncate max-w-[50%] text-sm sm:text-[15px] tracking-wide opacity-90 drop-shadow-md" id="reader-title-display">Ch. 1: The Awakening</div>
+                <button onclick="toggleFullscreen()" class="text-gray-300 hover:text-white tap-effect transition-colors relative z-50 cursor-pointer w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center"><i class="fa-solid fa-expand"></i></button>
+            </div>
+
+            <!-- PAGE VIEWPORT — gesture container, overflow hidden, UI outside -->
+            <div id="reader-viewport" class="flex-1 w-full h-full relative overflow-hidden bg-black touch-none select-none">
+                
+                <div id="reader-disclaimer" class="absolute top-20 left-1/2 -translate-x-1/2 z-30 bg-black/70 backdrop-blur-lg text-gray-300 text-[10px] sm:text-[11px] font-bold px-5 py-2.5 rounded-full border border-white/10 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap transition-opacity duration-500 uppercase tracking-widest">
+                    <i class="fa-solid fa-circle-info text-accent"></i> <span data-i18n="disclaimer">Mock placeholder images used for demonstration.</span>
+                </div>
+
+                <!-- Page Stage — image layer that gets transformed -->
+                <div id="page-stage" class="absolute inset-0 flex items-center justify-center overflow-hidden">
+                    <div id="svg-container" class="w-full h-full relative flex items-center justify-center"></div>
+                </div>
+
+                <!-- Loading skeleton -->
+                <div id="page-skeleton" class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none hidden">
+                    <div class="w-[60%] max-w-[300px] aspect-[2/3] rounded-lg animate-pulse bg-gradient-to-r from-white/[0.02] via-white/[0.05] to-white/[0.02] bg-[length:200%_100%]"></div>
+                </div>
+
+                <!-- Tap zones (pointer-events managed by JS) -->
+                <div id="tap-zones" class="absolute inset-0 z-30 flex pointer-events-none">
+                    <div class="tap-zone flex-1 pointer-events-auto cursor-pointer" data-zone="left" aria-label="Previous page"></div>
+                    <div class="tap-zone flex-1 pointer-events-auto cursor-pointer" data-zone="center" aria-label="Toggle controls"></div>
+                    <div class="tap-zone flex-1 pointer-events-auto cursor-pointer" data-zone="right" aria-label="Next page"></div>
+                </div>
+            </div>
+
+            <!-- Bottom Chrome -->
+            <div class="reader-chrome bottom fixed bottom-[calc(2.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 glass-panel border border-white/10 rounded-full px-2 py-2 flex items-center gap-2 z-40 shadow-[0_15px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" id="reader-chrome-bottom">
+                <button onclick="prevPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-left rtl-flip text-lg"></i></button>
+                <div class="text-white font-mono text-[13px] font-bold px-4 text-center tracking-widest bg-black/40 py-2 rounded-full border border-white/5"><span id="reader-curr-page">1</span> <span class="opacity-40 mx-1">/</span> <span id="reader-total-pages">5</span></div>
+                <button onclick="nextPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-right rtl-flip text-lg"></i></button>
+            </div>
+        </section>
+
+        <section id="view-characters" class="view pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+                    <h2 class="t-title" data-i18n="characters">Characters</h2>
+                    <select class="bg-card border-2 border-gray-100 text-[13px] font-bold uppercase tracking-widest rounded-xl px-5 py-3 focus:outline-none focus:border-accent outline-none cursor-pointer">
+                        <option value="all" data-i18n="all_stories">All Stories</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6" id="characters-grid-page"></div>
+            </div>
+
+            <div id="char-detail-panel" class="slide-panel fixed top-0 end-0 h-dvh w-full sm:w-[420px] bg-card border-s border-gray-100 z-50 transform translate-x-full rtl:translate-x-0 rtl:-translate-x-full flex flex-col shadow-modal">
+                <div class="h-[4.5rem] flex items-center justify-between px-8 border-b border-gray-100 shrink-0 pt-[env(safe-area-inset-top)]">
+                    <h3 class="font-bold t-card uppercase tracking-widest" data-i18n="profile">Profile</h3>
+                    <button onclick="closeCharPanel()" class="w-10 h-10 rounded-full bg-gray-50 text-gray-500 hover:text-textMain hover:bg-gray-100 flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-8 pb-[calc(2rem+env(safe-area-inset-bottom))]" id="char-detail-content"></div>
+            </div>
+            <div id="char-backdrop" onclick="closeCharPanel()" class="fixed inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-400"></div>
+        </section>
+
+        <section id="view-forum" class="view pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12">
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-10">
+                        <h2 class="t-title" data-i18n="forum">Forum</h2>
+                        <button id="new-thread-btn" onclick="showToast(t('feature_wip'))" class="bg-textMain hover:bg-black text-white font-bold py-3 px-6 rounded-xl transition-colors hidden text-[13px] uppercase tracking-widest shadow-md items-center gap-3 tap-effect"><i class="fa-solid fa-plus"></i> <span data-i18n="new_thread">NEW THREAD</span></button>
+                    </div>
+                    
+                    <div class="flex gap-8 border-b border-gray-200/60 mb-8 overflow-x-auto no-scrollbar font-bold text-[13px] uppercase tracking-widest pb-1">
+                        <button class="pb-3 border-b-[3px] border-accent text-textMain whitespace-nowrap tap-effect px-1" data-i18n="all">All</button>
+                        <button class="pb-3 border-b-[3px] border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors tap-effect px-1" data-i18n="discussions">Discussions</button>
+                        <button class="pb-3 border-b-[3px] border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors tap-effect px-1" data-i18n="theories">Theories</button>
+                        <button class="pb-3 border-b-[3px] border-transparent text-textSec hover:text-textMain whitespace-nowrap transition-colors tap-effect px-1" data-i18n="fan_art">Fan Art</button>
+                    </div>
+
+                    <div class="flex flex-col gap-4" id="forum-list"></div>
+                </div>
+                <div class="hidden lg:block w-[360px] shrink-0">
+                    <div class="bg-card border border-gray-100 rounded-3xl p-8 sticky top-[5.5rem] shadow-subtle min-h-[400px] flex items-center justify-center transition-all" id="forum-detail">
+                        <div class="text-center text-textSec">
+                            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fa-regular fa-comments text-3xl opacity-40"></i></div>
+                            <p class="text-[15px] font-bold tracking-wide" data-i18n="select_thread">Select a thread to view details</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modal-locked" class="overlay fixed inset-0 z-[100] bg-reader/80 backdrop-blur-md hidden items-center justify-center opacity-0 p-4" onclick="closeModal('modal-locked')">
+        <div class="modal-content w-full max-w-[400px] bg-card border border-gray-100 rounded-[2rem] p-10 text-center shadow-modal transform scale-95" onclick="event.stopPropagation()">
+            <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 text-4xl mx-auto mb-8 shadow-inner">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h2 class="t-section text-textMain mb-3 uppercase tracking-tight" data-i18n="members_only">MEMBERS ONLY</h2>
+            <p class="text-textSec text-[15px] font-medium mb-10 px-2" data-i18n="locked_desc">Join the Reading Club to unlock all chapters.</p>
+            <button onclick="closeModal('modal-locked'); setTimeout(()=>showModal('modal-tc'), 300)" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors mb-3 shadow-md tap-effect" data-i18n="apply">JOIN THE CLUB</button>
+            <button onclick="closeModal('modal-locked')" class="w-full text-textSec hover:text-textMain hover:bg-gray-50 font-bold py-4 rounded-2xl transition-colors tap-effect" data-i18n="go_back">GO BACK</button>
+        </div>
     </div>
-  </div>
-  <div class="section" style="padding-top:5rem">
-    <div class="section-title">Characters</div>
-    <div class="char-grid" id="char-grid"></div>
-  </div>
-</div>
 
-<div id="forum-view" class="view">
-  <div class="brand-bar">
-    <a href="#" class="brand-logo" onclick="switchView('library');return false"><div class="brand-mark">R</div><div class="brand-text"><div class="brand-title">Restless Worlds</div></div></a>
-    <div class="brand-nav">
-      <a href="#" class="nav-link" onclick="switchView('library');return false">Library</a>
-      <a href="#" class="nav-link" onclick="switchView('characters');return false">Characters</a>
-      <a href="#" class="nav-link active" onclick="switchView('forum');return false">Forum</a>
-      <button class="lang-toggle" onclick="toggleLang()">EN / AR</button>
+    <!-- T&C Modal for auto-approval membership -->
+    <div id="modal-tc" class="overlay fixed inset-0 z-[100] bg-reader/80 backdrop-blur-md hidden items-center justify-center opacity-0 p-4" onclick="closeModal('modal-tc')">
+        <div class="modal-content w-full max-w-[420px] bg-card border border-gray-100 rounded-[2rem] p-8 text-center shadow-modal transform scale-95 max-h-[80vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-glow">
+                <i class="fa-solid fa-file-signature"></i>
+            </div>
+            <h2 class="t-section text-textMain mb-3 uppercase tracking-tight">Terms & Conditions</h2>
+            <p class="text-textSec text-[13px] font-medium mb-6 px-2 leading-relaxed">By joining the Rūsuma Reading Club, you agree to respect the creative work of Meem Yaser and the Restless Worlds community. Membership is free and grants access to exclusive stories and discussions.</p>
+            <div class="bg-gray-50 rounded-xl p-4 text-left text-[12px] text-textSec mb-6 space-y-2">
+                <p>• Content is for personal, non-commercial use only</p>
+                <p>• Do not redistribute or share chapter images</p>
+                <p>• Be respectful in comments and forum discussions</p>
+                <p>• Membership may be revoked for violations</p>
+            </div>
+            <button onclick="acceptTC()" class="w-full bg-accent hover:bg-yellow-600 text-white font-bold py-4 rounded-2xl transition-colors mb-3 shadow-md tap-effect">I AGREE — JOIN NOW</button>
+            <button onclick="closeModal('modal-tc')" class="w-full text-textSec hover:text-textMain hover:bg-gray-50 font-bold py-4 rounded-2xl transition-colors tap-effect">GO BACK</button>
+        </div>
     </div>
-  </div>
-  <div class="section" style="padding-top:5rem">
-    <div class="section-title">Community Forum</div>
-    <div id="forum-list"></div>
-  </div>
-</div>
 
-<div class="admin-panel hidden" id="admin-panel">
-  <div style="max-width:800px;margin:0 auto">
-    <div class="admin-title">Admin Panel — Pending Approvals</div>
-    <div id="admin-approvals"></div>
-    <button class="btn-secondary" style="margin-top:1.5rem;width:auto" onclick="toggleAdminPanel()">Close Panel</button>
-    <button class="btn-secondary" style="margin-top:.5rem;width:auto" onclick="logout();toggleAdminPanel()">Logout</button>
-  </div>
-</div>
+    <div id="admin-panel" class="slide-panel fixed inset-0 z-[200] bg-reader text-white transform -translate-y-full overflow-y-auto no-scrollbar">
+        <div class="max-w-7xl mx-auto p-6 sm:p-8 md:p-12 pt-[calc(2rem+env(safe-area-inset-top))] pb-[calc(2rem+env(safe-area-inset-bottom))]">
+            <div class="flex items-center justify-between mb-12 border-b border-gray-800 pb-8">
+                <h2 class="t-section text-accent tracking-widest flex items-center gap-4"><i class="fa-solid fa-shield-halved"></i> <span data-i18n="command_center">COMMAND CENTER</span></h2>
+                <button onclick="toggleAdminPanel()" class="w-12 h-12 rounded-full bg-gray-900 text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
 
-<div class="modal-backdrop hidden" id="modal-login">
-  <div class="modal-content">
-    <div class="modal-title">Select Access Level</div>
-    <button class="btn-primary" onclick="login('guest');closeModal('modal-login')">Continue as Guest</button>
-    <button class="btn-secondary" onclick="closeModal('modal-login');showModal('modal-tc')">Join as Member</button>
-    <button class="btn-secondary" onclick="login('admin');closeModal('modal-login')">Admin Access</button>
-  </div>
-</div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl">
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest" data-i18n="storage">STORAGE</p>
+                    <p class="text-3xl font-black font-mono tracking-tight">4.2<span class="text-lg text-gray-500 ms-1">GB</span></p>
+                </div>
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl">
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest" data-i18n="members">MEMBERS</p>
+                    <p class="text-3xl font-black font-mono tracking-tight text-white">142</p>
+                    <p class="text-[10px] text-free mt-2 font-bold uppercase tracking-widest"><i class="fa-solid fa-circle text-[6px] me-1 align-middle"></i> <span data-i18n="active">Active</span></p>
+                </div>
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl">
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest" data-i18n="chapters">CHAPTERS</p>
+                    <p class="text-3xl font-black font-mono tracking-tight">258</p>
+                </div>
+                <div class="bg-[#111] border border-gray-800 p-6 md:p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-accent/10 text-8xl"><i class="fa-solid fa-comments"></i></div>
+                    <p class="text-[11px] text-gray-500 font-black mb-3 uppercase tracking-widest relative z-10" data-i18n="comments">COMMENTS</p>
+                    <p class="text-3xl font-black font-mono tracking-tight text-accent relative z-10">1,847</p>
+                </div>
+            </div>
 
-<div class="modal-backdrop hidden" id="modal-tc">
-  <div class="modal-content">
-    <div class="modal-title" id="tc-title">Terms & Conditions</div>
-    <div class="modal-text" id="tc-text">By joining Rūsuma Reading Club, you agree to respect the creative work of Meem Yaser Studio.</div>
-    <button class="btn-primary" onclick="acceptTC()">Accept & Join</button>
-    <button class="btn-secondary" onclick="closeModal('modal-tc')">Cancel</button>
-  </div>
-</div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+                <div>
+                    <h3 class="t-card mb-6 flex items-center gap-3 uppercase tracking-widest text-gray-400"><i class="fa-solid fa-user-clock text-accent"></i> <span data-i18n="pending_approvals">Pending Approvals</span></h3>
+                    <div class="space-y-3" id="admin-approvals"></div>
+                </div>
+                <div class="space-y-10">
+                    <div class="border-2 border-dashed border-gray-700/80 rounded-[2rem] p-12 text-center hover:border-accent hover:bg-[#151515] transition-all cursor-pointer group relative overflow-hidden tap-effect" onclick="openUploadModal()">
+                        <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform group-hover:bg-accent group-hover:text-black">
+                            <i class="fa-solid fa-cloud-arrow-up text-xl text-gray-500 group-hover:text-black transition-colors"></i>
+                        </div>
+                        <p class="font-bold text-[15px]" data-i18n="drag_drop">Upload Chapters</p>
+                        <p class="text-xs text-gray-500 mt-2 font-mono">CBZ, ZIP, or Image Folders</p>
+                        <p class="text-[10px] text-accent/60 mt-1 font-bold uppercase tracking-widest">Dropbox-style folder upload</p>
+                    </div>
+                    <div>
+                        <h3 class="t-card mb-6 uppercase tracking-widest text-gray-400" data-i18n="quick_actions">Quick Actions</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="send_notif"><i class="fa-solid fa-bell text-gray-400 w-5 text-center"></i> Send Notification</button>
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="mod_comments"><i class="fa-solid fa-comments text-gray-400 w-5 text-center"></i> Moderate Comments</button>
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="manage_subs"><i class="fa-solid fa-users text-gray-400 w-5 text-center"></i> Manage Subscriptions</button>
+                            <button onclick="showToast(t('feature_wip'))" class="bg-[#111] border border-gray-800 p-5 rounded-2xl text-[13px] font-bold text-start hover:border-accent hover:bg-[#151515] transition-all tap-effect flex items-center gap-4" data-i18n="view_analytics"><i class="fa-solid fa-chart-line text-gray-400 w-5 text-center"></i> View Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="modal-backdrop hidden" id="modal-locked">
-  <div class="modal-content">
-    <div class="modal-title">Locked Chapter</div>
-    <div class="modal-text">This chapter is exclusive to members. Join the Reading Club to unlock all chapters.</div>
-    <button class="btn-primary" onclick="closeModal('modal-locked');showModal('modal-tc')">Become a Member</button>
-    <button class="btn-secondary" onclick="closeModal('modal-locked')">Cancel</button>
-  </div>
-</div>
+    <script>
+        // STATE
+        const state = {
+            lang: 'en',
+            role: 'guest', // guest, member, admin
+            view: 'login',
+            mangaId: 'm1',
+            readerPage: 1,
+            uiVisible: true,
+            isPinching: false,
+            pwaShown: false,
+            lastScrollY: 0
+        };
 
-<div id="toast"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script>const $ = id => document.getElementById(id);
-const MANGA_LIBRARY = [{"id":"m1","title":"The Grand Lord","titleAr":"السيد الأكبر","chapters":20,"status":"Ongoing","color":"#1a1a2e","desc":"A cosmic ruler awakens after millennia of slumber to find his empire fractured and his people enslaved. What begins as a quest for vengeance evolves into a meditation on power, legacy, and the burden of immortality.","cover":"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m2","title":"Moons Road","titleAr":"طريق الأقمار","chapters":20,"status":"Ongoing","color":"#16213e","desc":"In a world where the moon governs fate, a young cartographer discovers a hidden path that connects every lunar temple. Each step reveals a new prophecy — and a new enemy.","cover":"https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m3","title":"Symphony of Doom","titleAr":"سيمفونية الهلاك","chapters":20,"status":"Complete","color":"#0f3460","desc":"A composer whose music can kill. A detective who can hear the last song of every victim. Their collision course spans opera houses, underground clubs, and the silence between notes.","cover":"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m4","title":"The Speakers: Legend of Haktvin","titleAr":"المتحدثون: أسطورة هاكتفين","chapters":20,"status":"Ongoing","color":"#533483","desc":"Long before the written word, history was spoken. The Speakers were its guardians — until one of them chose to rewrite it. Haktvin is the first to rebel, and the last to hope.","cover":"https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m5","title":"The Sleepless Chaplain","titleAr":"القس الذي لا ينام","chapters":20,"status":"Ongoing","color":"#1a1a1a","desc":"He has not slept in forty years. He hears confessions from the dead. In a monastery built on a fault line between worlds, faith is the only currency — and it is running out.","cover":"https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&h=900&q=80"}];
-const CHARACTERS = [{"id":"c1","name":"Kael Vorn","role":"The Grand Lord","likes":1240,"bio":"The last of the Vorn dynasty. Ageless, patient, and quietly furious."},{"id":"c2","name":"Lira Moonwhisper","role":"Moons Road","likes":890,"bio":"A cartographer who reads the moon's shadow like braille."},{"id":"c3","name":"Silas Nocturne","role":"Symphony of Doom","likes":2100,"bio":"Composer. Murderer. Artist. The lines blur after midnight."},{"id":"c4","name":"Haktvin","role":"The Speakers","likes":1560,"bio":"The first Speaker to defy the Council. His voice reshapes stone."},{"id":"c5","name":"Brother Ash","role":"The Sleepless Chaplain","likes":670,"bio":"Forty years awake. He remembers every sin he has forgiven."},{"id":"c6","name":"Sera Dawn","role":"The Grand Lord","likes":930,"bio":"Kael's unwilling heir. She would rather burn the empire than rule it."}];
-const THREADS = [{"id":1,"title":"Theory: Is Kael actually the villain?","prev":"After Chapter 14, I'm starting to think we've been rooting for the wrong side...","author":"Amina","role":"member","replies":34,"pin":true,"hot":false},{"id":2,"title":"Symphony of Doom ending explained","prev":"The final panel is NOT what you think. Here's my analysis.","author":"Rashid","role":"member","replies":87,"pin":false,"hot":true},{"id":3,"title":"Character design evolution thread","prev":"Comparing early sketches to final art across all 5 series.","author":"Noor","role":"admin","replies":12,"pin":false,"hot":false},{"id":4,"title":"Moons Road: Hidden symbols in the maps","prev":"I found recurring geometric patterns in the background art.","author":"Youssef","role":"member","replies":45,"pin":false,"hot":true}];
-const APPROVALS_START = [{"id":1,"email":"sarah.manga@email.com","date":"2026-04-22"},{"id":2,"email":"ali.reads@email.com","date":"2026-04-21"},{"id":3,"email":"layla.vorn@email.com","date":"2026-04-20"}];
-const I18N = {"en":{"brand":"Restless Worlds","subtitle":"Rūsuma Collection","tagline":"Original illustrated stories. One universe.","read":"Read","chapters":"Chapters","characters":"Characters","forum":"Forum","search":"Search","login":"Login","logout":"Logout","guest":"Guest","member":"Member","admin":"Admin","locked":"Locked","preview":"Preview","exclusive":"Exclusive","continueReading":"Continue Reading","activity":"Activity","trending":"Trending","latest":"Latest","library":"Library","settings":"Settings","rtl":"RTL","zoom":"Zoom","page":"Page","of":"of","close":"Close","upload":"Upload CBZ","dragDrop":"Drag & drop or click to upload","tc_title":"Terms & Conditions","tc_text":"By joining Rūsuma Reading Club, you agree to respect the creative work of Meem Yaser Studio. Content is for personal reading only.","accept":"Accept & Join","cancel":"Cancel","share":"Share","applicants":"Applicants","approvals":"Pending Approvals","approve":"Approve","deny":"Deny","newThread":"New Thread","replies":"replies","noApprovals":"No pending approvals."},"ar":{"brand":"عوالم بلا راحة","subtitle":"مجموعة روسوما","tagline":"قصص مصوّرة أصلية. عالم واحد.","read":"قراءة","chapters":"الفصول","characters":"الشخصيات","forum":"المنتدى","search":"بحث","login":"تسجيل الدخول","logout":"خروج","guest":"زائر","member":"عضو","admin":"مشرّف","locked":"مقفل","preview":"معاينة","exclusive":"حصري","continueReading":"استكمال القراءة","activity":"النشاط","trending":"الأكثر تفاعلاً","latest":"الأحدث","library":"المكتبة","settings":"الإعدادات","rtl":"من اليمين لليسار","zoom":"تكبير","page":"صفحة","of":"من","close":"إغلاق","upload":"رفع CBZ","dragDrop":"اسحب وأفلت أو انقر للرفع","tc_title":"الشروط والأحكام","tc_text":"بالانضمام إلى نادي روسوما للقراءة، أنت توافق على احترام العمل الإبداعي لستوديو ميم ياسر.","accept":"قبول وانضم","cancel":"إلغاء","share":"مشاركة","applicants":"المقدمين","approvals":"الموافقات المعلقة","approve":"قبول","deny":"رفض","newThread":"موضوع جديد","replies":"ردود","noApprovals":"لا توجد موافقات معلقة."}};
-const PAGE_URLS = ["https://images.unsplash.com/photo-1509316153822-d2d81f247a06?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1542359649-31e03cd4d909?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=1600&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1682687982501-1e5898cb8f4b?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100"];
+        // DICTIONARY
+        const i18n = {
+            en: {
+                reading_club: 'READING CLUB', reading_sub: 'Sign up to explore exclusive Rūsuma stories and join the community.', join: 'JOIN THE CLUB', private_club: 'READING CLUB', private_sub: 'Sign up to explore exclusive Rūsuma stories and join the community.', apply: 'JOIN THE CLUB', or: 'OR', enter_guest: 'Enter as Guest', enter_member: 'Enter as Member', enter_admin: 'Enter as Admin', browse: 'Browse', forum: 'Forum', characters: 'Characters', switch_role: 'Switch Role', admin_panel: 'Admin Panel', exclusive: 'EXCLUSIVE', hero_title: 'SANDS OF ETERNITY', hero_desc: 'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards.', start_reading: 'START READING', continue_reading: 'Continue Reading', trending: 'Stories', new_chapters: 'New Chapters', all: 'All', community: 'Community Discussions', about: 'About', terms: 'Terms', privacy: 'Privacy', contact: 'Contact', go_back: 'GO BACK', chapters: 'CHAPTERS', preview: 'Preview', locked: 'Locked', newest: 'Newest', oldest: 'Oldest', exit: 'Exit', all_stories: 'All Stories', profile: 'Profile', new_thread: 'NEW THREAD', discussions: 'Discussions', theories: 'Theories', fan_art: 'Fan Art', announcements: 'Announcements', select_thread: 'Select a thread to view details.', members_only: 'MEMBERS ONLY', locked_desc: 'This chapter requires membership to access. Join the Reading Club to unlock.', command_center: 'COMMAND CENTER', storage: 'STORAGE', members: 'MEMBERS', active: 'Active', published: 'Published', comments: 'COMMENTS', this_month: 'This month', pending_approvals: 'Pending Approvals', drag_drop: 'Drag chapter ZIP files here', quick_actions: 'Quick Actions', send_notif: 'Send Notification', mod_comments: 'Moderate Comments', manage_subs: 'Manage Subscriptions', view_analytics: 'View Analytics', install_app: 'INSTALL APP', install_desc: 'Add to home screen for the best reading experience', install: 'INSTALL', app_submit: 'Welcome to the Reading Club!', upload_comp: 'Upload Complete', disclaimer: 'Placeholder images used for demonstration.', feature_wip: 'Coming soon!'
+            },
+            ar: {
+                reading_club: 'نادي القراءة', reading_sub: 'سجّل لاستكشاف قصص روسوما الحصرية والانضمام للمجتمع.', join: 'انضم إلينا', private_club: 'نادي القراءة', private_sub: 'سجّل لاستكشاف قصص روسوما الحصرية والانضمام للمجتمع.', apply: 'انضم إلينا', or: 'أو', enter_guest: 'الدخول كزائر', enter_member: 'الدخول كعضو', enter_admin: 'الدخول كمسؤول', browse: 'تصفح', forum: 'المنتدى', characters: 'الشخصيات', switch_role: 'تغيير الدور', admin_panel: 'لوحة الإدارة', exclusive: 'حصري', hero_title: 'رمال الخلود', hero_desc: 'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى.', start_reading: 'ابدأ القراءة', continue_reading: 'متابعة القراءة', trending: 'قصصنا', new_chapters: 'فصول جديدة', all: 'الكل', community: 'نقاشات المجتمع', about: 'حول', terms: 'الشروط', privacy: 'الخصوصية', contact: 'اتصل بنا', go_back: 'العودة', chapters: 'الفصول', preview: 'معاينة', locked: 'مغلق', newest: 'الأحدث', oldest: 'الأقدم', exit: 'خروج', all_stories: 'كل القصص', profile: 'الملف الشخصي', new_thread: 'موضوع جديد', discussions: 'نقاشات', theories: 'نظريات', fan_art: 'فنون المعجبين', announcements: 'إعلانات', select_thread: 'اختر موضوعاً لعرض التفاصيل.', members_only: 'للأعضاء فقط', locked_desc: 'يتطلب هذا الفصل عضوية للوصول إليه. انضم لنادي القراءة لفتحه.', command_center: 'مركز القيادة', storage: 'التخزين', members: 'الأعضاء', active: 'نشط', published: 'منشور', comments: 'التعليقات', this_month: 'هذا الشهر', pending_approvals: 'موافقات معلقة', drag_drop: 'اسحب ملفات الفصول (ZIP) هنا', quick_actions: 'إجراءات سريعة', send_notif: 'إرسال إشعار', mod_comments: 'إدارة التعليقات', manage_subs: 'إدارة الاشتراكات', view_analytics: 'عرض الإحصائيات', install_app: 'تثبيت التطبيق', install_desc: 'أضف إلى الشاشة الرئيسية لأفضل تجربة قراءة', install: 'تثبيت', app_submit: 'أهلاً بك في نادي القراءة!', upload_comp: 'اكتمل الرفع', disclaimer: 'صور نائبة استخدمت لأغراض التوضيح فقط.', feature_wip: 'هذه الميزة قريباً!'
+            }
+        };
 
-MANGA_LIBRARY.forEach((m,mi)=>{m.chapters=Array.from({length:m.chapters},(_,i)=>({num:i+1,title:`Chapter ${i+1}`,titleAr:`الفصل ${i+1}`,pages:PAGE_URLS,locked:i>=3&&mi>0,date:`2026-0${(i%9)+1}-${(i%28)+1}`}));});
+        // MOCK DATA
+        const db = {
+            manga: [
+                { id: 'm1', title: {en:'Sands of Eternity', ar:'رمال الخلود'}, desc: {en:'In a world where time is currency, an exiled navigator discovers a forgotten hourglass that flows upwards. What mysteries lie within the shifting dunes?', ar:'في عالم حيث الوقت هو العملة، يكتشف ملاح منفي ساعة رملية منسية تتدفق إلى الأعلى. ما هي الأسرار التي تكمن في الكثبان الرملية المتغيرة؟'}, tags: ['Action','Fantasy'], access: 'exclusive', chs: 45, cover: '#D4AF37' },
+                { id: 'm2', title: {en:'Neon Ghost', ar:'شبح النيون'}, desc: {en:'A cybernetic assassin seeks redemption in a neon-lit metropolis run by rogue AI.', ar:'قاتل إلكتروني يبحث عن الخلاص في مدينة مضاءة بالنيون تديرها ذكاء اصطناعي متمرد.'}, tags: ['Sci-Fi','Thriller'], access: 'locked', chs: 32, cover: '#3B82F6' },
+                { id: 'm3', title: {en:'The Last Calligraphy', ar:'الخط الأخير'}, desc: {en:'The delicate art of calligraphy turns into a lethal weapon in the hands of a grieving master.', ar:'يتحول فن الخط الدقيق إلى سلاح مميت في يد سيد حزين.'}, tags: ['Drama','Historical'], access: 'preview', chs: 28, cover: '#6B7280' },
+                { id: 'm4', title: {en:'Crimson Tide', ar:'المد القرمزي'}, desc: {en:'A gritty detective uncovers a conspiracy that stretches across the seven seas.', ar:'محقق شجاع يكتشف مؤامرة تمتد عبر البحار السبعة.'}, tags: ['Action','Mystery'], access: 'locked', chs: 67, cover: '#EF4444' },
+                { id: 'm5', title: {en:'Echoes of Earth', ar:'أصداء الأرض'}, desc: {en:'Humanity left Earth centuries ago. Now, a small crew returns to see what evolved.', ar:'غادرت البشرية الأرض منذ قرون. الآن، يعود طاقم صغير ليروا ما تطور.'}, tags: ['Sci-Fi','Adventure'], access: 'preview', chs: 15, cover: '#10B981' }
+            ],
+            chars: [
+                { id: 'c1', name: {en:'Amira Hassan', ar:'أميرة حسن'}, manga: 'm1', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'A fierce warrior of the dunes, she wields the dual curved blades with lethal precision.', ar:'محاربة شرسة من الكثبان، تستخدم الشفرات المنحنية المزدوجة بدقة مميتة.'}, color: '#D4AF37', likes: 1247 },
+                { id: 'c2', name: {en:'The Navigator', ar:'الملاح'}, manga: 'm1', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A mysterious figure who commands the very sandstorms that plague the outer rim.', ar:'شخصية غامضة تتحكم في العواصف الرملية التي تبتلي الحافة الخارجية.'}, color: '#1A1A1A', likes: 892 },
+                { id: 'c3', name: {en:'Kai', ar:'كاي'}, manga: 'm2', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'Half machine, half ghost. He operates in the shadows of the cyber-city.', ar:'نصف آلة، نصف شبح. يعمل في ظلال المدينة الإلكترونية.'}, color: '#3B82F6', likes: 2103 },
+                { id: 'c4', name: {en:'Zara', ar:'زارا'}, manga: 'm2', role: {en:'Supporting', ar:'مساعد'}, bio: {en:'The brilliant hacker who provides Kai with his intel and tech upgrades.', ar:'المخترقة العبقرية التي تزود كاي بالمعلومات وترقيات التكنولوجيا.'}, color: '#8B5CF6', likes: 1567 },
+                { id: 'c5', name: {en:'Yusuf', ar:'يوسف'}, manga: 'm3', role: {en:'Protagonist', ar:'بطل القصة'}, bio: {en:'The master penman whose strokes can alter reality itself.', ar:'سيد القلم الذي يمكن أن تغيّر خطوطه الواقع نفسه.'}, color: '#10B981', likes: 743 },
+                { id: 'c6', name: {en:'Red General', ar:'الجنرال الأحمر'}, manga: 'm4', role: {en:'Antagonist', ar:'شرير'}, bio: {en:'A ruthless leader who will stop at nothing to control the crimson fleets.', ar:'قائد لا يرحم لن يتوقف عند أي شيء للسيطرة على الأساطيل القرمزية.'}, color: '#EF4444', likes: 1892 }
+            ],
+            threads: [
+                { id: 't1', title: {en:'Chapter 45 Discussion [SPOILERS]', ar:'نقاش الفصل 45 [حرق]'}, author: 'Admin Yaser', role: 'admin', replies: 23, hot: true, pin: true, prev: {en:'Let us talk about that ending... I did not see that betrayal coming at all.', ar:'لنتحدث عن تلك النهاية... لم أتوقع تلك الخيانة على الإطلاق.'} },
+                { id: 't2', title: {en:'Who is the masked figure?', ar:'من هو الشخص المقنع؟'}, author: 'DesertFox', role: 'member', replies: 15, hot: false, pin: false, prev: {en:'I have a solid theory about the events in chapter 12. Hear me out.', ar:'لدي نظرية قوية حول أحداث الفصل 12. اسمعوني.'} },
+                { id: 't3', title: {en:'Fan art: Amira in the dunes', ar:'رسم: أميرة في الكثبان'}, author: 'ArtLover', role: 'member', replies: 8, hot: false, pin: false, prev: {en:'Took me over 15 hours to draw the sand texture correctly!', ar:'استغرق رسمي أكثر من 15 ساعة لرسم نسيج الرمل بشكل صحيح!'} },
+                { id: 't4', title: {en:'New chapter schedule update', ar:'تحديث جدول الفصول'}, author: 'Admin Yaser', role: 'admin', replies: 102, hot: false, pin: true, prev: {en:'We are moving to a weekly release schedule starting next month.', ar:'سننتقل إلى جدول إصدار أسبوعي بدءاً من الشهر المقبل.'} },
+                { id: 't5', title: {en:'Favorite panel so far?', ar:'اللوحة المفضلة حتى الآن؟'}, author: 'Reader99', role: 'member', replies: 31, hot: true, pin: false, prev: {en:'Drop your absolute favorite spreads and panels below.', ar:'ضعوا لوحاتكم المفضلة المطلقة أدناه.'} }
+            ],
+            approvals: [
+                { id: 1, email: 'user1@example.com', date: '2 days ago' },
+                { id: 2, email: 'fan99@manga.net', date: '1 day ago' },
+                { id: 3, email: 'ahmed@studio.ae', date: '5 hours ago' }
+            ]
+        };
 
-let state={manga:0,chapter:0,page:0,role:'guest',lang:'en',rtl:false,scale:1,panX:0,panY:0,zoomed:false,panning:false,pinching:false,pointers:new Map(),startX:0,startY:0,lastX:0,lastY:0,startPanX:0,startPanY:0,pinchDist:0,startScale:1,startTime:0,likedChars:new Set(),searchQuery:'',currentView:'library'};
-let db={approvals:JSON.parse(JSON.stringify(APPROVALS_START))};
+        // --- CORE UTILS ---
+        const t = (key) => i18n[state.lang][key] || key;
+        const v = (obj) => obj[state.lang] || obj.en;
 
-function t(k){return I18N[state.lang][k]||k;}
-function toggleLang(){state.lang=state.lang==='en'?'ar':'en';document.documentElement.lang=state.lang;renderAll();}
-function toggleRTL(){state.rtl=!state.rtl;document.documentElement.dir=state.rtl?'rtl':'ltr';}
-function toast(msg){const el=$('toast');if(!el)return;el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
-function login(role){state.role=role;renderAll();toast(role==='admin'?'Admin access granted':role==='member'?'Welcome, member':'Browsing as guest');}
-function logout(){state.role='guest';renderAll();toast('Logged out');}
-function acceptTC(){closeModal('modal-tc');setTimeout(()=>login('member'),350);}
-function showLogin(){showModal('modal-login');}
-function showModal(id){const m=$(id);if(!m)return;m.classList.remove('hidden');}
-function closeModal(id){const m=$(id);if(!m)return;m.classList.add('hidden');}
-function toggleAdminPanel(){const p=$('admin-panel');if(!p)return;if(p.classList.contains('hidden')){p.classList.remove('hidden');renderAdminApprovals();}else{p.classList.add('hidden');}}
-function renderAdminApprovals(){const el=$('admin-approvals');if(!el)return;el.innerHTML=db.approvals.map(a=>`<div class="admin-appr-row" id="appr-${a.id}"><div><p class="appr-email">${a.email}</p><p class="appr-date">${a.date}</p></div><div class="appr-actions"><button onclick="resolveAppr(${a.id},'Approved')" class="btn-appr-yes">✓</button><button onclick="resolveAppr(${a.id},'Denied')" class="btn-appr-no">✕</button></div></div>`).join('')||`<p class="appr-empty">${t('noApprovals')}</p>`;}
-function resolveAppr(id,st){db.approvals=db.approvals.filter(x=>x.id!==id);renderAdminApprovals();toast(`User ${st}`);}
-function toggleLike(charId){const c=CHARACTERS.find(x=>x.id===charId);if(!c)return;const el=$(`char-likes-${charId}`);if(state.likedChars.has(charId)){state.likedChars.delete(charId);c.likes--;if(el)el.textContent=c.likes.toLocaleString();toast('Like removed');}else{state.likedChars.add(charId);c.likes++;if(el)el.textContent=c.likes.toLocaleString();toast('Liked!');}}
-function shareManga(idx){const m=MANGA_LIBRARY[idx];const title=state.lang==='ar'?m.titleAr:m.title;if(navigator.share){navigator.share({title:title,text:`Reading ${title} on Restless Worlds`,url:window.location.href});}else{toast('Link copied');}}
-function handleSearch(q){state.searchQuery=q.toLowerCase();renderAll();}
+        function updateTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (el.tagName === 'INPUT') el.placeholder = t(key);
+                else el.innerText = t(key);
+            });
+            const str = state.lang === 'en' ? '<span class="text-accent">EN</span> / AR' : 'EN / <span class="text-accent">AR</span>';
+            document.getElementById('nav-lang-btn').innerHTML = str;
+            document.getElementById('login-lang-btn').innerHTML = str;
+        }
 
-function openReader(mi){state.manga=mi;state.chapter=0;state.page=0;state.currentView='reader';resetZoom();document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('reader-view').classList.add('active');loadPage();updateChrome();renderChapters();showChrome();}
-function exitReader(){state.currentView='library';document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('library-view').classList.add('active');resetZoom();}
-function currentManga(){return MANGA_LIBRARY[state.manga];}
+        function toggleLang() {
+            document.body.classList.add('lang-fade-out');
+            
+            setTimeout(() => {
+                state.lang = state.lang === 'en' ? 'ar' : 'en';
+                document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.lang = state.lang;
+                updateTranslations();
+                renderDynamic();
+                
+                requestAnimationFrame(() => {
+                    setTimeout(() => document.body.classList.remove('lang-fade-out'), 50);
+                });
+            }, 300);
+        }
 
-function loadPage(){const img=$('reader-img');if(!img)return;const src=currentManga().chapters[state.chapter].pages[state.page];img.classList.remove('loaded');img.classList.add('loading');const sk=$('page-skeleton');if(sk)sk.classList.remove('hidden');const pre=new Image();pre.onload=()=>{img.src=src;img.classList.remove('loading');img.classList.add('loaded');if(sk)sk.classList.add('hidden');resetZoom();};pre.onerror=()=>{img.src=`data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"1200\"><rect fill=\"%23050505\" width=\"800\" height=\"1200\"/><text fill=\"%23333\" x=\"400\" y=\"560\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"20\">Page ${state.page+1}</text></svg>`;img.classList.remove('loading');img.classList.add('loaded');if(sk)sk.classList.add('hidden');resetZoom();};pre.src=src;}
-function nextPage(){if(state.zoomed){toast('Double-tap to reset zoom');return;}const ch=currentManga().chapters[state.chapter];if(state.page<ch.pages.length-1){state.page++;loadPage();updateChrome();}else{toast('End of chapter');}}
-function prevPage(){if(state.zoomed){toast('Double-tap to reset zoom');return;}if(state.page>0){state.page--;loadPage();updateChrome();}}
-function goToPage(ci,pi){const ch=currentManga().chapters[ci];if(ch.locked&&state.role==='guest'){showModal('modal-locked');return;}state.chapter=ci;state.page=pi;loadPage();updateChrome();renderChapters();const d=$('chapter-drawer-backdrop');if(d)d.classList.add('hidden');}
-function updateChrome(){const m=currentManga(),ch=m.chapters[state.chapter];const rt=$('reader-title');if(rt)rt.textContent=state.lang==='ar'?m.titleAr:m.title;const rc=$('reader-chapter');if(rc)rc.textContent=state.lang==='ar'?ch.titleAr:ch.title;const rp=$('reader-page-num');if(rp)rp.textContent=`${t('page')} ${state.page+1} ${t('of')} ${ch.pages.length}`;const bar=$('read-progress');if(bar)bar.style.width=`${((state.page+1)/ch.pages.length)*100}%`;}
-let idleTimer=null;function showChrome(){const rt=$('reader-top');const ri=$('reader-info');if(rt)rt.classList.add('visible');if(ri)ri.classList.add('visible');clearTimeout(idleTimer);idleTimer=setTimeout(()=>{if(rt)rt.classList.remove('visible');if(ri)ri.classList.remove('visible');},3500);}
-function resetZoom(){state.scale=1;state.panX=0;state.panY=0;state.zoomed=false;state.panning=false;state.pinching=false;applyTransform();}
-function clampPan(){if(state.scale<=1){state.panX=0;state.panY=0;return;}const stage=$('reader-stage');if(!stage)return;const rect=stage.getBoundingClientRect();const scaledW=rect.width*state.scale;const scaledH=rect.height*state.scale;const maxPanX=Math.max(0,(scaledW-rect.width)/2);const maxPanY=Math.max(0,(scaledH-rect.height)/2);state.panX=Math.max(-maxPanX,Math.min(maxPanX,state.panX));state.panY=Math.max(-maxPanY,Math.min(maxPanY,state.panY));}
-function applyTransform(){clampPan();const img=$('reader-img');if(!img)return;img.style.transform=`translate(${state.panX}px,${state.panY}px) scale(${state.scale})`;state.zoomed=state.scale>1.05;const badge=$('zoom-badge');if(badge){if(state.zoomed){badge.textContent=`${Math.round(state.scale*100)}% · Double-tap to reset`;badge.classList.add('visible');}else{badge.classList.remove('visible');}}}
-function dist(p1,p2){return Math.hypot(p2.clientX-p1.clientX,p2.clientY-p1.clientY);}
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-[#1A1A1A] text-white px-6 py-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.3)] text-[13px] font-bold flex items-center gap-4 toast-animate pointer-events-auto border border-white/10';
+            toast.innerHTML = `<i class="fa-solid fa-check text-accent text-lg"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translate(-50%, 20px) scale(0.95)'; setTimeout(()=>toast.remove(),400); }, 3000);
+        }
 
-function bindGestures(){const surface=$('gesture-surface');if(!surface)return;surface.addEventListener('pointerdown',e=>{e.preventDefault();state.pointers.set(e.pointerId,e);if(state.pointers.size===1){state.startX=e.clientX;state.startY=e.clientY;state.lastX=e.clientX;state.lastY=e.clientY;state.startTime=Date.now();if(state.zoomed){state.panning=true;state.startPanX=state.panX;state.startPanY=state.panY;}}else if(state.pointers.size===2){state.pinching=true;state.panning=false;const pts=[...state.pointers.values()];state.pinchDist=dist(pts[0],pts[1]);state.startScale=state.scale;}},{passive:false});surface.addEventListener('pointermove',e=>{e.preventDefault();if(!state.pointers.has(e.pointerId))return;state.pointers.set(e.pointerId,e);const count=state.pointers.size;if(count===2&&state.pinching){const pts=[...state.pointers.values()];const d=dist(pts[0],pts[1]);state.scale=Math.max(1,Math.min(5,state.startScale*(d/state.pinchDist)));applyTransform();}else if(count===1&&state.panning&&state.zoomed){state.panX+=e.clientX-state.lastX;state.panY+=e.clientY-state.lastY;state.lastX=e.clientX;state.lastY=e.clientY;applyTransform();}},{passive:false});surface.addEventListener('pointerup',e=>{const now=Date.now();const wasTap=state.pointers.size===1&&(now-state.startTime<300)&&(Math.hypot(e.clientX-state.startX,e.clientY-state.startY)<10);if(wasTap){if(state.lastTapTime&&(now-state.lastTapTime<300)){state.scale=state.scale>1?1:2.5;if(state.scale<=1){state.panX=0;state.panY=0;}applyTransform();state.lastTapTime=0;}else{state.lastTapTime=now;const stage=$('reader-stage');if(stage){const rect=stage.getBoundingClientRect();const xRatio=(e.clientX-rect.left)/rect.width;if(xRatio<0.28){prevPage();}else if(xRatio>0.72){nextPage();}else{showChrome();}}}}state.pointers.delete(e.pointerId);if(state.pointers.size===0){state.panning=false;state.pinching=false;}});surface.addEventListener('pointercancel',e=>{state.pointers.delete(e.pointerId);state.panning=false;state.pinching=false;});}
+        // --- NAVIGATION & SCROLL ---
+        window.addEventListener('scroll', () => {
+            if(state.view !== 'hub' && state.view !== 'detail' && state.view !== 'forum' && state.view !== 'characters') return;
+            const nav = document.getElementById('navbar');
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 100 && currentScrollY > state.lastScrollY) {
+                nav.classList.add('nav-hidden'); // Scroll Down -> Hide
+            } else {
+                nav.classList.remove('nav-hidden'); // Scroll Up -> Show
+            }
+            state.lastScrollY = currentScrollY;
+        }, { passive: true });
 
-function toggleChapterDrawer(){const d=$('chapter-drawer-backdrop');if(!d)return;d.classList.toggle('hidden');if(!d.classList.contains('hidden'))renderChapters();}
-function renderChapters(){const el=$('chapter-drawer');if(!el)return;const m=currentManga();el.innerHTML=m.chapters.map((ch,i)=>`<div class="chapter-item ${ch.locked&&state.role==='guest'?'locked':''}" onclick="goToPage(${i},0)"><span class="ch-num">${String(i+1).padStart(2,'0')}</span><span class="ch-title">${state.lang==='ar'?ch.titleAr:ch.title}</span>${ch.locked&&state.role==='guest'?'<span class="ch-lock">◆</span>':'<span class="ch-pages">'+ch.pages.length+'p</span>'}</div>`).join('');}
+        function login(role) {
+            state.role = role;
+            const rTxt = role === 'admin' ? 'Admin' : (role === 'member' ? 'Member' : 'Guest');
+            document.getElementById('nav-avatar').innerHTML = role === 'admin' ? '<i class="fa-solid fa-shield"></i>' : (role === 'member' ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-solid fa-user"></i>');
+            document.getElementById('nav-avatar').className = `w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-sm ring-2 ring-transparent group-hover:ring-gray-200 transition-all ${role === 'admin' ? 'bg-accent' : (role === 'member' ? 'bg-[#1A1A1A]' : 'bg-gray-400')}`;
+            document.getElementById('nav-user-name').innerText = rTxt;
+            document.getElementById('nav-user-role').innerText = role;
+            
+            const adminBtns = [document.getElementById('nav-admin-btn'), document.getElementById('mobile-admin-btn')];
+            adminBtns.forEach(btn => role === 'admin' ? btn.classList.remove('hidden') : btn.classList.add('hidden'));
 
-async function handleCBZ(file){if(!file||!file.name.endsWith('.cbz')){toast('Please upload a .cbz file');return;}toast('Parsing archive...');try{const buf=await file.arrayBuffer();const zip=await JSZip.loadAsync(buf);const imgs=[];for(const[name,entry]of Object.entries(zip.files)){if(entry.dir)continue;const ext=name.split('.').pop().toLowerCase();if(['jpg','jpeg','png','webp','gif'].includes(ext)){const blob=await entry.async('blob');imgs.push(URL.createObjectURL(blob));}}imgs.sort();if(imgs.length===0){toast('No images found');return;}MANGA_LIBRARY.push({id:'upload-'+Date.now(),title:file.name.replace('.cbz',''),titleAr:file.name.replace('.cbz',''),chapters:1,status:'Upload',color:'#333',desc:'User uploaded',cover:imgs[0]});const last=MANGA_LIBRARY.length-1;last.chapters=[{num:1,title:'Uploaded',titleAr:'مرفوع',pages:imgs,locked:false,date:'2026-04-23'}];renderAll();toast(`Loaded ${imgs.length} pages`);}catch(err){console.error(err);toast('Failed to parse');}}
+            navigate('hub');
 
-function switchView(v) {
-  state.currentView = v;
-  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
-  if(v==='library') $('library-view').classList.add('active');
-  if(v==='characters') $('characters-view').classList.add('active');
-  if(v==='forum') $('forum-view').classList.add('active');
-  renderAll();
+            if(!state.pwaShown) {
+                state.pwaShown = true;
+                setTimeout(() => {
+                    if(state.view === 'hub') {
+                        const pt = document.getElementById('pwa-toast');
+                        pt.classList.remove('hidden');
+                        setTimeout(() => pt.classList.remove('translate-y-32', 'opacity-0'), 10);
+                    }
+                }, 3000);
+            }
+        }
+
+        function dismissPwa() {
+            const pt = document.getElementById('pwa-toast');
+            pt.classList.add('translate-y-32', 'opacity-0');
+            setTimeout(() => pt.classList.add('hidden'), 500);
+        }
+
+        function toggleMobileNav() {
+            const menu = document.getElementById('mobile-nav');
+            const isHidden = menu.classList.contains('translate-x-full') || menu.classList.contains('-translate-x-full');
+            if(isHidden) {
+                menu.classList.remove('translate-x-full', '-translate-x-full');
+            } else {
+                menu.classList.add(state.lang === 'ar' ? '-translate-x-full' : 'translate-x-full');
+            }
+        }
+
+        function navigate(viewId) {
+            if(state.view === 'reader') {
+                document.body.classList.remove('is-reader');
+            }
+
+            document.querySelectorAll('.view').forEach(v => {
+                v.classList.remove('active');
+            });
+            
+            const target = document.getElementById(`view-${viewId}`);
+            target.classList.add('active');
+            state.view = viewId;
+            window.scrollTo(0,0);
+            state.lastScrollY = 0;
+
+            const nav = document.getElementById('navbar');
+            if(viewId === 'login' || viewId === 'reader') nav.classList.add('hidden');
+            else {
+                nav.classList.remove('hidden', 'nav-hidden');
+            }
+
+            if(viewId === 'reader') {
+                document.body.classList.add('is-reader');
+                state.uiVisible = true;
+                document.getElementById('view-reader').classList.remove('reader-idle');
+                updateReaderProgress();
+            }
+
+            renderDynamic();
+        }
+
+        function openManga(id) {
+            state.mangaId = id;
+            navigate('detail');
+        }
+
+        function readChapter(num, status) {
+            if((status === 'locked' || status === 'premium') && state.role === 'guest') {
+                showModal('modal-locked');
+                return;
+            }
+            if(status === 'locked' && state.role === 'member') {
+                showModal('modal-locked');
+                return;
+            }
+            state.readerPage = 1;
+            navigate('reader');
+        }
+
+        // --- MODALS & PANELS ---
+        function showModal(id) {
+            const m = document.getElementById(id);
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            setTimeout(() => {
+                m.classList.remove('opacity-0', 'pointer-events-none');
+                m.querySelector('.modal-content').classList.remove('scale-95');
+            }, 10);
+        }
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            m.classList.add('opacity-0', 'pointer-events-none');
+            m.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
+        }
+
+        function acceptTC() {
+            closeModal('modal-tc');
+            setTimeout(() => {
+                login('member');
+                showToast(i18n[state.lang]['app_submit']);
+            }, 350);
+        }
+
+        const likedChars = new Set();
+        function toggleLike(charId) {
+            const c = db.chars.find(x => x.id === charId);
+            if(!c) return;
+            const el = document.getElementById(`char-likes-${charId}`);
+            if(likedChars.has(charId)) {
+                likedChars.delete(charId);
+                c.likes--;
+                if(el) el.textContent = c.likes.toLocaleString();
+                showToast('Like removed');
+            } else {
+                likedChars.add(charId);
+                c.likes++;
+                if(el) el.textContent = c.likes.toLocaleString();
+                showToast('Liked!');
+            }
+            // In production, this would POST to /api/characters/like
+        }
+
+        function toggleAdminPanel() {
+            const p = document.getElementById('admin-panel');
+            if(p.classList.contains('-translate-y-full')) {
+                p.classList.remove('-translate-y-full');
+                document.body.style.overflow = 'hidden';
+                renderAdminApprovals();
+            } else {
+                p.classList.add('-translate-y-full');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function renderAdminApprovals() {
+            document.getElementById('admin-approvals').innerHTML = db.approvals.map(a => `
+                <div class="flex justify-between items-center p-5 bg-[#151515] border border-gray-800 rounded-2xl hover:bg-gray-900 transition-colors group" id="appr-${a.id}">
+                    <div><p class="text-[13px] font-bold text-white">${a.email}</p><p class="text-[10px] text-gray-500 font-mono mt-1 uppercase tracking-widest">${a.date}</p></div>
+                    <div class="flex gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                        <button onclick="resolveAppr(${a.id}, 'Approved')" class="w-10 h-10 bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black rounded-xl flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-check"></i></button>
+                        <button onclick="resolveAppr(${a.id}, 'Denied')" class="w-10 h-10 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-[13px] text-gray-500 font-bold p-4">No pending approvals.</p>';
+        }
+        
+        function resolveAppr(id, st) {
+            db.approvals = db.approvals.filter(x => x.id !== id);
+            renderAdminApprovals();
+            showToast(`User ${st}`);
+        }
+
+        // ─── UPLOAD SYSTEM — Real file/folder upload (from Demo 5, adapted) ───
+const IMAGE_EXTS = new Set(['png','jpg','jpeg','webp','gif','bmp']);
+const ARCHIVE_EXTS = new Set(['cbz','zip']);
+const MIME_MAP = { png: 'image/png', webp: 'image/webp', gif: 'image/gif', bmp: 'image/bmp', jpg: 'image/jpeg', jpeg: 'image/jpeg' };
+
+function natSort(a, b) {
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
 }
-function renderAll() {
-  const grid = $('manga-grid');
-  if(grid) {
-    const q = state.searchQuery;
-    const filtered = MANGA_LIBRARY.filter(m => { const t = (state.lang==='ar'?m.titleAr:m.title).toLowerCase(); return t.includes(q); });
-    grid.innerHTML = filtered.map((m,i) => `<div class="vault-card" onclick="openReader(${i})"><img src="${m.cover}" alt="${m.title}" loading="lazy"><div class="vault-card-overlay"><div class="vault-card-title">${state.lang==='ar'?m.titleAr:m.title}</div><div class="vault-card-meta">${m.chapters.length} CH — ${m.status}</div></div><div class="vault-card-status">${m.status==='Complete'?'FIN':'NEW'}</div></div>`).join('');
-  }
-  const cg = $('char-grid');
-  if(cg) cg.innerHTML = CHARACTERS.map(c => `<div class="char-card"><div class="char-avatar">${c.name.charAt(0)}</div><div class="char-name">${c.name}</div><div class="char-role">${c.role}</div><div style="margin-top:.5rem;font-size:.75rem;color:#777"><span id="char-likes-${c.id}">${c.likes.toLocaleString()}</span> likes <button onclick="event.stopPropagation();toggleLike('${c.id}')" style="margin-left:.5rem;color:#D4AF37;font-size:.8rem">♥</button></div></div>`).join('');
-  const fl = $('forum-list');
-  if(fl) fl.innerHTML = THREADS.map(th => `<div class="forum-item"><div class="forum-title">${th.title}</div><div class="forum-prev">${th.prev}</div><div class="forum-meta"><span>${th.author}</span><span>${th.replies} replies</span>${th.pin?'<span style="color:#D4AF37">PINNED</span>':''}${th.hot?'<span style="color:#ef4444">HOT</span>':''}</div></div>`).join('');
-  const ub = $('user-badge'); if(ub) ub.textContent = state.role==='admin'?'Admin':state.role==='member'?'Member':'Guest';
-  const tg = $('tagline'); if(tg) tg.textContent = t('tagline');
-  const tcTitle = $('tc-title'); if(tcTitle) tcTitle.textContent = t('tc_title');
-  const tcText = $('tc-text'); if(tcText) tcText.textContent = t('tc_text');
+
+function openUploadModal() {
+    document.getElementById('upload-overlay').classList.add('open');
+    document.getElementById('upload-list').innerHTML = '';
 }
-document.addEventListener('DOMContentLoaded', () => { renderAll(); bindGestures(); });
-</script><a href="./hub.html" style="position:fixed;bottom:calc(1.5rem + env(safe-area-inset-bottom));right:1.5rem;z-index:9999;background:#D4AF37;color:#000;font-family:'Space Grotesk',system-ui,sans-serif;font-size:.75rem;font-weight:700;padding:.7rem 1.1rem;border-radius:999px;text-decoration:none;box-shadow:0 4px 20px rgba(212,175,55,.3);transition:all .3s ease;display:flex;align-items:center;gap:.5rem;">
+function closeUploadModal() {
+    document.getElementById('upload-overlay').classList.remove('open');
+}
+
+// CSS class toggling for overlay open state
+(function() {
+    const uploadOverlay = document.getElementById('upload-overlay');
+    if(uploadOverlay) {
+        const obs = new MutationObserver(() => {
+            const modal = document.getElementById('upload-modal-inner');
+            if(uploadOverlay.classList.contains('open')) {
+                uploadOverlay.style.opacity = '1';
+                uploadOverlay.style.pointerEvents = 'auto';
+                if(modal) { modal.style.transform = 'scale(1) translateY(0)'; }
+            } else {
+                uploadOverlay.style.opacity = '0';
+                uploadOverlay.style.pointerEvents = 'none';
+                if(modal) { modal.style.transform = 'scale(0.95) translateY(20px)'; }
+            }
+        });
+        obs.observe(uploadOverlay, { attributes: true, attributeFilter: ['class'] });
+    }
+})();
+
+function bindDragDrop() {
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    if(!dropZone || !fileInput) return;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => {
+        if(e.target.files.length) handleFiles(e.target.files);
+        e.target.value = '';
+    });
+
+    ['dragenter','dragover','dragleave','drop'].forEach(evt => {
+        document.body.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); }, false);
+    });
+
+    document.body.addEventListener('dragenter', () => {
+        openUploadModal();
+        if(dropZone) dropZone.classList.add('drag-over');
+    });
+    document.body.addEventListener('dragleave', e => {
+        if(e.relatedTarget === null && dropZone) dropZone.classList.remove('drag-over');
+    });
+    if(dropZone) {
+        dropZone.addEventListener('dragover', () => dropZone.classList.add('drag-over'));
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', e => {
+            dropZone.classList.remove('drag-over');
+            const dt = e.dataTransfer;
+            if(dt.files.length) handleFiles(dt.files);
+        });
+    }
+}
+
+async function handleFiles(files) {
+    const fileList = Array.from(files);
+    const archives = fileList.filter(f => ARCHIVE_EXTS.has(f.name.split('.').pop().toLowerCase()));
+    const images = fileList.filter(f => IMAGE_EXTS.has(f.name.split('.').pop().toLowerCase()));
+
+    if(archives.length === 0 && images.length === 0) {
+        showToast(state.lang === 'en' ? 'Please select valid image or archive files' : 'يرجى اختيار ملفات صور أو أرشيف صالحة');
+        return;
+    }
+
+    const uploadList = document.getElementById('upload-list');
+    if(uploadList) uploadList.innerHTML = '';
+
+    for(const file of archives) {
+        addUploadItem(file.name, 'Parsing archive...');
+        await parseArchive(file);
+    }
+    if(images.length > 0) {
+        addUploadItem(`${images.length} image files`, 'Organizing chapters...');
+        await parseImages(images);
+    }
+}
+
+function addUploadItem(name, status) {
+    const div = document.createElement('div');
+    div.className = 'upload-item flex items-center gap-3 py-2.5 border-b border-gray-800 last:border-0';
+    div.innerHTML = `
+        <div class="w-10 h-14 rounded-lg bg-gray-900 flex-shrink-0 overflow-hidden"><img class="w-full h-full object-cover" src="" alt="" style="display:none"></div>
+        <div class="flex-1 min-w-0">
+            <div class="text-white text-sm font-medium truncate">${escapeHtml(name)}</div>
+            <div class="text-gray-500 text-xs mt-0.5">${escapeHtml(status)}</div>
+            <div class="w-full h-[3px] bg-gray-800 rounded-full mt-2 overflow-hidden"><div class="upload-progress-fill h-full bg-accent rounded-full transition-all duration-300" style="width:0%"></div></div>
+        </div>
+    `;
+    const list = document.getElementById('upload-list');
+    if(list) list.appendChild(div);
+    return div;
+}
+
+function updateUploadItem(el, status, progress) {
+    if(!el) return;
+    const st = el.querySelector('.text-xs');
+    const bar = el.querySelector('.upload-progress-fill');
+    if(st) st.textContent = status;
+    if(bar) bar.style.width = progress + '%';
+    if(progress >= 100) el.classList.add('done');
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+async function parseArchive(file) {
+    try {
+        const item = document.getElementById('upload-list').lastElementChild;
+        updateUploadItem(item, 'Reading archive...', 10);
+
+        const zip = await JSZip.loadAsync(file);
+        const entries = [];
+        zip.forEach((relPath, entry) => {
+            if(entry.dir) return;
+            const ext = relPath.split('.').pop().toLowerCase();
+            if(!IMAGE_EXTS.has(ext)) return;
+            entries.push({ path: relPath, entry, ext });
+        });
+
+        if(entries.length === 0) {
+            updateUploadItem(item, 'No images found', 100);
+            if(item) item.classList.add('error');
+            return;
+        }
+
+        updateUploadItem(item, `Found ${entries.length} images...`, 30);
+
+        const groups = new Map();
+        for(const e of entries) {
+            const lastSlash = e.path.lastIndexOf('/');
+            const folder = lastSlash > -1 ? e.path.slice(0, lastSlash) : '__root__';
+            if(!groups.has(folder)) groups.set(folder, []);
+            groups.get(folder).push(e);
+        }
+
+        updateUploadItem(item, 'Creating chapters...', 50);
+        const chapters = [];
+        const sortedFolders = [...groups.keys()].sort(natSort);
+
+        for(let i = 0; i < sortedFolders.length; i++) {
+            const folder = sortedFolders[i];
+            const items = groups.get(folder).sort((a, b) => natSort(a.path, b.path));
+            const pages = [];
+            for(let j = 0; j < items.length; j++) {
+                const it = items[j];
+                const blob = await it.entry.async('blob');
+                const mime = MIME_MAP[it.ext] || 'image/jpeg';
+                pages.push(URL.createObjectURL(new Blob([blob], { type: mime })));
+                updateUploadItem(item, `Processing ${j + 1}/${items.length}...`, 50 + Math.round((j / items.length) * 45));
+            }
+            const folderName = folder === '__root__' ? 'Chapter' : folder.replace(/\/$/, '').split('/').pop();
+            chapters.push({ num: i + 1, title: folderName, pages });
+        }
+
+        const manga = {
+            id: 'upload-' + Date.now(),
+            title: { en: file.name.replace(/\.(cbz|zip)$/i, ''), ar: file.name.replace(/\.(cbz|zip)$/i, '') },
+            desc: { en: 'Uploaded manga', ar: 'مانجا مرفوعة' },
+            tags: ['Uploaded'],
+            access: 'preview',
+            chs: chapters.length,
+            cover: '#C9A227',
+            _uploaded: true,
+            _chapters: chapters
+        };
+
+        db.manga.push(manga);
+        updateUploadItem(item, 'Complete!', 100);
+        showToast(state.lang === 'en' ? 'Upload complete!' : 'اكتمل الرفع!');
+        renderHub();
+
+        setTimeout(() => {
+            closeUploadModal();
+            state.mangaId = manga.id;
+            state.readerPage = 1;
+            state.currentChapter = 0;
+            navigate('reader');
+        }, 800);
+
+    } catch(err) {
+        console.error(err);
+        const item = document.getElementById('upload-list')?.lastElementChild;
+        if(item) { updateUploadItem(item, 'Failed to parse', 100); item.classList.add('error'); }
+        showToast(state.lang === 'en' ? 'Upload failed' : 'فشل الرفع');
+    }
+}
+
+async function parseImages(files) {
+    const item = document.getElementById('upload-list')?.lastElementChild;
+    const sorted = [...files].sort((a, b) => natSort(a.name, b.name));
+
+    const chapterPatterns = [
+        /(?:ch|chapter|vol|volume)[_-]?(\d+)/i,
+        /\b(\d+)\s*(?:ch|chapter|vol|volume)\b/i
+    ];
+    const groups = new Map();
+    let hasChapters = false;
+
+    for(const file of sorted) {
+        let chapterNum = null;
+        for(const pat of chapterPatterns) {
+            const match = file.name.match(pat);
+            if(match) { chapterNum = parseInt(match[1], 10); break; }
+        }
+        if(chapterNum !== null) {
+            hasChapters = true;
+            if(!groups.has(chapterNum)) groups.set(chapterNum, []);
+            groups.get(chapterNum).push(file);
+        } else {
+            if(!groups.has(0)) groups.set(0, []);
+            groups.get(0).push(file);
+        }
+    }
+
+    updateUploadItem(item, `Organizing ${sorted.length} images...`, 20);
+    const chapters = [];
+    const sortedKeys = [...groups.keys()].sort((a, b) => a - b);
+
+    for(let i = 0; i < sortedKeys.length; i++) {
+        const key = sortedKeys[i];
+        const groupFiles = groups.get(key);
+        const pages = [];
+        for(let j = 0; j < groupFiles.length; j++) {
+            const file = groupFiles[j];
+            const ext = file.name.split('.').pop().toLowerCase();
+            const mime = MIME_MAP[ext] || 'image/jpeg';
+            pages.push(URL.createObjectURL(new Blob([await file.arrayBuffer()], { type: mime })));
+            updateUploadItem(item, `Processing ${j + 1}/${groupFiles.length}...`, 20 + Math.round((j / groupFiles.length) * 75));
+        }
+        const title = key === 0 && !hasChapters ? 'Chapter' : `Chapter ${key}`;
+        chapters.push({ num: i + 1, title, pages });
+    }
+
+    const manga = {
+        id: 'upload-' + Date.now(),
+        title: { en: 'Uploaded Manga', ar: 'مانجا مرفوعة' },
+        desc: { en: `${sorted.length} pages uploaded`, ar: `${sorted.length} صفحة مرفوعة` },
+        tags: ['Uploaded'],
+        access: 'preview',
+        chs: chapters.length,
+        cover: '#C9A227',
+        _uploaded: true,
+        _chapters: chapters
+    };
+
+    db.manga.push(manga);
+    updateUploadItem(item, 'Complete!', 100);
+    showToast(state.lang === 'en' ? 'Upload complete!' : 'اكتمل الرفع!');
+    renderHub();
+
+    setTimeout(() => {
+        closeUploadModal();
+        state.mangaId = manga.id;
+        state.readerPage = 1;
+        state.currentChapter = 0;
+        navigate('reader');
+    }, 800);
+}
+
+// Initialize drag/drop on load
+bindDragDrop();
+
+        // --- RENDERERS ---
+        function renderDynamic() {
+            if(state.view === 'hub') renderHub();
+            if(state.view === 'detail') renderDetail();
+            if(state.view === 'reader') renderReaderPage();
+            if(state.view === 'characters') renderCharacters();
+            if(state.view === 'forum') renderForum();
+        }
+
+        function getCover(color) {
+            return `<svg class="w-full h-full object-cover opacity-80 transition-transform duration-700 ease-out" viewBox="0 0 400 600"><rect width="400" height="600" fill="${color}"/><path d="M0,600 L200,300 L400,500 L400,600 Z" fill="#000" opacity="0.25"/><circle cx="200" cy="200" r="100" fill="#FFF" opacity="0.08" filter="blur(10px)"/></svg>`;
+        }
+
+        function getBadge(acc) {
+            if(acc === 'exclusive') return `<span class="bg-accent text-[#1A1A1A] text-[9px] font-black px-2.5 py-1 rounded-md tracking-widest uppercase shadow-sm"><i class="fa-solid fa-crown me-1 text-[8px]"></i>${t('exclusive')}</span>`;
+            if(acc === 'preview') return `<span class="bg-gray-600 text-white text-[9px] font-black px-2.5 py-1 rounded-md tracking-widest uppercase shadow-sm">${t('preview')}</span>`;
+            return `<span class="bg-gray-800 text-white text-[9px] font-black px-2.5 py-1 rounded-md tracking-widest uppercase shadow-sm"><i class="fa-solid fa-lock me-1 text-[8px]"></i>${t('locked')}</span>`;
+        }
+
+        function renderHub() {
+            if(state.role !== 'guest') {
+                document.getElementById('hub-continue-section').classList.remove('hidden');
+                document.getElementById('hub-continue-grid').innerHTML = ['m1','m2'].map(id => {
+                    const m = db.manga.find(x => x.id === id);
+                    return `
+                    <div class="min-w-[280px] sm:min-w-[320px] bg-card rounded-3xl p-4 shadow-subtle hover:shadow-hover cursor-pointer border border-gray-100 flex gap-5 snap-start transition-shadow group tap-effect" onclick="openManga('${id}')">
+                        <div class="w-20 h-28 rounded-2xl bg-gray-200 overflow-hidden shrink-0 relative group-hover:scale-[1.02] transition-transform">${getCover(m.cover)}</div>
+                        <div class="flex-1 flex flex-col justify-center min-w-0 py-1">
+                            <h4 class="font-bold text-[15px] truncate group-hover:text-accent transition-colors">${v(m.title)}</h4>
+                            <p class="text-[13px] font-medium text-textSec mt-1">Ch. 12 / ${m.chs}</p>
+                            <div class="w-full h-2 bg-gray-100 rounded-full mt-4 overflow-hidden"><div class="h-full bg-accent rounded-full w-[45%]"></div></div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } else {
+                document.getElementById('hub-continue-section').classList.add('hidden');
+            }
+
+            document.getElementById('hub-trending-grid').innerHTML = db.manga.map(m => `
+                <div class="group cursor-pointer tap-effect" onclick="openManga('${m.id}')">
+                    <div class="w-full aspect-[2/3] bg-gray-200 rounded-[2rem] overflow-hidden mb-4 relative shadow-subtle group-hover:shadow-hover group-hover:-translate-y-1.5 transition-all">
+                        ${getCover(m.cover)}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        <div class="absolute top-4 end-4">${getBadge(m.access)}</div>
+                        <div class="absolute bottom-4 start-4 end-4 flex justify-end items-center text-white">
+                            <div class="text-[10px] font-black text-white/90 uppercase tracking-widest drop-shadow-md">${m.chs} CH</div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-[16px] truncate group-hover:text-accent transition-colors px-1">${v(m.title)}</h3>
+                    <p class="text-[13px] text-textSec font-medium mt-1 px-1">${m.tags.join(', ')}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('hub-new-grid').innerHTML = [1,2,3,4,5].map((i, idx) => {
+                const m = db.manga[idx % db.manga.length];
+                return `
+                <div class="cursor-pointer group tap-effect min-w-[140px] sm:min-w-0 snap-start" onclick="openManga('${m.id}')">
+                    <div class="w-full aspect-square rounded-[1.5rem] overflow-hidden bg-gray-200 mb-3 relative shadow-subtle group-hover:shadow-hover group-hover:-translate-y-1 transition-all">
+                        ${getCover(m.cover)}
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                        <div class="absolute top-3 start-3 bg-danger text-white text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest shadow-sm">NEW</div>
+                        <div class="absolute inset-0 flex items-center justify-center font-black text-white/90 text-2xl group-hover:scale-110 transition-transform drop-shadow-lg">CH ${m.chs + i}</div>
+                    </div>
+                    <h4 class="font-bold text-[14px] truncate group-hover:text-accent transition-colors px-1">${v(m.title)}</h4>
+                    <p class="text-[10px] text-textSec mt-1 px-1 font-bold uppercase tracking-widest">${i*2}H AGO</p>
+                </div>`;
+            }).join('');
+
+            document.getElementById('hub-characters-grid').innerHTML = db.chars.map(c => `
+                <div class="flex flex-col items-center cursor-pointer group snap-start w-20 shrink-0 tap-effect" onclick="navigate('characters')">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3 shadow-subtle group-hover:shadow-hover transition-all transform group-hover:scale-105 border-[3px] border-white group-hover:border-accent relative flex items-center justify-center text-3xl font-black text-white" style="background-color: ${c.color}">
+                        ${v(c.name).charAt(0)}
+                    </div>
+                    <div class="font-bold text-[13px] text-center line-clamp-1 w-full group-hover:text-accent transition-colors px-1">${v(c.name)}</div>
+                    <div class="text-[10px] text-textSec mt-1 flex items-center gap-1"><i class="fa-solid fa-heart text-danger text-[8px]"></i> ${c.likes.toLocaleString()}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('hub-forum-grid').innerHTML = db.threads.slice(0,4).map(th => `
+                <div class="bg-card p-6 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover transition-all cursor-pointer group flex flex-col h-full tap-effect" onclick="navigate('forum')">
+                    <div class="flex justify-between items-start mb-3 gap-3">
+                        <h4 class="font-bold text-[15px] line-clamp-2 flex-1 group-hover:text-accent transition-colors leading-snug">${v(th.title)}</h4>
+                        <div class="flex gap-1.5 shrink-0 pt-0.5">
+                            ${th.pin ? '<i class="fa-solid fa-thumbtack text-accent text-[11px] transform -rotate-45"></i>' : ''}
+                            ${th.hot ? '<i class="fa-solid fa-fire text-danger text-[11px]"></i>' : ''}
+                        </div>
+                    </div>
+                    <p class="text-[13px] text-textSec line-clamp-2 mb-5 flex-1 leading-relaxed">${v(th.prev)}</p>
+                    <div class="flex justify-between items-center text-[10px] text-gray-400 font-bold tracking-widest uppercase mt-auto border-t border-gray-50 pt-4">
+                        <span class="flex items-center gap-2"><div class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] text-white shadow-sm ${th.role==='admin'?'bg-accent':'bg-gray-400'}">${th.author.charAt(0)}</div> <span class="${th.role==='admin'?'text-accent':''}">${th.author}</span></span>
+                        <span class="flex items-center gap-1.5 hover:text-accent transition-colors"><i class="fa-regular fa-comment rtl-flip"></i>${th.replies}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDetail() {
+            const m = db.manga.find(x => x.id === state.mangaId) || db.manga[0];
+            
+            document.getElementById('detail-header').innerHTML = `
+                <div class="w-full md:w-[35%] lg:w-[30%] shrink-0">
+                    <div class="w-full aspect-[2/3] rounded-[2.5rem] overflow-hidden shadow-modal bg-gray-200 relative group">
+                        ${getCover(m.cover)}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-6 left-0 right-0 flex justify-center">
+                            <span class="bg-black/50 backdrop-blur-md text-white text-[10px] font-black px-4 py-2 rounded-full tracking-widest uppercase border border-white/10 group-hover:scale-105 transition-transform">VOL 1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col justify-center pt-4 md:pt-0">
+                    <div class="flex gap-2 mb-5 flex-wrap">
+                        ${m.tags.map(t => `<span class="bg-gray-100 text-textMain px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest">${t}</span>`).join('')}
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-[64px] font-black mb-3 uppercase tracking-tight leading-[1.1]">${v(m.title)}</h1>
+                    <p class="text-[11px] font-black text-accent mb-8 uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-pen-nib"></i> BY MEEM YASER STUDIO</p>
+                    <p class="t-body text-gray-600 leading-relaxed max-w-2xl mb-10 font-medium text-[15px] sm:text-[16px]">${v(m.desc)}</p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="readChapter(1, 'preview')" class="bg-accent hover:bg-yellow-600 text-[#1A1A1A] font-black py-4 px-8 rounded-2xl shadow-[0_10px_25px_rgba(212,175,55,0.4)] transition-all flex items-center gap-3 tap-effect">
+                            ${t('start_reading')} <i class="fa-solid fa-arrow-right rtl-flip"></i>
+                        </button>
+                        <button onclick="showToast(t('feature_wip'))" class="bg-white border-2 border-gray-200 text-textMain hover:bg-gray-50 hover:border-gray-300 font-bold px-6 rounded-2xl transition-all flex items-center justify-center tap-effect"><i class="fa-solid fa-share-nodes text-lg"></i></button>
+                    </div>
+                </div>
+            `;
+
+            let chHtml = '';
+            for(let i=20; i>=1; i--) {
+                let st = i <= 3 ? 'preview' : 'locked';
+
+                let bCls = st==='preview' ? 'bg-gray-100 text-textMain' : 'bg-gray-50 border border-gray-100 text-gray-400';
+                let bTxt = st==='preview' ? t('preview') : `<i class="fa-solid fa-lock me-1 text-[8px]"></i>${t('members_only')}`;
+                let hoverCls = st==='preview' ? 'hover:border-accent hover:shadow-subtle' : 'hover:bg-gray-50';
+
+                chHtml += `
+                <div class="flex items-center justify-between p-4 sm:p-5 border border-gray-100 rounded-2xl bg-card transition-all cursor-pointer group tap-effect ${hoverCls}" onclick="readChapter(${i}, '${st}')">
+                    <div class="flex items-center gap-4 sm:gap-5">
+                        <div class="w-14 h-14 bg-gray-50 rounded-[14px] flex items-center justify-center font-mono font-bold text-textSec text-xl group-hover:text-accent group-hover:bg-accent/5 transition-colors shrink-0 shadow-inner">${i}</div>
+                        <div>
+                            <h4 class="font-bold text-[15px] group-hover:text-accent transition-colors">Chapter ${i}${i===1?' : The Awakening':''}</h4>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-2"><i class="fa-regular fa-calendar"></i> Oct ${i}, 2026 <span class="w-1 h-1 rounded-full bg-gray-300"></span> 24 Pages</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1.5 rounded-lg text-[9px] font-black tracking-widest uppercase flex items-center ${bCls}">${bTxt}</span>
+                </div>`;
+            }
+            document.getElementById('detail-chapters-list').innerHTML = chHtml;
+
+            const chars = db.chars.filter(c => c.manga === m.id);
+            document.getElementById('detail-characters-grid').innerHTML = chars.map(c => `
+                <div class="bg-card p-4 rounded-2xl border border-gray-100 flex items-center gap-4 cursor-pointer hover:border-accent hover:shadow-subtle transition-all group tap-effect" onclick="navigate('characters')">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl shrink-0 group-hover:scale-110 transition-transform shadow-sm border-[3px] border-white ring-1 ring-gray-100" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-bold text-[14px] truncate group-hover:text-accent transition-colors">${v(c.name)}</div>
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1.5 truncate">${v(c.role)}</div>
+                    </div>
+                    <div class="text-[11px] font-bold text-textSec flex items-center gap-1 shrink-0"><i class="fa-solid fa-heart text-danger text-[9px]"></i> ${c.likes.toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderCharacters() {
+            document.getElementById('characters-grid-page').innerHTML = db.chars.map(c => `
+                <div class="bg-card p-6 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover hover:border-accent/30 transition-all cursor-pointer text-center flex flex-col items-center group tap-effect relative" onclick="openCharDetail('${c.id}')">
+                    <div class="w-[100px] h-[100px] rounded-full flex items-center justify-center text-white text-4xl font-black mb-5 shadow-sm border-[4px] border-white ring-1 ring-gray-100 group-hover:scale-110 group-hover:rotate-3 transition-transform" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
+                    <h4 class="font-bold text-[16px] mb-1.5 group-hover:text-accent transition-colors leading-tight px-1">${v(c.name)}</h4>
+                    <p class="text-[13px] font-medium text-textSec mb-3 truncate w-full px-1">${v(db.manga.find(m=>m.id===c.manga).title)}</p>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg bg-gray-50 text-gray-500 border border-gray-100">${v(c.role)}</span>
+                    </div>
+                    <div class="text-[11px] font-bold text-textSec flex items-center gap-1"><i class="fa-solid fa-heart text-danger text-[9px]"></i> ${c.likes.toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+
+        function openCharDetail(id) {
+            const c = db.chars.find(x => x.id === id);
+            const m = db.manga.find(x => x.id === c.manga);
+            
+            document.getElementById('char-detail-content').innerHTML = `
+                <div class="w-36 h-36 mx-auto rounded-full flex items-center justify-center text-white text-6xl font-black mb-6 shadow-modal border-4 border-card ring-1 ring-gray-100" style="background-color: ${c.color}">${v(c.name).charAt(0)}</div>
+                <h2 class="text-3xl font-black text-center mb-2 leading-tight tracking-tight">${v(c.name)}</h2>
+                <div class="flex justify-center mb-3">
+                    <span class="bg-accent/10 text-accent text-[11px] font-black px-4 py-1.5 rounded-lg uppercase tracking-widest border border-accent/20">${v(c.role)}</span>
+                </div>
+                <div class="flex justify-center mb-8">
+                    <button onclick="toggleLike('${c.id}')" class="flex items-center gap-2 bg-gray-50 hover:bg-danger/10 border border-gray-100 hover:border-danger/30 text-textSec hover:text-danger font-bold px-5 py-2.5 rounded-xl transition-all tap-effect group">
+                        <i class="fa-solid fa-heart group-hover:scale-110 transition-transform"></i>
+                        <span id="char-likes-${c.id}">${c.likes.toLocaleString()}</span>
+                    </button>
+                </div>
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-[11px] font-black text-gray-400 mb-4 uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-3"><i class="fa-solid fa-book-open"></i> Appears In</h4>
+                        <div class="flex items-center gap-4 bg-gray-50/80 p-4 rounded-2xl border border-gray-100 cursor-pointer hover:border-accent hover:bg-white transition-colors group tap-effect shadow-subtle" onclick="closeCharPanel(); setTimeout(()=>openManga('${c.manga}'), 300)">
+                            <div class="w-12 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0 group-hover:scale-105 transition-transform shadow-sm">${getCover(m.cover)}</div>
+                            <div>
+                                <span class="font-bold text-[15px] group-hover:text-accent transition-colors block mb-1">${v(m.title)}</span>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">View Story <i class="fa-solid fa-arrow-right rtl-flip ml-1"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-[11px] font-black text-gray-400 mb-4 uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-3"><i class="fa-solid fa-clipboard-user"></i> Biography</h4>
+                        <p class="text-[15px] leading-relaxed text-textMain font-medium">${v(c.bio)}</p>
+                    </div>
+                </div>
+            `;
+            
+            const panel = document.getElementById('char-detail-panel');
+            const backdrop = document.getElementById('char-backdrop');
+            panel.classList.remove('translate-x-full', '-translate-x-full');
+            backdrop.classList.remove('hidden');
+            requestAnimationFrame(() => backdrop.classList.remove('opacity-0'));
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCharPanel() {
+            const panel = document.getElementById('char-detail-panel');
+            const backdrop = document.getElementById('char-backdrop');
+            panel.classList.add(state.lang === 'ar' ? '-translate-x-full' : 'translate-x-full');
+            backdrop.classList.add('opacity-0');
+            setTimeout(() => { backdrop.classList.add('hidden'); document.body.style.overflow = ''; }, 400);
+        }
+
+        function renderForum() {
+            document.getElementById('new-thread-btn').style.display = state.role !== 'guest' ? 'flex' : 'none';
+            document.getElementById('forum-list').innerHTML = db.threads.map(th => `
+                <div class="bg-card p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-subtle hover:shadow-hover transition-all cursor-pointer group flex flex-col sm:flex-row gap-5 sm:gap-6 items-start tap-effect" onclick="document.getElementById('forum-detail').innerHTML = '<div class=\\'text-center py-10 w-full\\'><h3 class=\\'font-bold text-xl mb-3 leading-snug px-4\\'>${v(th.title).replace(/'/g,"\\'")}</h3><p class=\\'text-[13px] text-textSec font-medium\\'>Loading full thread...</p></div>'">
+                    <div class="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 shrink-0 group-hover:bg-accent group-hover:text-white transition-colors border border-gray-100 shadow-inner group-hover:shadow-glow"><i class="fa-regular fa-comment text-xl"></i></div>
+                    <div class="flex-1 pt-1 w-full">
+                        <div class="flex gap-2.5 mb-2 items-center flex-wrap">
+                            ${th.pin ? '<span class="bg-accent/10 text-accent p-1.5 rounded-lg text-[10px]"><i class="fa-solid fa-thumbtack transform -rotate-45"></i></span>' : ''}
+                            ${th.hot ? '<span class="bg-danger/10 text-danger p-1.5 rounded-lg text-[10px]"><i class="fa-solid fa-fire"></i></span>' : ''}
+                            <h3 class="font-bold text-[16px] group-hover:text-accent transition-colors leading-snug tracking-tight">${v(th.title)}</h3>
+                        </div>
+                        <p class="text-[14px] text-gray-600 mb-5 line-clamp-1 font-medium">${v(th.prev)}</p>
+                        <div class="flex flex-wrap gap-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest items-center">
+                            <span class="flex items-center gap-2"><div class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] text-white shadow-sm ${th.role==='admin'?'bg-accent':'bg-[#1A1A1A]'}">${th.author.charAt(0)}</div> <span class="${th.role==='admin'?'text-accent':''}">${th.author}</span></span>
+                            <span class="w-1 h-1 rounded-full bg-gray-200"></span>
+                            <span>2 HOURS AGO</span>
+                            <span class="w-1 h-1 rounded-full bg-gray-200"></span>
+                            <span class="text-textSec group-hover:text-accent transition-colors"><i class="fa-regular fa-comment me-1.5 rtl-flip"></i> ${th.replies} REPLIES</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+                // --- READER ENGINE v2 (Merged from Demo 5) ---
+        // Fixed viewport: UI chrome is outside gesture zone. Only image layer transforms.
+        
+        const rState = {
+            scale: 1, panX: 0, panY: 0,
+            zoomed: false, panning: false, pinching: false,
+            pointers: new Map(),
+            pinchDist: 0, startScale: 1,
+            startPanX: 0, startPanY: 0,
+            startX: 0, startY: 0, startTime: 0,
+            lastTap: 0, lastX: 0, lastY: 0,
+            swipe: true,
+            dir: 'ltr'
+        };
+
+        const viewport = document.getElementById('reader-viewport');
+        const pageStage = document.getElementById('page-stage');
+        const svgContainer = document.getElementById('svg-container');
+        const zoomBadge = document.getElementById('zoom-badge');
+        const skeleton = document.getElementById('page-skeleton');
+
+        function getSVGPage(p) {
+            const pages = [
+                'https://images.unsplash.com/photo-1509316153822-d2d81f247a06?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1542359649-31e03cd4d909?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=1600&h=1200&q=80&sat=-100',
+                'https://images.unsplash.com/photo-1682687982501-1e5898cb8f4b?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100'
+            ];
+            const isSpread = p === 4;
+            const cls = isSpread ? "manga-page-svg manga-spread opacity-0 transition-opacity duration-300" : "manga-page-svg opacity-0 transition-opacity duration-300";
+            const url = pages[p-1] || pages[0];
+            return `<img src="${url}" class="${cls}" alt="Page ${p}" draggable="false" onload="this.classList.remove('opacity-0')" style="will-change:transform;" id="active-page-img" />`;
+        }
+
+        function resetZoom() {
+            rState.scale = 1; rState.panX = 0; rState.panY = 0;
+            rState.zoomed = false; rState.panning = false; rState.pinching = false;
+            applyTransform();
+            updateZoomBadge();
+        }
+
+        function clampPan() {
+            if (rState.scale <= 1) { rState.panX = 0; rState.panY = 0; return; }
+            const rect = pageStage.getBoundingClientRect();
+            // Max pan so image edges don't go past container center
+            const maxPanX = Math.max(0, (rect.width * rState.scale - rect.width) / 2);
+            const maxPanY = Math.max(0, (rect.height * rState.scale - rect.height) / 2);
+            rState.panX = Math.max(-maxPanX, Math.min(maxPanX, rState.panX));
+            rState.panY = Math.max(-maxPanY, Math.min(maxPanY, rState.panY));
+        }
+
+        function applyTransform() {
+            clampPan();
+            const img = document.getElementById('active-page-img');
+            if (img) {
+                img.style.transform = `translate(${rState.panX}px, ${rState.panY}px) scale(${rState.scale})`;
+            }
+            rState.zoomed = rState.scale > 1.05;
+            updateZoomBadge();
+        }
+
+        function updateZoomBadge() {
+            if (rState.zoomed) {
+                zoomBadge.textContent = `${Math.round(rState.scale * 100)}% · Double-tap to reset`;
+                zoomBadge.style.opacity = '1';
+                zoomBadge.style.transform = 'translate(-50%, 0)';
+            } else {
+                zoomBadge.style.opacity = '0';
+                zoomBadge.style.transform = 'translate(-50%, -10px)';
+            }
+        }
+
+        function dist(p1, p2) {
+            return Math.hypot(p2.clientX - p1.clientX, p2.clientY - p1.clientY);
+        }
+
+        // --- GESTURE SYSTEM — Pointer Events on viewport ---
+        viewport.addEventListener('pointerdown', e => {
+            if (state.view !== 'reader') return;
+            // Don't intercept buttons/chrome
+            if (e.target.closest('button') || e.target.closest('.reader-chrome')) return;
+            e.preventDefault();
+            viewport.setPointerCapture(e.pointerId);
+            rState.pointers.set(e.pointerId, e);
+
+            if (rState.pointers.size === 1) {
+                rState.startX = e.clientX; rState.startY = e.clientY;
+                rState.lastX = e.clientX; rState.lastY = e.clientY;
+                rState.startTime = Date.now();
+                if (rState.zoomed) {
+                    rState.panning = true;
+                    rState.startPanX = rState.panX; rState.startPanY = rState.panY;
+                }
+            } else if (rState.pointers.size === 2) {
+                rState.pinching = true; rState.panning = false;
+                const pts = [...rState.pointers.values()];
+                rState.pinchDist = dist(pts[0], pts[1]);
+                rState.startScale = rState.scale;
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('pointermove', e => {
+            if (state.view !== 'reader') return;
+            if (!rState.pointers.has(e.pointerId)) return;
+            e.preventDefault();
+            rState.pointers.set(e.pointerId, e);
+            const count = rState.pointers.size;
+
+            if (count === 2 && rState.pinching) {
+                const pts = [...rState.pointers.values()];
+                const d = dist(pts[0], pts[1]);
+                const ratio = d / rState.pinchDist;
+                rState.scale = Math.max(1, Math.min(5, rState.startScale * ratio));
+                applyTransform();
+            } else if (count === 1 && rState.panning && rState.zoomed) {
+                const dx = e.clientX - rState.lastX;
+                const dy = e.clientY - rState.lastY;
+                rState.panX += dx; rState.panY += dy;
+                rState.lastX = e.clientX; rState.lastY = e.clientY;
+                applyTransform();
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('pointerup', e => {
+            rState.pointers.delete(e.pointerId);
+            const count = rState.pointers.size;
+
+            if (count === 0) {
+                const elapsed = Date.now() - rState.startTime;
+                const dx = e.clientX - rState.startX;
+                const dy = e.clientY - rState.startY;
+                const travel = Math.hypot(dx, dy);
+
+                if (rState.pinching) {
+                    rState.pinching = false;
+                    if (rState.scale < 1.05) resetZoom();
+                } else if (rState.panning) {
+                    rState.panning = false;
+                    applyTransform(); // clamp
+                } else if (elapsed < 300 && travel < 10) {
+                    const now = Date.now();
+                    if (now - rState.lastTap < 300) {
+                        // DOUBLE TAP — zoom at point
+                        e.preventDefault();
+                        if (rState.zoomed) { resetZoom(); }
+                        else {
+                            const rect = pageStage.getBoundingClientRect();
+                            const tapX = e.clientX - rect.left;
+                            const tapY = e.clientY - rect.top;
+                            const cx = rect.width / 2; const cy = rect.height / 2;
+                            rState.scale = 2.5;
+                            rState.panX = (cx - tapX) * (rState.scale - 1);
+                            rState.panY = (cy - tapY) * (rState.scale - 1);
+                            applyTransform();
+                        }
+                        rState.lastTap = 0;
+                    } else {
+                        handleTap(e.clientX, e.clientY);
+                    }
+                    rState.lastTap = now;
+                } else if (rState.swipe && !rState.zoomed && elapsed < 500 && Math.abs(dx) > 50 && Math.abs(dy) < Math.abs(dx) * 1.3) {
+                    // SWIPE page turn
+                    const isNext = state.lang === 'ar' ? (dx > 0) : (dx < 0);
+                    executePageTurn(isNext);
+                }
+            } else if (count === 1 && rState.pinching) {
+                rState.pinching = false;
+                const rem = [...rState.pointers.values()][0];
+                rState.lastX = rem.clientX; rState.lastY = rem.clientY;
+                rState.panning = true;
+                rState.startPanX = rState.panX; rState.startPanY = rState.panY;
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('pointercancel', () => {
+            rState.pointers.clear();
+            rState.pinching = false; rState.panning = false;
+        });
+
+        // WHEEL (desktop zoom)
+        viewport.addEventListener('wheel', e => {
+            if (e.ctrlKey || e.metaKey || Math.abs(e.deltaY) < 10) {
+                e.preventDefault();
+                const factor = e.deltaY > 0 ? 0.92 : 1.08;
+                rState.scale = Math.max(1, Math.min(5, rState.scale * factor));
+                applyTransform();
+            }
+        }, { passive: false });
+
+        function handleTap(x, y) {
+            if (rState.zoomed) { resetZoom(); return; }
+            const w = window.innerWidth;
+            const isAr = state.lang === 'ar';
+            if (x < w / 3) { executePageTurn(isAr ? true : false); }
+            else if (x < w * 2 / 3) { toggleChrome(); }
+            else { executePageTurn(isAr ? false : true); }
+        }
+
+        // Bind tap zones
+        document.querySelectorAll('.tap-zone').forEach(z => {
+            z.addEventListener('click', e => {
+                if (!rState.zoomed && !rState.panning && !rState.pinching) {
+                    handleTap(e.clientX, e.clientY);
+                }
+            });
+        });
+
+        // --- PAGE TURNS & RENDERING (from Demo 6) ---
+        function updateReaderProgress() {
+            const bar = document.getElementById('reading-progress-bar');
+            if(bar) bar.style.width = `${(state.readerPage / 5) * 100}%`;
+            const title = document.getElementById('reader-title-display');
+            if(title) title.textContent = `Ch. ${state.readerPage}: The Awakening`;
+        }
+
+        function renderReaderPage(direction = 0) {
+            const total = getTotalPages();
+            document.getElementById('reader-curr-page').innerText = state.readerPage;
+            const totalEl = document.getElementById('reader-total-pages');
+            if(totalEl) totalEl.innerText = total;
+            updateReaderProgress();
+            resetZoom();
+
+            // Skeleton
+            skeleton.classList.remove('hidden');
+
+            setTimeout(() => {
+                svgContainer.innerHTML = getSVGPage(state.readerPage);
+                skeleton.classList.add('hidden');
+
+                // Handle spread sizing
+                const img = document.getElementById('active-page-img');
+                if (img) {
+                    if(state.readerPage === 4) { img.classList.add('manga-spread'); img.style.maxWidth = '1600px'; }
+                    else { img.classList.remove('manga-spread'); img.style.maxWidth = '800px'; }
+                }
+            }, 80);
+        }
+
+        function getTotalPages() {
+            const m = db.manga.find(x => x.id === state.mangaId);
+            if(m && m._uploaded && m._chapters) {
+                const ch = m._chapters[state.currentChapter || 0];
+                return ch ? ch.pages.length : 5;
+            }
+            return 5;
+        }
+
+        function executePageTurn(isNext) {
+            const total = getTotalPages();
+            if(isNext) {
+                if(state.readerPage < total) { state.readerPage++; renderReaderPage(1); }
+                else { bounceEdge(-1); }
+            } else {
+                if(state.readerPage > 1) { state.readerPage--; renderReaderPage(-1); }
+                else { bounceEdge(1); }
+            }
+        }
+
+        function bounceEdge(dir) {
+            const img = document.getElementById('active-page-img');
+            if (!img) return;
+            img.style.transition = 'transform 0.25s cubic-bezier(0.16,1,0.3,1)';
+            let visualDir = state.lang === 'ar' ? -dir : dir;
+            img.style.transform = `translate(${visualDir * 30}px, 0px) scale(1)`;
+            setTimeout(() => { img.style.transform = `translate(0px, 0px) scale(1)`; }, 250);
+        }
+
+        function prevPage(e) { if(e) e.stopPropagation(); executePageTurn(false); }
+        function nextPage(e) { if(e) e.stopPropagation(); executePageTurn(true); }
+        function exitReader() { navigate('detail'); if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
+
+        function toggleFullscreen() {
+            if(!document.fullscreenElement) {
+                const promise = document.documentElement.requestFullscreen();
+                if (promise) promise.catch(() => showToast(state.lang === 'en' ? 'Fullscreen not supported' : 'وضع ملء الشاشة غير مدعوم'));
+            } else document.exitFullscreen().catch(()=>{});
+        }
+
+        function toggleChrome() {
+            state.uiVisible = !state.uiVisible;
+            const top = document.getElementById('reader-chrome-top');
+            const bottom = document.getElementById('reader-chrome-bottom');
+            const disclaimer = document.getElementById('reader-disclaimer');
+            if (state.uiVisible) {
+                top.style.opacity = '1'; top.style.transform = 'translateY(0)';
+                bottom.style.opacity = '1'; bottom.style.transform = 'translate(-50%, 0)';
+                if(disclaimer) disclaimer.style.opacity = '1';
+            } else {
+                top.style.opacity = '0'; top.style.transform = 'translateY(-100%)';
+                bottom.style.opacity = '0'; bottom.style.transform = 'translate(-50%, 150%)';
+                if(disclaimer) disclaimer.style.opacity = '0';
+            }
+        }
+
+        // Keyboard
+        document.addEventListener('keydown', e => {
+            if(state.view !== 'reader') return;
+            if(e.key === 'ArrowRight') state.lang==='ar'?prevPage():nextPage();
+            if(e.key === 'ArrowLeft') state.lang==='ar'?nextPage():prevPage();
+            if(e.key === 'Escape') { if(rState.zoomed) resetZoom(); else exitReader(); }
+        });// INIT
+        updateTranslations();
+        navigate(state.view);
+
+    </script>
+
+<!-- Upload Modal -->
+<div class="upload-overlay fixed inset-0 bg-black/60 backdrop-blur-xl z-[500] opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-5" id="upload-overlay">
+  <div class="upload-modal bg-[#111] border border-gray-800 rounded-[2rem] w-full max-w-[560px] max-h-[90vh] overflow-hidden flex flex-col shadow-[0_24px_64px_rgba(0,0,0,0.5)] transform scale-95 translate-y-5 transition-transform duration-350" id="upload-modal-inner">
+    <div class="flex items-center justify-between px-6 py-5 border-b border-gray-800">
+      <h2 class="text-white font-black text-xl tracking-tight">Add Manga</h2>
+      <button onclick="closeUploadModal()" class="w-10 h-10 rounded-full bg-gray-900 text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drop-zone m-6 border-2 border-dashed border-gray-700/80 rounded-2xl p-10 text-center transition-all cursor-pointer hover:border-accent hover:bg-accent/5" id="drop-zone">
+      <div class="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center mx-auto mb-4 text-accent text-2xl border border-gray-800"><i class="fa-solid fa-folder-open"></i></div>
+      <div class="text-white font-bold text-lg mb-1">Drop manga files or folders here</div>
+      <div class="text-gray-500 text-sm mb-1">Or click to browse</div>
+      <div class="text-gray-600 text-xs font-mono mt-2">CBZ, ZIP, PNG, JPG, WEBP — Folders supported</div>
+    </div>
+    <div class="upload-list mx-6 mb-6 max-h-[200px] overflow-y-auto no-scrollbar" id="upload-list"></div>
+  </div>
+</div>
+<input type="file" id="file-input" accept=".cbz,.zip,.png,.jpg,.jpeg,.webp" multiple webkitdirectory style="display:none">
+
+<a href="./hub.html" style="position:fixed;bottom:calc(1.5rem + env(safe-area-inset-bottom));right:1.5rem;z-index:9999;background:#D4AF37;color:#000;font-family:'Space Grotesk',system-ui,sans-serif;font-size:.75rem;font-weight:700;padding:.7rem 1.1rem;border-radius:999px;text-decoration:none;box-shadow:0 4px 20px rgba(212,175,55,.3);transition:all .3s ease;display:flex;align-items:center;gap:.5rem;">
   <span style="font-size:1rem">🖼️</span> All Demos
 </a>
 </body>
-</html>
+</html><!-- deploy-verify: Thu Apr 23 07:44:29 PM UTC 2026 -->
