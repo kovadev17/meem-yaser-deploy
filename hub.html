@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>Restless Worlds — All Demos & Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A227; --gold-light: #E8C84A; --gold-dark: #9A7B1A;
+  --bg: #0A0A0A; --surface: #111111; --surface-2: #1A1A1A;
+  --text: #EDEDED; --text-muted: #8A8A8A; --text-subtle: #4A4A4A;
+  --border: rgba(255,255,255,0.06);
+  --font-display: 'Cormorant', Georgia, serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.header {
+  text-align: center;
+  padding: max(48px, env(safe-area-inset-top)) 20px 32px;
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.brand span { color: var(--gold); font-style: italic; }
+.tagline {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 12px;
+  letter-spacing: 0.06em;
+}
+.subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 20px auto 0;
+  line-height: 1.6;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--gold); }
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(201,162,39,0.2);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,162,39,0.08);
+}
+.card-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.badge-gold { background: rgba(201,162,39,0.12); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); }
+.badge-blue { background: rgba(59,130,246,0.12); color: #60A5FA; border: 1px solid rgba(59,130,246,0.2); }
+.badge-purple { background: rgba(168,85,247,0.12); color: #C084FC; border: 1px solid rgba(168,85,247,0.2); }
+.badge-green { background: rgba(16,185,129,0.12); color: #34D399; border: 1px solid rgba(16,185,129,0.2); }
+.badge-gray { background: rgba(255,255,255,0.06); color: #999; border: 1px solid rgba(255,255,255,0.1); }
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+}
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  flex: 1;
+  margin-bottom: 20px;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 16px rgba(201,162,39,0.25);
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201,162,39,0.35);
+}
+.card-btn.secondary {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+.card-btn.secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+.cta-section {
+  background: linear-gradient(135deg, rgba(201,162,39,0.08), rgba(201,162,39,0.02));
+  border: 1px solid rgba(201,162,39,0.15);
+  border-radius: 24px;
+  padding: 40px 28px;
+  text-align: center;
+  margin-top: 32px;
+}
+.cta-section h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.cta-section p {
+  color: var(--text-muted);
+  font-size: 15px;
+  max-width: 460px;
+  margin: 0 auto 24px;
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--bg);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 16px 32px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(201,162,39,0.3);
+}
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(201,162,39,0.4);
+}
+
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-subtle);
+  font-size: 12px;
+  margin-top: 48px;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 40px 0 24px;
+}
+.section-label::before, .section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.section-label span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.note-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.note-box strong { color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="./index.html" class="back-link">← Back to Main Demo</a>
+  <div class="brand">Restless <span>Worlds</span></div>
+  <div class="tagline">All Prototypes & Discovery Tools</div>
+  <p class="subtitle">Every demo we've built, in one place. Each explores a different direction or feature set. Some are rough, some are polished — all are learning steps toward the final platform.</p>
+</div>
+
+<div class="container">
+
+  <div class="note-box">
+    <strong>Note on Demo 7:</strong> This alternative design is built with React (a different tech stack), not plain HTML like the others. It's minified and was created early in our exploration — you'll notice it still says "Rūsuma" instead of "Restless Worlds" in places, and other naming conventions we hadn't corrected yet. We kept it visible because it shows how the Arabic typography renders without the letter-spacing issues you reported — React handles text shaping differently than our raw HTML demos.
+  </div>
+
+  <div class="section-label"><span>Current Direction</span></div>
+
+  <div class="grid">
+
+    <!-- Demo 6: Preferred -->
+    <div class="card">
+      <div class="card-badge badge-gold">Preferred</div>
+      <div class="card-icon">📖</div>
+      <h3>Full Platform Experience</h3>
+      <p>The complete reading club: library grid, reader, character pages, forum, admin panel, bilingual EN/AR, folder upload, and gold-accented dark theme. This is the direction we're refining.</p>
+      <div class="card-tags">
+        <span class="tag">Library</span>
+        <span class="tag">Reader</span>
+        <span class="tag">Upload</span>
+        <span class="tag">Admin</span>
+        <span class="tag">EN/AR</span>
+      </div>
+      <a href="./demo6/index.html" class="card-btn">Open Demo 6</a>
+    </div>
+
+    <!-- Demo 5: Reader + Uploader -->
+    <div class="card">
+      <div class="card-badge badge-blue">Workflow</div>
+      <div class="card-icon">📂</div>
+      <h3>Reader + Uploader Focus</h3>
+      <p>Dropbox-style folder upload, CBZ/ZIP parsing, dynamic chapter generation, and the core reading experience. A stripped-down test of the content pipeline.</p>
+      <div class="card-tags">
+        <span class="tag">Upload</span>
+        <span class="tag">CBZ/ZIP</span>
+        <span class="tag">Folder Drop</span>
+        <span class="tag">Reader</span>
+      </div>
+      <a href="./demo5/index.html" class="card-btn secondary">Open Demo 5</a>
+    </div>
+
+  </div>
+
+  <div class="section-label"><span>Early Explorations</span></div>
+
+  <div class="grid">
+
+    <!-- Demo 1: Original Vault -->
+    <div class="card">
+      <div class="card-badge badge-gray">v1</div>
+      <div class="card-icon">💾</div>
+      <h3>Vault Concept</h3>
+      <p>The first design direction — a dark, minimal "vault" aesthetic with story cards and a clean reader. This became the foundation for Demo 6.</p>
+      <div class="card-tags">
+        <span class="tag">Dark Theme</span>
+        <span class="tag">Minimal</span>
+        <span class="tag">Foundation</span>
+      </div>
+      <a href="./demo1/index.html" class="card-btn secondary">Open Demo 1</a>
+    </div>
+
+    <!-- Demo 2 -->
+    <div class="card">
+      <div class="card-badge badge-gray">v2</div>
+      <div class="card-icon">🖼️</div>
+      <h3>Landscape Reader Test</h3>
+      <p>Focused on horizontal spreads, fullscreen immersion, and tap-zone navigation. Tested how readers feel on tablet and desktop.</p>
+      <div class="card-tags">
+        <span class="tag">Landscape</span>
+        <span class="tag">Spreads</span>
+        <span class="tag">Immersive</span>
+      </div>
+      <a href="./demo2/index.html" class="card-btn secondary">Open Demo 2</a>
+    </div>
+
+    <!-- Demo 3 -->
+    <div class="card">
+      <div class="card-badge badge-gray">v3</div>
+      <div class="card-icon">✨</div>
+      <h3>Polish & Effects</h3>
+      <p>Added WebGL background shaders, smoother transitions, and more visual effects. We later stripped these back based on your feedback for a cleaner reading experience.</p>
+      <div class="card-tags">
+        <span class="tag">WebGL</span>
+        <span class="tag">Effects</span>
+        <span class="tag">Polish</span>
+      </div>
+      <a href="./demo3/index.html" class="card-btn secondary">Open Demo 3</a>
+    </div>
+
+    <!-- Demo 4 -->
+    <div class="card">
+      <div class="card-badge badge-gray">v4</div>
+      <div class="card-icon">📱</div>
+      <h3>Mobile-First Iteration</h3>
+      <p>Prioritized mobile gesture handling, responsive breakpoints, and touch optimization. The pinch-zoom and swipe logic from here carried into Demo 6.</p>
+      <div class="card-tags">
+        <span class="tag">Mobile</span>
+        <span class="tag">Gestures</span>
+        <span class="tag">Responsive</span>
+      </div>
+      <a href="./demo4/index.html" class="card-btn secondary">Open Demo 4</a>
+    </div>
+
+    <!-- Demo 7: React Alternative -->
+    <div class="card">
+      <div class="card-badge badge-purple">React</div>
+      <div class="card-icon">🎨</div>
+      <h3>Alternative Visual Stack</h3>
+      <p>Built with React + Vite (a compiled/minified stack, not raw HTML). Different visual language, smoother animations, and notably better Arabic text rendering since React's text engine handles shaping differently.</p>
+      <div class="card-tags">
+        <span class="tag">React</span>
+        <span class="tag">Alternative</span>
+        <span class="tag">Arabic-safe</span>
+      </div>
+      <a href="./demo7/index.html" class="card-btn secondary">Open Demo 7</a>
+    </div>
+
+  </div>
+
+  <div class="section-label"><span>Discovery</span></div>
+
+  <div class="grid">
+
+    <!-- Questionnaire -->
+    <div class="card">
+      <div class="card-badge badge-green">30 Questions</div>
+      <div class="card-icon">✏️</div>
+      <h3>Platform Discovery</h3>
+      <p>Content workflow, reader experience, membership tiers, design preferences, and future scope. Takes about 5 minutes. Your answers shape the final production document.</p>
+      <div class="card-tags">
+        <span class="tag">Scope</span>
+        <span class="tag">Workflow</span>
+        <span class="tag">5 min</span>
+      </div>
+      <a href="./questionnaire/index.html" class="card-btn">Start Questionnaire</a>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  VeloxStudio × Restless Worlds — Prototype demos for review and feedback.<br>
+  Not production builds. Production work follows a different pipeline with full QA.
+</div>
+
+</body>
+</html>

@@ -2,260 +2,317 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0A0A0A">
-<title>Rūsuma Reading Club — Live Demos & Discovery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#070707">
+<title>Restless Worlds — Rūsuma Vault</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --gold: #C9A227; --gold-light: #E8C84A; --gold-dark: #9A7B1A;
-  --bg: #0A0A0A; --surface: #111111; --surface-2: #1A1A1A;
-  --text: #EDEDED; --text-muted: #8A8A8A; --text-subtle: #4A4A4A;
-  --border: rgba(255,255,255,0.06);
-  --font-display: 'Cormorant', Georgia, serif;
-  --font-body: 'Space Grotesk', system-ui, sans-serif;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* Header */
-.header {
-  text-align: center; padding: max(48px, env(safe-area-inset-top)) 20px 32px;
-}
-.brand {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 6vw, 56px);
-  font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
-}
-.brand span { color: var(--gold); font-style: italic; }
-.tagline {
-  font-size: 14px; color: var(--text-muted);
-  margin-top: 12px; letter-spacing: 0.06em;
-}
-.subtitle {
-  font-size: 15px; color: var(--text-muted); max-width: 480px;
-  margin: 20px auto 0; line-height: 1.6;
-}
-
-/* Grid */
-.container { max-width: 1000px; margin: 0 auto; padding: 0 20px 60px; }
-.grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-@media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-
-/* Card */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 28px;
-  display: flex; flex-direction: column;
-  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  position: relative; overflow: hidden;
-}
-.card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201,162,39,0.2);
-  box-shadow: 0 20px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,162,39,0.08);
-}
-.card-badge {
-  position: absolute; top: 16px; right: 16px;
-  font-size: 10px; font-weight: 700;
-  padding: 5px 10px; border-radius: 20px;
-  letter-spacing: 0.06em; text-transform: uppercase;
-}
-.badge-gold { background: rgba(201,162,39,0.12); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); }
-.badge-blue { background: rgba(59,130,246,0.12); color: #60A5FA; border: 1px solid rgba(59,130,246,0.2); }
-.badge-purple { background: rgba(168,85,247,0.12); color: #C084FC; border: 1px solid rgba(168,85,247,0.2); }
-.badge-green { background: rgba(16,185,129,0.12); color: #34D399; border: 1px solid rgba(16,185,129,0.2); }
-
-.card-icon {
-  width: 48px; height: 48px; border-radius: 14px;
-  background: var(--surface-2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; margin-bottom: 18px;
-  border: 1px solid var(--border);
-}
-.card h3 {
-  font-family: var(--font-display);
-  font-size: 22px; font-weight: 700;
-  margin-bottom: 6px; letter-spacing: -0.01em;
-}
-.card p {
-  font-size: 14px; color: var(--text-muted);
-  line-height: 1.55; flex: 1; margin-bottom: 20px;
-}
-.card-tags {
-  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;
-}
-.tag {
-  font-size: 11px; font-weight: 600;
-  padding: 4px 10px; border-radius: 20px;
-  background: var(--surface-2); color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-.card-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--gold); color: var(--bg);
-  font-family: var(--font-body); font-size: 14px; font-weight: 700;
-  padding: 12px 20px; border-radius: 12px; text-decoration: none;
-  transition: all 0.25s ease; letter-spacing: 0.01em;
-  box-shadow: 0 4px 16px rgba(201,162,39,0.25);
-  border: none; cursor: pointer; width: 100%;
-}
-.card-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(201,162,39,0.35);
-}
-.card-btn.secondary {
-  background: var(--surface-2); color: var(--text);
-  border: 1px solid var(--border);
-  box-shadow: none;
-}
-.card-btn.secondary:hover { border-color: var(--gold); color: var(--gold); }
-
-/* Questionnaire CTA */
-.cta-section {
-  background: linear-gradient(135deg, rgba(201,162,39,0.08), rgba(201,162,39,0.02));
-  border: 1px solid rgba(201,162,39,0.15);
-  border-radius: 24px;
-  padding: 40px 28px;
-  text-align: center; margin-top: 32px;
-}
-.cta-section h2 {
-  font-family: var(--font-display);
-  font-size: 28px; font-weight: 700; margin-bottom: 10px;
-}
-.cta-section p { color: var(--text-muted); font-size: 15px; max-width: 460px; margin: 0 auto 24px; }
-.cta-btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: var(--gold); color: var(--bg);
-  font-size: 15px; font-weight: 700;
-  padding: 16px 32px; border-radius: 14px;
-  text-decoration: none; transition: all 0.3s ease;
-  box-shadow: 0 8px 24px rgba(201,162,39,0.3);
-}
-.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,162,39,0.4); }
-
-/* Footer */
-.footer {
-  text-align: center; padding: 40px 20px;
-  border-top: 1px solid var(--border);
-  color: var(--text-subtle); font-size: 12px; margin-top: 48px;
-}
-
-/* Divider */
-.section-label {
-  display: flex; align-items: center; gap: 16px;
-  margin: 40px 0 24px;
-}
-.section-label::before, .section-label::after {
-  content: ''; flex: 1; height: 1px; background: var(--border);
-}
-.section-label span {
-  font-size: 11px; font-weight: 600; color: var(--gold);
-  letter-spacing: 0.15em; text-transform: uppercase;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
-}
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:#070707;color:#f0f0f0;line-height:1.55;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+img{-webkit-user-drag:none;user-select:none}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+.view{position:fixed;inset:0;overflow:hidden;display:none;opacity:0;transition:opacity .35s cubic-bezier(.22,1,.36,1)}
+.view.active{display:flex;flex-direction:column;opacity:1}
+.brand-bar{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.25rem;background:rgba(7,7,7,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.brand-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:inherit}
+.brand-mark{width:32px;height:32px;background:#D4AF37;border-radius:8px;display:grid;place-items:center;color:#000;font-weight:800;font-size:.8rem}
+.brand-title{font-weight:700;font-size:.85rem;letter-spacing:-.01em}
+.brand-sub{font-size:.65rem;color:#777;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
+.brand-nav{display:flex;gap:1.5rem;align-items:center}
+.nav-link{text-decoration:none;color:#777;font-size:.75rem;font-weight:500;letter-spacing:.02em;padding:.3rem 0;position:relative;transition:color .2s}
+.nav-link:hover,.nav-link.active{color:#f0f0f0}
+.nav-link.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:#D4AF37}
+.lang-toggle{display:flex;align-items:center;gap:.3rem;border:1px solid rgba(255,255,255,.06);padding:.35rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600;color:#777;transition:all .2s}
+.lang-toggle:hover{border-color:#D4AF37;color:#D4AF37}
+#library-view{overflow-y:auto;overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch}
+.vault-hero{padding:5rem 1.5rem 2.5rem;max-width:720px;margin:0 auto;text-align:center}
+.vault-label{font-family:'Space Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.25em;color:#D4AF37;margin-bottom:1.25rem}
+.vault-hero h1{font-size:clamp(2.5rem,6vw,4rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-bottom:.75rem}
+.vault-hero p{color:#777;font-size:.95rem;max-width:42ch;margin:0 auto 2rem}
+.vault-grid{max-width:1000px;margin:0 auto;padding:0 1.25rem 5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
+.vault-card{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;background:#0c0c0c;transition:all .35s cubic-bezier(.22,1,.36,1);border:1px solid rgba(255,255,255,.06)}
+.vault-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.12)}
+.vault-card img{width:100%;height:220px;object-fit:cover;display:block;transition:transform .6s ease}
+.vault-card:hover img{transform:scale(1.06)}
+.vault-card-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.85) 0%,transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:1rem}
+.vault-card-title{color:#fff;font-weight:600;font-size:.85rem;margin-bottom:.2rem}
+.vault-card-meta{color:#777;font-size:.65rem;font-family:'Space Mono',monospace}
+.vault-card-status{position:absolute;top:.6rem;right:.6rem;font-size:.55rem;font-weight:700;padding:.25rem .5rem;border-radius:4px;background:#D4AF37;color:#000;text-transform:uppercase;letter-spacing:.05em}
+.search-bar{max-width:400px;margin:0 auto 2rem;padding:0 1.25rem}
+.search-bar input{width:100%;padding:.75rem 1rem;background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;color:#f0f0f0;font-size:.9rem;outline:none}
+.search-bar input:focus{border-color:#D4AF37}
+.search-bar input::placeholder{color:#444}
+#reader-view{background:#020202;padding-top:0;z-index:2000}
+.reader-stage{width:100%;height:100dvh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;touch-action:none}
+.reader-stage img{max-width:100%;max-height:100%;object-fit:contain;transition:opacity .25s ease;will-change:transform}
+.reader-stage img.loading{opacity:.3}
+.reader-stage img.loaded{opacity:1}
+.tap-zone{position:absolute;top:0;bottom:0;z-index:50}
+.tap-left{left:0;width:28%}
+.tap-right{right:0;width:28%}
+.reader-top{position:absolute;top:0;left:0;right:0;z-index:100;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent);opacity:0;transition:opacity .3s}
+.reader-top.visible{opacity:1}
+.reader-btn{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);display:grid;place-items:center;color:#fff;font-size:1.1rem;transition:background .2s}
+.reader-btn:hover{background:rgba(255,255,255,.15)}
+.reader-info{position:absolute;bottom:0;left:0;right:0;z-index:100;padding:1rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);opacity:0;transition:opacity .3s}
+.reader-info.visible{opacity:1}
+.reader-progress{flex:1;height:2px;background:rgba(255,255,255,.1);border-radius:1px;margin:0 1rem;overflow:hidden}
+.reader-progress-fill{height:100%;background:#D4AF37;border-radius:1px;width:0;transition:width .3s}
+.zoom-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#D4AF37;padding:.5rem 1rem;border-radius:8px;font-size:.8rem;opacity:0;pointer-events:none;transition:opacity .3s;z-index:200}
+.zoom-badge.visible{opacity:1}
+.chapter-drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2500;display:flex;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .3s}
+.chapter-drawer-backdrop:not(.hidden){opacity:1;pointer-events:auto}
+.chapter-drawer{width:320px;max-width:85vw;height:100%;background:#0c0c0c;border-left:1px solid rgba(255,255,255,.06);overflow-y:auto;padding:1rem}
+.chapter-item{display:flex;align-items:center;gap:.75rem;padding:.75rem;border-radius:8px;cursor:pointer;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.06)}
+.chapter-item:hover{background:#141414}
+.chapter-item.locked{opacity:.4;cursor:not-allowed}
+.ch-num{font-family:'Space Mono',monospace;font-size:.75rem;color:#D4AF37;min-width:28px}
+.ch-title{flex:1;font-size:.85rem}
+.ch-lock{color:#777;font-size:.8rem}
+.ch-pages{font-size:.7rem;color:#555}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-backdrop:not(.hidden){opacity:1;pointer-events:auto}
+.modal-content{background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1.5rem;max-width:400px;width:90%;max-height:80vh;overflow-y:auto}
+.modal-title{font-size:1.1rem;font-weight:700;margin-bottom:.75rem}
+.modal-text{font-size:.9rem;color:#777;margin-bottom:1.25rem;line-height:1.6}
+.btn-primary{background:#D4AF37;color:#000;padding:.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:.85rem;width:100%;margin-bottom:.5rem;border:none;cursor:pointer}
+.btn-secondary{background:#141414;color:#f0f0f0;padding:.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:.85rem;width:100%;border:1px solid rgba(255,255,255,.06);cursor:pointer}
+.admin-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:#070707;z-index:1500;overflow-y:auto;padding:5rem 1.5rem 2rem;display:none}
+.admin-panel:not(.hidden){display:block}
+.admin-title{font-size:1.25rem;font-weight:700;margin-bottom:1.5rem}
+.admin-appr-row{display:flex;justify-content:space-between;align-items:center;padding:1rem;background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;margin-bottom:.5rem}
+.appr-email{font-size:.85rem;font-weight:600}
+.appr-date{font-size:.65rem;color:#777;font-family:'Space Mono',monospace;margin-top:.2rem}
+.appr-actions{display:flex;gap:.5rem}
+.btn-appr-yes,.btn-appr-no{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-weight:700;border:none}
+.btn-appr-yes{background:rgba(34,197,94,.15);color:#22c55e}
+.btn-appr-no{background:rgba(239,68,68,.15);color:#ef4444}
+#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#141414;color:#f0f0f0;padding:.75rem 1.5rem;border-radius:12px;font-size:.85rem;border:1px solid rgba(255,255,255,.06);opacity:0;pointer-events:none;transition:all .3s;z-index:4000}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.section{padding:1.5rem;max-width:800px;margin:0 auto}
+.section-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#777;font-weight:700;margin-bottom:1rem;font-family:'Space Mono',monospace}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem}
+.char-card{background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1rem;text-align:center;cursor:pointer;transition:all .2s}
+.char-card:hover{border-color:rgba(255,255,255,.12)}
+.char-avatar{width:56px;height:56px;border-radius:50%;background:rgba(212,175,55,.08);display:grid;place-items:center;margin:0 auto .75rem;font-weight:700;color:#D4AF37}
+.char-name{font-weight:600;font-size:.85rem;margin-bottom:.2rem}
+.char-role{font-size:.7rem;color:#777}
+.forum-item{background:#0c0c0c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1rem;margin-bottom:.75rem;cursor:pointer;transition:all .2s}
+.forum-item:hover{border-color:rgba(255,255,255,.12)}
+.forum-title{font-weight:600;font-size:.9rem;margin-bottom:.35rem}
+.forum-prev{font-size:.8rem;color:#777;margin-bottom:.5rem}
+.forum-meta{font-size:.65rem;color:#444;font-family:'Space Mono',monospace;display:flex;gap:1rem}
+.upload-zone{border:2px dashed rgba(255,255,255,.06);border-radius:12px;padding:2rem;text-align:center;transition:border-color .2s;cursor:pointer}
+.upload-zone:hover{border-color:#D4AF37}
+.upload-zone input{display:none}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style>
 </head>
-<body>
-
-<div class="header">
-  <div class="brand">Restless <span>Worlds</span></div>
-  <div class="tagline">Rūsuma Reading Club — Platform Demos</div>
-  <p class="subtitle">Interactive prototypes and discovery tools for the Restless Worlds reading platform. Each demo explores a different aspect of the experience.</p>
-</div>
-
-<div class="container">
-
-  <div class="section-label"><span>Live Demos</span></div>
-
-  <div class="grid">
-
-    <!-- Demo 6: Preferred Design -->
-    <div class="card">
-      <div class="card-badge badge-gold">Preferred</div>
-      <div class="card-icon">📖</div>
-      <h3>Full Platform Experience</h3>
-      <p>The complete reading club prototype: library, reader, characters, forum, admin panel, bilingual support, and real file upload. This is the direction we're heading.</p>
-      <div class="card-tags">
-        <span class="tag">Library</span>
-        <span class="tag">Reader</span>
-        <span class="tag">Upload</span>
-        <span class="tag">Admin</span>
-        <span class="tag">EN/AR</span>
-      </div>
-      <a href="./demo6/index.html" class="card-btn">Open Demo 6</a>
+<body><div id="library-view" class="view active">
+  <div class="brand-bar">
+    <a href="#" class="brand-logo" onclick="renderAll();return false">
+      <div class="brand-mark">R</div>
+      <div class="brand-text"><div class="brand-title">Restless Worlds</div><div class="brand-sub">Rūsuma Collection</div></div>
+    </a>
+    <div class="brand-nav">
+      <a href="#" class="nav-link active" onclick="switchView('library');return false">Library</a>
+      <a href="#" class="nav-link" onclick="switchView('characters');return false">Characters</a>
+      <a href="#" class="nav-link" onclick="switchView('forum');return false">Forum</a>
+      <button class="lang-toggle" onclick="toggleLang()">EN <span style="color:#444">/</span> AR</button>
+      <button class="reader-btn" style="width:auto;padding:0 .7rem;font-size:.75rem" onclick="state.role==='admin'?toggleAdminPanel():showLogin()"><span id="user-badge">Guest</span></button>
     </div>
-
-    <!-- Demo 5: Reader + Uploader Workflow -->
-    <div class="card">
-      <div class="card-badge badge-blue">Workflow</div>
-      <div class="card-icon">📂</div>
-      <h3>Reader + Uploader Focus</h3>
-      <p>A focused demo showcasing the Dropbox-style folder upload system, chapter parsing, and the core reading experience. Clean and minimal.</p>
-      <div class="card-tags">
-        <span class="tag">Upload</span>
-        <span class="tag">CBZ/ZIP</span>
-        <span class="tag">Folder Drop</span>
-        <span class="tag">Reader</span>
-      </div>
-      <a href="./demo5/index.html" class="card-btn secondary">Open Demo 5</a>
-    </div>
-
-    <!-- Demo 7: Alternative Design -->
-    <div class="card">
-      <div class="card-badge badge-purple">Alternative</div>
-      <div class="card-icon">🎨</div>
-      <h3>Alternative Visual Direction</h3>
-      <p>A different aesthetic exploration for the Restless Worlds brand. Explore this if you want to see another visual approach before locking the final design.</p>
-      <div class="card-tags">
-        <span class="tag">Visual</span>
-        <span class="tag">Alternative</span>
-        <span class="tag">Brand</span>
-      </div>
-      <a href="./demo7/index.html" class="card-btn secondary">Open Demo 7</a>
-    </div>
-
-    <!-- Questionnaire -->
-    <div class="card">
-      <div class="card-badge badge-green">Discovery</div>
-      <div class="card-icon">✏️</div>
-      <h3>Platform Questionnaire</h3>
-      <p>30 questions covering content workflow, reader experience, membership, design, and future scope. Your answers shape the final production document.</p>
-      <div class="card-tags">
-        <span class="tag">30 Questions</span>
-        <span class="tag">Scope</span>
-        <span class="tag">5 min</span>
-      </div>
-      <a href="./questionnaire/index.html" class="card-btn secondary">Start Questionnaire</a>
-    </div>
-
   </div>
-
-  <div class="cta-section">
-    <h2>Ready to define your platform?</h2>
-    <p>Fill out the discovery questionnaire and paste the result into your reply. We'll use your answers to build a precise, tailored scope document.</p>
-    <a href="./questionnaire/index.html" class="cta-btn">📝 Start Discovery Questionnaire</a>
+  <div class="vault-hero">
+    <div class="vault-label">Rūsuma Collection</div>
+    <h1>Restless Worlds</h1>
+    <p id="tagline">Original illustrated stories. One universe.</p>
   </div>
-
+  <div class="search-bar"><input type="text" placeholder="Search series..." oninput="handleSearch(this.value)"></div>
+  <div class="vault-grid" id="manga-grid"></div>
+  <div style="max-width:1000px;margin:0 auto;padding:0 1.25rem 3rem">
+    <div class="upload-zone" onclick="this.querySelector('input').click()">
+      <input type="file" accept=".cbz" onchange="handleCBZ(this.files[0])">
+      <div style="font-size:1.5rem;margin-bottom:.5rem">⬆</div>
+      <div style="font-size:.85rem;color:#777">Upload your own CBZ</div>
+    </div>
+  </div>
 </div>
 
-<div class="footer">
-  VeloxStudio × Restless Worlds — Rūsuma Reading Club Platform<br>
-  Prototype demos for review and feedback. Not production builds.
+<div id="reader-view" class="view">
+  <div class="reader-top" id="reader-top">
+    <button class="reader-btn" onclick="exitReader()">←</button>
+    <div style="text-align:center"><div id="reader-title" style="font-weight:600;font-size:.85rem"></div><div id="reader-chapter" style="font-size:.7rem;color:#777"></div></div>
+    <button class="reader-btn" onclick="toggleChapterDrawer()">☰</button>
+  </div>
+  <div class="reader-stage" id="reader-stage">
+    <div class="tap-zone tap-left" onclick="prevPage()"></div>
+    <div class="tap-zone tap-right" onclick="nextPage()"></div>
+    <div id="page-skeleton" style="position:absolute;width:60%;height:70%;background:linear-gradient(90deg,#0c0c0c 25%,#141414 50%,#0c0c0c 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px"></div>
+    <img id="reader-img" class="loading" alt="Page" draggable="false" style="z-index:10">
+    <div id="gesture-surface" style="position:absolute;inset:0;z-index:60;touch-action:none"></div>
+    <div class="zoom-badge" id="zoom-badge"></div>
+  </div>
+  <div class="reader-info" id="reader-info">
+    <button class="reader-btn" onclick="prevPage()">‹</button>
+    <div class="reader-progress"><div class="reader-progress-fill" id="read-progress"></div></div>
+    <div id="reader-page-num" style="font-size:.75rem;color:#777;font-family:'Space Mono',monospace;white-space:nowrap"></div>
+    <button class="reader-btn" onclick="nextPage()">›</button>
+  </div>
+  <div class="chapter-drawer-backdrop hidden" id="chapter-drawer-backdrop" onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="chapter-drawer" id="chapter-drawer"></div>
+  </div>
 </div>
 
+<div id="characters-view" class="view">
+  <div class="brand-bar">
+    <a href="#" class="brand-logo" onclick="switchView('library');return false"><div class="brand-mark">R</div><div class="brand-text"><div class="brand-title">Restless Worlds</div></div></a>
+    <div class="brand-nav">
+      <a href="#" class="nav-link" onclick="switchView('library');return false">Library</a>
+      <a href="#" class="nav-link active" onclick="switchView('characters');return false">Characters</a>
+      <a href="#" class="nav-link" onclick="switchView('forum');return false">Forum</a>
+      <button class="lang-toggle" onclick="toggleLang()">EN / AR</button>
+    </div>
+  </div>
+  <div class="section" style="padding-top:5rem">
+    <div class="section-title">Characters</div>
+    <div class="char-grid" id="char-grid"></div>
+  </div>
+</div>
+
+<div id="forum-view" class="view">
+  <div class="brand-bar">
+    <a href="#" class="brand-logo" onclick="switchView('library');return false"><div class="brand-mark">R</div><div class="brand-text"><div class="brand-title">Restless Worlds</div></div></a>
+    <div class="brand-nav">
+      <a href="#" class="nav-link" onclick="switchView('library');return false">Library</a>
+      <a href="#" class="nav-link" onclick="switchView('characters');return false">Characters</a>
+      <a href="#" class="nav-link active" onclick="switchView('forum');return false">Forum</a>
+      <button class="lang-toggle" onclick="toggleLang()">EN / AR</button>
+    </div>
+  </div>
+  <div class="section" style="padding-top:5rem">
+    <div class="section-title">Community Forum</div>
+    <div id="forum-list"></div>
+  </div>
+</div>
+
+<div class="admin-panel hidden" id="admin-panel">
+  <div style="max-width:800px;margin:0 auto">
+    <div class="admin-title">Admin Panel — Pending Approvals</div>
+    <div id="admin-approvals"></div>
+    <button class="btn-secondary" style="margin-top:1.5rem;width:auto" onclick="toggleAdminPanel()">Close Panel</button>
+    <button class="btn-secondary" style="margin-top:.5rem;width:auto" onclick="logout();toggleAdminPanel()">Logout</button>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="modal-login">
+  <div class="modal-content">
+    <div class="modal-title">Select Access Level</div>
+    <button class="btn-primary" onclick="login('guest');closeModal('modal-login')">Continue as Guest</button>
+    <button class="btn-secondary" onclick="closeModal('modal-login');showModal('modal-tc')">Join as Member</button>
+    <button class="btn-secondary" onclick="login('admin');closeModal('modal-login')">Admin Access</button>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="modal-tc">
+  <div class="modal-content">
+    <div class="modal-title" id="tc-title">Terms & Conditions</div>
+    <div class="modal-text" id="tc-text">By joining Rūsuma Reading Club, you agree to respect the creative work of Meem Yaser Studio.</div>
+    <button class="btn-primary" onclick="acceptTC()">Accept & Join</button>
+    <button class="btn-secondary" onclick="closeModal('modal-tc')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="modal-locked">
+  <div class="modal-content">
+    <div class="modal-title">Locked Chapter</div>
+    <div class="modal-text">This chapter is exclusive to members. Join the Reading Club to unlock all chapters.</div>
+    <button class="btn-primary" onclick="closeModal('modal-locked');showModal('modal-tc')">Become a Member</button>
+    <button class="btn-secondary" onclick="closeModal('modal-locked')">Cancel</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>const $ = id => document.getElementById(id);
+const MANGA_LIBRARY = [{"id":"m1","title":"The Grand Lord","titleAr":"السيد الأكبر","chapters":20,"status":"Ongoing","color":"#1a1a2e","desc":"A cosmic ruler awakens after millennia of slumber to find his empire fractured and his people enslaved. What begins as a quest for vengeance evolves into a meditation on power, legacy, and the burden of immortality.","cover":"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m2","title":"Moons Road","titleAr":"طريق الأقمار","chapters":20,"status":"Ongoing","color":"#16213e","desc":"In a world where the moon governs fate, a young cartographer discovers a hidden path that connects every lunar temple. Each step reveals a new prophecy — and a new enemy.","cover":"https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m3","title":"Symphony of Doom","titleAr":"سيمفونية الهلاك","chapters":20,"status":"Complete","color":"#0f3460","desc":"A composer whose music can kill. A detective who can hear the last song of every victim. Their collision course spans opera houses, underground clubs, and the silence between notes.","cover":"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m4","title":"The Speakers: Legend of Haktvin","titleAr":"المتحدثون: أسطورة هاكتفين","chapters":20,"status":"Ongoing","color":"#533483","desc":"Long before the written word, history was spoken. The Speakers were its guardians — until one of them chose to rewrite it. Haktvin is the first to rebel, and the last to hope.","cover":"https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&h=900&q=80"},{"id":"m5","title":"The Sleepless Chaplain","titleAr":"القس الذي لا ينام","chapters":20,"status":"Ongoing","color":"#1a1a1a","desc":"He has not slept in forty years. He hears confessions from the dead. In a monastery built on a fault line between worlds, faith is the only currency — and it is running out.","cover":"https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&h=900&q=80"}];
+const CHARACTERS = [{"id":"c1","name":"Kael Vorn","role":"The Grand Lord","likes":1240,"bio":"The last of the Vorn dynasty. Ageless, patient, and quietly furious."},{"id":"c2","name":"Lira Moonwhisper","role":"Moons Road","likes":890,"bio":"A cartographer who reads the moon's shadow like braille."},{"id":"c3","name":"Silas Nocturne","role":"Symphony of Doom","likes":2100,"bio":"Composer. Murderer. Artist. The lines blur after midnight."},{"id":"c4","name":"Haktvin","role":"The Speakers","likes":1560,"bio":"The first Speaker to defy the Council. His voice reshapes stone."},{"id":"c5","name":"Brother Ash","role":"The Sleepless Chaplain","likes":670,"bio":"Forty years awake. He remembers every sin he has forgiven."},{"id":"c6","name":"Sera Dawn","role":"The Grand Lord","likes":930,"bio":"Kael's unwilling heir. She would rather burn the empire than rule it."}];
+const THREADS = [{"id":1,"title":"Theory: Is Kael actually the villain?","prev":"After Chapter 14, I'm starting to think we've been rooting for the wrong side...","author":"Amina","role":"member","replies":34,"pin":true,"hot":false},{"id":2,"title":"Symphony of Doom ending explained","prev":"The final panel is NOT what you think. Here's my analysis.","author":"Rashid","role":"member","replies":87,"pin":false,"hot":true},{"id":3,"title":"Character design evolution thread","prev":"Comparing early sketches to final art across all 5 series.","author":"Noor","role":"admin","replies":12,"pin":false,"hot":false},{"id":4,"title":"Moons Road: Hidden symbols in the maps","prev":"I found recurring geometric patterns in the background art.","author":"Youssef","role":"member","replies":45,"pin":false,"hot":true}];
+const APPROVALS_START = [{"id":1,"email":"sarah.manga@email.com","date":"2026-04-22"},{"id":2,"email":"ali.reads@email.com","date":"2026-04-21"},{"id":3,"email":"layla.vorn@email.com","date":"2026-04-20"}];
+const I18N = {"en":{"brand":"Restless Worlds","subtitle":"Rūsuma Collection","tagline":"Original illustrated stories. One universe.","read":"Read","chapters":"Chapters","characters":"Characters","forum":"Forum","search":"Search","login":"Login","logout":"Logout","guest":"Guest","member":"Member","admin":"Admin","locked":"Locked","preview":"Preview","exclusive":"Exclusive","continueReading":"Continue Reading","activity":"Activity","trending":"Trending","latest":"Latest","library":"Library","settings":"Settings","rtl":"RTL","zoom":"Zoom","page":"Page","of":"of","close":"Close","upload":"Upload CBZ","dragDrop":"Drag & drop or click to upload","tc_title":"Terms & Conditions","tc_text":"By joining Rūsuma Reading Club, you agree to respect the creative work of Meem Yaser Studio. Content is for personal reading only.","accept":"Accept & Join","cancel":"Cancel","share":"Share","applicants":"Applicants","approvals":"Pending Approvals","approve":"Approve","deny":"Deny","newThread":"New Thread","replies":"replies","noApprovals":"No pending approvals."},"ar":{"brand":"عوالم بلا راحة","subtitle":"مجموعة روسوما","tagline":"قصص مصوّرة أصلية. عالم واحد.","read":"قراءة","chapters":"الفصول","characters":"الشخصيات","forum":"المنتدى","search":"بحث","login":"تسجيل الدخول","logout":"خروج","guest":"زائر","member":"عضو","admin":"مشرّف","locked":"مقفل","preview":"معاينة","exclusive":"حصري","continueReading":"استكمال القراءة","activity":"النشاط","trending":"الأكثر تفاعلاً","latest":"الأحدث","library":"المكتبة","settings":"الإعدادات","rtl":"من اليمين لليسار","zoom":"تكبير","page":"صفحة","of":"من","close":"إغلاق","upload":"رفع CBZ","dragDrop":"اسحب وأفلت أو انقر للرفع","tc_title":"الشروط والأحكام","tc_text":"بالانضمام إلى نادي روسوما للقراءة، أنت توافق على احترام العمل الإبداعي لستوديو ميم ياسر.","accept":"قبول وانضم","cancel":"إلغاء","share":"مشاركة","applicants":"المقدمين","approvals":"الموافقات المعلقة","approve":"قبول","deny":"رفض","newThread":"موضوع جديد","replies":"ردود","noApprovals":"لا توجد موافقات معلقة."}};
+const PAGE_URLS = ["https://images.unsplash.com/photo-1509316153822-d2d81f247a06?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1542359649-31e03cd4d909?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=1600&h=1200&q=80&sat=-100","https://images.unsplash.com/photo-1682687982501-1e5898cb8f4b?auto=format&fit=crop&w=800&h=1200&q=80&sat=-100"];
+
+MANGA_LIBRARY.forEach((m,mi)=>{m.chapters=Array.from({length:m.chapters},(_,i)=>({num:i+1,title:`Chapter ${i+1}`,titleAr:`الفصل ${i+1}`,pages:PAGE_URLS,locked:i>=3&&mi>0,date:`2026-0${(i%9)+1}-${(i%28)+1}`}));});
+
+let state={manga:0,chapter:0,page:0,role:'guest',lang:'en',rtl:false,scale:1,panX:0,panY:0,zoomed:false,panning:false,pinching:false,pointers:new Map(),startX:0,startY:0,lastX:0,lastY:0,startPanX:0,startPanY:0,pinchDist:0,startScale:1,startTime:0,likedChars:new Set(),searchQuery:'',currentView:'library'};
+let db={approvals:JSON.parse(JSON.stringify(APPROVALS_START))};
+
+function t(k){return I18N[state.lang][k]||k;}
+function toggleLang(){state.lang=state.lang==='en'?'ar':'en';document.documentElement.lang=state.lang;renderAll();}
+function toggleRTL(){state.rtl=!state.rtl;document.documentElement.dir=state.rtl?'rtl':'ltr';}
+function toast(msg){const el=$('toast');if(!el)return;el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
+function login(role){state.role=role;renderAll();toast(role==='admin'?'Admin access granted':role==='member'?'Welcome, member':'Browsing as guest');}
+function logout(){state.role='guest';renderAll();toast('Logged out');}
+function acceptTC(){closeModal('modal-tc');setTimeout(()=>login('member'),350);}
+function showLogin(){showModal('modal-login');}
+function showModal(id){const m=$(id);if(!m)return;m.classList.remove('hidden');}
+function closeModal(id){const m=$(id);if(!m)return;m.classList.add('hidden');}
+function toggleAdminPanel(){const p=$('admin-panel');if(!p)return;if(p.classList.contains('hidden')){p.classList.remove('hidden');renderAdminApprovals();}else{p.classList.add('hidden');}}
+function renderAdminApprovals(){const el=$('admin-approvals');if(!el)return;el.innerHTML=db.approvals.map(a=>`<div class="admin-appr-row" id="appr-${a.id}"><div><p class="appr-email">${a.email}</p><p class="appr-date">${a.date}</p></div><div class="appr-actions"><button onclick="resolveAppr(${a.id},'Approved')" class="btn-appr-yes">✓</button><button onclick="resolveAppr(${a.id},'Denied')" class="btn-appr-no">✕</button></div></div>`).join('')||`<p class="appr-empty">${t('noApprovals')}</p>`;}
+function resolveAppr(id,st){db.approvals=db.approvals.filter(x=>x.id!==id);renderAdminApprovals();toast(`User ${st}`);}
+function toggleLike(charId){const c=CHARACTERS.find(x=>x.id===charId);if(!c)return;const el=$(`char-likes-${charId}`);if(state.likedChars.has(charId)){state.likedChars.delete(charId);c.likes--;if(el)el.textContent=c.likes.toLocaleString();toast('Like removed');}else{state.likedChars.add(charId);c.likes++;if(el)el.textContent=c.likes.toLocaleString();toast('Liked!');}}
+function shareManga(idx){const m=MANGA_LIBRARY[idx];const title=state.lang==='ar'?m.titleAr:m.title;if(navigator.share){navigator.share({title:title,text:`Reading ${title} on Restless Worlds`,url:window.location.href});}else{toast('Link copied');}}
+function handleSearch(q){state.searchQuery=q.toLowerCase();renderAll();}
+
+function openReader(mi){state.manga=mi;state.chapter=0;state.page=0;state.currentView='reader';resetZoom();document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('reader-view').classList.add('active');loadPage();updateChrome();renderChapters();showChrome();}
+function exitReader(){state.currentView='library';document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('library-view').classList.add('active');resetZoom();}
+function currentManga(){return MANGA_LIBRARY[state.manga];}
+
+function loadPage(){const img=$('reader-img');if(!img)return;const src=currentManga().chapters[state.chapter].pages[state.page];img.classList.remove('loaded');img.classList.add('loading');const sk=$('page-skeleton');if(sk)sk.classList.remove('hidden');const pre=new Image();pre.onload=()=>{img.src=src;img.classList.remove('loading');img.classList.add('loaded');if(sk)sk.classList.add('hidden');resetZoom();};pre.onerror=()=>{img.src=`data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"1200\"><rect fill=\"%23050505\" width=\"800\" height=\"1200\"/><text fill=\"%23333\" x=\"400\" y=\"560\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"20\">Page ${state.page+1}</text></svg>`;img.classList.remove('loading');img.classList.add('loaded');if(sk)sk.classList.add('hidden');resetZoom();};pre.src=src;}
+function nextPage(){if(state.zoomed){toast('Double-tap to reset zoom');return;}const ch=currentManga().chapters[state.chapter];if(state.page<ch.pages.length-1){state.page++;loadPage();updateChrome();}else{toast('End of chapter');}}
+function prevPage(){if(state.zoomed){toast('Double-tap to reset zoom');return;}if(state.page>0){state.page--;loadPage();updateChrome();}}
+function goToPage(ci,pi){const ch=currentManga().chapters[ci];if(ch.locked&&state.role==='guest'){showModal('modal-locked');return;}state.chapter=ci;state.page=pi;loadPage();updateChrome();renderChapters();const d=$('chapter-drawer-backdrop');if(d)d.classList.add('hidden');}
+function updateChrome(){const m=currentManga(),ch=m.chapters[state.chapter];const rt=$('reader-title');if(rt)rt.textContent=state.lang==='ar'?m.titleAr:m.title;const rc=$('reader-chapter');if(rc)rc.textContent=state.lang==='ar'?ch.titleAr:ch.title;const rp=$('reader-page-num');if(rp)rp.textContent=`${t('page')} ${state.page+1} ${t('of')} ${ch.pages.length}`;const bar=$('read-progress');if(bar)bar.style.width=`${((state.page+1)/ch.pages.length)*100}%`;}
+let idleTimer=null;function showChrome(){const rt=$('reader-top');const ri=$('reader-info');if(rt)rt.classList.add('visible');if(ri)ri.classList.add('visible');clearTimeout(idleTimer);idleTimer=setTimeout(()=>{if(rt)rt.classList.remove('visible');if(ri)ri.classList.remove('visible');},3500);}
+function resetZoom(){state.scale=1;state.panX=0;state.panY=0;state.zoomed=false;state.panning=false;state.pinching=false;applyTransform();}
+function clampPan(){if(state.scale<=1){state.panX=0;state.panY=0;return;}const stage=$('reader-stage');if(!stage)return;const rect=stage.getBoundingClientRect();const scaledW=rect.width*state.scale;const scaledH=rect.height*state.scale;const maxPanX=Math.max(0,(scaledW-rect.width)/2);const maxPanY=Math.max(0,(scaledH-rect.height)/2);state.panX=Math.max(-maxPanX,Math.min(maxPanX,state.panX));state.panY=Math.max(-maxPanY,Math.min(maxPanY,state.panY));}
+function applyTransform(){clampPan();const img=$('reader-img');if(!img)return;img.style.transform=`translate(${state.panX}px,${state.panY}px) scale(${state.scale})`;state.zoomed=state.scale>1.05;const badge=$('zoom-badge');if(badge){if(state.zoomed){badge.textContent=`${Math.round(state.scale*100)}% · Double-tap to reset`;badge.classList.add('visible');}else{badge.classList.remove('visible');}}}
+function dist(p1,p2){return Math.hypot(p2.clientX-p1.clientX,p2.clientY-p1.clientY);}
+
+function bindGestures(){const surface=$('gesture-surface');if(!surface)return;surface.addEventListener('pointerdown',e=>{e.preventDefault();state.pointers.set(e.pointerId,e);if(state.pointers.size===1){state.startX=e.clientX;state.startY=e.clientY;state.lastX=e.clientX;state.lastY=e.clientY;state.startTime=Date.now();if(state.zoomed){state.panning=true;state.startPanX=state.panX;state.startPanY=state.panY;}}else if(state.pointers.size===2){state.pinching=true;state.panning=false;const pts=[...state.pointers.values()];state.pinchDist=dist(pts[0],pts[1]);state.startScale=state.scale;}},{passive:false});surface.addEventListener('pointermove',e=>{e.preventDefault();if(!state.pointers.has(e.pointerId))return;state.pointers.set(e.pointerId,e);const count=state.pointers.size;if(count===2&&state.pinching){const pts=[...state.pointers.values()];const d=dist(pts[0],pts[1]);state.scale=Math.max(1,Math.min(5,state.startScale*(d/state.pinchDist)));applyTransform();}else if(count===1&&state.panning&&state.zoomed){state.panX+=e.clientX-state.lastX;state.panY+=e.clientY-state.lastY;state.lastX=e.clientX;state.lastY=e.clientY;applyTransform();}},{passive:false});surface.addEventListener('pointerup',e=>{const now=Date.now();const wasTap=state.pointers.size===1&&(now-state.startTime<300)&&(Math.hypot(e.clientX-state.startX,e.clientY-state.startY)<10);if(wasTap){if(state.lastTapTime&&(now-state.lastTapTime<300)){state.scale=state.scale>1?1:2.5;if(state.scale<=1){state.panX=0;state.panY=0;}applyTransform();state.lastTapTime=0;}else{state.lastTapTime=now;const stage=$('reader-stage');if(stage){const rect=stage.getBoundingClientRect();const xRatio=(e.clientX-rect.left)/rect.width;if(xRatio<0.28){prevPage();}else if(xRatio>0.72){nextPage();}else{showChrome();}}}}state.pointers.delete(e.pointerId);if(state.pointers.size===0){state.panning=false;state.pinching=false;}});surface.addEventListener('pointercancel',e=>{state.pointers.delete(e.pointerId);state.panning=false;state.pinching=false;});}
+
+function toggleChapterDrawer(){const d=$('chapter-drawer-backdrop');if(!d)return;d.classList.toggle('hidden');if(!d.classList.contains('hidden'))renderChapters();}
+function renderChapters(){const el=$('chapter-drawer');if(!el)return;const m=currentManga();el.innerHTML=m.chapters.map((ch,i)=>`<div class="chapter-item ${ch.locked&&state.role==='guest'?'locked':''}" onclick="goToPage(${i},0)"><span class="ch-num">${String(i+1).padStart(2,'0')}</span><span class="ch-title">${state.lang==='ar'?ch.titleAr:ch.title}</span>${ch.locked&&state.role==='guest'?'<span class="ch-lock">◆</span>':'<span class="ch-pages">'+ch.pages.length+'p</span>'}</div>`).join('');}
+
+async function handleCBZ(file){if(!file||!file.name.endsWith('.cbz')){toast('Please upload a .cbz file');return;}toast('Parsing archive...');try{const buf=await file.arrayBuffer();const zip=await JSZip.loadAsync(buf);const imgs=[];for(const[name,entry]of Object.entries(zip.files)){if(entry.dir)continue;const ext=name.split('.').pop().toLowerCase();if(['jpg','jpeg','png','webp','gif'].includes(ext)){const blob=await entry.async('blob');imgs.push(URL.createObjectURL(blob));}}imgs.sort();if(imgs.length===0){toast('No images found');return;}MANGA_LIBRARY.push({id:'upload-'+Date.now(),title:file.name.replace('.cbz',''),titleAr:file.name.replace('.cbz',''),chapters:1,status:'Upload',color:'#333',desc:'User uploaded',cover:imgs[0]});const last=MANGA_LIBRARY.length-1;last.chapters=[{num:1,title:'Uploaded',titleAr:'مرفوع',pages:imgs,locked:false,date:'2026-04-23'}];renderAll();toast(`Loaded ${imgs.length} pages`);}catch(err){console.error(err);toast('Failed to parse');}}
+
+function switchView(v) {
+  state.currentView = v;
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+  if(v==='library') $('library-view').classList.add('active');
+  if(v==='characters') $('characters-view').classList.add('active');
+  if(v==='forum') $('forum-view').classList.add('active');
+  renderAll();
+}
+function renderAll() {
+  const grid = $('manga-grid');
+  if(grid) {
+    const q = state.searchQuery;
+    const filtered = MANGA_LIBRARY.filter(m => { const t = (state.lang==='ar'?m.titleAr:m.title).toLowerCase(); return t.includes(q); });
+    grid.innerHTML = filtered.map((m,i) => `<div class="vault-card" onclick="openReader(${i})"><img src="${m.cover}" alt="${m.title}" loading="lazy"><div class="vault-card-overlay"><div class="vault-card-title">${state.lang==='ar'?m.titleAr:m.title}</div><div class="vault-card-meta">${m.chapters.length} CH — ${m.status}</div></div><div class="vault-card-status">${m.status==='Complete'?'FIN':'NEW'}</div></div>`).join('');
+  }
+  const cg = $('char-grid');
+  if(cg) cg.innerHTML = CHARACTERS.map(c => `<div class="char-card"><div class="char-avatar">${c.name.charAt(0)}</div><div class="char-name">${c.name}</div><div class="char-role">${c.role}</div><div style="margin-top:.5rem;font-size:.75rem;color:#777"><span id="char-likes-${c.id}">${c.likes.toLocaleString()}</span> likes <button onclick="event.stopPropagation();toggleLike('${c.id}')" style="margin-left:.5rem;color:#D4AF37;font-size:.8rem">♥</button></div></div>`).join('');
+  const fl = $('forum-list');
+  if(fl) fl.innerHTML = THREADS.map(th => `<div class="forum-item"><div class="forum-title">${th.title}</div><div class="forum-prev">${th.prev}</div><div class="forum-meta"><span>${th.author}</span><span>${th.replies} replies</span>${th.pin?'<span style="color:#D4AF37">PINNED</span>':''}${th.hot?'<span style="color:#ef4444">HOT</span>':''}</div></div>`).join('');
+  const ub = $('user-badge'); if(ub) ub.textContent = state.role==='admin'?'Admin':state.role==='member'?'Member':'Guest';
+  const tg = $('tagline'); if(tg) tg.textContent = t('tagline');
+  const tcTitle = $('tc-title'); if(tcTitle) tcTitle.textContent = t('tc_title');
+  const tcText = $('tc-text'); if(tcText) tcText.textContent = t('tc_text');
+}
+document.addEventListener('DOMContentLoaded', () => { renderAll(); bindGestures(); });
+</script><a href="./hub.html" style="position:fixed;bottom:calc(1.5rem + env(safe-area-inset-bottom));right:1.5rem;z-index:9999;background:#D4AF37;color:#000;font-family:'Space Grotesk',system-ui,sans-serif;font-size:.75rem;font-weight:700;padding:.7rem 1.1rem;border-radius:999px;text-decoration:none;box-shadow:0 4px 20px rgba(212,175,55,.3);transition:all .3s ease;display:flex;align-items:center;gap:.5rem;">
+  <span style="font-size:1rem">🖼️</span> All Demos
+</a>
 </body>
 </html>
