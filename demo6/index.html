@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -20,7 +21,9 @@
                         primary: '#FAFAF8',
                         card: '#FFFFFF',
                         reader: '#000000', /* Pure black for OLED screens */
-                        accent: '#D4AF37',
+                        accent: '#C9A227',
+                        accentLight: '#E8C84A',
+                        accentDark: '#9A7B1A',
                         textMain: '#1A1A1A',
                         textSec: '#6B7280',
                         danger: '#EF4444',
@@ -193,6 +196,19 @@
             transform: scale(0.99);
             pointer-events: none;
         }
+
+        /* Upload Overlay */
+        .upload-overlay.open { opacity: 1 !important; pointer-events: auto !important; }
+        .upload-overlay .upload-modal { transform: scale(0.95) translateY(20px); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+        .upload-overlay.open .upload-modal { transform: scale(1) translateY(0) !important; }
+        .drop-zone.drag-over { border-color: var(--tw-colors-accent) !important; background: rgba(201, 162, 39, 0.05) !important; }
+        .upload-item.done .text-xs { color: #10B981; }
+        .upload-item.error .text-xs { color: #EF4444; }
+
+        /* Gold-enhanced accents */
+        .gold-glow { box-shadow: 0 0 30px rgba(201, 162, 39, 0.3); }
+        .gold-border { border-color: rgba(201, 162, 39, 0.4); }
+        .gold-text { color: #E8C84A; }
         
         /* Edge to Edge Mobile Scrollers */
         .bleed-scroll {
@@ -533,7 +549,7 @@
             <!-- Bottom Chrome -->
             <div class="reader-chrome bottom fixed bottom-[calc(2.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 glass-panel border border-white/10 rounded-full px-2 py-2 flex items-center gap-2 z-40 shadow-[0_15px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" id="reader-chrome-bottom">
                 <button onclick="prevPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-left rtl-flip text-lg"></i></button>
-                <div class="text-white font-mono text-[13px] font-bold px-4 text-center tracking-widest bg-black/40 py-2 rounded-full border border-white/5"><span id="reader-curr-page">1</span> <span class="opacity-40 mx-1">/</span> 5</div>
+                <div class="text-white font-mono text-[13px] font-bold px-4 text-center tracking-widest bg-black/40 py-2 rounded-full border border-white/5"><span id="reader-curr-page">1</span> <span class="opacity-40 mx-1">/</span> <span id="reader-total-pages">5</span></div>
                 <button onclick="nextPage(event)" class="text-gray-400 hover:text-white hover:bg-white/10 w-12 h-12 flex items-center justify-center rounded-full transition-all tap-effect"><i class="fa-solid fa-chevron-right rtl-flip text-lg"></i></button>
             </div>
         </section>
@@ -654,13 +670,13 @@
                     <div class="space-y-3" id="admin-approvals"></div>
                 </div>
                 <div class="space-y-10">
-                    <div class="border-2 border-dashed border-gray-700/80 rounded-[2rem] p-12 text-center hover:border-accent hover:bg-[#151515] transition-all cursor-pointer group relative overflow-hidden tap-effect" onclick="simulateUpload(this)">
+                    <div class="border-2 border-dashed border-gray-700/80 rounded-[2rem] p-12 text-center hover:border-accent hover:bg-[#151515] transition-all cursor-pointer group relative overflow-hidden tap-effect" onclick="openUploadModal()">
                         <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform group-hover:bg-accent group-hover:text-black">
                             <i class="fa-solid fa-cloud-arrow-up text-xl text-gray-500 group-hover:text-black transition-colors"></i>
                         </div>
-                        <p class="font-bold text-[15px]" data-i18n="drag_drop">Drag chapter ZIP files here</p>
-                        <p class="text-xs text-gray-500 mt-2 font-mono">Max 50MB</p>
-                        <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gray-800 hidden" id="upload-progress-container"><div class="h-full bg-accent w-0 transition-all duration-[1.5s] ease-out shadow-glow" id="upload-progress-bar"></div></div>
+                        <p class="font-bold text-[15px]" data-i18n="drag_drop">Upload Chapters</p>
+                        <p class="text-xs text-gray-500 mt-2 font-mono">CBZ, ZIP, or Image Folders</p>
+                        <p class="text-[10px] text-accent/60 mt-1 font-bold uppercase tracking-widest">Dropbox-style folder upload</p>
                     </div>
                     <div>
                         <h3 class="t-card mb-6 uppercase tracking-widest text-gray-400" data-i18n="quick_actions">Quick Actions</h3>
@@ -949,17 +965,286 @@
             showToast(`User ${st}`);
         }
 
-        function simulateUpload(el) {
-            const cont = document.getElementById('upload-progress-container');
-            const bar = document.getElementById('upload-progress-bar');
-            cont.classList.remove('hidden');
-            setTimeout(() => bar.style.width = '100%', 50);
-            setTimeout(() => {
-                showToast(t('upload_comp'));
-                cont.classList.add('hidden');
-                bar.style.width = '0';
-            }, 1550);
+        // ─── UPLOAD SYSTEM — Real file/folder upload (from Demo 5, adapted) ───
+const IMAGE_EXTS = new Set(['png','jpg','jpeg','webp','gif','bmp']);
+const ARCHIVE_EXTS = new Set(['cbz','zip']);
+const MIME_MAP = { png: 'image/png', webp: 'image/webp', gif: 'image/gif', bmp: 'image/bmp', jpg: 'image/jpeg', jpeg: 'image/jpeg' };
+
+function natSort(a, b) {
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+}
+
+function openUploadModal() {
+    document.getElementById('upload-overlay').classList.add('open');
+    document.getElementById('upload-list').innerHTML = '';
+}
+function closeUploadModal() {
+    document.getElementById('upload-overlay').classList.remove('open');
+}
+
+// CSS class toggling for overlay open state
+(function() {
+    const uploadOverlay = document.getElementById('upload-overlay');
+    if(uploadOverlay) {
+        const obs = new MutationObserver(() => {
+            const modal = document.getElementById('upload-modal-inner');
+            if(uploadOverlay.classList.contains('open')) {
+                uploadOverlay.style.opacity = '1';
+                uploadOverlay.style.pointerEvents = 'auto';
+                if(modal) { modal.style.transform = 'scale(1) translateY(0)'; }
+            } else {
+                uploadOverlay.style.opacity = '0';
+                uploadOverlay.style.pointerEvents = 'none';
+                if(modal) { modal.style.transform = 'scale(0.95) translateY(20px)'; }
+            }
+        });
+        obs.observe(uploadOverlay, { attributes: true, attributeFilter: ['class'] });
+    }
+})();
+
+function bindDragDrop() {
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    if(!dropZone || !fileInput) return;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => {
+        if(e.target.files.length) handleFiles(e.target.files);
+        e.target.value = '';
+    });
+
+    ['dragenter','dragover','dragleave','drop'].forEach(evt => {
+        document.body.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); }, false);
+    });
+
+    document.body.addEventListener('dragenter', () => {
+        openUploadModal();
+        if(dropZone) dropZone.classList.add('drag-over');
+    });
+    document.body.addEventListener('dragleave', e => {
+        if(e.relatedTarget === null && dropZone) dropZone.classList.remove('drag-over');
+    });
+    if(dropZone) {
+        dropZone.addEventListener('dragover', () => dropZone.classList.add('drag-over'));
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', e => {
+            dropZone.classList.remove('drag-over');
+            const dt = e.dataTransfer;
+            if(dt.files.length) handleFiles(dt.files);
+        });
+    }
+}
+
+async function handleFiles(files) {
+    const fileList = Array.from(files);
+    const archives = fileList.filter(f => ARCHIVE_EXTS.has(f.name.split('.').pop().toLowerCase()));
+    const images = fileList.filter(f => IMAGE_EXTS.has(f.name.split('.').pop().toLowerCase()));
+
+    if(archives.length === 0 && images.length === 0) {
+        showToast(state.lang === 'en' ? 'Please select valid image or archive files' : 'يرجى اختيار ملفات صور أو أرشيف صالحة');
+        return;
+    }
+
+    const uploadList = document.getElementById('upload-list');
+    if(uploadList) uploadList.innerHTML = '';
+
+    for(const file of archives) {
+        addUploadItem(file.name, 'Parsing archive...');
+        await parseArchive(file);
+    }
+    if(images.length > 0) {
+        addUploadItem(`${images.length} image files`, 'Organizing chapters...');
+        await parseImages(images);
+    }
+}
+
+function addUploadItem(name, status) {
+    const div = document.createElement('div');
+    div.className = 'upload-item flex items-center gap-3 py-2.5 border-b border-gray-800 last:border-0';
+    div.innerHTML = `
+        <div class="w-10 h-14 rounded-lg bg-gray-900 flex-shrink-0 overflow-hidden"><img class="w-full h-full object-cover" src="" alt="" style="display:none"></div>
+        <div class="flex-1 min-w-0">
+            <div class="text-white text-sm font-medium truncate">${escapeHtml(name)}</div>
+            <div class="text-gray-500 text-xs mt-0.5">${escapeHtml(status)}</div>
+            <div class="w-full h-[3px] bg-gray-800 rounded-full mt-2 overflow-hidden"><div class="upload-progress-fill h-full bg-accent rounded-full transition-all duration-300" style="width:0%"></div></div>
+        </div>
+    `;
+    const list = document.getElementById('upload-list');
+    if(list) list.appendChild(div);
+    return div;
+}
+
+function updateUploadItem(el, status, progress) {
+    if(!el) return;
+    const st = el.querySelector('.text-xs');
+    const bar = el.querySelector('.upload-progress-fill');
+    if(st) st.textContent = status;
+    if(bar) bar.style.width = progress + '%';
+    if(progress >= 100) el.classList.add('done');
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+async function parseArchive(file) {
+    try {
+        const item = document.getElementById('upload-list').lastElementChild;
+        updateUploadItem(item, 'Reading archive...', 10);
+
+        const zip = await JSZip.loadAsync(file);
+        const entries = [];
+        zip.forEach((relPath, entry) => {
+            if(entry.dir) return;
+            const ext = relPath.split('.').pop().toLowerCase();
+            if(!IMAGE_EXTS.has(ext)) return;
+            entries.push({ path: relPath, entry, ext });
+        });
+
+        if(entries.length === 0) {
+            updateUploadItem(item, 'No images found', 100);
+            if(item) item.classList.add('error');
+            return;
         }
+
+        updateUploadItem(item, `Found ${entries.length} images...`, 30);
+
+        const groups = new Map();
+        for(const e of entries) {
+            const lastSlash = e.path.lastIndexOf('/');
+            const folder = lastSlash > -1 ? e.path.slice(0, lastSlash) : '__root__';
+            if(!groups.has(folder)) groups.set(folder, []);
+            groups.get(folder).push(e);
+        }
+
+        updateUploadItem(item, 'Creating chapters...', 50);
+        const chapters = [];
+        const sortedFolders = [...groups.keys()].sort(natSort);
+
+        for(let i = 0; i < sortedFolders.length; i++) {
+            const folder = sortedFolders[i];
+            const items = groups.get(folder).sort((a, b) => natSort(a.path, b.path));
+            const pages = [];
+            for(let j = 0; j < items.length; j++) {
+                const it = items[j];
+                const blob = await it.entry.async('blob');
+                const mime = MIME_MAP[it.ext] || 'image/jpeg';
+                pages.push(URL.createObjectURL(new Blob([blob], { type: mime })));
+                updateUploadItem(item, `Processing ${j + 1}/${items.length}...`, 50 + Math.round((j / items.length) * 45));
+            }
+            const folderName = folder === '__root__' ? 'Chapter' : folder.replace(/\/$/, '').split('/').pop();
+            chapters.push({ num: i + 1, title: folderName, pages });
+        }
+
+        const manga = {
+            id: 'upload-' + Date.now(),
+            title: { en: file.name.replace(/\.(cbz|zip)$/i, ''), ar: file.name.replace(/\.(cbz|zip)$/i, '') },
+            desc: { en: 'Uploaded manga', ar: 'مانجا مرفوعة' },
+            tags: ['Uploaded'],
+            access: 'preview',
+            chs: chapters.length,
+            cover: '#C9A227',
+            _uploaded: true,
+            _chapters: chapters
+        };
+
+        db.manga.push(manga);
+        updateUploadItem(item, 'Complete!', 100);
+        showToast(state.lang === 'en' ? 'Upload complete!' : 'اكتمل الرفع!');
+        renderHub();
+
+        setTimeout(() => {
+            closeUploadModal();
+            state.mangaId = manga.id;
+            state.readerPage = 1;
+            state.currentChapter = 0;
+            navigate('reader');
+        }, 800);
+
+    } catch(err) {
+        console.error(err);
+        const item = document.getElementById('upload-list')?.lastElementChild;
+        if(item) { updateUploadItem(item, 'Failed to parse', 100); item.classList.add('error'); }
+        showToast(state.lang === 'en' ? 'Upload failed' : 'فشل الرفع');
+    }
+}
+
+async function parseImages(files) {
+    const item = document.getElementById('upload-list')?.lastElementChild;
+    const sorted = [...files].sort((a, b) => natSort(a.name, b.name));
+
+    const chapterPatterns = [
+        /(?:ch|chapter|vol|volume)[_-]?(\d+)/i,
+        /\b(\d+)\s*(?:ch|chapter|vol|volume)\b/i
+    ];
+    const groups = new Map();
+    let hasChapters = false;
+
+    for(const file of sorted) {
+        let chapterNum = null;
+        for(const pat of chapterPatterns) {
+            const match = file.name.match(pat);
+            if(match) { chapterNum = parseInt(match[1], 10); break; }
+        }
+        if(chapterNum !== null) {
+            hasChapters = true;
+            if(!groups.has(chapterNum)) groups.set(chapterNum, []);
+            groups.get(chapterNum).push(file);
+        } else {
+            if(!groups.has(0)) groups.set(0, []);
+            groups.get(0).push(file);
+        }
+    }
+
+    updateUploadItem(item, `Organizing ${sorted.length} images...`, 20);
+    const chapters = [];
+    const sortedKeys = [...groups.keys()].sort((a, b) => a - b);
+
+    for(let i = 0; i < sortedKeys.length; i++) {
+        const key = sortedKeys[i];
+        const groupFiles = groups.get(key);
+        const pages = [];
+        for(let j = 0; j < groupFiles.length; j++) {
+            const file = groupFiles[j];
+            const ext = file.name.split('.').pop().toLowerCase();
+            const mime = MIME_MAP[ext] || 'image/jpeg';
+            pages.push(URL.createObjectURL(new Blob([await file.arrayBuffer()], { type: mime })));
+            updateUploadItem(item, `Processing ${j + 1}/${groupFiles.length}...`, 20 + Math.round((j / groupFiles.length) * 75));
+        }
+        const title = key === 0 && !hasChapters ? 'Chapter' : `Chapter ${key}`;
+        chapters.push({ num: i + 1, title, pages });
+    }
+
+    const manga = {
+        id: 'upload-' + Date.now(),
+        title: { en: 'Uploaded Manga', ar: 'مانجا مرفوعة' },
+        desc: { en: `${sorted.length} pages uploaded`, ar: `${sorted.length} صفحة مرفوعة` },
+        tags: ['Uploaded'],
+        access: 'preview',
+        chs: chapters.length,
+        cover: '#C9A227',
+        _uploaded: true,
+        _chapters: chapters
+    };
+
+    db.manga.push(manga);
+    updateUploadItem(item, 'Complete!', 100);
+    showToast(state.lang === 'en' ? 'Upload complete!' : 'اكتمل الرفع!');
+    renderHub();
+
+    setTimeout(() => {
+        closeUploadModal();
+        state.mangaId = manga.id;
+        state.readerPage = 1;
+        state.currentChapter = 0;
+        navigate('reader');
+    }, 800);
+}
+
+// Initialize drag/drop on load
+bindDragDrop();
 
         // --- RENDERERS ---
         function renderDynamic() {
@@ -1427,7 +1712,10 @@
         }
 
         function renderReaderPage(direction = 0) {
+            const total = getTotalPages();
             document.getElementById('reader-curr-page').innerText = state.readerPage;
+            const totalEl = document.getElementById('reader-total-pages');
+            if(totalEl) totalEl.innerText = total;
             updateReaderProgress();
             resetZoom();
 
@@ -1447,9 +1735,19 @@
             }, 80);
         }
 
+        function getTotalPages() {
+            const m = db.manga.find(x => x.id === state.mangaId);
+            if(m && m._uploaded && m._chapters) {
+                const ch = m._chapters[state.currentChapter || 0];
+                return ch ? ch.pages.length : 5;
+            }
+            return 5;
+        }
+
         function executePageTurn(isNext) {
+            const total = getTotalPages();
             if(isNext) {
-                if(state.readerPage < 5) { state.readerPage++; renderReaderPage(1); }
+                if(state.readerPage < total) { state.readerPage++; renderReaderPage(1); }
                 else { bounceEdge(-1); }
             } else {
                 if(state.readerPage > 1) { state.readerPage--; renderReaderPage(-1); }
@@ -1504,5 +1802,24 @@
         navigate(state.view);
 
     </script>
+
+<!-- Upload Modal -->
+<div class="upload-overlay fixed inset-0 bg-black/60 backdrop-blur-xl z-[500] opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-5" id="upload-overlay">
+  <div class="upload-modal bg-[#111] border border-gray-800 rounded-[2rem] w-full max-w-[560px] max-h-[90vh] overflow-hidden flex flex-col shadow-[0_24px_64px_rgba(0,0,0,0.5)] transform scale-95 translate-y-5 transition-transform duration-350" id="upload-modal-inner">
+    <div class="flex items-center justify-between px-6 py-5 border-b border-gray-800">
+      <h2 class="text-white font-black text-xl tracking-tight">Add Manga</h2>
+      <button onclick="closeUploadModal()" class="w-10 h-10 rounded-full bg-gray-900 text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center transition-colors tap-effect"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drop-zone m-6 border-2 border-dashed border-gray-700/80 rounded-2xl p-10 text-center transition-all cursor-pointer hover:border-accent hover:bg-accent/5" id="drop-zone">
+      <div class="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center mx-auto mb-4 text-accent text-2xl border border-gray-800"><i class="fa-solid fa-folder-open"></i></div>
+      <div class="text-white font-bold text-lg mb-1">Drop manga files or folders here</div>
+      <div class="text-gray-500 text-sm mb-1">Or click to browse</div>
+      <div class="text-gray-600 text-xs font-mono mt-2">CBZ, ZIP, PNG, JPG, WEBP — Folders supported</div>
+    </div>
+    <div class="upload-list mx-6 mb-6 max-h-[200px] overflow-y-auto no-scrollbar" id="upload-list"></div>
+  </div>
+</div>
+<input type="file" id="file-input" accept=".cbz,.zip,.png,.jpg,.jpeg,.webp" multiple webkitdirectory style="display:none">
+
 </body>
 </html><!-- deploy-verify: Thu Apr 23 07:44:29 PM UTC 2026 -->
