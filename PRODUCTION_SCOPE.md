@@ -65,7 +65,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 
 3. **Navigation & Controls**
    - Right arrow key advances page
-   - Left swipe advances page (behavior subject to RTL verification)
+   - Swipe direction adapts to reading direction (LTR: left swipe = next; RTL: right swipe = next)
    - Custom keyboard shortcuts (user-configurable)
    - Mobile: pinch-to-zoom with no UI buttons
    - Desktop: zoom buttons (+ / − / reset) — minimal design, auto-hide
@@ -124,7 +124,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 5. **Membership & Access Control**
    - Subscription gating architecture (Stripe-ready)
    - Free vs premium chapter badges
-   - User approval workflow after T&C acceptance
+   - User role system (Guest / Member / Admin)
 
 6. **Integration Points**
    - Social media account links
