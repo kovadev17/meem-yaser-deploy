@@ -5,8 +5,8 @@
 **Date:** 2026-04-24  
 **Prepared by:** VeloxStudio  
 **Client:** Meem Yaser Studio  
-**Project:** Rūsuma Reading Platform  
-**Domain:** restlessworlds.com/reading-club
+**Platform Name:** Rūsuma Reading Platform (branded as "Reading Club")  
+**Target Domain:** restlessworlds.com/reading-club
 
 ---
 
@@ -29,7 +29,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 | **Email** | hello@meemyaserstudio.ae |
 | **Location** | UAE |
 | **Brand** | Restless Worlds™ |
-| **Platform Name** | Rūsuma Reading Platform |
+| **Platform Name** | Rūsuma Reading Platform (branded as "Reading Club") |
 | **Target Domain** | restlessworlds.com/reading-club |
 | **Primary Role** | Creator — writes and draws manga |
 | **Moderation** | Will appoint dedicated moderator(s); will not moderate personally |
@@ -44,9 +44,13 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 
 1. **Landing & Library**
    - Light-mode landing page (#FAFAF8) with premium editorial aesthetic
-   - Cover grid homepage presenting all series visually
+   - Cover grid homepage presenting all series visually (not "trending" — story-focused)
+   - Random character strip on homepage for dynamic, fresh feel
+   - Stats feature visible to users (community engagement metrics)
    - Story detail pages displaying: cover art, title, synopsis, tags, chapter list
    - Chapter list: simple numbered list with chapter titles only
+   - Membership prompt placed later in user flow (not upfront or intimidating)
+   - PWA installable: add to home screen, fullscreen app-like experience (no offline storage)
    - Full bilingual support: English and Arabic with complete RTL layout
    - Mobile-first responsive design
 
@@ -62,6 +66,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
    - Chapter list access via slide-out sidebar + floating/dockable button
    - End-of-chapter explicit "Next" button (no auto-advance)
    - High contrast mode toggle (manual)
+   - Content protection: disable right-click context menu and prevent drag-and-save of chapter images
 
 3. **Navigation & Controls**
    - Right arrow key advances page
@@ -73,7 +78,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
    - All interactive elements minimum 44px touch target
 
 4. **Content Upload System**
-   - Drag-and-drop folder upload
+   - Drag-and-drop folder upload — Dropbox-style, no zipping required
    - Folder name auto-detected as chapter name
    - Page auto-sort by filename using natural sort
    - Support for zero-padded filenames (001.jpg, 002.jpg)
@@ -104,6 +109,8 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 2. **Character Profiles & World-Building**
    - Separate upload section (not mixed with chapters)
    - Character grid with detail slide-in panels
+   - Support for 300+ characters across stories with organized data structure
+   - "Like" feature on character bios for popularity tracking
    - World-building document hosting
 
 3. **Notification System**
@@ -125,6 +132,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
    - Subscription gating architecture (Stripe-ready)
    - Free vs premium chapter badges
    - User role system (Guest / Member / Admin)
+   - Automatic membership approval after Terms & Conditions acceptance — no manual approval queue
 
 6. **Integration Points**
    - Social media account links
@@ -154,12 +162,14 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 - Image lazy loading and preloading
 - WebP delivery with fallback
 - Optimized for irregular publishing (no fixed schedule)
-- Offline reading: low priority; basic caching acceptable
+- Offline reading: explicitly excluded; no chapter caching on device
+- PWA installable (add to home screen, fullscreen app-like experience) without offline storage
 
 ### Security
 - Role-based access control
 - Moderator permission tiers
 - Audit logging for all moderation actions
+- Content protection: disable right-click context menu, prevent drag-and-save of chapter images
 
 ---
 
@@ -330,7 +340,8 @@ The following are explicitly excluded from this scope:
 - Native iOS or Android applications
 - WhatsApp notifications or integrations
 - Dyslexia-friendly font option
-- Offline download/sync functionality (beyond basic browser caching)
+- Offline download/sync functionality (explicitly excluded per client requirement)
+- PWA offline storage or chapter caching (app-like install is included, but no offline reading)
 - AI-generated content or recommendation engines
 - Merchandise store or e-commerce (architecture is not designed around it)
 - Custom video/audio player
