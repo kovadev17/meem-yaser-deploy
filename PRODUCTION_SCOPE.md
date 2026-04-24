@@ -212,7 +212,7 @@ Story
 | Zoom Behavior | Never blocks swipe | Q2 Round 2 |
 | Transitions | Natural | Q9 Round 1 |
 | Keyboard | Right arrow = next | Q12 Round 1 |
-| Swipe | Left = next (verify RTL) | Q13 Round 1 |
+| Swipe | Left = next (LTR), Right = next (RTL) — adapts to reading direction | Q13 Round 1 + RTL support |
 | Chapter List | Sidebar + floating | Q16-Q17 Round 1 |
 | End of Chapter | Explicit Next button | Q5 Round 1 |
 | Theater Mode | Tap to toggle chrome | Q17 Round 2 |
@@ -243,7 +243,7 @@ Story
 - Issue temporary restrictions
 - **Permanent bans require owner sign-off**
 - Pin/unpin threads
-- Handle routine approvals independently
+- Handle routine moderation independently (deleting reported content, temporary restrictions)
 
 ### Audit Log (Owner-Visible)
 - Action type (delete, ban, pin, approve, etc.)
