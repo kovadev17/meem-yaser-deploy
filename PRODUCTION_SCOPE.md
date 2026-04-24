@@ -94,8 +94,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
    - Admin panel foundation
 
 6. **Comment System Foundation**
-   - Spatial comments: users click/tap page coordinates → drop numbered pin → threaded sidebar discussion
-   - Pins scale responsively with image dimensions
+   - Per-page comment threads in a clean side panel, accessible via icon next to the chapter list — no visible pins or overlays on the artwork
    - Comments visible immediately (no pre-approval)
    - Reporting mechanism
 
@@ -157,7 +156,6 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 - Web-based responsive SPA; no native apps
 - Modern browser APIs for folder drag-and-drop upload
 - Image processing pipeline for WebP conversion
-- Responsive coordinate mapping for spatial comments
 - RTL-aware component system (flipped navigation, mirrored layouts, Arabic typography)
 
 ### Performance
@@ -238,7 +236,7 @@ Story
 ## 7. Community & Moderation
 
 ### Comments
-- Spatial pinned comments on page coordinates
+- Coordinate pins or annotations overlaid on page artwork (clean side-panel threads only)
 - Visible immediately upon posting — no pre-approval queue
 - Users can report comments
 - Moderators can delete comments
