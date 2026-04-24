@@ -46,7 +46,7 @@ The platform shall be built in two phases, totaling **$3,600**, with core develo
 
 **Timeline:** 1 week from kickoff (core development: ~3 business days; remainder reserved for client asset delivery, feedback, and acceptance)
 
-**Work begins:** Within 2 business days of Payment 1 receipt and signed agreement return
+**Work begins:** Immediately upon Payment 1 receipt and signed agreement return
 
 1. **Landing & Library**
    - Light-mode landing page (#FAFAF8) with premium editorial aesthetic
@@ -373,26 +373,18 @@ The following are explicitly excluded from this scope:
 
 ## 14. Sign-Off
 
-This document, once signed, becomes the binding scope of work for the Rūsuma Reading Platform. Any changes require a written change order approved by both parties.
+This document becomes binding once confirmed by both parties. Any changes require a written change order approved by both parties.
 
-**Client:**
+**To confirm your acceptance of this scope, reply to this email with:**
 
-Name: _________________________
+> *"I agree to the scope and terms above."*
 
-Signature: _________________________
-
-Date: _________________________
+Your reply serves as digital acknowledgment. No physical signature required.
 
 ---
 
-**VeloxStudio:**
+**Confirmed by VeloxStudio:**
 
-Name: Kova
+Kova — VeloxStudio
 
-Signature: _________________________
-
-Date: _________________________
-
----
-
-*This scope document is confidential and proprietary to VeloxStudio and Meem Yaser Studio.*
+Date: 2026-04-24

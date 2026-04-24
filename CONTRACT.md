@@ -11,13 +11,14 @@
 
 **Developer:** VeloxStudio, represented by Kova  
 **Client:** Meem Yaser Studio, represented by Meem Yaser  
-**Client Email:** hello@meemyaserstudio.ae
+**Client Email:** hello@meemyaserstudio.ae  
+**Invoice Email:** finance@meemyaserstudio.ae
 
 ---
 
 ## 2. Scope of Work
 
-The complete technical scope is defined in the attached **Production Scope Document v1.0**. That document is incorporated into this agreement by reference and shall be treated as part of this contract.
+The complete technical scope is defined in the attached **Production Scope Document v2.0**. That document is incorporated into this agreement by reference and shall be treated as part of this contract.
 
 In brief: VeloxStudio shall design and develop a premium web-based manga reading platform for Restless Worlds™, including a horizontal image reader, per-page comment threads in a clean side panel, content upload pipeline, forum, notification system, moderation tools, and bilingual (EN/AR) RTL support.
 
@@ -32,7 +33,7 @@ In brief: VeloxStudio shall design and develop a premium web-based manga reading
 | **Payment 3 — Final Delivery** | $1,050 | Within 3 business days of Phase 2 acceptance |
 | **Total** | **$3,600** | |
 
-- **Method:** PayPal invoice
+- **Method:** PayPal invoice sent to finance@meemyaserstudio.ae
 - **Late payments:** Work pauses if any payment is more than 5 business days overdue. Timelines shift accordingly.
 - **Currency:** All amounts in USD.
 
@@ -49,9 +50,10 @@ In brief: VeloxStudio shall design and develop a premium web-based manga reading
 
 ## 5. Timeline
 
-- **Phase 1:** Approximately 2 weeks from receipt of Payment 1.
-- **Phase 2:** Approximately 2 weeks from receipt of Payment 2.
-- **Total estimated calendar time:** Approximately 4–5 weeks from kickoff.
+- **Phase 1:** Approximately 1 week from receipt of Payment 1.
+- **Phase 2:** Approximately 1 week from receipt of Payment 2.
+- **Total estimated calendar time:** Approximately 2–3 weeks from kickoff.
+- **Work begins:** Immediately upon Payment 1 confirmation.
 - **Delays caused by Client:** If Client delays providing assets, access, or feedback for more than 3 business days, the timeline extends by the delay duration plus 2 business days.
 
 ---
@@ -111,27 +113,17 @@ In brief: VeloxStudio shall design and develop a premium web-based manga reading
 
 ---
 
-## 13. Signatures
+## 13. Confirmation
 
-By signing below, both parties agree to the terms of this agreement and the attached Production Scope Document.
+This agreement becomes binding once confirmed by both parties. By replying to this email with "I agree," the Client acknowledges acceptance of all terms in this agreement and the attached Production Scope Document v2.0.
 
-**Client:**
+No physical or digital signature file is required. Your reply email serves as binding acknowledgment.
 
-Name: _________________________
+**Confirmed by VeloxStudio:**
 
-Signature: _________________________
+Kova — VeloxStudio
 
-Date: _________________________
-
----
-
-**Developer:**
-
-Name: Kova — VeloxStudio
-
-Signature: _________________________
-
-Date: _________________________
+Date: 2026-04-24
 
 ---
 
