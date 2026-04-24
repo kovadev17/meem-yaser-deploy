@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Restless Worlds — Follow-Up Questionnaire</title>
+<title>Restless Worlds — Final Questionnaire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -94,6 +94,14 @@ body {
   font-size: 13px; color: var(--text-muted);
   margin-bottom: 18px; line-height: 1.5;
 }
+.q-why {
+  font-size: 12px; color: var(--gold-light);
+  margin-bottom: 14px; line-height: 1.5;
+  background: rgba(201,162,39,0.06);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border-left: 3px solid var(--gold);
+}
 .options { display: flex; flex-direction: column; gap: 8px; }
 .opt {
   display: flex; align-items: center; gap: 12px;
@@ -134,7 +142,7 @@ body {
 .other-input::placeholder { color: var(--text-subtle); }
 .textarea-wrap { margin-top: 8px; }
 .textarea-wrap textarea {
-  width: 100%; min-height: 100px;
+  width: 100%; min-height: 120px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 12px; padding: 14px;
@@ -274,7 +282,7 @@ body {
 <div class="header">
   <div>
     <div class="brand">Restless <span>Worlds</span></div>
-    <div class="header-meta">Follow-Up Questionnaire</div>
+    <div class="header-meta">Final Questionnaire</div>
   </div>
 </div>
 
@@ -282,281 +290,399 @@ body {
 
 <div class="intro">
   <h1>Almost there.</h1>
-  <p>You already gave us excellent answers on reader experience, notifications, and accessibility. These final questions cover production setup, your content workflow, and payment so we can lock the scope document and start building.</p>
-  <div class="badge">≈ 4 minutes</div>
+  <p>You already gave us excellent answers on reader experience, notifications, and accessibility. These final questions cover production setup, your content workflow, moderation, and payment so we can lock the scope document and start building.</p>
+  <div class="badge">≈ 5 minutes</div>
 </div>
 
 <div class="note">
-  <strong>Tip:</strong> Your content upload workflow is the most important section here — how you name files, organize folders, and what assets you have ready determines exactly how we build the admin panel and uploader.
+  <strong>Why this matters:</strong> We build the admin panel and uploader around YOUR actual workflow. How you name files, organize folders, and who manages the community determines the exact features we build. No guesswork — every question here shapes a specific part of the platform.
 </div>
 
 <form id="quiz">
 
-<!-- ═══ SECTION: CONTENT UPLOAD WORKFLOW ═══ -->
-<div class="section-divider"><span class="section-title">Content Upload Workflow</span></div>
+<!-- ═══ SECTION: CLARIFICATIONS FROM ROUND 1 ═══ -->
+<div class="section-divider"><span class="section-title">Quick Clarifications</span></div>
 
 <div class="q-card" data-q="1">
   <div class="q-number">1</div>
-  <div class="q-label">How do you currently organize chapter files on your computer or cloud storage?</div>
-  <div class="q-hint">Show us the exact folder structure — this is how we build the uploader.</div>
+  <div class="q-label">Subtitles for translated content — how should they appear?</div>
+  <div class="q-hint">Your previous answer had a copy issue. Confirming the exact behavior.</div>
+  <div class="q-why">Why: If you publish translated or multilingual content, we need to know whether to overlay text on pages (like scanlation subtitles) or keep pages clean and handle translation elsewhere. This changes the reader UI.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q1" value="story-folder"><span>One folder per story, with subfolders per chapter (e.g., <code>StoryName/Ch01/</code>, <code>StoryName/Ch02/</code>)</span></label>
-    <label class="opt"><input type="radio" name="q1" value="flat-chapters"><span>Flat folder per chapter with story name in the folder (e.g., <code>StoryName_Ch01/</code>, <code>StoryName_Ch02/</code>)</span></label>
-    <label class="opt"><input type="radio" name="q1" value="mixed"><span>Mixed — some stories organized, others not consistently</span></label>
-    <label class="opt"><input type="radio" name="q1" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your actual folder structure..." data-other="q1"></label>
+    <label class="opt"><input type="radio" name="q1" value="yes-subtle"><span>Yes — subtle overlay, minimal and unobtrusive</span></label>
+    <label class="opt"><input type="radio" name="q1" value="yes-prominent"><span>Yes — prominent, clearly readable subtitles</span></label>
+    <label class="opt"><input type="radio" name="q1" value="no"><span>No subtitles needed — pages are final as-is</span></label>
+    <label class="opt"><input type="radio" name="q1" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q1"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="2">
   <div class="q-number">2</div>
-  <div class="q-label">How do you name your page files within a chapter folder?</div>
-  <div class="q-hint">This tells us how to auto-sort pages in the correct order.</div>
+  <div class="q-label">Should readers be able to zoom in on pages?</div>
+  <div class="q-hint">This was skipped in your previous answers.</div>
+  <div class="q-why">Why: Zoom affects the reader's technical architecture. Pinch-to-zoom on mobile, button controls on desktop, or both — we build this differently depending on your answer.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q2" value="numbered"><span>Simple numbers: <code>01.jpg</code>, <code>02.jpg</code>, <code>03.jpg</code>...</span></label>
-    <label class="opt"><input type="radio" name="q2" value="prefixed"><span>Prefixed numbers: <code>page_01.jpg</code>, <code>page_02.jpg</code>...</span></label>
-    <label class="opt"><input type="radio" name="q2" value="padded"><span>Zero-padded numbers: <code>001.jpg</code>, <code>002.jpg</code>... (for large chapters)</span></label>
-    <label class="opt"><input type="radio" name="q2" value="named"><span>Descriptive names: <code>opening.jpg</code>, <code>fight_scene.jpg</code>...</span></label>
-    <label class="opt"><input type="radio" name="q2" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Show us an example filename..." data-other="q2"></label>
+    <label class="opt"><input type="radio" name="q2" value="yes-both"><span>Yes — pinch gestures on mobile, buttons on desktop, both everywhere</span></label>
+    <label class="opt"><input type="radio" name="q2" value="yes-pinch"><span>Pinch only (native touch, no extra UI)</span></label>
+    <label class="opt"><input type="radio" name="q2" value="yes-buttons"><span>Buttons only (+ / − / reset controls)</span></label>
+    <label class="opt"><input type="radio" name="q2" value="no"><span>No zoom needed — pages are optimized for screen size already</span></label>
+    <label class="opt"><input type="radio" name="q2" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q2"></label>
   </div>
 </div>
 
+<!-- ═══ SECTION: MODERATION & TEAM ═══ -->
+<div class="section-divider"><span class="section-title">Moderation & Team</span></div>
+
 <div class="q-card" data-q="3">
   <div class="q-number">3</div>
-  <div class="q-label">What file formats are your pages in?</div>
-  <div class="q-hint">JPEG, PNG, WebP, TIFF, or mixed?</div>
+  <div class="q-label">How many moderators will manage the forum and comments?</div>
+  <div class="q-hint">You mentioned you won't moderate personally — we need to build the right roles.</div>
+  <div class="q-why">Why: The admin panel's user management and permission system is built around this. One moderator gets a simple dashboard. Multiple moderators need assignment tools, shift tracking, and role tiers.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q3" value="jpeg"><span>JPEG only</span></label>
-    <label class="opt"><input type="radio" name="q3" value="png"><span>PNG only</span></label>
-    <label class="opt"><input type="radio" name="q3" value="mixed"><span>Mixed JPEG and PNG</span></label>
-    <label class="opt"><input type="radio" name="q3" value="webp"><span>WebP (or ready to convert)</span></label>
-    <label class="opt"><input type="radio" name="q3" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which formats?" data-other="q3"></label>
+    <label class="opt"><input type="radio" name="q3" value="one"><span>One dedicated moderator</span></label>
+    <label class="opt"><input type="radio" name="q3" value="small-team"><span>A small team (2–3 people)</span></label>
+    <label class="opt"><input type="radio" name="q3" value="not-yet"><span>Not yet — but I'll appoint one later</span></label>
+    <label class="opt"><input type="radio" name="q3" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q3"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="4">
   <div class="q-number">4</div>
-  <div class="q-label">How do you want to upload chapters to the platform?</div>
-  <div class="q-hint">The admin upload experience — pick the flow that matches your workflow.</div>
+  <div class="q-label">What should moderators be able to do without your approval?</div>
+  <div class="q-hint">The boundary between moderator autonomy and your oversight.</div>
+  <div class="q-why">Why: We build permission levels into the admin panel. If moderators can ban users, we need audit trails. If only you can ban, we build an escalation queue. This determines the entire moderation workflow.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q4" value="drag-folder"><span>Drag-and-drop a folder — the system reads the folder name as chapter name and auto-sorts pages</span></label>
-    <label class="opt"><input type="radio" name="q4" value="drag-files"><span>Drag individual page files — I arrange the order manually after upload</span></label>
-    <label class="opt"><input type="radio" name="q4" value="zip"><span>Upload a ZIP per chapter — the system extracts and sorts</span></label>
-    <label class="opt"><input type="radio" name="q4" value="cbz"><span>Upload CBZ files (comic book archive) — the system reads them natively</span></label>
-    <label class="opt"><input type="radio" name="q4" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your ideal upload flow..." data-other="q4"></label>
+    <label class="opt"><input type="radio" name="q4" value="full"><span>Full autonomy — delete posts, ban users, pin threads, approve comments, no approval needed</span></label>
+    <label class="opt"><input type="radio" name="q4" value="most"><span>Most actions — but bans and permanent removals require your sign-off</span></label>
+    <label class="opt"><input type="radio" name="q4" value="limited"><span>Limited — hide/flag content, but you approve all removals and bans</span></label>
+    <label class="opt"><input type="radio" name="q4" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe the split..." data-other="q4"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="5">
   <div class="q-number">5</div>
-  <div class="q-label">Do you want to upload character profiles and world-building documents through the same admin panel?</div>
-  <div class="q-hint">Or should character art, bios, and lore docs be managed separately?</div>
+  <div class="q-label">Who handles the comment approval queue?</div>
+  <div class="q-hint">You chose pre-approval for comments (all hidden until approved).</div>
+  <div class="q-why">Why: If moderators handle approvals, we build a shared queue with assignment. If you want final sign-off, we build an escalation path where moderators queue items and you approve them. Different architectures entirely.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q5" value="same-panel"><span>Same admin panel — everything uploaded in one place, tagged by type</span></label>
-    <label class="opt"><input type="radio" name="q5" value="separate"><span>Separate section — characters/world-building have their own upload area</span></label>
-    <label class="opt"><input type="radio" name="q5" value="manual"><span>Manual entry — I type character bios and lore directly into a form, no file upload</span></label>
+    <label class="opt"><input type="radio" name="q5" value="moderators"><span>Moderators handle the full approval queue</span></label>
+    <label class="opt"><input type="radio" name="q5" value="me"><span>Everything comes to me for final approval</span></label>
+    <label class="opt"><input type="radio" name="q5" value="hybrid"><span>Hybrid — moderators approve routine comments, flagged/sensitive ones come to me</span></label>
     <label class="opt"><input type="radio" name="q5" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q5"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="6">
   <div class="q-number">6</div>
-  <div class="q-label">Can you share a sample chapter folder (or even just 3–5 pages) for development testing?</div>
-  <div class="q-hint">Real file structure, sizes, and formats let us calibrate the uploader and reader exactly. A single chapter is enough.</div>
+  <div class="q-label">Should forum posts and page comments use the same moderation rules?</div>
+  <div class="q-hint">Or different rules for different spaces?</div>
+  <div class="q-why">Why: The forum is public-facing and long-form. Page comments are story-specific and real-time. Different rules mean two moderation systems. Same rules means one unified system. This affects build complexity.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q6" value="drive"><span>Yes — I'll share a Google Drive / Dropbox link</span></label>
-    <label class="opt"><input type="radio" name="q6" value="email"><span>Yes — I'll attach a ZIP in my next email</span></label>
-    <label class="opt"><input type="radio" name="q6" value="later"><span>Yes — but after we sign the scope (IP protection)</span></label>
-    <label class="opt"><input type="radio" name="q6" value="no"><span>No — I'll describe the structure and you build generically</span></label>
+    <label class="opt"><input type="radio" name="q6" value="same"><span>Same rules everywhere — one moderation system</span></label>
+    <label class="opt"><input type="radio" name="q6" value="looser-forum"><span>Looser for forum (more open discussion), stricter for page comments</span></label>
+    <label class="opt"><input type="radio" name="q6" value="stricter-forum"><span>Stricter for forum (it's public-facing), looser for page comments</span></label>
     <label class="opt"><input type="radio" name="q6" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q6"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: ASSETS & BRAND ═══ -->
-<div class="section-divider"><span class="section-title">Assets & Brand</span></div>
-
 <div class="q-card" data-q="7">
   <div class="q-number">7</div>
-  <div class="q-label">What visual assets can you provide for each story (Rūsuma)?</div>
-  <div class="q-hint">This determines how polished the library and detail pages look at launch.</div>
+  <div class="q-label">Should there be an audit log visible to you as owner?</div>
+  <div class="q-hint">Every ban, deletion, approval — logged with moderator name and timestamp.</div>
+  <div class="q-why">Why: If you trust moderators completely, no log needed. If you want oversight, we build an audit trail. This is your platform — you should know what decisions are being made in your name.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q7" value="images-only"><span>Chapter images only (JPEG/PNG folders)</span></label>
-    <label class="opt"><input type="radio" name="q7" value="images-cover"><span>Chapter images + cover art for each story</span></label>
-    <label class="opt"><input type="radio" name="q7" value="images-cover-meta"><span>Images + cover art + title/synopsis/tags metadata</span></label>
-    <label class="opt"><input type="radio" name="q7" value="full-kit"><span>Full kit — images, covers, metadata, character art, world-building docs, style guides</span></label>
-    <label class="opt"><input type="radio" name="q7" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe what you have..." data-other="q7"></label>
+    <label class="opt"><input type="radio" name="q7" value="yes-detailed"><span>Yes — detailed log: who did what, when, with reason</span></label>
+    <label class="opt"><input type="radio" name="q7" value="yes-basic"><span>Yes — basic log: action + moderator name only</span></label>
+    <label class="opt"><input type="radio" name="q7" value="no"><span>No log needed — I trust my moderators</span></label>
+    <label class="opt"><input type="radio" name="q7" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q7"></label>
   </div>
 </div>
 
+<!-- ═══ SECTION: CONTENT UPLOAD WORKFLOW ═══ -->
+<div class="section-divider"><span class="section-title">Content Upload Workflow</span></div>
+
 <div class="q-card" data-q="8">
   <div class="q-number">8</div>
-  <div class="q-label">Do you have existing brand assets we should use?</div>
-  <div class="q-hint">Logo (SVG preferred), color palette hex codes, font files, existing style guide — or design from scratch?</div>
+  <div class="q-label">How do you currently organize chapter files?</div>
+  <div class="q-hint">Show us the exact folder structure — this is how we build the uploader.</div>
+  <div class="q-why">Why: The uploader reads your folder structure. If you use <code>StoryName/Ch01/</code> we auto-detect stories and chapters. If you use flat folders, we need different logic. Wrong assumptions here = broken uploads.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q8" value="full-kit"><span>Full brand kit — logo, colors, fonts, style guide</span></label>
-    <label class="opt"><input type="radio" name="q8" value="logo-only"><span>Logo only — you'll design the rest to match</span></label>
-    <label class="opt"><input type="radio" name="q8" value="partial"><span>Partial — I have some elements but not a complete kit</span></label>
-    <label class="opt"><input type="radio" name="q8" value="none"><span>Nothing — design everything from scratch based on my vision</span></label>
-    <label class="opt"><input type="radio" name="q8" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe what you have..." data-other="q8"></label>
+    <label class="opt"><input type="radio" name="q8" value="story-folder"><span>One folder per story, subfolders per chapter: <code>StoryName/Ch01/</code>, <code>StoryName/Ch02/</code></span></label>
+    <label class="opt"><input type="radio" name="q8" value="flat-chapters"><span>Flat folders with story prefix: <code>StoryName_Ch01/</code>, <code>StoryName_Ch02/</code></span></label>
+    <label class="opt"><input type="radio" name="q8" value="mixed"><span>Mixed — some organized, some not consistent</span></label>
+    <label class="opt"><input type="radio" name="q8" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your actual structure..." data-other="q8"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="9">
   <div class="q-number">9</div>
-  <div class="q-label">What feeling should the landing page evoke?</div>
-  <div class="q-hint">The emotional impression when someone first visits Restless Worlds.</div>
+  <div class="q-label">How do you name individual page files within a chapter?</div>
+  <div class="q-hint">This tells us how to auto-sort pages in the correct reading order.</div>
+  <div class="q-why">Why: Computers sort files alphabetically by default. <code>page_10.jpg</code> comes before <code>page_2.jpg</code> unless we build natural sorting. We need to know your naming to get page order right every time.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q9" value="premium"><span>Premium / luxury (clean, editorial, high-end)</span></label>
-    <label class="opt"><input type="radio" name="q9" value="mystery"><span>Mysterious / dark fantasy (moody, atmospheric)</span></label>
-    <label class="opt"><input type="radio" name="q9" value="community"><span>Warm / community-focused (inviting, social)</span></label>
-    <label class="opt"><input type="radio" name="q9" value="minimal"><span>Ultra-minimal (content-first, zero distraction)</span></label>
-    <label class="opt"><input type="radio" name="q9" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q9"></label>
+    <label class="opt"><input type="radio" name="q9" value="numbered"><span>Simple numbers: <code>01.jpg</code>, <code>02.jpg</code>, <code>03.jpg</code>...</span></label>
+    <label class="opt"><input type="radio" name="q9" value="prefixed"><span>Prefixed: <code>page_01.jpg</code>, <code>page_02.jpg</code>...</span></label>
+    <label class="opt"><input type="radio" name="q9" value="padded"><span>Zero-padded: <code>001.jpg</code>, <code>002.jpg</code> (for large chapters)</span></label>
+    <label class="opt"><input type="radio" name="q9" value="named"><span>Descriptive: <code>opening.jpg</code>, <code>fight_scene.jpg</code>...</span></label>
+    <label class="opt"><input type="radio" name="q9" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Show an example filename..." data-other="q9"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="10">
   <div class="q-number">10</div>
-  <div class="q-label">Should the reader have a "theater mode" or distraction-free view?</div>
-  <div class="q-hint">Hide ALL chrome (progress bar, page counter, top bar) for pure immersion.</div>
+  <div class="q-label">What file formats are your pages in?</div>
+  <div class="q-hint">JPEG, PNG, WebP, or mixed?</div>
+  <div class="q-why">Why: Different formats need different handling. JPEG is compressed and fast. PNG is lossless but heavy. WebP is modern and efficient. If you have mixed formats, the uploader needs to normalize them for the reader.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q10" value="yes-auto"><span>Yes — auto-hide all UI after 3 seconds of inactivity</span></label>
-    <label class="opt"><input type="radio" name="q10" value="yes-toggle"><span>Yes — manual toggle button</span></label>
-    <label class="opt"><input type="radio" name="q10" value="no"><span>No — keep minimal chrome visible at all times</span></label>
-    <label class="opt"><input type="radio" name="q10" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q10"></label>
+    <label class="opt"><input type="radio" name="q10" value="jpeg"><span>JPEG only</span></label>
+    <label class="opt"><input type="radio" name="q10" value="png"><span>PNG only</span></label>
+    <label class="opt"><input type="radio" name="q10" value="mixed"><span>Mixed JPEG and PNG</span></label>
+    <label class="opt"><input type="radio" name="q10" value="webp"><span>WebP (or ready to convert)</span></label>
+    <label class="opt"><input type="radio" name="q10" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which formats?" data-other="q10"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="11">
   <div class="q-number">11</div>
-  <div class="q-label">Should there be a light/dark mode toggle?</div>
-  <div class="q-hint">Confirming for the scope — dark only, or user choice?</div>
+  <div class="q-label">How do you want to upload chapters to the platform?</div>
+  <div class="q-hint">Pick the flow that matches your actual workflow.</div>
+  <div class="q-why">Why: If you drag a folder, we read the folder name as chapter name. If you upload a ZIP, we extract and sort. If you upload CBZ, we treat it as a comic book archive. Each method needs different backend logic.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q11" value="yes-toggle"><span>Yes — manual toggle (user chooses)</span></label>
-    <label class="opt"><input type="radio" name="q11" value="yes-system"><span>Yes — follow system preference (auto-switch)</span></label>
-    <label class="opt"><input type="radio" name="q11" value="dark-only"><span>No — dark mode only (our current demo style)</span></label>
-    <label class="opt"><input type="radio" name="q11" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q11"></label>
+    <label class="opt"><input type="radio" name="q11" value="drag-folder"><span>Drag-and-drop a folder — system reads folder name, auto-sorts pages</span></label>
+    <label class="opt"><input type="radio" name="q11" value="drag-files"><span>Drag individual files — I arrange order manually after upload</span></label>
+    <label class="opt"><input type="radio" name="q11" value="zip"><span>Upload a ZIP per chapter — system extracts and sorts</span></label>
+    <label class="opt"><input type="radio" name="q11" value="cbz"><span>Upload CBZ files — system reads comic archives natively</span></label>
+    <label class="opt"><input type="radio" name="q11" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your ideal flow..." data-other="q11"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: INFRASTRUCTURE ═══ -->
-<div class="section-divider"><span class="section-title">Infrastructure</span></div>
-
 <div class="q-card" data-q="12">
   <div class="q-number">12</div>
-  <div class="q-label">Do you own the domain restlessworlds.com (or your preferred domain)?</div>
-  <div class="q-hint">If not, we can register it and bill you, or you can buy it and add DNS records we provide.</div>
+  <div class="q-label">How should character profiles and world-building documents be uploaded?</div>
+  <div class="q-hint">Same admin panel as chapters, or a separate area?</div>
+  <div class="q-why">Why: Characters and lore are tied to stories. If uploaded as files, we need image handling + text parsing. If entered as forms, we need rich text editors. This determines the entire content management architecture.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q12" value="yes-dns"><span>Yes — and I can add DNS records / CNAME myself</span></label>
-    <label class="opt"><input type="radio" name="q12" value="yes-help"><span>Yes — but I'll need guidance on DNS setup</span></label>
-    <label class="opt"><input type="radio" name="q12" value="no-register"><span>No — please register it and bill me</span></label>
-    <label class="opt"><input type="radio" name="q12" value="different"><span>I want a different domain — let's discuss</span></label>
+    <label class="opt"><input type="radio" name="q12" value="same-panel"><span>Same admin panel — everything in one place, tagged by type</span></label>
+    <label class="opt"><input type="radio" name="q12" value="separate"><span>Separate section — characters/world-building have their own upload area</span></label>
+    <label class="opt"><input type="radio" name="q12" value="manual"><span>Manual form entry — I type bios and lore directly, no file uploads</span></label>
     <label class="opt"><input type="radio" name="q12" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q12"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="13">
   <div class="q-number">13</div>
-  <div class="q-label">For the code repository — how do you want to handle ownership?</div>
-  <div class="q-hint">We need access to deploy updates during development. You keep full ownership either way.</div>
+  <div class="q-label">Can you share a sample chapter for development testing?</div>
+  <div class="q-hint">Even 3–5 pages is enough. Real file structure lets us calibrate the uploader and reader exactly.</div>
+  <div class="q-why">Why: A real sample chapter reveals edge cases we can't predict — unusual dimensions, mixed formats, naming quirks, folder depth. Building generically means assumptions. Building from your real files means accuracy.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q13" value="me-invite"><span>I create the GitHub repo and invite your account — you push code there</span></label>
-    <label class="opt"><input type="radio" name="q13" value="me-transfer"><span>You create the repo under your account, I get ownership transfer at delivery</span></label>
-    <label class="opt"><input type="radio" name="q13" value="you-create"><span>You create it, add me as collaborator during development, then remove me after handoff</span></label>
+    <label class="opt"><input type="radio" name="q13" value="drive"><span>Yes — Google Drive / Dropbox link</span></label>
+    <label class="opt"><input type="radio" name="q13" value="email"><span>Yes — ZIP attached in next email</span></label>
+    <label class="opt"><input type="radio" name="q13" value="later"><span>Yes — after we sign the scope (IP protection)</span></label>
+    <label class="opt"><input type="radio" name="q13" value="no"><span>No — I'll describe the structure, build generically</span></label>
     <label class="opt"><input type="radio" name="q13" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q13"></label>
   </div>
 </div>
 
+<!-- ═══ SECTION: ASSETS & BRAND ═══ -->
+<div class="section-divider"><span class="section-title">Assets & Brand</span></div>
+
 <div class="q-card" data-q="14">
   <div class="q-number">14</div>
-  <div class="q-label">What payment processor do you have (or plan to use) for subscriptions?</div>
-  <div class="q-hint">Stripe, PayPal Business, Square, or none yet? This determines how we build membership billing.</div>
+  <div class="q-label">What visual assets can you provide for each story?</div>
+  <div class="q-hint">This determines how polished the library and detail pages look at launch.</div>
+  <div class="q-why">Why: Chapter images alone means minimal story pages. Cover art means library grid looks professional. Metadata means search and filtering work. Character art means the Characters page exists. We scope design work based on what you have vs. what we create.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q14" value="stripe"><span>Stripe — I have an account and can provide API keys</span></label>
-    <label class="opt"><input type="radio" name="q14" value="paypal"><span>PayPal Business — I have an account</span></label>
-    <label class="opt"><input type="radio" name="q14" value="none-stripe"><span>None yet — I'll create Stripe when you tell me to</span></label>
-    <label class="opt"><input type="radio" name="q14" value="none-paypal"><span>None yet — I'll create PayPal Business when you tell me to</span></label>
-    <label class="opt"><input type="radio" name="q14" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which processor?" data-other="q14"></label>
+    <label class="opt"><input type="radio" name="q14" value="images-only"><span>Chapter images only (JPEG/PNG folders)</span></label>
+    <label class="opt"><input type="radio" name="q14" value="images-cover"><span>Chapter images + cover art per story</span></label>
+    <label class="opt"><input type="radio" name="q14" value="images-cover-meta"><span>Images + covers + title/synopsis/tags metadata</span></label>
+    <label class="opt"><input type="radio" name="q14" value="full-kit"><span>Full kit — images, covers, metadata, character art, world-building docs, style guides</span></label>
+    <label class="opt"><input type="radio" name="q14" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe what you have..." data-other="q14"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="15">
   <div class="q-number">15</div>
-  <div class="q-label">Do you have any existing digital infrastructure we should integrate with?</div>
-  <div class="q-hint">Website, email list (Mailchimp, ConvertKit), Discord server, social accounts — anything to connect or migrate?</div>
+  <div class="q-label">Do you have existing brand assets we should use?</div>
+  <div class="q-hint">Logo, colors, fonts, style guide — or design from scratch?</div>
+  <div class="q-why">Why: If you have a brand kit, we implement it exactly (colors, fonts, spacing). If not, we design one. This is the foundation of every screen — wrong assumptions here mean a full redesign later.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q15" value="website"><span>Existing website (Squarespace, Wix, WordPress, etc.)</span></label>
-    <label class="opt"><input type="radio" name="q15" value="email-list"><span>Email list (Mailchimp, ConvertKit, etc.)</span></label>
-    <label class="opt"><input type="radio" name="q15" value="community"><span>Community platform (Discord, Facebook Group, etc.)</span></label>
-    <label class="opt"><input type="radio" name="q15" value="multiple"><span>Multiple of the above</span></label>
-    <label class="opt"><input type="radio" name="q15" value="none"><span>None — starting completely fresh</span></label>
-    <label class="opt"><input type="radio" name="q15" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your setup..." data-other="q15"></label>
+    <label class="opt"><input type="radio" name="q15" value="full-kit"><span>Full brand kit — logo, colors, fonts, style guide</span></label>
+    <label class="opt"><input type="radio" name="q15" value="logo-only"><span>Logo only — you design the rest to match</span></label>
+    <label class="opt"><input type="radio" name="q15" value="partial"><span>Partial — some elements, not complete</span></label>
+    <label class="opt"><input type="radio" name="q15" value="none"><span>Nothing — design everything from scratch</span></label>
+    <label class="opt"><input type="radio" name="q15" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe what you have..." data-other="q15"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="16">
+  <div class="q-number">16</div>
+  <div class="q-label">What feeling should the landing page evoke?</div>
+  <div class="q-hint">The emotional impression when someone first visits.</div>
+  <div class="q-why">Why: This single decision drives typography, animation, color density, and layout. Premium = editorial, lots of whitespace. Mysterious = dark, atmospheric, animated. Warm = rounded, social, inviting. Minimal = content-first, zero chrome.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q16" value="premium"><span>Premium / luxury (clean, editorial, high-end)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="mystery"><span>Mysterious / dark fantasy (moody, atmospheric)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="community"><span>Warm / community-focused (inviting, social)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="minimal"><span>Ultra-minimal (content-first, zero distraction)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q16"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="17">
+  <div class="q-number">17</div>
+  <div class="q-label">Should the reader have a theater mode?</div>
+  <div class="q-hint">Hides ALL chrome for pure immersion.</div>
+  <div class="q-why">Why: Theater mode means building an alternative reader chrome state. Auto-hide means idle timers and hover detection. Manual toggle means an extra button in the UI. Both approaches are valid but different builds.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q17" value="yes-auto"><span>Yes — auto-hide all UI after 3 seconds of inactivity</span></label>
+    <label class="opt"><input type="radio" name="q17" value="yes-toggle"><span>Yes — manual toggle button</span></label>
+    <label class="opt"><input type="radio" name="q17" value="no"><span>No — keep minimal chrome visible at all times</span></label>
+    <label class="opt"><input type="radio" name="q17" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe..." data-other="q17"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="18">
+  <div class="q-number">18</div>
+  <div class="q-label">Should there be a light/dark mode toggle?</div>
+  <div class="q-hint">Confirming for the scope — dark only, or user choice?</div>
+  <div class="q-why">Why: Light/dark mode means designing every screen twice (color palettes, contrast ratios, image treatment). If dark only, we optimize deeply for that one mode. If toggle, we build a theme system.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q18" value="yes-toggle"><span>Yes — manual toggle</span></label>
+    <label class="opt"><input type="radio" name="q18" value="yes-system"><span>Yes — follow system preference</span></label>
+    <label class="opt"><input type="radio" name="q18" value="dark-only"><span>No — dark mode only</span></label>
+    <label class="opt"><input type="radio" name="q18" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe..." data-other="q18"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: INFRASTRUCTURE ═══ -->
+<div class="section-divider"><span class="section-title">Infrastructure</span></div>
+
+<div class="q-card" data-q="19">
+  <div class="q-number">19</div>
+  <div class="q-label">Do you own restlessworlds.com (or your preferred domain)?</div>
+  <div class="q-hint">If not, we can register it and bill you, or you can buy it and add our DNS records.</div>
+  <div class="q-why">Why: Domain ownership determines deployment path. If you own it, we give you DNS records to add. If we register it, we handle everything and transfer to you at delivery. Different timeline, different paperwork.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q19" value="yes-dns"><span>Yes — and I can add DNS records myself</span></label>
+    <label class="opt"><input type="radio" name="q19" value="yes-help"><span>Yes — but I need guidance on DNS setup</span></label>
+    <label class="opt"><input type="radio" name="q19" value="no-register"><span>No — please register it and bill me</span></label>
+    <label class="opt"><input type="radio" name="q19" value="different"><span>I want a different domain — let's discuss</span></label>
+    <label class="opt"><input type="radio" name="q19" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q19"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="20">
+  <div class="q-number">20</div>
+  <div class="q-label">How should the code repository be handled?</div>
+  <div class="q-hint">You keep full ownership either way. We just need access to deploy during development.</div>
+  <div class="q-why">Why: If you create the repo and invite us, we push to your account from day one. If we create it, we transfer ownership at delivery. The first approach means your name is on the commit history. The second means less setup for you.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q20" value="me-invite"><span>I create the GitHub repo and invite you — you push code there</span></label>
+    <label class="opt"><input type="radio" name="q20" value="me-transfer"><span>You create it under your account, transfer ownership to me at delivery</span></label>
+    <label class="opt"><input type="radio" name="q20" value="you-create"><span>You create it, add me as collaborator during dev, then remove me after handoff</span></label>
+    <label class="opt"><input type="radio" name="q20" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q20"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="21">
+  <div class="q-number">21</div>
+  <div class="q-label">What payment processor do you have (or plan to use) for subscriptions?</div>
+  <div class="q-hint">Stripe, PayPal Business, Square, or none yet?</div>
+  <div class="q-why">Why: Membership billing is built around the processor. Stripe has the best API for subscriptions but requires a business entity. PayPal is easier to set up but has different webhook behavior. This choice determines the entire billing architecture.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q21" value="stripe"><span>Stripe — I have an account and can provide API keys</span></label>
+    <label class="opt"><input type="radio" name="q21" value="paypal"><span>PayPal Business — I have an account</span></label>
+    <label class="opt"><input type="radio" name="q21" value="none-stripe"><span>None yet — I'll create Stripe when you tell me to</span></label>
+    <label class="opt"><input type="radio" name="q21" value="none-paypal"><span>None yet — I'll create PayPal Business when you tell me to</span></label>
+    <label class="opt"><input type="radio" name="q21" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which processor?" data-other="q21"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="22">
+  <div class="q-number">22</div>
+  <div class="q-label">Do you have existing digital infrastructure we should integrate with?</div>
+  <div class="q-hint">Website, email list, Discord, social accounts — anything to connect or migrate?</div>
+  <div class="q-why">Why: If you have an email list, we integrate it for launch announcements. If you have a Discord, we can add webhook notifications. If you have an existing website, we match the visual continuity. Starting fresh means a clean slate.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q22" value="website"><span>Existing website (Squarespace, Wix, WordPress)</span></label>
+    <label class="opt"><input type="radio" name="q22" value="email-list"><span>Email list (Mailchimp, ConvertKit, etc.)</span></label>
+    <label class="opt"><input type="radio" name="q22" value="community"><span>Community platform (Discord, Facebook Group)</span></label>
+    <label class="opt"><input type="radio" name="q22" value="multiple"><span>Multiple of the above</span></label>
+    <label class="opt"><input type="radio" name="q22" value="none"><span>None — starting completely fresh</span></label>
+    <label class="opt"><input type="radio" name="q22" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your setup..." data-other="q22"></label>
   </div>
 </div>
 
 <!-- ═══ SECTION: PAYMENT & TERMS ═══ -->
 <div class="section-divider"><span class="section-title">Payment & Terms</span></div>
 
-<div class="q-card" data-q="16">
-  <div class="q-number">16</div>
+<div class="q-card" data-q="23">
+  <div class="q-number">23</div>
   <div class="q-label">What payment schedule works for you?</div>
-  <div class="q-hint">Payment is required before work begins. This locks in your project slot and starts the delivery clock.</div>
+  <div class="q-hint">Payment is required before work begins. This locks your slot and starts delivery.</div>
+  <div class="q-why">Why: 100% upfront unlocks fastest delivery because we don't pause between phases. Split payments align with milestones but require invoice management. We send invoices via PayPal.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q16" value="full"><span>100% upfront ($3,600 total) — unlocks fastest delivery + priority support</span></label>
-    <label class="opt"><input type="radio" name="q16" value="50-50"><span>50% upfront ($1,800), 50% on delivery — standard split</span></label>
-    <label class="opt"><input type="radio" name="q16" value="thirds"><span>Three payments ($1,500 start / $1,050 mid / $1,050 delivery)</span></label>
-    <label class="opt"><input type="radio" name="q16" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Propose a schedule..." data-other="q16"></label>
+    <label class="opt"><input type="radio" name="q23" value="full"><span>100% upfront ($3,600 total) — fastest delivery + priority support</span></label>
+    <label class="opt"><input type="radio" name="q23" value="50-50"><span>50/50 split ($1,800 upfront, $1,800 on delivery)</span></label>
+    <label class="opt"><input type="radio" name="q23" value="thirds"><span>Three payments ($1,500 start / $1,050 mid / $1,050 delivery)</span></label>
+    <label class="opt"><input type="radio" name="q23" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Propose a schedule..." data-other="q23"></label>
   </div>
 </div>
 
-<div class="q-card" data-q="17">
-  <div class="q-number">17</div>
+<div class="q-card" data-q="24">
+  <div class="q-number">24</div>
   <div class="q-label">What's your preferred payment method?</div>
-  <div class="q-hint">We currently send invoices via PayPal — does that work?</div>
+  <div class="q-hint">We currently send invoices via PayPal.</div>
+  <div class="q-why">Why: PayPal invoices are instant and trackable. Bank transfers work but have delays and fees. We need to know what to set up before sending the first invoice.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q17" value="paypal"><span>PayPal invoice — works for me</span></label>
-    <label class="opt"><input type="radio" name="q17" value="bank"><span>Bank transfer / wire — preferred</span></label>
-    <label class="opt"><input type="radio" name="q17" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which method?" data-other="q17"></label>
+    <label class="opt"><input type="radio" name="q24" value="paypal"><span>PayPal invoice — works for me</span></label>
+    <label class="opt"><input type="radio" name="q24" value="bank"><span>Bank transfer / wire — preferred</span></label>
+    <label class="opt"><input type="radio" name="q24" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which method?" data-other="q24"></label>
   </div>
 </div>
 
 <!-- ═══ SECTION: FUTURE & OPEN FEEDBACK ═══ -->
 <div class="section-divider"><span class="section-title">Future & Open Feedback</span></div>
 
-<div class="q-card" data-q="18">
-  <div class="q-number">18</div>
+<div class="q-card" data-q="25">
+  <div class="q-number">25</div>
   <div class="q-label">What platforms should we prioritize?</div>
   <div class="q-hint">Desktop, mobile web, native apps, or all equally?</div>
+  <div class="q-why">Why: Mobile-first means touch gestures, bottom nav, and vertical layouts are primary. Desktop-first means hover states, sidebars, and keyboard shortcuts are primary. Equal means everything is responsive from the ground up.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q18" value="mobile-first"><span>Mobile-first (most readers will be on phones)</span></label>
-    <label class="opt"><input type="radio" name="q18" value="desktop-first"><span>Desktop-first (most readers will be on computers/tablets)</span></label>
-    <label class="opt"><input type="radio" name="q18" value="equal"><span>Equal priority across all screen sizes</span></label>
-    <label class="opt"><input type="radio" name="q18" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe..." data-other="q18"></label>
+    <label class="opt"><input type="radio" name="q25" value="mobile-first"><span>Mobile-first (most readers on phones)</span></label>
+    <label class="opt"><input type="radio" name="q25" value="desktop-first"><span>Desktop-first (most readers on computers/tablets)</span></label>
+    <label class="opt"><input type="radio" name="q25" value="equal"><span>Equal priority across all screens</span></label>
+    <label class="opt"><input type="radio" name="q25" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe..." data-other="q25"></label>
   </div>
 </div>
 
-<div class="q-card" data-q="19">
-  <div class="q-number">19</div>
-  <div class="q-label">Are you interested in merchandise or store integration for a future phase?</div>
-  <div class="q-hint">Even if not built now, should we architect the database to support it later?</div>
+<div class="q-card" data-q="26">
+  <div class="q-number">26</div>
+  <div class="q-label">Should we architect for merchandise or store integration later?</div>
+  <div class="q-hint">Even if not built now, should the database support it?</div>
+  <div class="q-why">Why: If yes, we design the data model with product tables, inventory fields, and cart relationships from day one. Retrofitting commerce later means database migrations and potential downtime. If no, we keep the schema lean.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q19" value="yes"><span>Yes — architect for it now, build later</span></label>
-    <label class="opt"><input type="radio" name="q19" value="no"><span>No — pure reading platform, no commerce</span></label>
-    <label class="opt"><input type="radio" name="q19" value="maybe"><span>Maybe — but don't design around it</span></label>
-    <label class="opt"><input type="radio" name="q19" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe..." data-other="q19"></label>
+    <label class="opt"><input type="radio" name="q26" value="yes"><span>Yes — architect for it now, build later</span></label>
+    <label class="opt"><input type="radio" name="q26" value="no"><span>No — pure reading platform, no commerce</span></label>
+    <label class="opt"><input type="radio" name="q26" value="maybe"><span>Maybe — but don't design around it</span></label>
+    <label class="opt"><input type="radio" name="q26" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe..." data-other="q26"></label>
   </div>
 </div>
 
-<div class="q-card" data-q="20">
-  <div class="q-number">20</div>
-  <div class="q-label">Is there anything else we should know about your vision?</div>
-  <div class="q-hint">References to apps you love, features you wish existed, frustrations with current platforms, your ideal creator workflow — anything.</div>
+<div class="q-card" data-q="27">
+  <div class="q-number">27</div>
+  <div class="q-label">Is there anything else we should know?</div>
+  <div class="q-hint">References to apps you love, features you wish existed, frustrations with current platforms, your ideal workflow as a creator — anything.</div>
+  <div class="q-why">Why: This is where you tell us things we didn't think to ask. Every great platform has details that come from the creator's specific frustrations and dreams. Don't hold back.</div>
   <div class="textarea-wrap">
-    <textarea name="q20" placeholder="Tell us anything..."></textarea>
+    <textarea name="q27" placeholder="Tell us anything..."></textarea>
   </div>
 </div>
 
 <div class="submit-area">
   <button type="submit" class="submit-btn" id="submit-btn">Submit Answers</button>
-  <p style="color: var(--text-subtle); font-size: 13px; margin-top: 16px;">Your answers will be encoded into a shareable code you can paste into your reply.</p>
+  <p style="color: var(--text-subtle); font-size: 13px; margin-top: 16px;">Your answers will be encoded into a shareable code you can paste into your email reply.</p>
 </div>
 
 </form>
@@ -572,7 +698,7 @@ body {
     <div class="modal-body">
       <div class="code-block" id="result-code"></div>
       <p style="color: var(--text-muted); font-size: 13px; text-align: center;">
-        The code contains all 20 answers. We'll decode it on our end and lock the scope document.
+        The code contains all 27 answers. We'll decode it on our end and lock the scope document.
       </p>
     </div>
     <div class="modal-footer">
@@ -619,11 +745,9 @@ document.getElementById('quiz').addEventListener('submit', function(e) {
   for (let [key, value] of formData.entries()) {
     data[key] = value;
   }
-  // Include textarea
   document.querySelectorAll('textarea').forEach(ta => {
     if (ta.value.trim()) data[ta.name] = ta.value.trim();
   });
-  // Include other inputs for "other" selections
   document.querySelectorAll('.other-input').forEach(input => {
     if (input.value.trim()) {
       const q = input.dataset.other;
