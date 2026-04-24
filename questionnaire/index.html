@@ -24,7 +24,6 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
-img { -webkit-user-drag: none; user-select: none; }
 
 /* Header */
 .header {
@@ -279,9 +278,9 @@ img { -webkit-user-drag: none; user-select: none; }
 <div class="container">
 
 <div class="intro">
-  <div class="badge">~5 minutes</div>
+  <div class="badge">~8 minutes</div>
   <h1>Help us build exactly what you need</h1>
-  <p>This questionnaire covers your vision for the Rūsuma Reading Club platform — from content workflow to reader experience. Your answers will shape the final scope document before we kick off production.</p>
+  <p>This questionnaire covers your vision for the Rūsuma Reading Club platform — from content workflow to reader experience to production setup. Your answers shape the final scope document before we kick off Phase 1.</p>
 </div>
 
 <form id="quiz-form">
@@ -291,394 +290,677 @@ img { -webkit-user-drag: none; user-select: none; }
 
 <div class="q-card" data-q="1">
   <div class="q-number">01</div>
-  <div class="q-label">How do you want your stories displayed on the homepage?</div>
-  <div class="q-hint">The first thing a reader sees when they open the app.</div>
+  <div class="q-label">How many Rūsuma (stories) do you have now, and how many do you plan to publish in Year 1?</div>
+  <div class="q-hint">This affects how we architect the library, storage, and navigation.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q1" value="cover-grid"><span>Cover art grid (like Netflix / Spotify)</span></label>
-    <label class="opt"><input type="radio" name="q1" value="webtoon-list"><span>Webtoon-style vertical list with chapter thumbnails</span></label>
-    <label class="opt"><input type="radio" name="q1" value="carousel"><span>Horizontal carousel / featured slider</span></label>
-    <label class="opt"><input type="radio" name="q1" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q1"></label>
+    <label class="opt"><input type="radio" name="q1" value="1-3"><span>1–3 stories now, 1–2 new in Year 1</span></label>
+    <label class="opt"><input type="radio" name="q1" value="3-5"><span>3–5 stories now, 2–4 new in Year 1</span></label>
+    <label class="opt"><input type="radio" name="q1" value="5-10"><span>5–10 stories now, 5+ new in Year 1</span></label>
+    <label class="opt"><input type="radio" name="q1" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Tell us your numbers..." data-other="q1"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="2">
   <div class="q-number">02</div>
-  <div class="q-label">How do you organize chapters within each story?</div>
-  <div class="q-hint">Volume groups? Arcs? Simple numbered list?</div>
+  <div class="q-label">How do you want your stories displayed on the homepage?</div>
+  <div class="q-hint">The first thing a reader sees when they open the app.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q2" value="simple"><span>Simple numbered list (Ch 1, Ch 2, Ch 3...)</span></label>
-    <label class="opt"><input type="radio" name="q2" value="volumes"><span>Grouped by volumes (Vol 1: Ch 1-10, Vol 2: Ch 11-20...)</span></label>
-    <label class="opt"><input type="radio" name="q2" value="arcs"><span>Grouped by story arcs (Prologue, Act I, Act II...)</span></label>
+    <label class="opt"><input type="radio" name="q2" value="cover-grid"><span>Cover art grid (like Netflix / Spotify)</span></label>
+    <label class="opt"><input type="radio" name="q2" value="webtoon-list"><span>Webtoon-style vertical list with chapter thumbnails</span></label>
+    <label class="opt"><input type="radio" name="q2" value="carousel"><span>Horizontal carousel / featured slider</span></label>
+    <label class="opt"><input type="radio" name="q2" value="mixed"><span>Mixed — featured hero + grid below</span></label>
     <label class="opt"><input type="radio" name="q2" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q2"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="3">
   <div class="q-number">03</div>
-  <div class="q-label">What metadata should each chapter display?</div>
-  <div class="q-hint">Select all that apply.</div>
+  <div class="q-label">How do you organize chapters within each story?</div>
+  <div class="q-hint">Volume groups? Arcs? Simple numbered list?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q3" value="title-date"><span>Chapter title + release date only</span></label>
-    <label class="opt"><input type="radio" name="q3" value="title-date-pages"><span>Title + date + page count</span></label>
-    <label class="opt"><input type="radio" name="q3" value="full"><span>Title + date + page count + reading time + status (new/updated)</span></label>
+    <label class="opt"><input type="radio" name="q3" value="simple"><span>Simple numbered list (Ch 1, Ch 2, Ch 3...)</span></label>
+    <label class="opt"><input type="radio" name="q3" value="volumes"><span>Grouped by volumes (Vol 1: Ch 1-10, Vol 2: Ch 11-20...)</span></label>
+    <label class="opt"><input type="radio" name="q3" value="arcs"><span>Grouped by story arcs (Prologue, Act I, Act II...)</span></label>
+    <label class="opt"><input type="radio" name="q3" value="seasons"><span>Season-based (Season 1, Season 2...)</span></label>
     <label class="opt"><input type="radio" name="q3" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q3"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="4">
   <div class="q-number">04</div>
+  <div class="q-label">What metadata should each chapter display?</div>
+  <div class="q-hint">Select the closest match. You can elaborate in the open feedback at the end.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q4" value="title-date"><span>Chapter title + release date only</span></label>
+    <label class="opt"><input type="radio" name="q4" value="title-date-pages"><span>Title + date + page count</span></label>
+    <label class="opt"><input type="radio" name="q4" value="full"><span>Title + date + page count + reading time + status (new/updated)</span></label>
+    <label class="opt"><input type="radio" name="q4" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q4"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="5">
+  <div class="q-number">05</div>
   <div class="q-label">How do you want "new chapter" releases to appear?</div>
   <div class="q-hint">When you upload a new chapter, how should readers discover it?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q4" value="badge"><span>"NEW" badge on the story cover + chapter list</span></label>
-    <label class="opt"><input type="radio" name="q4" value="notification"><span>In-app notification + badge</span></label>
-    <label class="opt"><input type="radio" name="q4" value="banner"><span>Top banner announcement on the homepage</span></label>
-    <label class="opt"><input type="radio" name="q4" value="all"><span>All of the above</span></label>
-    <label class="opt"><input type="radio" name="q4" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q4"></label>
+    <label class="opt"><input type="radio" name="q5" value="badge"><span>"NEW" badge on the story cover + chapter list</span></label>
+    <label class="opt"><input type="radio" name="q5" value="notification"><span>In-app notification + badge</span></label>
+    <label class="opt"><input type="radio" name="q5" value="banner"><span>Top banner announcement on the homepage</span></label>
+    <label class="opt"><input type="radio" name="q5" value="all"><span>All of the above</span></label>
+    <label class="opt"><input type="radio" name="q5" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q5"></label>
   </div>
 </div>
 
 <!-- ═══ SECTION: READER EXPERIENCE ═══ -->
 <div class="section-divider"><span class="section-title">Reader Experience</span></div>
 
-<div class="q-card" data-q="5">
-  <div class="q-number">05</div>
-  <div class="q-label">What happens when a reader finishes a chapter?</div>
-  <div class="q-hint">End-of-chapter screen behavior.</div>
-  <div class="options">
-    <label class="opt"><input type="radio" name="q5" value="next-auto"><span>Auto-advance to next chapter after a delay</span></label>
-    <label class="opt"><input type="radio" name="q5" value="next-button"><span>Show a "Next Chapter" button</span></label>
-    <label class="opt"><input type="radio" name="q5" value="end-screen"><span>Show an end-screen with credits + related chapters</span></label>
-    <label class="opt"><input type="radio" name="q5" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q5"></label>
-  </div>
-</div>
-
 <div class="q-card" data-q="6">
   <div class="q-number">06</div>
-  <div class="q-label">Should readers be able to bookmark their position mid-chapter?</div>
-  <div class="q-hint">Save exact page + zoom + pan and resume later.</div>
+  <div class="q-label">What reading direction should the default reader use?</div>
+  <div class="q-hint">For your content specifically — we know you mentioned this before, confirming for the scope doc.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q6" value="yes-auto"><span>Yes — automatically, every page turn</span></label>
-    <label class="opt"><input type="radio" name="q6" value="yes-manual"><span>Yes — but only with a manual bookmark button</span></label>
-    <label class="opt"><input type="radio" name="q6" value="chapter-only"><span>No — just remember which chapter they were on</span></label>
-    <label class="opt"><input type="radio" name="q6" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q6"></label>
+    <label class="opt"><input type="radio" name="q6" value="ltr"><span>Left-to-right (Western style, page 1 → page 2 left to right)</span></label>
+    <label class="opt"><input type="radio" name="q6" value="rtl"><span>Right-to-left (Manga style, page 1 → page 2 right to left)</span></label>
+    <label class="opt"><input type="radio" name="q6" value="vertical"><span>Vertical scroll (Webtoon style, continuous downward)</span></label>
+    <label class="opt"><input type="radio" name="q6" value="user-choice"><span>Let the user choose per story</span></label>
+    <label class="opt"><input type="radio" name="q6" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q6"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="7">
   <div class="q-number">07</div>
-  <div class="q-label">How should page spreads (double-page artwork) be handled?</div>
-  <div class="q-hint">When you have a two-page spread image.</div>
+  <div class="q-label">What happens when a reader finishes a chapter?</div>
+  <div class="q-hint">End-of-chapter screen behavior.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q7" value="fit"><span>Fit to screen as one wide image</span></label>
-    <label class="opt"><input type="radio" name="q7" value="scroll"><span>Allow horizontal scroll to pan across the spread</span></label>
-    <label class="opt"><input type="radio" name="q7" value="split"><span>Split into two separate pages automatically</span></label>
+    <label class="opt"><input type="radio" name="q7" value="next-auto"><span>Auto-advance to next chapter after a delay</span></label>
+    <label class="opt"><input type="radio" name="q7" value="next-button"><span>Show a "Next Chapter" button</span></label>
+    <label class="opt"><input type="radio" name="q7" value="end-screen"><span>Show an end-screen with credits + related chapters</span></label>
     <label class="opt"><input type="radio" name="q7" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q7"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="8">
   <div class="q-number">08</div>
-  <div class="q-label">Should there be a "continue reading" shortcut on the homepage?</div>
-  <div class="q-hint">Jump straight back to where the reader left off.</div>
+  <div class="q-label">Should readers be able to bookmark their exact position mid-chapter?</div>
+  <div class="q-hint">Save exact page + zoom + pan and resume later.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q8" value="yes-prominent"><span>Yes — prominent hero section</span></label>
-    <label class="opt"><input type="radio" name="q8" value="yes-subtle"><span>Yes — subtle banner or card</span></label>
-    <label class="opt"><input type="radio" name="q8" value="no"><span>No — readers should browse the library each time</span></label>
+    <label class="opt"><input type="radio" name="q8" value="yes-auto"><span>Yes — automatically, every page turn</span></label>
+    <label class="opt"><input type="radio" name="q8" value="yes-manual"><span>Yes — but only with a manual bookmark button</span></label>
+    <label class="opt"><input type="radio" name="q8" value="chapter-only"><span>No — just remember which chapter they were on</span></label>
     <label class="opt"><input type="radio" name="q8" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q8"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: UPLOAD & ADMIN ═══ -->
-<div class="section-divider"><span class="section-title">Upload & Admin</span></div>
-
 <div class="q-card" data-q="9">
   <div class="q-number">09</div>
-  <div class="q-label">When uploading, how should page order be determined?</div>
-  <div class="q-hint">Natural sort (1, 2, 10) vs alphabetical vs manual drag-and-drop.</div>
+  <div class="q-label">How should page spreads (double-page artwork) be handled?</div>
+  <div class="q-hint">When you have a two-page spread image.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q9" value="natural"><span>Natural filename sort (1, 2, 10 — not 1, 10, 2)</span></label>
-    <label class="opt"><input type="radio" name="q9" value="alphabetical"><span>Alphabetical filename sort</span></label>
-    <label class="opt"><input type="radio" name="q9" value="manual"><span>Manual drag-and-drop reorder after upload</span></label>
+    <label class="opt"><input type="radio" name="q9" value="fit"><span>Fit to screen as one wide image</span></label>
+    <label class="opt"><input type="radio" name="q9" value="scroll"><span>Allow horizontal scroll to pan across the spread</span></label>
+    <label class="opt"><input type="radio" name="q9" value="split"><span>Split into two separate pages automatically</span></label>
     <label class="opt"><input type="radio" name="q9" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q9"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="10">
   <div class="q-number">10</div>
-  <div class="q-label">Should uploaded chapters be published immediately or saved as drafts?</div>
-  <div class="q-hint">Control over when readers see new content.</div>
+  <div class="q-label">Should there be a "continue reading" shortcut on the homepage?</div>
+  <div class="q-hint">Jump straight back to where the reader left off.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q10" value="draft"><span>Save as draft first, publish manually</span></label>
-    <label class="opt"><input type="radio" name="q10" value="immediate"><span>Publish immediately upon upload completion</span></label>
-    <label class="opt"><input type="radio" name="q10" value="schedule"><span>Allow scheduling (publish at a specific date/time)</span></label>
+    <label class="opt"><input type="radio" name="q10" value="yes-prominent"><span>Yes — prominent hero section</span></label>
+    <label class="opt"><input type="radio" name="q10" value="yes-subtle"><span>Yes — subtle banner or card</span></label>
+    <label class="opt"><input type="radio" name="q10" value="no"><span>No — readers should browse the library each time</span></label>
     <label class="opt"><input type="radio" name="q10" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q10"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="11">
   <div class="q-number">11</div>
-  <div class="q-label">Should there be a chapter preview feature?</div>
-  <div class="q-hint">Let non-members read 1-3 pages before hitting the paywall/membership wall.</div>
+  <div class="q-label">Should zoom work via pinch gestures, buttons, or both?</div>
+  <div class="q-hint">Mobile readers especially need clarity on this.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q11" value="yes"><span>Yes — first 1-3 pages free, then "Join to continue"</span></label>
-    <label class="opt"><input type="radio" name="q11" value="yes-custom"><span>Yes — but let me choose how many preview pages per chapter</span></label>
-    <label class="opt"><input type="radio" name="q11" value="no"><span>No — chapters are either fully open or fully locked</span></label>
+    <label class="opt"><input type="radio" name="q11" value="pinch"><span>Pinch only (native touch)</span></label>
+    <label class="opt"><input type="radio" name="q11" value="buttons"><span>Buttons only (+ / - / reset)</span></label>
+    <label class="opt"><input type="radio" name="q11" value="both"><span>Both pinch and buttons</span></label>
     <label class="opt"><input type="radio" name="q11" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q11"></label>
   </div>
 </div>
 
+<!-- ═══ SECTION: UPLOAD & ADMIN ═══ -->
+<div class="section-divider"><span class="section-title">Upload & Admin</span></div>
+
 <div class="q-card" data-q="12">
   <div class="q-number">12</div>
-  <div class="q-label">What should the admin dashboard show at a glance?</div>
-  <div class="q-hint">The "mission control" view when you log in as admin.</div>
+  <div class="q-label">When uploading, how should page order be determined?</div>
+  <div class="q-hint">Natural sort (1, 2, 10) vs alphabetical vs manual drag-and-drop.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q12" value="basic"><span>Basic stats (total readers, chapters, storage used)</span></label>
-    <label class="opt"><input type="radio" name="q12" value="detailed"><span>Detailed analytics (reading time, popular chapters, active users, comments)</span></label>
-    <label class="opt"><input type="radio" name="q12" value="action"><span>Action-focused (pending approvals, flagged comments, upload queue)</span></label>
+    <label class="opt"><input type="radio" name="q12" value="natural"><span>Natural filename sort (1, 2, 10 — not 1, 10, 2)</span></label>
+    <label class="opt"><input type="radio" name="q12" value="alphabetical"><span>Alphabetical filename sort</span></label>
+    <label class="opt"><input type="radio" name="q12" value="manual"><span>Manual drag-and-drop reorder after upload</span></label>
     <label class="opt"><input type="radio" name="q12" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q12"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: MEMBERSHIP & ACCESS ═══ -->
-<div class="section-divider"><span class="section-title">Membership & Access</span></div>
-
 <div class="q-card" data-q="13">
   <div class="q-number">13</div>
-  <div class="q-label">How should new member applications work?</div>
-  <div class="q-hint">After a user agrees to T&C, what happens next?</div>
+  <div class="q-label">Should uploaded chapters be published immediately or saved as drafts?</div>
+  <div class="q-hint">Control over when readers see new content.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q13" value="auto"><span>Auto-approved immediately after T&C agreement</span></label>
-    <label class="opt"><input type="radio" name="q13" value="manual"><span>Manual approval required — you review each application</span></label>
-    <label class="opt"><input type="radio" name="q13" value="invite"><span>Invite-only — no public application, you send invite links</span></label>
+    <label class="opt"><input type="radio" name="q13" value="draft"><span>Save as draft first, publish manually</span></label>
+    <label class="opt"><input type="radio" name="q13" value="immediate"><span>Publish immediately upon upload completion</span></label>
+    <label class="opt"><input type="radio" name="q13" value="schedule"><span>Allow scheduling (publish at a specific date/time)</span></label>
     <label class="opt"><input type="radio" name="q13" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q13"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="14">
   <div class="q-number">14</div>
-  <div class="q-label">Should there be different membership tiers?</div>
-  <div class="q-hint">Even if paid subscriptions aren't active yet, should the system support tiers?</div>
+  <div class="q-label">Should there be a chapter preview feature for non-members?</div>
+  <div class="q-hint">Let guests read 1-3 pages before hitting the membership wall.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q14" value="yes"><span>Yes — build tier system now (Free / Member / Premium) even if unused</span></label>
-    <label class="opt"><input type="radio" name="q14" value="yes-simple"><span>Yes — but simple (Guest vs Member only)</span></label>
-    <label class="opt"><input type="radio" name="q14" value="no"><span>No — everyone is either a guest or a full member</span></label>
+    <label class="opt"><input type="radio" name="q14" value="yes"><span>Yes — first 1-3 pages free, then "Join to continue"</span></label>
+    <label class="opt"><input type="radio" name="q14" value="yes-custom"><span>Yes — but let me choose how many preview pages per chapter</span></label>
+    <label class="opt"><input type="radio" name="q14" value="no"><span>No — chapters are either fully open or fully locked</span></label>
     <label class="opt"><input type="radio" name="q14" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q14"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="15">
   <div class="q-number">15</div>
-  <div class="q-label">What happens when a non-member tries to read locked content?</div>
-  <div class="q-hint">The "members only" experience.</div>
+  <div class="q-label">Should you be able to edit or replace pages after publishing?</div>
+  <div class="q-hint">Fix typos in art, update credits, replace a bad export — without re-uploading the whole chapter.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q15" value="modal"><span>Modal popup explaining membership + CTA to join</span></label>
-    <label class="opt"><input type="radio" name="q15" value="blur"><span>Show blurred/pixelated pages with "Join to unlock" overlay</span></label>
-    <label class="opt"><input type="radio" name="q15" value="redirect"><span>Redirect to the Reading Club signup page</span></label>
+    <label class="opt"><input type="radio" name="q15" value="yes-replace"><span>Yes — replace individual pages</span></label>
+    <label class="opt"><input type="radio" name="q15" value="yes-reorder"><span>Yes — reorder pages and replace pages</span></label>
+    <label class="opt"><input type="radio" name="q15" value="no"><span>No — if I make a mistake, I re-upload the whole chapter</span></label>
     <label class="opt"><input type="radio" name="q15" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q15"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: COMMENTS & COMMUNITY ═══ -->
-<div class="section-divider"><span class="section-title">Comments & Community</span></div>
-
 <div class="q-card" data-q="16">
   <div class="q-number">16</div>
-  <div class="q-label">Where should the per-page comments live?</div>
-  <div class="q-hint">You mentioned not wanting pin icons on the artwork by default.</div>
+  <div class="q-label">What should the admin dashboard show at a glance?</div>
+  <div class="q-hint">The "mission control" view when you log in as admin.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q16" value="sidebar"><span>Sidebar panel that slides out — no pins on the art</span></label>
-    <label class="opt"><input type="radio" name="q16" value="overlay"><span>Full-screen overlay that appears over the reader</span></label>
-    <label class="opt"><input type="radio" name="q16" value="bottom"><span>Bottom sheet (like mobile comments on Instagram)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="basic"><span>Basic stats (total readers, chapters, storage used)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="detailed"><span>Detailed analytics (reading time, popular chapters, active users, comments)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="action"><span>Action-focused (pending approvals, flagged comments, upload queue)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="creator"><span>Creator-focused (recent uploads, upcoming releases, reader engagement per story)</span></label>
     <label class="opt"><input type="radio" name="q16" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q16"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="17">
   <div class="q-number">17</div>
-  <div class="q-label">Should comments be threaded (reply chains) or flat?</div>
-  <div class="q-hint">Can users reply to individual comments, or just post on the page?</div>
+  <div class="q-label">Should the upload system support bulk operations?</div>
+  <div class="q-hint">Upload multiple chapters at once, or mass-edit metadata, or batch-delete.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q17" value="threaded"><span>Threaded — replies nested under parent comments</span></label>
-    <label class="opt"><input type="radio" name="q17" value="flat"><span>Flat — chronological list, no nesting</span></label>
-    <label class="opt"><input type="radio" name="q17" value="both"><span>Both — flat by default, option to expand threads</span></label>
+    <label class="opt"><input type="radio" name="q17" value="yes-all"><span>Yes — bulk upload + bulk edit + bulk delete</span></label>
+    <label class="opt"><input type="radio" name="q17" value="yes-upload"><span>Bulk upload only</span></label>
+    <label class="opt"><input type="radio" name="q17" value="no"><span>No — one chapter at a time is fine</span></label>
     <label class="opt"><input type="radio" name="q17" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q17"></label>
   </div>
 </div>
 
+<!-- ═══ SECTION: MEMBERSHIP & ACCESS ═══ -->
+<div class="section-divider"><span class="section-title">Membership & Access</span></div>
+
 <div class="q-card" data-q="18">
   <div class="q-number">18</div>
-  <div class="q-label">Should readers be able to react to comments (like, heart, etc.)?</div>
-  <div class="q-hint">Engagement signals beyond text replies.</div>
+  <div class="q-label">How should new member applications work?</div>
+  <div class="q-hint">After a user agrees to T&C, what happens next?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q18" value="yes"><span>Yes — simple like/heart reaction</span></label>
-    <label class="opt"><input type="radio" name="q18" value="no"><span>No — text-only discussion</span></label>
+    <label class="opt"><input type="radio" name="q18" value="auto"><span>Auto-approved immediately after T&C agreement</span></label>
+    <label class="opt"><input type="radio" name="q18" value="manual"><span>Manual approval required — you review each application</span></label>
+    <label class="opt"><input type="radio" name="q18" value="invite"><span>Invite-only — no public application, you send invite links</span></label>
     <label class="opt"><input type="radio" name="q18" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q18"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: FORUM ═══ -->
-<div class="section-divider"><span class="section-title">Forum & Discussions</span></div>
-
 <div class="q-card" data-q="19">
   <div class="q-number">19</div>
-  <div class="q-label">How should the forum be organized?</div>
-  <div class="q-hint">Categories, tags, or free-form?</div>
+  <div class="q-label">Should there be different membership tiers?</div>
+  <div class="q-hint">Even if paid subscriptions aren't active yet, should the system support tiers?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q19" value="per-story"><span>Per-story forums (each manga has its own discussion space)</span></label>
-    <label class="opt"><input type="radio" name="q19" value="global"><span>Global forum with categories (Discussions, Theories, Fan Art, Announcements)</span></label>
-    <label class="opt"><input type="radio" name="q19" value="both"><span>Both — per-story + global categories</span></label>
+    <label class="opt"><input type="radio" name="q19" value="yes"><span>Yes — build tier system now (Free / Member / Premium) even if unused</span></label>
+    <label class="opt"><input type="radio" name="q19" value="yes-simple"><span>Yes — but simple (Guest vs Member only)</span></label>
+    <label class="opt"><input type="radio" name="q19" value="no"><span>No — everyone is either a guest or a full member</span></label>
     <label class="opt"><input type="radio" name="q19" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q19"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="20">
   <div class="q-number">20</div>
-  <div class="q-label">Should forum posts support rich content?</div>
-  <div class="q-hint">Images, embeds, formatting in posts.</div>
+  <div class="q-label">What happens when a non-member tries to read locked content?</div>
+  <div class="q-hint">The "members only" experience.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q20" value="text"><span>Text-only (simplest, fastest)</span></label>
-    <label class="opt"><input type="radio" name="q20" value="markdown"><span>Markdown formatting (bold, links, lists)</span></label>
-    <label class="opt"><input type="radio" name="q20" value="rich"><span>Rich text + image uploads + embeds</span></label>
+    <label class="opt"><input type="radio" name="q20" value="modal"><span>Modal popup explaining membership + CTA to join</span></label>
+    <label class="opt"><input type="radio" name="q20" value="blur"><span>Show blurred/pixelated pages with "Join to unlock" overlay</span></label>
+    <label class="opt"><input type="radio" name="q20" value="redirect"><span>Redirect to the Reading Club signup page</span></label>
     <label class="opt"><input type="radio" name="q20" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q20"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: NOTIFICATIONS ═══ -->
-<div class="section-divider"><span class="section-title">Notifications</span></div>
-
 <div class="q-card" data-q="21">
   <div class="q-number">21</div>
-  <div class="q-label">What events should trigger in-app notifications?</div>
-  <div class="q-hint">Check all that should notify the user inside the platform.</div>
+  <div class="q-label">Should social login be available (Google, Apple, etc.)?</div>
+  <div class="q-hint">Or email/password only? Social login reduces friction but adds setup complexity.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q21" value="chapter"><span>New chapter releases only</span></label>
-    <label class="opt"><input type="radio" name="q21" value="reply"><span>Comment replies + mentions</span></label>
-    <label class="opt"><input type="radio" name="q21" value="forum"><span>Forum replies to their posts</span></label>
-    <label class="opt"><input type="radio" name="q21" value="all"><span>All of the above</span></label>
+    <label class="opt"><input type="radio" name="q21" value="yes"><span>Yes — offer Google, Apple, and email/password</span></label>
+    <label class="opt"><input type="radio" name="q21" value="email-only"><span>Email/password only (simpler, more control)</span></label>
+    <label class="opt"><input type="radio" name="q21" value="later"><span>Email only for now, social login in Phase 2</span></label>
     <label class="opt"><input type="radio" name="q21" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q21"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="22">
   <div class="q-number">22</div>
-  <div class="q-label">Should email/WhatsApp notifications be optional per user?</div>
-  <div class="q-hint">Can users choose what they receive off-platform?</div>
+  <div class="q-label">Do you have existing Terms & Conditions text we should use?</div>
+  <div class="q-hint">Or should we generate a standard T&C template for you to review and customize?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q22" value="yes-granular"><span>Yes — granular control (chapters, replies, announcements separately)</span></label>
-    <label class="opt"><input type="radio" name="q22" value="yes-simple"><span>Yes — simple on/off toggle for all external notifications</span></label>
-    <label class="opt"><input type="radio" name="q22" value="no"><span>No — admin decides, all users receive the same notifications</span></label>
-    <label class="opt"><input type="radio" name="q22" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q22"></label>
+    <label class="opt"><input type="radio" name="q22" value="yes"><span>Yes — I have my own T&C text ready</span></label>
+    <label class="opt"><input type="radio" name="q22" value="yes-later"><span>Not yet — generate a template and I'll customize it</span></label>
+    <label class="opt"><input type="radio" name="q22" value="need-help"><span>I need help drafting T&C from scratch</span></label>
+    <label class="opt"><input type="radio" name="q22" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q22"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: DESIGN & BRAND ═══ -->
-<div class="section-divider"><span class="section-title">Design & Brand</span></div>
+<!-- ═══ SECTION: COMMENTS & COMMUNITY ═══ -->
+<div class="section-divider"><span class="section-title">Comments & Community</span></div>
 
 <div class="q-card" data-q="23">
   <div class="q-number">23</div>
-  <div class="q-label">What feeling should the landing page evoke?</div>
-  <div class="q-hint">The emotional impression when someone first visits.</div>
+  <div class="q-label">Where should the per-page comments live?</div>
+  <div class="q-hint">You mentioned not wanting pin icons on the artwork by default.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q23" value="premium"><span>Premium / luxury (clean, editorial, high-end)</span></label>
-    <label class="opt"><input type="radio" name="q23" value="mystery"><span>Mysterious / dark fantasy (moody, atmospheric)</span></label>
-    <label class="opt"><input type="radio" name="q23" value="community"><span>Warm / community-focused (inviting, social)</span></label>
-    <label class="opt"><input type="radio" name="q23" value="minimal"><span>Ultra-minimal (content-first, zero distraction)</span></label>
+    <label class="opt"><input type="radio" name="q23" value="sidebar"><span>Sidebar panel that slides out — no pins on the art</span></label>
+    <label class="opt"><input type="radio" name="q23" value="overlay"><span>Full-screen overlay that appears over the reader</span></label>
+    <label class="opt"><input type="radio" name="q23" value="bottom"><span>Bottom sheet (like mobile comments on Instagram)</span></label>
     <label class="opt"><input type="radio" name="q23" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q23"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="24">
   <div class="q-number">24</div>
-  <div class="q-label">Should the reader have a "theater mode" or distraction-free view?</div>
-  <div class="q-hint">Hide ALL chrome (progress bar, page counter, top bar) for pure immersion.</div>
+  <div class="q-label">Should comments be threaded (reply chains) or flat?</div>
+  <div class="q-hint">Can users reply to individual comments, or just post on the page?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q24" value="yes-auto"><span>Yes — auto-hide all UI after 3 seconds of inactivity</span></label>
-    <label class="opt"><input type="radio" name="q24" value="yes-toggle"><span>Yes — manual toggle button</span></label>
-    <label class="opt"><input type="radio" name="q24" value="no"><span>No — keep minimal chrome visible at all times</span></label>
+    <label class="opt"><input type="radio" name="q24" value="threaded"><span>Threaded — replies nested under parent comments</span></label>
+    <label class="opt"><input type="radio" name="q24" value="flat"><span>Flat — chronological list, no nesting</span></label>
+    <label class="opt"><input type="radio" name="q24" value="both"><span>Both — flat by default, option to expand threads</span></label>
     <label class="opt"><input type="radio" name="q24" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q24"></label>
   </div>
 </div>
 
-<!-- ═══ SECTION: FUTURE & SCOPE ═══ -->
-<div class="section-divider"><span class="section-title">Future & Scope</span></div>
-
 <div class="q-card" data-q="25">
   <div class="q-number">25</div>
-  <div class="q-label">Are you interested in guided reading features for a future phase?</div>
-  <div class="q-hint">Auto-scrolling, panel-to-panel navigation, automatic page progression — NOT Phase 1.</div>
+  <div class="q-label">Should readers be able to react to comments (like, heart, etc.)?</div>
+  <div class="q-hint">Engagement signals beyond text replies.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q25" value="yes-soon"><span>Yes — likely within 6-12 months after launch</span></label>
-    <label class="opt"><input type="radio" name="q25" value="yes-later"><span>Yes — but not a priority, maybe in 1-2 years</span></label>
-    <label class="opt"><input type="radio" name="q25" value="no"><span>No — simple reader is all I need</span></label>
+    <label class="opt"><input type="radio" name="q25" value="yes"><span>Yes — simple like/heart reaction</span></label>
+    <label class="opt"><input type="radio" name="q25" value="no"><span>No — text-only discussion</span></label>
     <label class="opt"><input type="radio" name="q25" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q25"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="26">
   <div class="q-number">26</div>
-  <div class="q-label">Should the platform support merchandise or store integration later?</div>
-  <div class="q-hint">Even if not built now, should we leave room for it?</div>
+  <div class="q-label">How should comment moderation work?</div>
+  <div class="q-hint">Pre-approval (comments hidden until you approve) or post-moderation (visible immediately, you remove bad ones)?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q26" value="yes"><span>Yes — architect for it now, build later</span></label>
-    <label class="opt"><input type="radio" name="q26" value="no"><span>No — pure reading platform, no commerce</span></label>
-    <label class="opt"><input type="radio" name="q26" value="maybe"><span>Maybe — but don't design around it</span></label>
+    <label class="opt"><input type="radio" name="q26" value="pre"><span>Pre-approval — all comments hidden until I approve them</span></label>
+    <label class="opt"><input type="radio" name="q26" value="post"><span>Post-moderation — visible immediately, I can remove/report later</span></label>
+    <label class="opt"><input type="radio" name="q26" value="auto"><span>Auto-moderation (filter spam/profanity) + manual review queue</span></label>
     <label class="opt"><input type="radio" name="q26" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q26"></label>
   </div>
 </div>
 
+<!-- ═══ SECTION: FORUM ═══ -->
+<div class="section-divider"><span class="section-title">Forum & Discussions</span></div>
+
 <div class="q-card" data-q="27">
   <div class="q-number">27</div>
-  <div class="q-label">What's your ideal content release cadence?</div>
-  <div class="q-hint">How often do you plan to publish new chapters?</div>
+  <div class="q-label">How should the forum be organized?</div>
+  <div class="q-hint">Categories, tags, or free-form?</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q27" value="weekly"><span>Weekly</span></label>
-    <label class="opt"><input type="radio" name="q27" value="biweekly"><span>Bi-weekly</span></label>
-    <label class="opt"><input type="radio" name="q27" value="monthly"><span>Monthly</span></label>
-    <label class="opt"><input type="radio" name="q27" value="irregular"><span>Irregular / when ready</span></label>
+    <label class="opt"><input type="radio" name="q27" value="per-story"><span>Per-story forums (each manga has its own discussion space)</span></label>
+    <label class="opt"><input type="radio" name="q27" value="global"><span>Global forum with categories (Discussions, Theories, Fan Art, Announcements)</span></label>
+    <label class="opt"><input type="radio" name="q27" value="both"><span>Both — per-story + global categories</span></label>
     <label class="opt"><input type="radio" name="q27" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q27"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="28">
   <div class="q-number">28</div>
-  <div class="q-label">How many readers do you expect in Year 1?</div>
-  <div class="q-hint">This helps us size infrastructure without over-engineering.</div>
+  <div class="q-label">Should forum posts support rich content?</div>
+  <div class="q-hint">Images, embeds, formatting in posts.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q28" value="low"><span>Under 500</span></label>
-    <label class="opt"><input type="radio" name="q28" value="medium"><span>500 – 2,000</span></label>
-    <label class="opt"><input type="radio" name="q28" value="high"><span>2,000 – 10,000</span></label>
+    <label class="opt"><input type="radio" name="q28" value="text"><span>Text-only (simplest, fastest)</span></label>
+    <label class="opt"><input type="radio" name="q28" value="markdown"><span>Markdown formatting (bold, links, lists)</span></label>
+    <label class="opt"><input type="radio" name="q28" value="rich"><span>Rich text + image uploads + embeds</span></label>
     <label class="opt"><input type="radio" name="q28" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q28"></label>
   </div>
 </div>
 
 <div class="q-card" data-q="29">
   <div class="q-number">29</div>
-  <div class="q-label">What's your preferred payment structure?</div>
-  <div class="q-hint">Milestone-based is most common, but we can adapt.</div>
+  <div class="q-label">Should forum posts be moderated the same way as page comments?</div>
+  <div class="q-hint">Or different rules? E.g., forum = post-moderation, comments = pre-approval.</div>
   <div class="options">
-    <label class="opt"><input type="radio" name="q29" value="50-50"><span>50% upfront, 50% on delivery</span></label>
-    <label class="opt"><input type="radio" name="q29" value="thirds"><span>Three equal payments (start / mid / delivery)</span></label>
-    <label class="opt"><input type="radio" name="q29" value="per-feature"><span>Pay per completed feature block</span></label>
+    <label class="opt"><input type="radio" name="q29" value="same"><span>Same rules as page comments</span></label>
+    <label class="opt"><input type="radio" name="q29" value="looser"><span>Looser rules for forum (more open discussion)</span></label>
+    <label class="opt"><input type="radio" name="q29" value="stricter"><span>Stricter rules for forum (it's public-facing)</span></label>
     <label class="opt"><input type="radio" name="q29" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q29"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: NOTIFICATIONS ═══ -->
+<div class="section-divider"><span class="section-title">Notifications</span></div>
+
+<div class="q-card" data-q="30">
+  <div class="q-number">30</div>
+  <div class="q-label">What events should trigger in-app notifications?</div>
+  <div class="q-hint">Check all that should notify the user inside the platform.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q30" value="chapter"><span>New chapter releases only</span></label>
+    <label class="opt"><input type="radio" name="q30" value="reply"><span>Comment replies + mentions</span></label>
+    <label class="opt"><input type="radio" name="q30" value="forum"><span>Forum replies to their posts</span></label>
+    <label class="opt"><input type="radio" name="q30" value="all"><span>All of the above</span></label>
+    <label class="opt"><input type="radio" name="q30" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q30"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="31">
+  <div class="q-number">31</div>
+  <div class="q-label">Should email/WhatsApp notifications be optional per user?</div>
+  <div class="q-hint">Can users choose what they receive off-platform?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q31" value="yes-granular"><span>Yes — granular control (chapters, replies, announcements separately)</span></label>
+    <label class="opt"><input type="radio" name="q31" value="yes-simple"><span>Yes — simple on/off toggle for all external notifications</span></label>
+    <label class="opt"><input type="radio" name="q31" value="no"><span>No — admin decides, all users receive the same notifications</span></label>
+    <label class="opt"><input type="radio" name="q31" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q31"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="32">
+  <div class="q-number">32</div>
+  <div class="q-label">Should there be a notification frequency cap?</div>
+  <div class="q-hint">Prevent spam if you upload 5 chapters at once or a thread gets active.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q32" value="digest"><span>Daily digest (one email per day max)</span></label>
+    <label class="opt"><input type="radio" name="q32" value="batch"><span>Batch notifications (wait 30 min, then send one combined email)</span></label>
+    <label class="opt"><input type="radio" name="q32" value="realtime"><span>Real-time (every event triggers immediately)</span></label>
+    <label class="opt"><input type="radio" name="q32" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q32"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: DESIGN & BRAND ═══ -->
+<div class="section-divider"><span class="section-title">Design & Brand</span></div>
+
+<div class="q-card" data-q="33">
+  <div class="q-number">33</div>
+  <div class="q-label">What feeling should the landing page evoke?</div>
+  <div class="q-hint">The emotional impression when someone first visits.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q33" value="premium"><span>Premium / luxury (clean, editorial, high-end)</span></label>
+    <label class="opt"><input type="radio" name="q33" value="mystery"><span>Mysterious / dark fantasy (moody, atmospheric)</span></label>
+    <label class="opt"><input type="radio" name="q33" value="community"><span>Warm / community-focused (inviting, social)</span></label>
+    <label class="opt"><input type="radio" name="q33" value="minimal"><span>Ultra-minimal (content-first, zero distraction)</span></label>
+    <label class="opt"><input type="radio" name="q33" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q33"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="34">
+  <div class="q-number">34</div>
+  <div class="q-label">Should the reader have a "theater mode" or distraction-free view?</div>
+  <div class="q-hint">Hide ALL chrome (progress bar, page counter, top bar) for pure immersion.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q34" value="yes-auto"><span>Yes — auto-hide all UI after 3 seconds of inactivity</span></label>
+    <label class="opt"><input type="radio" name="q34" value="yes-toggle"><span>Yes — manual toggle button</span></label>
+    <label class="opt"><input type="radio" name="q34" value="no"><span>No — keep minimal chrome visible at all times</span></label>
+    <label class="opt"><input type="radio" name="q34" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q34"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="35">
+  <div class="q-number">35</div>
+  <div class="q-label">Should there be a light/dark mode toggle?</div>
+  <div class="q-hint">We know you mentioned this before — confirming for the scope.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q35" value="yes-toggle"><span>Yes — manual toggle (user chooses)</span></label>
+    <label class="opt"><input type="radio" name="q35" value="yes-system"><span>Yes — follow system preference (auto-switch)</span></label>
+    <label class="opt"><input type="radio" name="q35" value="dark-only"><span>No — dark mode only (our current demo style)</span></label>
+    <label class="opt"><input type="radio" name="q35" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q35"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="36">
+  <div class="q-number">36</div>
+  <div class="q-label">What platforms should we prioritize?</div>
+  <div class="q-hint">Desktop, mobile web, native apps, or all equally?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q36" value="mobile-first"><span>Mobile-first (most readers will be on phones)</span></label>
+    <label class="opt"><input type="radio" name="q36" value="desktop-first"><span>Desktop-first (most readers will be on computers/tablets)</span></label>
+    <label class="opt"><input type="radio" name="q36" value="equal"><span>Equal priority across all screen sizes</span></label>
+    <label class="opt"><input type="radio" name="q36" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q36"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: PRODUCTION & ASSETS ═══ -->
+<div class="section-divider"><span class="section-title">Production & Assets</span></div>
+
+<div class="q-card" data-q="37">
+  <div class="q-number">37</div>
+  <div class="q-label">What assets can you provide for each Rūsuma (story)?</div>
+  <div class="q-hint">Cover art, chapter images, metadata (title, synopsis, tags), character sheets, world-building docs — what do you have ready?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q37" value="images-only"><span>Chapter images only (JPEG/PNG folders per chapter)</span></label>
+    <label class="opt"><input type="radio" name="q37" value="images-cover"><span>Chapter images + cover art for each story</span></label>
+    <label class="opt"><input type="radio" name="q37" value="images-cover-meta"><span>Images + cover art + title/synopsis/tags metadata</span></label>
+    <label class="opt"><input type="radio" name="q37" value="full-kit"><span>Full kit — images, covers, metadata, character art, world-building docs, style guides</span></label>
+    <label class="opt"><input type="radio" name="q37" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe what you have..." data-other="q37"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="38">
+  <div class="q-number">38</div>
+  <div class="q-label">Can you share a sample chapter folder for development testing?</div>
+  <div class="q-hint">We need real file structure (naming, sizes, formats) to build the uploader and reader correctly. A single chapter's worth of images is enough.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q38" value="yes-drive"><span>Yes — I'll share a Google Drive / Dropbox folder link</span></label>
+    <label class="opt"><input type="radio" name="q38" value="yes-email"><span>Yes — I'll attach a ZIP to my next email</span></label>
+    <label class="opt"><input type="radio" name="q38" value="yes-later"><span>Yes — but after we sign the scope (IP protection)</span></label>
+    <label class="opt"><input type="radio" name="q38" value="no"><span>No — I'll describe the structure and you build generically</span></label>
+    <label class="opt"><input type="radio" name="q38" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q38"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="39">
+  <div class="q-number">39</div>
+  <div class="q-label">How is your content currently organized?</div>
+  <div class="q-hint">Folder structure, file naming, where it's stored — this determines how we build the upload pipeline.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q39" value="folders"><span>Folders on my computer — one folder per chapter, named like "Ch01", "Ch02"</span></label>
+    <label class="opt"><input type="radio" name="q39" value="cloud"><span>Cloud storage (Google Drive, Dropbox, iCloud) with folders</span></label>
+    <label class="opt"><input type="radio" name="q39" value="mixed"><span>Mixed — some local, some cloud, not consistently organized</span></label>
+    <label class="opt"><input type="radio" name="q39" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your setup..." data-other="q39"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="40">
+  <div class="q-number">40</div>
+  <div class="q-label">Do you own the domain restlessworlds.com (or your preferred domain)?</div>
+  <div class="q-hint">If not, we can handle domain registration as part of setup.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q40" value="yes-dns"><span>Yes — and I can add DNS records / CNAME myself</span></label>
+    <label class="opt"><input type="radio" name="q40" value="yes-need-help"><span>Yes — but I'll need guidance on DNS setup</span></label>
+    <label class="opt"><input type="radio" name="q40" value="no-buy"><span>No — please register it and bill me</span></label>
+    <label class="opt"><input type="radio" name="q40" value="no-different"><span>I want a different domain — let's discuss</span></label>
+    <label class="opt"><input type="radio" name="q40" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q40"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="41">
+  <div class="q-number">41</div>
+  <div class="q-label">Can you create a GitHub repository and add us as collaborators?</div>
+  <div class="q-hint">Or we can create the repo under our account and transfer ownership to you on delivery. Either works.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q41" value="yes-repo"><span>Yes — I'll create the repo and invite your GitHub account</span></label>
+    <label class="opt"><input type="radio" name="q41" value="yes-account"><span>Yes — but tell me your GitHub username first</span></label>
+    <label class="opt"><input type="radio" name="q41" value="no-transfer"><span>No — you create it, I'll take ownership at handoff</span></label>
+    <label class="opt"><input type="radio" name="q41" value="no-unsure"><span>I'm not sure what GitHub is — explain please</span></label>
+    <label class="opt"><input type="radio" name="q41" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q41"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="42">
+  <div class="q-number">42</div>
+  <div class="q-label">What payment processor do you have (or plan to use) for subscriptions?</div>
+  <div class="q-hint">Stripe, PayPal Business, Square, or none yet? This determines how we build the membership billing system.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q42" value="stripe"><span>Stripe — I have an account and can provide API keys</span></label>
+    <label class="opt"><input type="radio" name="q42" value="paypal"><span>PayPal Business — I have an account</span></label>
+    <label class="opt"><input type="radio" name="q42" value="none-stripe"><span>None yet — I'll create Stripe when you tell me to</span></label>
+    <label class="opt"><input type="radio" name="q42" value="none-paypal"><span>None yet — I'll create PayPal Business when you tell me to</span></label>
+    <label class="opt"><input type="radio" name="q42" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which processor?" data-other="q42"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="43">
+  <div class="q-number">43</div>
+  <div class="q-label">Do you have existing brand assets we should use?</div>
+  <div class="q-hint">Logo (vector/SVG preferred), color palette hex codes, font files, existing style guide — or should we design from scratch?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q43" value="full-kit"><span>Full brand kit — logo, colors, fonts, style guide</span></label>
+    <label class="opt"><input type="radio" name="q43" value="logo-only"><span>Logo only — you'll design the rest to match</span></label>
+    <label class="opt"><input type="radio" name="q43" value="partial"><span>Partial — I have some elements but not a complete kit</span></label>
+    <label class="opt"><input type="radio" name="q43" value="none"><span>Nothing — design everything from scratch based on my vision</span></label>
+    <label class="opt"><input type="radio" name="q43" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe what you have..." data-other="q43"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="44">
+  <div class="q-number">44</div>
+  <div class="q-label">Who else needs access to the admin dashboard?</div>
+  <div class="q-hint">VA, editor, co-creator, translator — anyone who uploads chapters or moderates comments besides you.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q44" value="just-me"><span>Just me — I'm the only admin</span></label>
+    <label class="opt"><input type="radio" name="q44" value="one-other"><span>One other person (editor, VA, or co-creator)</span></label>
+    <label class="opt"><input type="radio" name="q44" value="multiple"><span>Multiple team members with different roles</span></label>
+    <label class="opt"><input type="radio" name="q44" value="not-yet"><span>Not yet — but maybe later</span></label>
+    <label class="opt"><input type="radio" name="q44" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Explain..." data-other="q44"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="45">
+  <div class="q-number">45</div>
+  <div class="q-label">Do you have any existing digital infrastructure we should integrate with?</div>
+  <div class="q-hint">Existing website, CMS, email list (Mailchimp, ConvertKit), Discord server, social media accounts — anything we should connect to or migrate from?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q45" value="website"><span>Existing website (Squarespace, Wix, WordPress, etc.)</span></label>
+    <label class="opt"><input type="radio" name="q45" value="email-list"><span>Email list (Mailchimp, ConvertKit, etc.)</span></label>
+    <label class="opt"><input type="radio" name="q45" value="community"><span>Community platform (Discord, Facebook Group, etc.)</span></label>
+    <label class="opt"><input type="radio" name="q45" value="multiple"><span>Multiple of the above</span></label>
+    <label class="opt"><input type="radio" name="q45" value="none"><span>None — starting completely fresh</span></label>
+    <label class="opt"><input type="radio" name="q45" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your setup..." data-other="q45"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: PAYMENT & TERMS ═══ -->
+<div class="section-divider"><span class="section-title">Payment & Terms</span></div>
+
+<div class="q-card" data-q="46">
+  <div class="q-number">46</div>
+  <div class="q-label">What payment schedule works for you?</div>
+  <div class="q-hint">We require payment upfront or split with first payment before work begins. This locks in your project slot and starts the delivery clock.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q46" value="full-upfront"><span>100% upfront ($3,600 total) — unlocks fastest delivery + priority support</span></label>
+    <label class="opt"><input type="radio" name="q46" value="50-50"><span>50% upfront ($1,800), 50% on delivery — standard split</span></label>
+    <label class="opt"><input type="radio" name="q46" value="thirds"><span>Three payments ($1,200 each) — start / mid-project / delivery</span></label>
+    <label class="opt"><input type="radio" name="q46" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Propose a schedule..." data-other="q46"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="47">
+  <div class="q-number">47</div>
+  <div class="q-label">What's your preferred payment method?</div>
+  <div class="q-hint">Invoice via PayPal, direct bank transfer, or another method?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q47" value="paypal"><span>PayPal invoice</span></label>
+    <label class="opt"><input type="radio" name="q47" value="bank"><span>Bank transfer / wire</span></label>
+    <label class="opt"><input type="radio" name="q47" value="stripe"><span>Stripe payment link</span></label>
+    <label class="opt"><input type="radio" name="q47" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Which method?" data-other="q47"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: FUTURE & SCOPE ═══ -->
+<div class="section-divider"><span class="section-title">Future & Scope</span></div>
+
+<div class="q-card" data-q="48">
+  <div class="q-number">48</div>
+  <div class="q-label">Are you interested in guided reading features for a future phase?</div>
+  <div class="q-hint">Auto-scrolling, panel-to-panel navigation, automatic page progression — NOT Phase 1.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q48" value="yes-soon"><span>Yes — likely within 6-12 months after launch</span></label>
+    <label class="opt"><input type="radio" name="q48" value="yes-later"><span>Yes — but not a priority, maybe in 1-2 years</span></label>
+    <label class="opt"><input type="radio" name="q48" value="no"><span>No — simple reader is all I need</span></label>
+    <label class="opt"><input type="radio" name="q48" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q48"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="49">
+  <div class="q-number">49</div>
+  <div class="q-label">Should the platform support merchandise or store integration later?</div>
+  <div class="q-hint">Even if not built now, should we leave room for it?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q49" value="yes"><span>Yes — architect for it now, build later</span></label>
+    <label class="opt"><input type="radio" name="q49" value="no"><span>No — pure reading platform, no commerce</span></label>
+    <label class="opt"><input type="radio" name="q49" value="maybe"><span>Maybe — but don't design around it</span></label>
+    <label class="opt"><input type="radio" name="q49" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q49"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="50">
+  <div class="q-number">50</div>
+  <div class="q-label">What's your ideal content release cadence?</div>
+  <div class="q-hint">How often do you plan to publish new chapters?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q50" value="weekly"><span>Weekly</span></label>
+    <label class="opt"><input type="radio" name="q50" value="biweekly"><span>Bi-weekly</span></label>
+    <label class="opt"><input type="radio" name="q50" value="monthly"><span>Monthly</span></label>
+    <label class="opt"><input type="radio" name="q50" value="irregular"><span>Irregular / when ready</span></label>
+    <label class="opt"><input type="radio" name="q50" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q50"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="51">
+  <div class="q-number">51</div>
+  <div class="q-label">How many readers do you expect in Year 1?</div>
+  <div class="q-hint">This helps us size infrastructure without over-engineering.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q51" value="low"><span>Under 500</span></label>
+    <label class="opt"><input type="radio" name="q51" value="medium"><span>500 – 2,000</span></label>
+    <label class="opt"><input type="radio" name="q51" value="high"><span>2,000 – 10,000</span></label>
+    <label class="opt"><input type="radio" name="q51" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q51"></label>
   </div>
 </div>
 
 <!-- ═══ OPEN-ENDED ═══ -->
 <div class="section-divider"><span class="section-title">Open Feedback</span></div>
 
-<div class="q-card" data-q="30">
-  <div class="q-number">30</div>
+<div class="q-card" data-q="52">
+  <div class="q-number">52</div>
   <div class="q-label">Is there anything else we should know about your vision?</div>
   <div class="q-hint">Specific features, references, frustrations with existing platforms, or "wouldn't it be cool if..." ideas.</div>
   <div class="textarea-wrap">
-    <textarea name="q30" placeholder="Tell us anything... references to other apps you love, features you wish existed, things that annoy you about current reading platforms, your ideal workflow as a creator..."></textarea>
+    <textarea name="q52" placeholder="Tell us anything... references to other apps you love, features you wish existed, things that annoy you about current reading platforms, your ideal workflow as a creator..."></textarea>
   </div>
 </div>
 
 <div class="submit-area">
   <button type="submit" class="submit-btn" id="submit-btn">Submit Answers</button>
-  <p style="color: var(--text-subtle); font-size: 13px; margin-top: 16px;">Your answers will be encoded into a shareable link you can paste into your reply.</p>
+  <p style="color: var(--text-subtle); font-size: 13px; margin-top: 16px;">Your answers will be encoded into a shareable code you can paste into your reply.</p>
 </div>
 
 </form>
@@ -708,7 +990,7 @@ img { -webkit-user-drag: none; user-select: none; }
 <script>
 const form = document.getElementById('quiz-form');
 const progressBar = document.getElementById('progress-bar');
-const totalQ = 30;
+const totalQ = 52;
 
 // Track answered questions
 function updateProgress() {
@@ -762,11 +1044,11 @@ form.addEventListener('submit', function(e) {
   e.preventDefault();
 
   const answers = {};
-  for(let i = 1; i <= 30; i++) {
+  for(let i = 1; i <= 52; i++) {
     const card = document.querySelector(`[data-q="${i}"]`);
     if(!card) continue;
 
-    if(i === 30) {
+    if(i === 52) {
       const ta = card.querySelector('textarea');
       answers['q' + i] = ta.value.trim() || '';
     } else {
