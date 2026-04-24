@@ -16,7 +16,7 @@ This document defines the complete production scope for the Rūsuma Reading Plat
 
 The design philosophy is premium editorial: calm, minimal, and luxurious. Every screen shall feel intentional, with zero visual noise. The reader experience is sacred — no feature shall compete with the page for attention.
 
-The platform shall be built in two phases, totaling $3,600, with delivery expected within approximately four weeks of project kickoff.
+The platform shall be built in two phases, totaling $3,600, with delivery expected within approximately two weeks of project kickoff (1 week per phase, pending timely delivery of client assets and access).
 
 ---
 
@@ -40,7 +40,9 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 
 ### Phase 1 — Core Reading Experience ($2,000)
 
-**Timeline:** Approximately 2 weeks from payment receipt
+**Timeline:** 1 week from kickoff (core development: ~3 business days; remainder reserved for client asset delivery, feedback, and acceptance)
+
+**Work begins:** Within 2 business days of Payment 1 receipt and signed agreement return
 
 1. **Landing & Library**
    - Light-mode landing page (#FAFAF8) with premium editorial aesthetic
@@ -99,7 +101,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 
 ### Phase 2 — Community & Polish ($1,600)
 
-**Timeline:** Approximately 2 weeks from Phase 1 delivery + payment
+**Timeline:** 1 week from Phase 1 acceptance + Payment 2 receipt (core development: ~3 business days; remainder reserved for client asset delivery, feedback, and acceptance)
 
 1. **Forum**
    - Thread list with pin/hot badges
@@ -330,6 +332,8 @@ Story
 6. Stripe account setup is client responsibility; platform will be Stripe-ready
 7. Content (images, covers, metadata) upload is client responsibility
 8. All third-party services (domain registrar, GitHub, PayPal) remain available
+
+**Timeline Impact:** Each phase's core development requires approximately 3 business days. The stated 1-week timeline per phase assumes client dependencies (assets, access, feedback) are delivered within 48 hours of request. If client deliverables are delayed beyond 3 business days, the timeline extends by the delay duration plus 2 business days.
 
 ---
 
