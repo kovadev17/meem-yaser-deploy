@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Rūsuma Platform — Discovery Questionnaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A227; --gold-light: #E8C84A; --gold-dark: #9A7B1A;
+  --bg: #0A0A0A; --surface: #111111; --surface-2: #1A1A1A;
+  --text: #EDEDED; --text-muted: #8A8A8A; --text-subtle: #4A4A4A;
+  --border: rgba(255,255,255,0.06);
+  --font-display: 'Cormorant', Georgia, serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img { -webkit-user-drag: none; user-select: none; }
+
+/* Header */
+.header {
+  position: sticky; top: 0;
+  background: linear-gradient(180deg, var(--bg) 80%, transparent);
+  z-index: 100;
+  padding: max(24px, env(safe-area-inset-top)) 20px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1;
+}
+.brand span { color: var(--gold); font-style: italic; }
+.header-meta { font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; margin-top: 6px; }
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  z-index: 200; transition: width 0.4s ease;
+  box-shadow: 0 0 12px rgba(201,162,39,0.4);
+}
+
+/* Container */
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px 80px; }
+
+/* Intro */
+.intro {
+  text-align: center; padding: 40px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.intro h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.1; margin-bottom: 16px;
+}
+.intro p {
+  color: var(--text-muted); font-size: 15px;
+  max-width: 520px; margin: 0 auto 28px;
+}
+.intro .badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,162,39,0.08); border: 1px solid rgba(201,162,39,0.2);
+  color: var(--gold); font-size: 11px; font-weight: 600;
+  padding: 8px 16px; border-radius: 100px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* Question Card */
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+.q-card:hover { border-color: rgba(201,162,39,0.15); }
+.q-card.answered { border-color: rgba(201,162,39,0.25); box-shadow: 0 0 30px rgba(201,162,39,0.04); }
+.q-number {
+  position: absolute; top: -10px; left: 20px;
+  background: var(--gold); color: var(--bg);
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+.q-label {
+  font-size: 16px; font-weight: 600;
+  margin-bottom: 6px; padding-top: 8px;
+  line-height: 1.4;
+}
+.q-hint {
+  font-size: 13px; color: var(--text-muted);
+  margin-bottom: 18px; line-height: 1.5;
+}
+
+/* Options */
+.options { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border: 1px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+.opt:hover { background: rgba(201,162,39,0.04); border-color: rgba(201,162,39,0.15); }
+.opt.selected {
+  background: rgba(201,162,39,0.08);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+.opt input[type="radio"] {
+  appearance: none; width: 20px; height: 20px;
+  border: 2px solid var(--text-subtle); border-radius: 50%;
+  flex-shrink: 0; position: relative;
+  transition: all 0.2s ease;
+}
+.opt.selected input[type="radio"] { border-color: var(--gold); background: var(--gold); }
+.opt.selected input[type="radio"]::after {
+  content: ''; position: absolute; inset: 4px;
+  background: var(--bg); border-radius: 50%;
+}
+
+/* Other input */
+.other-input {
+  width: 100%; margin-top: 8px;
+  background: transparent; border: none;
+  border-bottom: 1px solid var(--text-subtle);
+  color: var(--text); font-family: var(--font-body);
+  font-size: 14px; padding: 8px 0;
+  outline: none; transition: border-color 0.2s;
+}
+.other-input:focus { border-color: var(--gold); }
+.other-input::placeholder { color: var(--text-subtle); }
+
+/* Textarea */
+.textarea-wrap { margin-top: 8px; }
+.textarea-wrap textarea {
+  width: 100%; min-height: 100px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px;
+  color: var(--text); font-family: var(--font-body);
+  font-size: 14px; resize: vertical;
+  outline: none; transition: border-color 0.2s;
+}
+.textarea-wrap textarea:focus { border-color: var(--gold); }
+.textarea-wrap textarea::placeholder { color: var(--text-subtle); }
+
+/* Section divider */
+.section-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 48px 0 28px;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Submit area */
+.submit-area {
+  text-align: center; padding: 48px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+.submit-btn {
+  background: var(--gold); color: var(--bg);
+  font-family: var(--font-body); font-size: 15px; font-weight: 700;
+  padding: 16px 40px; border: none; border-radius: 14px;
+  cursor: pointer; transition: all 0.3s ease;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px rgba(201,162,39,0.3);
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(201,162,39,0.4);
+}
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Result modal */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(16px);
+  z-index: 300; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 24px; width: 100%; max-width: 560px;
+  max-height: 85vh; overflow: hidden;
+  display: flex; flex-direction: column;
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.modal-backdrop.open .modal { transform: scale(1) translateY(0); }
+.modal-header {
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-header h2 { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+.modal-close {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--surface-2); border: none;
+  color: var(--text-muted); font-size: 18px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: var(--border); color: var(--text); }
+.modal-body { padding: 20px 28px; overflow-y: auto; flex: 1; }
+.modal-body p { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
+.result-box {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px;
+  font-family: 'SF Mono', monospace; font-size: 12px;
+  color: var(--gold-light); word-break: break-all;
+  max-height: 200px; overflow-y: auto;
+  margin-bottom: 16px; line-height: 1.6;
+}
+.copy-btn {
+  width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--text); padding: 12px; border-radius: 10px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.copy-btn:hover { border-color: var(--gold); color: var(--gold); }
+.copy-btn.copied { background: rgba(16,185,129,0.1); border-color: #10B981; color: #10B981; }
+
+/* Footer */
+.footer {
+  text-align: center; padding: 40px 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-subtle); font-size: 12px;
+}
+.footer a { color: var(--gold); text-decoration: none; }
+
+@media (min-width: 640px) {
+  .q-card { padding: 32px; }
+  .container { padding: 0 24px 100px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" style="width:0%"></div>
+
+<div class="header">
+  <div>
+    <div class="brand">Restless <span>Worlds</span></div>
+    <div class="header-meta">Platform Discovery Questionnaire</div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="intro">
+  <div class="badge">~5 minutes</div>
+  <h1>Help us build exactly what you need</h1>
+  <p>This questionnaire covers your vision for the Rūsuma Reading Club platform — from content workflow to reader experience. Your answers will shape the final scope document before we kick off production.</p>
+</div>
+
+<form id="quiz-form">
+
+<!-- ═══ SECTION: CONTENT & LIBRARY ═══ -->
+<div class="section-divider"><span class="section-title">Content & Library</span></div>
+
+<div class="q-card" data-q="1">
+  <div class="q-number">01</div>
+  <div class="q-label">How do you want your stories displayed on the homepage?</div>
+  <div class="q-hint">The first thing a reader sees when they open the app.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q1" value="cover-grid"><span>Cover art grid (like Netflix / Spotify)</span></label>
+    <label class="opt"><input type="radio" name="q1" value="webtoon-list"><span>Webtoon-style vertical list with chapter thumbnails</span></label>
+    <label class="opt"><input type="radio" name="q1" value="carousel"><span>Horizontal carousel / featured slider</span></label>
+    <label class="opt"><input type="radio" name="q1" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q1"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="2">
+  <div class="q-number">02</div>
+  <div class="q-label">How do you organize chapters within each story?</div>
+  <div class="q-hint">Volume groups? Arcs? Simple numbered list?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q2" value="simple"><span>Simple numbered list (Ch 1, Ch 2, Ch 3...)</span></label>
+    <label class="opt"><input type="radio" name="q2" value="volumes"><span>Grouped by volumes (Vol 1: Ch 1-10, Vol 2: Ch 11-20...)</span></label>
+    <label class="opt"><input type="radio" name="q2" value="arcs"><span>Grouped by story arcs (Prologue, Act I, Act II...)</span></label>
+    <label class="opt"><input type="radio" name="q2" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q2"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="3">
+  <div class="q-number">03</div>
+  <div class="q-label">What metadata should each chapter display?</div>
+  <div class="q-hint">Select all that apply.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q3" value="title-date"><span>Chapter title + release date only</span></label>
+    <label class="opt"><input type="radio" name="q3" value="title-date-pages"><span>Title + date + page count</span></label>
+    <label class="opt"><input type="radio" name="q3" value="full"><span>Title + date + page count + reading time + status (new/updated)</span></label>
+    <label class="opt"><input type="radio" name="q3" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q3"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="4">
+  <div class="q-number">04</div>
+  <div class="q-label">How do you want "new chapter" releases to appear?</div>
+  <div class="q-hint">When you upload a new chapter, how should readers discover it?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q4" value="badge"><span>"NEW" badge on the story cover + chapter list</span></label>
+    <label class="opt"><input type="radio" name="q4" value="notification"><span>In-app notification + badge</span></label>
+    <label class="opt"><input type="radio" name="q4" value="banner"><span>Top banner announcement on the homepage</span></label>
+    <label class="opt"><input type="radio" name="q4" value="all"><span>All of the above</span></label>
+    <label class="opt"><input type="radio" name="q4" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q4"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: READER EXPERIENCE ═══ -->
+<div class="section-divider"><span class="section-title">Reader Experience</span></div>
+
+<div class="q-card" data-q="5">
+  <div class="q-number">05</div>
+  <div class="q-label">What happens when a reader finishes a chapter?</div>
+  <div class="q-hint">End-of-chapter screen behavior.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q5" value="next-auto"><span>Auto-advance to next chapter after a delay</span></label>
+    <label class="opt"><input type="radio" name="q5" value="next-button"><span>Show a "Next Chapter" button</span></label>
+    <label class="opt"><input type="radio" name="q5" value="end-screen"><span>Show an end-screen with credits + related chapters</span></label>
+    <label class="opt"><input type="radio" name="q5" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q5"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="6">
+  <div class="q-number">06</div>
+  <div class="q-label">Should readers be able to bookmark their position mid-chapter?</div>
+  <div class="q-hint">Save exact page + zoom + pan and resume later.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q6" value="yes-auto"><span>Yes — automatically, every page turn</span></label>
+    <label class="opt"><input type="radio" name="q6" value="yes-manual"><span>Yes — but only with a manual bookmark button</span></label>
+    <label class="opt"><input type="radio" name="q6" value="chapter-only"><span>No — just remember which chapter they were on</span></label>
+    <label class="opt"><input type="radio" name="q6" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q6"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="7">
+  <div class="q-number">07</div>
+  <div class="q-label">How should page spreads (double-page artwork) be handled?</div>
+  <div class="q-hint">When you have a two-page spread image.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q7" value="fit"><span>Fit to screen as one wide image</span></label>
+    <label class="opt"><input type="radio" name="q7" value="scroll"><span>Allow horizontal scroll to pan across the spread</span></label>
+    <label class="opt"><input type="radio" name="q7" value="split"><span>Split into two separate pages automatically</span></label>
+    <label class="opt"><input type="radio" name="q7" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q7"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="8">
+  <div class="q-number">08</div>
+  <div class="q-label">Should there be a "continue reading" shortcut on the homepage?</div>
+  <div class="q-hint">Jump straight back to where the reader left off.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q8" value="yes-prominent"><span>Yes — prominent hero section</span></label>
+    <label class="opt"><input type="radio" name="q8" value="yes-subtle"><span>Yes — subtle banner or card</span></label>
+    <label class="opt"><input type="radio" name="q8" value="no"><span>No — readers should browse the library each time</span></label>
+    <label class="opt"><input type="radio" name="q8" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q8"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: UPLOAD & ADMIN ═══ -->
+<div class="section-divider"><span class="section-title">Upload & Admin</span></div>
+
+<div class="q-card" data-q="9">
+  <div class="q-number">09</div>
+  <div class="q-label">When uploading, how should page order be determined?</div>
+  <div class="q-hint">Natural sort (1, 2, 10) vs alphabetical vs manual drag-and-drop.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q9" value="natural"><span>Natural filename sort (1, 2, 10 — not 1, 10, 2)</span></label>
+    <label class="opt"><input type="radio" name="q9" value="alphabetical"><span>Alphabetical filename sort</span></label>
+    <label class="opt"><input type="radio" name="q9" value="manual"><span>Manual drag-and-drop reorder after upload</span></label>
+    <label class="opt"><input type="radio" name="q9" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q9"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="10">
+  <div class="q-number">10</div>
+  <div class="q-label">Should uploaded chapters be published immediately or saved as drafts?</div>
+  <div class="q-hint">Control over when readers see new content.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q10" value="draft"><span>Save as draft first, publish manually</span></label>
+    <label class="opt"><input type="radio" name="q10" value="immediate"><span>Publish immediately upon upload completion</span></label>
+    <label class="opt"><input type="radio" name="q10" value="schedule"><span>Allow scheduling (publish at a specific date/time)</span></label>
+    <label class="opt"><input type="radio" name="q10" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q10"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="11">
+  <div class="q-number">11</div>
+  <div class="q-label">Should there be a chapter preview feature?</div>
+  <div class="q-hint">Let non-members read 1-3 pages before hitting the paywall/membership wall.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q11" value="yes"><span>Yes — first 1-3 pages free, then "Join to continue"</span></label>
+    <label class="opt"><input type="radio" name="q11" value="yes-custom"><span>Yes — but let me choose how many preview pages per chapter</span></label>
+    <label class="opt"><input type="radio" name="q11" value="no"><span>No — chapters are either fully open or fully locked</span></label>
+    <label class="opt"><input type="radio" name="q11" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q11"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="12">
+  <div class="q-number">12</div>
+  <div class="q-label">What should the admin dashboard show at a glance?</div>
+  <div class="q-hint">The "mission control" view when you log in as admin.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q12" value="basic"><span>Basic stats (total readers, chapters, storage used)</span></label>
+    <label class="opt"><input type="radio" name="q12" value="detailed"><span>Detailed analytics (reading time, popular chapters, active users, comments)</span></label>
+    <label class="opt"><input type="radio" name="q12" value="action"><span>Action-focused (pending approvals, flagged comments, upload queue)</span></label>
+    <label class="opt"><input type="radio" name="q12" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q12"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: MEMBERSHIP & ACCESS ═══ -->
+<div class="section-divider"><span class="section-title">Membership & Access</span></div>
+
+<div class="q-card" data-q="13">
+  <div class="q-number">13</div>
+  <div class="q-label">How should new member applications work?</div>
+  <div class="q-hint">After a user agrees to T&C, what happens next?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q13" value="auto"><span>Auto-approved immediately after T&C agreement</span></label>
+    <label class="opt"><input type="radio" name="q13" value="manual"><span>Manual approval required — you review each application</span></label>
+    <label class="opt"><input type="radio" name="q13" value="invite"><span>Invite-only — no public application, you send invite links</span></label>
+    <label class="opt"><input type="radio" name="q13" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q13"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="14">
+  <div class="q-number">14</div>
+  <div class="q-label">Should there be different membership tiers?</div>
+  <div class="q-hint">Even if paid subscriptions aren't active yet, should the system support tiers?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q14" value="yes"><span>Yes — build tier system now (Free / Member / Premium) even if unused</span></label>
+    <label class="opt"><input type="radio" name="q14" value="yes-simple"><span>Yes — but simple (Guest vs Member only)</span></label>
+    <label class="opt"><input type="radio" name="q14" value="no"><span>No — everyone is either a guest or a full member</span></label>
+    <label class="opt"><input type="radio" name="q14" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q14"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="15">
+  <div class="q-number">15</div>
+  <div class="q-label">What happens when a non-member tries to read locked content?</div>
+  <div class="q-hint">The "members only" experience.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q15" value="modal"><span>Modal popup explaining membership + CTA to join</span></label>
+    <label class="opt"><input type="radio" name="q15" value="blur"><span>Show blurred/pixelated pages with "Join to unlock" overlay</span></label>
+    <label class="opt"><input type="radio" name="q15" value="redirect"><span>Redirect to the Reading Club signup page</span></label>
+    <label class="opt"><input type="radio" name="q15" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q15"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: COMMENTS & COMMUNITY ═══ -->
+<div class="section-divider"><span class="section-title">Comments & Community</span></div>
+
+<div class="q-card" data-q="16">
+  <div class="q-number">16</div>
+  <div class="q-label">Where should the per-page comments live?</div>
+  <div class="q-hint">You mentioned not wanting pin icons on the artwork by default.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q16" value="sidebar"><span>Sidebar panel that slides out — no pins on the art</span></label>
+    <label class="opt"><input type="radio" name="q16" value="overlay"><span>Full-screen overlay that appears over the reader</span></label>
+    <label class="opt"><input type="radio" name="q16" value="bottom"><span>Bottom sheet (like mobile comments on Instagram)</span></label>
+    <label class="opt"><input type="radio" name="q16" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q16"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="17">
+  <div class="q-number">17</div>
+  <div class="q-label">Should comments be threaded (reply chains) or flat?</div>
+  <div class="q-hint">Can users reply to individual comments, or just post on the page?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q17" value="threaded"><span>Threaded — replies nested under parent comments</span></label>
+    <label class="opt"><input type="radio" name="q17" value="flat"><span>Flat — chronological list, no nesting</span></label>
+    <label class="opt"><input type="radio" name="q17" value="both"><span>Both — flat by default, option to expand threads</span></label>
+    <label class="opt"><input type="radio" name="q17" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q17"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="18">
+  <div class="q-number">18</div>
+  <div class="q-label">Should readers be able to react to comments (like, heart, etc.)?</div>
+  <div class="q-hint">Engagement signals beyond text replies.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q18" value="yes"><span>Yes — simple like/heart reaction</span></label>
+    <label class="opt"><input type="radio" name="q18" value="no"><span>No — text-only discussion</span></label>
+    <label class="opt"><input type="radio" name="q18" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q18"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: FORUM ═══ -->
+<div class="section-divider"><span class="section-title">Forum & Discussions</span></div>
+
+<div class="q-card" data-q="19">
+  <div class="q-number">19</div>
+  <div class="q-label">How should the forum be organized?</div>
+  <div class="q-hint">Categories, tags, or free-form?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q19" value="per-story"><span>Per-story forums (each manga has its own discussion space)</span></label>
+    <label class="opt"><input type="radio" name="q19" value="global"><span>Global forum with categories (Discussions, Theories, Fan Art, Announcements)</span></label>
+    <label class="opt"><input type="radio" name="q19" value="both"><span>Both — per-story + global categories</span></label>
+    <label class="opt"><input type="radio" name="q19" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q19"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="20">
+  <div class="q-number">20</div>
+  <div class="q-label">Should forum posts support rich content?</div>
+  <div class="q-hint">Images, embeds, formatting in posts.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q20" value="text"><span>Text-only (simplest, fastest)</span></label>
+    <label class="opt"><input type="radio" name="q20" value="markdown"><span>Markdown formatting (bold, links, lists)</span></label>
+    <label class="opt"><input type="radio" name="q20" value="rich"><span>Rich text + image uploads + embeds</span></label>
+    <label class="opt"><input type="radio" name="q20" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q20"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: NOTIFICATIONS ═══ -->
+<div class="section-divider"><span class="section-title">Notifications</span></div>
+
+<div class="q-card" data-q="21">
+  <div class="q-number">21</div>
+  <div class="q-label">What events should trigger in-app notifications?</div>
+  <div class="q-hint">Check all that should notify the user inside the platform.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q21" value="chapter"><span>New chapter releases only</span></label>
+    <label class="opt"><input type="radio" name="q21" value="reply"><span>Comment replies + mentions</span></label>
+    <label class="opt"><input type="radio" name="q21" value="forum"><span>Forum replies to their posts</span></label>
+    <label class="opt"><input type="radio" name="q21" value="all"><span>All of the above</span></label>
+    <label class="opt"><input type="radio" name="q21" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q21"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="22">
+  <div class="q-number">22</div>
+  <div class="q-label">Should email/WhatsApp notifications be optional per user?</div>
+  <div class="q-hint">Can users choose what they receive off-platform?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q22" value="yes-granular"><span>Yes — granular control (chapters, replies, announcements separately)</span></label>
+    <label class="opt"><input type="radio" name="q22" value="yes-simple"><span>Yes — simple on/off toggle for all external notifications</span></label>
+    <label class="opt"><input type="radio" name="q22" value="no"><span>No — admin decides, all users receive the same notifications</span></label>
+    <label class="opt"><input type="radio" name="q22" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q22"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: DESIGN & BRAND ═══ -->
+<div class="section-divider"><span class="section-title">Design & Brand</span></div>
+
+<div class="q-card" data-q="23">
+  <div class="q-number">23</div>
+  <div class="q-label">What feeling should the landing page evoke?</div>
+  <div class="q-hint">The emotional impression when someone first visits.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q23" value="premium"><span>Premium / luxury (clean, editorial, high-end)</span></label>
+    <label class="opt"><input type="radio" name="q23" value="mystery"><span>Mysterious / dark fantasy (moody, atmospheric)</span></label>
+    <label class="opt"><input type="radio" name="q23" value="community"><span>Warm / community-focused (inviting, social)</span></label>
+    <label class="opt"><input type="radio" name="q23" value="minimal"><span>Ultra-minimal (content-first, zero distraction)</span></label>
+    <label class="opt"><input type="radio" name="q23" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q23"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="24">
+  <div class="q-number">24</div>
+  <div class="q-label">Should the reader have a "theater mode" or distraction-free view?</div>
+  <div class="q-hint">Hide ALL chrome (progress bar, page counter, top bar) for pure immersion.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q24" value="yes-auto"><span>Yes — auto-hide all UI after 3 seconds of inactivity</span></label>
+    <label class="opt"><input type="radio" name="q24" value="yes-toggle"><span>Yes — manual toggle button</span></label>
+    <label class="opt"><input type="radio" name="q24" value="no"><span>No — keep minimal chrome visible at all times</span></label>
+    <label class="opt"><input type="radio" name="q24" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q24"></label>
+  </div>
+</div>
+
+<!-- ═══ SECTION: FUTURE & SCOPE ═══ -->
+<div class="section-divider"><span class="section-title">Future & Scope</span></div>
+
+<div class="q-card" data-q="25">
+  <div class="q-number">25</div>
+  <div class="q-label">Are you interested in guided reading features for a future phase?</div>
+  <div class="q-hint">Auto-scrolling, panel-to-panel navigation, automatic page progression — NOT Phase 1.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q25" value="yes-soon"><span>Yes — likely within 6-12 months after launch</span></label>
+    <label class="opt"><input type="radio" name="q25" value="yes-later"><span>Yes — but not a priority, maybe in 1-2 years</span></label>
+    <label class="opt"><input type="radio" name="q25" value="no"><span>No — simple reader is all I need</span></label>
+    <label class="opt"><input type="radio" name="q25" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q25"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="26">
+  <div class="q-number">26</div>
+  <div class="q-label">Should the platform support merchandise or store integration later?</div>
+  <div class="q-hint">Even if not built now, should we leave room for it?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q26" value="yes"><span>Yes — architect for it now, build later</span></label>
+    <label class="opt"><input type="radio" name="q26" value="no"><span>No — pure reading platform, no commerce</span></label>
+    <label class="opt"><input type="radio" name="q26" value="maybe"><span>Maybe — but don't design around it</span></label>
+    <label class="opt"><input type="radio" name="q26" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q26"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="27">
+  <div class="q-number">27</div>
+  <div class="q-label">What's your ideal content release cadence?</div>
+  <div class="q-hint">How often do you plan to publish new chapters?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q27" value="weekly"><span>Weekly</span></label>
+    <label class="opt"><input type="radio" name="q27" value="biweekly"><span>Bi-weekly</span></label>
+    <label class="opt"><input type="radio" name="q27" value="monthly"><span>Monthly</span></label>
+    <label class="opt"><input type="radio" name="q27" value="irregular"><span>Irregular / when ready</span></label>
+    <label class="opt"><input type="radio" name="q27" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q27"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="28">
+  <div class="q-number">28</div>
+  <div class="q-label">How many readers do you expect in Year 1?</div>
+  <div class="q-hint">This helps us size infrastructure without over-engineering.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q28" value="low"><span>Under 500</span></label>
+    <label class="opt"><input type="radio" name="q28" value="medium"><span>500 – 2,000</span></label>
+    <label class="opt"><input type="radio" name="q28" value="high"><span>2,000 – 10,000</span></label>
+    <label class="opt"><input type="radio" name="q28" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q28"></label>
+  </div>
+</div>
+
+<div class="q-card" data-q="29">
+  <div class="q-number">29</div>
+  <div class="q-label">What's your preferred payment structure?</div>
+  <div class="q-hint">Milestone-based is most common, but we can adapt.</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q29" value="50-50"><span>50% upfront, 50% on delivery</span></label>
+    <label class="opt"><input type="radio" name="q29" value="thirds"><span>Three equal payments (start / mid / delivery)</span></label>
+    <label class="opt"><input type="radio" name="q29" value="per-feature"><span>Pay per completed feature block</span></label>
+    <label class="opt"><input type="radio" name="q29" value="other"><span>Other</span><input type="text" class="other-input" placeholder="Describe your idea..." data-other="q29"></label>
+  </div>
+</div>
+
+<!-- ═══ OPEN-ENDED ═══ -->
+<div class="section-divider"><span class="section-title">Open Feedback</span></div>
+
+<div class="q-card" data-q="30">
+  <div class="q-number">30</div>
+  <div class="q-label">Is there anything else we should know about your vision?</div>
+  <div class="q-hint">Specific features, references, frustrations with existing platforms, or "wouldn't it be cool if..." ideas.</div>
+  <div class="textarea-wrap">
+    <textarea name="q30" placeholder="Tell us anything... references to other apps you love, features you wish existed, things that annoy you about current reading platforms, your ideal workflow as a creator..."></textarea>
+  </div>
+</div>
+
+<div class="submit-area">
+  <button type="submit" class="submit-btn" id="submit-btn">Submit Answers</button>
+  <p style="color: var(--text-subtle); font-size: 13px; margin-top: 16px;">Your answers will be encoded into a shareable link you can paste into your reply.</p>
+</div>
+
+</form>
+
+</div>
+
+<!-- Result Modal -->
+<div class="modal-backdrop" id="result-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>All done!</h2>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Your answers have been saved. Copy the code below and paste it into your reply to us — we'll decode it and fold everything into your scope document.</p>
+      <div class="result-box" id="result-box"></div>
+      <button class="copy-btn" id="copy-btn" onclick="copyResult()">Copy to clipboard</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  VeloxStudio × Restless Worlds — Rūsuma Reading Club Platform<br>
+  <a href="mailto:hello@meemyaserstudio.ae">hello@meemyaserstudio.ae</a>
+</div>
+
+<script>
+const form = document.getElementById('quiz-form');
+const progressBar = document.getElementById('progress-bar');
+const totalQ = 30;
+
+// Track answered questions
+function updateProgress() {
+  const answered = document.querySelectorAll('.q-card.answered').length;
+  const pct = Math.round((answered / totalQ) * 100);
+  progressBar.style.width = pct + '%';
+}
+
+// Handle radio selection
+form.querySelectorAll('input[type="radio"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const card = this.closest('.q-card');
+    card.classList.add('answered');
+    // Clear other inputs in same group
+    card.querySelectorAll('.opt').forEach(opt => opt.classList.remove('selected'));
+    this.closest('.opt').classList.add('selected');
+    updateProgress();
+  });
+});
+
+// Handle "Other" text input
+form.querySelectorAll('.other-input').forEach(input => {
+  input.addEventListener('focus', function() {
+    const opt = this.closest('.opt');
+    const radio = opt.querySelector('input[type="radio"]');
+    radio.checked = true;
+    opt.closest('.q-card').querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    opt.closest('.q-card').classList.add('answered');
+    updateProgress();
+  });
+  input.addEventListener('input', function() {
+    const opt = this.closest('.opt');
+    const radio = opt.querySelector('input[type="radio"]');
+    radio.checked = true;
+    opt.closest('.q-card').classList.add('answered');
+    updateProgress();
+  });
+});
+
+// Handle textarea
+form.querySelectorAll('textarea').forEach(ta => {
+  ta.addEventListener('input', function() {
+    this.closest('.q-card').classList.add('answered');
+    updateProgress();
+  });
+});
+
+// Submit
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const answers = {};
+  for(let i = 1; i <= 30; i++) {
+    const card = document.querySelector(`[data-q="${i}"]`);
+    if(!card) continue;
+
+    if(i === 30) {
+      const ta = card.querySelector('textarea');
+      answers['q' + i] = ta.value.trim() || '';
+    } else {
+      const selected = card.querySelector('input[type="radio"]:checked');
+      if(selected) {
+        let val = selected.value;
+        if(val === 'other') {
+          const otherInput = card.querySelector(`[data-other="q${i}"]`);
+          val = otherInput ? otherInput.value.trim() : 'other';
+        }
+        answers['q' + i] = val;
+      } else {
+        answers['q' + i] = '';
+      }
+    }
+  }
+
+  const json = JSON.stringify(answers);
+  const encoded = btoa(unescape(encodeURIComponent(json)));
+
+  // Show result
+  document.getElementById('result-box').textContent = encoded;
+  document.getElementById('result-modal').classList.add('open');
+
+  // Also update URL hash
+  window.location.hash = encoded;
+});
+
+function closeModal() {
+  document.getElementById('result-modal').classList.remove('open');
+}
+
+function copyResult() {
+  const text = document.getElementById('result-box').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Close modal on backdrop click
+document.getElementById('result-modal').addEventListener('click', function(e) {
+  if(e.target === this) closeModal();
+});
+
+// Check for hash on load
+if(window.location.hash.length > 1) {
+  try {
+    const decoded = decodeURIComponent(escape(atob(window.location.hash.slice(1))));
+    const answers = JSON.parse(decoded);
+    // Could pre-fill here if needed
+  } catch(e) {}
+}
+</script>
+
+</body>
+</html>
