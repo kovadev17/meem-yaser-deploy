@@ -1,7 +1,7 @@
 # Production Scope Document
 ## Rūsuma Reading Platform for Restless Worlds™
 
-**Document Version:** 1.0  
+**Document Version:** 2.0  
 **Date:** 2026-04-24  
 **Prepared by:** VeloxStudio  
 **Client:** Meem Yaser Studio  
@@ -12,11 +12,13 @@
 
 ## 1. Project Overview
 
-This document defines the complete production scope for the Rūsuma Reading Platform, a premium web-based manga and comic reading experience for Restless Worlds™. The platform shall deliver an immersive, uncluttered reading environment where the story remains the sole focus, supported by a robust content management system, community features, and moderation tools.
+This document defines the complete production scope for the Rūsuma Reading Platform, a premium web-based reading experience for Restless Worlds™. The platform shall deliver an immersive, uncluttered reading environment where the story remains the sole focus, supported by a robust content management system, community features, and moderation tools.
 
-The design philosophy is premium editorial: calm, minimal, and luxurious. Every screen shall feel intentional, with zero visual noise. The reader experience is sacred — no feature shall compete with the page for attention.
+The design philosophy is **clean, minimal, and elegant — like Dropbox**. Every screen shall feel intentional, with zero visual noise. The reader experience is sacred — no feature shall compete with the page for attention. As Meem stated: *"I prefer a calm, uncluttered experience where the focus is always on the story."*
 
-The platform shall be built in two phases, totaling $3,600, with delivery expected within approximately two weeks of project kickoff (1 week per phase, pending timely delivery of client assets and access).
+**Direction chosen:** Demo 5 (the horizontal locked-frame reader) was identified by Meem as *"the best reader so far"* — it fills the phone screen well and page swiping feels smooth. This direction forms the foundation of the production build.
+
+The platform shall be built in two phases, totaling **$3,600**, with core development completing in approximately **3 business days per phase**. Total per-phase timeline is approximately 1 week, including client asset delivery, feedback, and acceptance.
 
 ---
 
@@ -27,11 +29,13 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 | **Client** | Meem Yaser Studio |
 | **Contact** | Meem Yaser |
 | **Email** | hello@meemyaserstudio.ae |
+| **Invoice Email** | finance@meemyaserstudio.ae |
 | **Location** | UAE |
-| **Brand** | Restless Worlds™ |
+| **Brand** | Restless Worlds™ (registered trademark) |
+| **Content/Category Term** | Rūsuma (روسوما) |
 | **Platform Name** | Rūsuma Reading Platform (branded as "Reading Club") |
 | **Target Domain** | restlessworlds.com/reading-club |
-| **Primary Role** | Creator — writes and draws manga |
+| **Primary Role** | Creator — writes and draws original manga |
 | **Moderation** | Will appoint dedicated moderator(s); will not moderate personally |
 
 ---
@@ -46,11 +50,12 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 
 1. **Landing & Library**
    - Light-mode landing page (#FAFAF8) with premium editorial aesthetic
-   - Cover grid homepage presenting all series visually (not "trending" — story-focused)
+   - Cover grid homepage presenting all series visually (story-focused, not "trending")
    - Random character strip on homepage for dynamic, fresh feel
-   - Stats feature visible to users (community engagement metrics)
+   - Community stats section visible to users (engagement metrics)
    - Story detail pages displaying: cover art, title, synopsis, tags, chapter list
-   - Chapter list: simple numbered list with chapter titles only
+   - Chapter list: **Webtoon-style thumbnails** (small square character face or key panel thumbnails) with chapter title and release date — *not* simple text-only list
+   - **No star ratings** anywhere on the platform (explicitly excluded per client request)
    - Membership prompt placed later in user flow (not upfront or intimidating)
    - PWA installable: add to home screen, fullscreen app-like experience (no offline storage)
    - Full bilingual support: English and Arabic with complete RTL layout
@@ -69,6 +74,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
    - End-of-chapter explicit "Next" button (no auto-advance)
    - High contrast mode toggle (manual)
    - Content protection: disable right-click context menu and prevent drag-and-save of chapter images
+   - **No overlay subtitles** — each language has its own dedicated version of the pages, keeping artwork clean
 
 3. **Navigation & Controls**
    - Right arrow key advances page
@@ -110,8 +116,8 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 2. **Character Profiles & World-Building**
    - Separate upload section (not mixed with chapters)
    - Character grid with detail slide-in panels
-   - Support for 300+ characters across stories with organized data structure
-   - "Like" feature on character bios for popularity tracking
+   - Support for **300+ characters** across stories with organized data structure
+   - "Like" feature on character bios for popularity tracking and future merchandising decisions
    - World-building document hosting
 
 3. **Notification System**
@@ -147,7 +153,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 ### Design System
 - **Landing:** Light warm off-white (#FAFAF8), editorial feel
 - **Reader/Admin:** Always dark (#0A0A0A)
-- **Accent:** Gold (#D4AF37 / #C9A227)
+- **Accent:** Gold (#D4AF37 / #C9A227) — aligns with Restless Worlds™ brand colors (white, black, grey, gold)
 - **Typography:** Premium serif display font + clean geometric sans-serif body
 - **Aesthetic:** Apple + Notion + Webtoon + Discord — premium, minimal, zero clutter
 - **Mobile-first:** All design decisions prioritize mobile experience
@@ -157,6 +163,8 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 - Modern browser APIs for folder drag-and-drop upload
 - Image processing pipeline for WebP conversion
 - RTL-aware component system (flipped navigation, mirrored layouts, Arabic typography)
+- Comment system uses page_id binding with percentage-based anchors (resolution-independent)
+- Reading state synced to backend every 10 seconds: page_id, zoom level, pan coordinates
 
 ### Performance
 - Image lazy loading and preloading
@@ -170,6 +178,7 @@ The platform shall be built in two phases, totaling $3,600, with delivery expect
 - Moderator permission tiers
 - Audit logging for all moderation actions
 - Content protection: disable right-click context menu, prevent drag-and-save of chapter images
+- Secure CDN delivery with signed URLs; no direct file access
 
 ---
 
@@ -211,41 +220,46 @@ Story
 
 | Feature | Specification | Source |
 |---|---|---|
-| Mode | Dark only | Q18 Round 2 |
-| Background | Blurred current page | Q15 Round 1 |
-| Loading | Draft (low-res → sharp) | Q10 Round 1 |
-| Preload | Auto next chapter | Q6 Round 1 |
-| Spreads | Pan/zoom intact | Q7 Round 1 |
-| Subtitles | None; separate language versions | Q1 Round 2 |
-| Zoom Mobile | Pinch only, no buttons | Q2 Round 2 |
-| Zoom Desktop | Minimal buttons, auto-hide | Q2 Round 2 |
-| Zoom Behavior | Never blocks swipe | Q2 Round 2 |
-| Transitions | Natural | Q9 Round 1 |
-| Keyboard | Right arrow = next | Q12 Round 1 |
-| Swipe | Left = next (LTR), Right = next (RTL) — adapts to reading direction | Q13 Round 1 + RTL support |
-| Chapter List | Sidebar + floating | Q16-Q17 Round 1 |
-| End of Chapter | Explicit Next button | Q5 Round 1 |
-| Theater Mode | Tap to toggle chrome | Q17 Round 2 |
-| Fullscreen | Simple toggle | Q14 Round 1 |
-| High Contrast | Manual toggle | Q24 Round 1 |
-| Dyslexia Font | Not included | Q25 Round 1 |
-| RTL | Full support | Q26 Round 1 |
+| Mode | Dark only | Round 2 Q18 |
+| Background | Blurred current page | Round 1 Q15 |
+| Loading | Draft (low-res → sharp) | Round 1 Q10 |
+| Preload | Auto next chapter | Round 1 Q6 |
+| Spreads | Pan/zoom intact | Round 1 Q7 |
+| Subtitles | None; separate language versions | Round 2 Q1 |
+| Zoom Mobile | Pinch only, no buttons | Round 2 Q2 |
+| Zoom Desktop | Minimal buttons, auto-hide | Round 2 Q2 |
+| Zoom Behavior | Never blocks swipe | Round 2 Q2 |
+| Transitions | Natural | Round 1 Q9 |
+| Keyboard | Right arrow = next | Round 1 Q12 |
+| Swipe | Adapts to reading direction (LTR: left = next; RTL: right = next) | Round 1 Q13 + RTL support |
+| Chapter List | Sidebar + floating button | Round 1 Q16–Q17 |
+| Chapter Thumbnails | Webtoon-style square thumbnails with title and date | Email feedback (Apr 21) |
+| End of Chapter | Explicit Next button | Round 1 Q5 |
+| Theater Mode | Tap to toggle chrome (no visible button) | Round 2 Q17 |
+| Fullscreen | Simple toggle | Round 1 Q14 |
+| High Contrast | Manual toggle | Round 1 Q24 |
+| Dyslexia Font | Not included | Round 1 Q25 |
+| RTL | Full support | Round 1 Q26 |
+| Star Ratings | Excluded globally | Email feedback (Apr 21) |
+| Content Protection | No right-click, no drag-save | Email feedback (Apr 22) |
 
 ---
 
 ## 7. Community & Moderation
 
 ### Comments
-- Coordinate pins or annotations overlaid on page artwork (clean side-panel threads only)
+- Per-page comment threads in a clean side panel — no pins or overlays on artwork
 - Visible immediately upon posting — no pre-approval queue
 - Users can report comments
 - Moderators can delete comments
 - Threaded replies in sidebar
+- Moderation tools: reporting, delete, ban users when needed
 
 ### Forum
 - Separate space from page comments
 - Thread list with visual hierarchy
 - Same moderation tooling as comments
+- Accessible only after sign-up
 
 ### Moderator Permissions
 - Delete posts and comments
@@ -254,6 +268,7 @@ Story
 - **Permanent bans require owner sign-off**
 - Pin/unpin threads
 - Handle routine moderation independently (deleting reported content, temporary restrictions)
+- **Meem Yaser will not moderate personally; dedicated moderator(s) will be appointed**
 
 ### Audit Log (Owner-Visible)
 - Action type (delete, ban, pin, approve, etc.)
@@ -297,8 +312,8 @@ Story
 | Phase 2 delivery | $1,050 | Upon final acceptance |
 | **Total** | **$3,600** | |
 
-- **Method:** PayPal invoice
-- **Schedule chosen:** Three payments (client preference)
+- **Method:** PayPal invoice sent to finance@meemyaserstudio.ae
+- **Schedule chosen:** Three payments (client preference, Round 2 Q23)
 - **Standard rate:** $5,000–6,000; current rate is discounted relationship pricing
 
 ---
@@ -351,6 +366,8 @@ The following are explicitly excluded from this scope:
 - Overlay subtitles on pages
 - Light mode toggle for reader
 - Phone or video call support
+- Star ratings or comparisons between stories
+- Coordinate pins or annotations overlaid on page artwork
 
 ---
 

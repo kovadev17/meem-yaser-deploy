@@ -19,7 +19,7 @@
 
 The complete technical scope is defined in the attached **Production Scope Document v1.0**. That document is incorporated into this agreement by reference and shall be treated as part of this contract.
 
-In brief: VeloxStudio shall design and develop a premium web-based manga reading platform for Restless Worlds™, including a horizontal image reader, spatial commenting system, content upload pipeline, forum, notification system, moderation tools, and bilingual (EN/AR) RTL support.
+In brief: VeloxStudio shall design and develop a premium web-based manga reading platform for Restless Worlds™, including a horizontal image reader, per-page comment threads in a clean side panel, content upload pipeline, forum, notification system, moderation tools, and bilingual (EN/AR) RTL support.
 
 ---
 
